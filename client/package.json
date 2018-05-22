@@ -11,12 +11,12 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "format": "prettier-eslint \"client/**/*.js\" --write --singleQuote --bracketSpacing --no-semi",
+    "format": "prettier-eslint \"src/**/*.js\" --write --singleQuote --bracketSpacing --no-semi",
     "test": "",
     "ci": "CI=true npm run test",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "lint": "eslint client webpack.config.js",
+    "lint": "eslint src webpack.config.js",
     "precommit": "lint-staged && npm run lint && npm run ci"
   },
   "lint-staged": {
