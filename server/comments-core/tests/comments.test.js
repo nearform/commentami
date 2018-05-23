@@ -4,12 +4,12 @@ const tap = require('tap')
 
 const config = require('../config')
 const resetDb = require('./reset-db')
-const { initDb } = require('../lib/db')
+const { initPool } = require('../lib/db')
 
 tap.beforeEach((done) => resetDb(config.pg, done))
 
 tap.test('Comments (our own db and config): adding a comment will trigger the addedComment hook', function (t) {
-  const db = initDb(config.pg)
+  const db = initPool(config.pg)
   const comments = require('../lib/comments')(db)
   const comment = {
     reference: 'uuid-of-some-sort',
@@ -38,7 +38,7 @@ tap.test('Comments (our own db and config): adding a comment will trigger the ad
 })
 
 tap.test('Comments (passed custom configuration): will throw an error when the passed config is wrong', function (t) {
-  const db = initDb({
+  const db = initPool({
     user: 'noexists',
     host: 'localhost',
     database: 'comments',

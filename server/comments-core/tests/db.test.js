@@ -1,9 +1,14 @@
 'use strict'
 
 const tap = require('tap')
-const { initDb } = require('../lib/db')
+const { initPool, initClient } = require('../lib/db')
 
-tap.test('initDb will throw if no configuration is provided', function (t) {
-  t.throws(initDb, new Error('Cannot initialize connection without a configuration object'))
+tap.test('initPool will throw if no configuration is provided', function (t) {
+  t.throws(initPool, new Error('Cannot initialize connection without a configuration object'))
+  t.end()
+})
+
+tap.test('initClient will throw if no configuration is provided', function (t) {
+  t.throws(initClient, new Error('Cannot initialize connection without a configuration object'))
   t.end()
 })

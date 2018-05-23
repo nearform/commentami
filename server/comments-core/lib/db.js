@@ -2,22 +2,15 @@
 
 const { Pool, Client } = require('pg')
 
-let pool
-let db
-
 /**
  * The idea behind this function is to create a wrapper for the connection.
  */
-function initDb (conf) {
+function initPool (conf) {
   if (!conf) {
     throw new Error('Cannot initialize connection without a configuration object')
   }
 
-  if (pool && db) {
-    return db
-  }
-
-  pool = new Pool(conf)
+  const pool = new Pool(conf)
   // the pool with emit an error on behalf of any idle clients
   // it contains if a backend error or network partition happens
   pool.on('error', (err, client) => {
@@ -25,20 +18,7 @@ function initDb (conf) {
     process.exit(-1)
   })
 
-  db = {
-    query: (text, params, callback) => {
-      return pool.query(text, params, callback)
-    },
-    end: () => {
-      return pool.end()
-        .then(() => {
-          pool = null
-          db = null
-        })
-    }
-  }
-
-  return db
+  return pool
 }
 
 function initClient (conf) {
@@ -77,7 +57,7 @@ function createDb (client, databaseName, next) {
 }
 
 module.exports = {
-  initDb,
+  initPool,
   initClient,
   killOutstandingConnections,
   dropDb,
