@@ -13,7 +13,7 @@ tap.test('Comments: add a comment', function (t) {
   const comments = require('../lib/comments')(db)
   const comment = {
     reference: 'uuid-of-some-sort',
-    comment: 'lorm ipsum ....',
+    content: 'lorm ipsum ....',
     author: 'Filippo'
   }
 
@@ -24,7 +24,7 @@ tap.test('Comments: add a comment', function (t) {
     const expected = {
       id: 1,
       reference: 'uuid-of-some-sort',
-      comment: 'lorm ipsum ....',
+      content: 'lorm ipsum ....',
       author: 'Filippo'
     }
     t.same(result, expected, 'result is not as expected')

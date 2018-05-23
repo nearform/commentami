@@ -6,18 +6,18 @@ const SQL = require('@nearform/sql')
 function mapCommentFromDb (comment) {
   if (!comment) return null
 
-  return _.pick(comment, ['id', 'reference', 'comment', 'author'])
+  return _.pick(comment, ['id', 'reference', 'content', 'author'])
 }
 
 module.exports = function buildCommentsService (db) {
   return { add, update, delete: deleteComment, list }
 
   function add (data, done) {
-    const { reference, comment, author } = data
+    const { reference, content, author } = data
     db.query(SQL`
       INSERT INTO
-        comment (reference, comment, author)
-      VALUES (${reference}, ${comment}, ${author})
+        comment (reference, content, author)
+      VALUES (${reference}, ${content}, ${author})
       RETURNING *
     `, (err, res) => {
       if (err) return done(err)
@@ -27,9 +27,9 @@ module.exports = function buildCommentsService (db) {
   }
 
   function update (id, data, done) {
-    const { comment } = data
+    const { content } = data
 
-    if (!comment) {
+    if (!content) {
       return getComment(id, done)
     }
 
@@ -37,7 +37,7 @@ module.exports = function buildCommentsService (db) {
       UPDATE
         comment
       SET
-        comment = ${comment}
+        content = ${content}
       WHERE
         id = ${id}
       RETURNING *

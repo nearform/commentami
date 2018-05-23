@@ -13,7 +13,7 @@ const reference = faker.random.uuid()
 const comments = (new Array(20)).fill(null).map(v => {
   return {
     reference: reference,
-    comment: faker.lorem.words(),
+    content: faker.lorem.words(),
     author: faker.name.firstName()
   }
 })

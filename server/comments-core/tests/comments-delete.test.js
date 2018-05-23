@@ -14,7 +14,7 @@ tap.test('Comments: delete one comment', function (t) {
 
   const comment = {
     reference: 'uuid-of-some-sort',
-    comment: 'lorm ipsum ....',
+    content: 'lorm ipsum ....',
     author: 'Filippo'
   }
 

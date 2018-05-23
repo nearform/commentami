@@ -14,11 +14,11 @@ tap.test('Comments: update one comment', function (t) {
 
   const comment = {
     reference: 'uuid-of-some-sort',
-    comment: 'lorm ipsum ....',
+    content: 'lorm ipsum ....',
     author: 'Filippo'
   }
   const commentUpdate = {
-    comment: 'new comment'
+    content: 'new comment'
   }
 
   comments.add(comment, (err) => {
@@ -31,7 +31,7 @@ tap.test('Comments: update one comment', function (t) {
       const expected = {
         id: 1,
         reference: 'uuid-of-some-sort',
-        comment: 'new comment',
+        content: 'new comment',
         author: 'Filippo'
       }
       t.same(result, expected, 'result is not as expected')
@@ -51,11 +51,11 @@ tap.test('Comments: update one comment with an empty string is not possible', fu
 
   const comment = {
     reference: 'uuid-of-some-sort',
-    comment: 'lorm ipsum ....',
+    content: 'lorm ipsum ....',
     author: 'Filippo'
   }
   const commentUpdate = {
-    comment: ''
+    content: ''
   }
 
   comments.add(comment, (err) => {
@@ -68,7 +68,7 @@ tap.test('Comments: update one comment with an empty string is not possible', fu
       const expected = {
         id: 1,
         reference: 'uuid-of-some-sort',
-        comment: 'lorm ipsum ....',
+        content: 'lorm ipsum ....',
         author: 'Filippo'
       }
       t.same(result, expected, 'result is not as expected')
