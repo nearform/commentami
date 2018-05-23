@@ -2,13 +2,14 @@
 
 const tap = require('tap')
 
-const config = require('../src/config')
+const config = require('../config')
 const resetDb = require('./reset-db')
+const { initDb } = require('../src/lib/db')
 
-tap.beforeEach(resetDb)
+tap.beforeEach((done) => resetDb(config.pg, done))
 
 tap.test('Comments (our own db and config): adding a comment will trigger the addedComment hook', function (t) {
-  const db = require('../src/lib/db')()
+  const db = initDb(config.pg)
   const comments = require('../src/comments')(db)
   const comment = {
     reference: 'uuid-of-some-sort',
@@ -28,7 +29,7 @@ tap.test('Comments (our own db and config): adding a comment will trigger the ad
     }
     t.same(result, expected, 'result is not as expected')
 
-    db.stopPool()
+    db.end()
       .then(() => t.end())
       .catch((err) => {
         throw err
@@ -37,7 +38,7 @@ tap.test('Comments (our own db and config): adding a comment will trigger the ad
 })
 
 tap.test('Comments (passed custom configuration): will throw an error when the passed config is wrong', function (t) {
-  const db = require('../src/lib/db')({
+  const db = initDb({
     user: 'noexists',
     host: 'localhost',
     database: 'comments',
@@ -55,9 +56,8 @@ tap.test('Comments (passed custom configuration): will throw an error when the p
   comments.add(comment, (err, result) => {
     t.ok(err, 'should be gettig an error')
     t.notOk(result, 'result should be empty')
-    t.equal(err.message, 'password authentication failed for user "noexists"')
 
-    db.stopPool()
+    db.end()
       .then(() => t.end())
       .catch((err) => {
         throw err

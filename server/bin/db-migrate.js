@@ -7,7 +7,7 @@ const config = require('../config')
 
 function migrate (to = 'max', callback) {
   const postgrator = new Postgrator({
-    migrationDirectory: path.join(__dirname, '../../migrations'),
+    migrationDirectory: path.join(__dirname, '../migrations'),
     driver: 'pg',
     host: config.pg.host,
     port: config.pg.port,

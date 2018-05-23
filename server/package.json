@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tap tests/*.test.js && npm run lint",
+    "test": "NODE_ENV=test tap tests/*.test.js && npm run lint",
     "lint": "eslint src",
     "setup-dev-db": "npm run db-init && npm run db-migrate",
-    "db-init": "node src/utils/db-init.js",
-    "db-migrate": "node src/utils/db-migrate.js"
+    "db-init": "node bin/db-init.js",
+    "db-migrate": "node bin/db-migrate.js"
   },
   "repository": {
     "type": "git",

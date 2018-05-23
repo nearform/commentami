@@ -9,6 +9,8 @@ const {
 } = process.env
 
 const config = {
+  isProd: process.env.NODE_ENV === 'production',
+  isTest: process.env.NODE_ENV === 'test',
   pg: {
     user: NF_COMMENTS_PGUSER || 'postgres',
     host: NF_COMMENTS_PGHOST || 'localhost',
