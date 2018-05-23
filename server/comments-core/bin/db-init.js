@@ -3,7 +3,7 @@
 const _ = require('lodash')
 const async = require('async')
 const conf = require('../config')
-const { initClient, killOutstandingConnections, dropDb, createDb } = require('../src/lib/db')
+const { initClient, killOutstandingConnections, dropDb, createDb } = require('../lib/db')
 
 const initDbConfig = _.assign({}, _.cloneDeep(conf.pg), { database: 'postgres' })
 const client = initClient(initDbConfig)

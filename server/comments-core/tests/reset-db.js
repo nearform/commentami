@@ -4,7 +4,7 @@ const _ = require('lodash')
 const async = require('async')
 
 const dbMigrate = require('../bin/db-migrate')
-const { initClient, killOutstandingConnections, dropDb, createDb } = require('../src/lib/db')
+const { initClient, killOutstandingConnections, dropDb, createDb } = require('../lib/db')
 
 module.exports = function resetDb (conf, done) {
   const initDbConfig = _.assign({}, _.cloneDeep(conf), { database: 'postgres' })

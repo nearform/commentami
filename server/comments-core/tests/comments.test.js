@@ -4,13 +4,13 @@ const tap = require('tap')
 
 const config = require('../config')
 const resetDb = require('./reset-db')
-const { initDb } = require('../src/lib/db')
+const { initDb } = require('../lib/db')
 
 tap.beforeEach((done) => resetDb(config.pg, done))
 
 tap.test('Comments (our own db and config): adding a comment will trigger the addedComment hook', function (t) {
   const db = initDb(config.pg)
-  const comments = require('../src/comments')(db)
+  const comments = require('../lib/comments')(db)
   const comment = {
     reference: 'uuid-of-some-sort',
     comment: 'lorm ipsum ....',
@@ -46,7 +46,7 @@ tap.test('Comments (passed custom configuration): will throw an error when the p
     port: 5432
   })
 
-  const comments = require('../src/comments')(db)
+  const comments = require('../lib/comments')(db)
   const comment = {
     reference: 'uuid-of-some-sort',
     comment: 'lorm ipsum ....',
@@ -69,7 +69,7 @@ tap.test('Comments (passed connection): adding a comment will trigger the addedC
   const { Pool } = require('pg')
   const pool = new Pool(config.pg)
 
-  const comments = require('../src/comments')(pool)
+  const comments = require('../lib/comments')(pool)
   const comment = {
     reference: 'uuid-of-some-sort',
     comment: 'lorm ipsum ....',
