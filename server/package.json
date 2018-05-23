@@ -1,0 +1,35 @@
+{
+  "name": "comments-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test tap comments-core/tests/*.test.js && npm run lint",
+    "lint": "eslint src",
+    "setup-dev-db": "npm run db-init && npm run db-migrate",
+    "db-init": "node bin/db-init.js",
+    "db-migrate": "node bin/db-migrate.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/nearform/comments"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@nearform/sql": "^1.0.1",
+    "async": "^2.6.1",
+    "lodash": "^4.17.10",
+    "pg": "^7.4.3",
+    "postgrator": "^3.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "tap": "^12.0.1"
+  }
+}
