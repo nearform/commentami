@@ -16,7 +16,7 @@ const config = {
     host: NF_COMMENTS_PGHOST || 'localhost',
     database: NF_COMMENTS_PGDATABASE || 'comments-db',
     password: NF_COMMENTS_PGPASSWORD || 'postgres',
-    port: NF_COMMENTS_PGPORT || 5432
+    port: NF_COMMENTS_PGPORT || 5433
   }
 }
 
