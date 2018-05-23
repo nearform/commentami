@@ -3,11 +3,11 @@
 const _ = require('lodash')
 const SQL = require('@nearform/sql')
 
-const { query } = require('./lib/db')
+let db
 
 function add (data, done) {
   const { reference, comment, author } = data
-  query(SQL`
+  db.query(SQL`
     INSERT INTO
       comment (reference, comment, author)
     VALUES (${reference}, ${comment}, ${author})
@@ -19,6 +19,14 @@ function add (data, done) {
   })
 }
 
-module.exports = {
+const comments = {
   add
 }
+
+function initModule (connection) {
+  db = connection
+
+  return comments
+}
+
+module.exports = initModule
