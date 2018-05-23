@@ -2,11 +2,11 @@ import React from 'react'
 import warning from 'warning'
 import { CommentableContext } from './Provider'
 
-class CommentableCommentsBlockElement extends React.Component {
+class CommentsBlockElement extends React.Component {
   componentDidMount() {
     warning(
       this.props.commentable !== 'commentable',
-      'The CommentableCommentsBlock component should be inside a CommentableProvider'
+      'The CommentsBlock component should be inside a CommentableProvider'
     )
   }
 
@@ -28,7 +28,7 @@ class CommentableCommentsBlockElement extends React.Component {
           {comments.map(comment => (
             <div ref={comment.id}>
               <h4>by {comment.author}</h4>
-              <p>{comment.text}</p>{' '}
+              <p>{comment.content}</p>{' '}
             </div>
           ))}
         </div>
@@ -37,17 +37,14 @@ class CommentableCommentsBlockElement extends React.Component {
   }
 }
 
-export class CommentableCommentsBlock extends React.Component {
+export class CommentsBlock extends React.Component {
   render() {
     return (
       <CommentableContext.Consumer>
         {commentable => (
-          <CommentableCommentsBlockElement
-            {...this.props}
-            commentable={commentable}
-          >
+          <CommentsBlockElement {...this.props} commentable={commentable}>
             {this.props.children}
-          </CommentableCommentsBlockElement>
+          </CommentsBlockElement>
         )}
       </CommentableContext.Consumer>
     )

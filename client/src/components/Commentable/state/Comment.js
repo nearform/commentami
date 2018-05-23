@@ -1,8 +1,8 @@
 class Comment {
-  constructor(id, reference, text, author) {
+  constructor(id, reference, content, author) {
     this.id = id
     this.reference = reference
-    this.text = text
+    this.content = content
     this.author = author
   }
 }

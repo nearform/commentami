@@ -1,4 +1,5 @@
 export { CommentableProvider } from './Provider'
-export { CommentableIcon } from './Icon'
 export { CommentableTextBlock } from './TextBlock'
-export { CommentableCommentsBlock } from './CommentsBlock'
+
+export { CommentsBlock } from './CommentsBlock'
+export { CommentIcon } from './CommentIcon'

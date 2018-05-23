@@ -86,15 +86,12 @@ export class CommentableProvider extends React.Component {
   handleAddTextBlock(textBlock) {
     if (
       this.commentsTextBlock.find(
-        currentTextBlock =>
-          currentTextBlock.commentableId === textBlock.commentableId
+        currentTextBlock => currentTextBlock.blockId === textBlock.blockId
       )
     ) {
       this.logger.warn(
         '[CommentableProvider:handleAddTextBlock]',
-        `The textBlock with commentableId =  '${
-          textBlock.commentableId
-        }' already exists`
+        `The textBlock with blockId =  '${textBlock.blockId}' already exists`
       )
       return
     }
@@ -108,8 +105,7 @@ export class CommentableProvider extends React.Component {
    */
   handleRemoveTextBlock(textBlock) {
     const index = this.commentsTextBlock.findIndex(
-      currentTextBlock =>
-        currentTextBlock.commentableId === textBlock.commentableId
+      currentTextBlock => currentTextBlock.blockId === textBlock.blockId
     )
     this.commentsTextBlock = [
       ...this.commentsTextBlock.slice(0, index),

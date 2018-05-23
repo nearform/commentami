@@ -4,6 +4,7 @@ import warning from 'warning'
 import { CommentableTextBlockContext } from './TextBlock'
 
 const CommentRightIcon = ({ color = '#666', width = '22', height = '22' }) => {
+  // Icon from https://www.brandeps.com/icon/C/Comment-01
   return (
     <svg
       version="1.1"
@@ -27,11 +28,11 @@ const CommentRightIcon = ({ color = '#666', width = '22', height = '22' }) => {
   )
 }
 
-class CommentableIconElement extends React.Component {
+class CommentIconElement extends React.Component {
   constructor(props) {
     super(props)
 
-    this.commentableId = this.props.commentableId
+    this.blockId = this.props.blockId
     this.handleOnClick = this.handleOnClick.bind(this)
     this.handleDoubleClick = this.handleDoubleClick.bind(this)
   }
@@ -46,7 +47,7 @@ class CommentableIconElement extends React.Component {
   componentDidMount() {
     warning(
       this.hasCommentableTextBlock(),
-      'The CommentableIcon component should be inside a CommentableTextBlock'
+      'The CommentIcon component should be inside a CommentableTextBlock'
     )
   }
 
@@ -80,17 +81,17 @@ class CommentableIconElement extends React.Component {
   }
 }
 
-export class CommentableIcon extends React.Component {
+export class CommentIcon extends React.Component {
   render() {
     return (
       <CommentableTextBlockContext.Consumer>
         {commentableTextBlock => (
-          <CommentableIconElement
+          <CommentIconElement
             {...this.props}
             commentableTextBlock={commentableTextBlock}
           >
             {this.props.children}
-          </CommentableIconElement>
+          </CommentIconElement>
         )}
       </CommentableTextBlockContext.Consumer>
     )

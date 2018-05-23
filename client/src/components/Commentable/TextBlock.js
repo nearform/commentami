@@ -1,4 +1,3 @@
-// https://www.brandeps.com/icon/C/Comment-01
 import React from 'react'
 import warning from 'warning'
 import { CommentableContext } from './Provider'
@@ -11,7 +10,7 @@ class CommentableTextBlockElement extends React.Component {
   constructor(props) {
     super(props)
 
-    this.commentableId = this.props.commentableId
+    this.blockId = this.props.blockId
 
     this.handleDoubleClick = this.handleDoubleClick.bind(this)
     this.handleMouseEnter = this.handleMouseEnter.bind(this)
@@ -21,25 +20,25 @@ class CommentableTextBlockElement extends React.Component {
 
   handleMouseEnter(e) {
     if (this.hasCommentable()) {
-      this.props.commentable.textBlockMouseEnter(e, this.commentableId)
+      this.props.commentable.textBlockMouseEnter(e, this.blockId)
     }
   }
 
   handleMouseLeave(e) {
     if (this.hasCommentable()) {
-      this.props.commentable.textBlockMouseLeave(e, this.commentableId)
+      this.props.commentable.textBlockMouseLeave(e, this.blockId)
     }
   }
 
   handleDoubleClick(e) {
     if (this.hasCommentable()) {
-      this.props.commentable.textBlockDoubleClick(e, this.commentableId)
+      this.props.commentable.textBlockDoubleClick(e, this.blockId)
     }
   }
 
   handleCommentIconClick(e) {
     if (this.hasCommentable()) {
-      this.props.commentable.commentIconClick(e, this.commentableId)
+      this.props.commentable.commentIconClick(e, this.blockId)
     }
   }
 
@@ -67,7 +66,7 @@ class CommentableTextBlockElement extends React.Component {
   showIconComment() {
     return (
       this.hasCommentable() &&
-      !!this.props.commentable.getBlockComments(this.commentableId).length
+      !!this.props.commentable.getBlockComments(this.blockId).length
     )
   }
 
@@ -77,7 +76,7 @@ class CommentableTextBlockElement extends React.Component {
     }
 
     const isHighlight =
-      this.props.commentable.showCommentsForTextBlock === this.commentableId
+      this.props.commentable.showCommentsForTextBlock === this.blockId
 
     return (
       <CommentableTextBlockContext.Provider
