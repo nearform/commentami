@@ -1,4 +1,4 @@
-'use strict'
+#!/usr/bin/env node
 
 const _ = require('lodash')
 const async = require('async')
