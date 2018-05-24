@@ -1,8 +1,10 @@
-import Comment from './Comment'
-
 class Comments {
   constructor() {
     this.comments = []
+  }
+
+  size() {
+    return this.comments.length
   }
 
   addComment(comment) {
@@ -11,15 +13,6 @@ class Comments {
 
   getBlockComments(idBlock) {
     return this.comments.filter(comment => comment.reference.block === idBlock)
-  }
-
-  init() {
-    this.addComment(
-      new Comment(1, { block: 'comm-1' }, 'This is a sample comment', 'Davide')
-    )
-    this.addComment(
-      new Comment(2, { block: 'comm-3' }, 'This is another comment', 'Davide')
-    )
   }
 }
 

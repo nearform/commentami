@@ -18,7 +18,6 @@ export class CommentableProvider extends React.Component {
     this.logger = this.props.logger || console
 
     this.comments = new Comments()
-    this.comments.init() // The initialization should be done in a different place
 
     this.state = {
       logger: this.logger,
