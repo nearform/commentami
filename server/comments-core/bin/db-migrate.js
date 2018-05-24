@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 'use strict'
 
 const path = require('path')
@@ -27,12 +28,10 @@ module.exports = migrate
 
 if (require.main === module) {
   migrate('max', (err, migrations) => {
-    /* eslint-disable no-console */
     if (err) {
-      console.log('Migrations error!', err)
+      console.log('Migrations error!', err) // eslint-disable-line no-console
       process.exit(1)
     }
-    console.log('Migrations done!')
-    /* eslint-enable */
+    console.log('Migrations done!') // eslint-disable-line no-console
   })
 }

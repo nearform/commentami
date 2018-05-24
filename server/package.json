@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test tap comments-core/tests/*.test.js && npm run lint",
-    "lint": "eslint src",
+    "lint": "eslint comments-core",
     "setup-dev-db": "npm run db-init && npm run db-migrate",
-    "db-init": "node bin/db-init.js",
-    "db-migrate": "node bin/db-migrate.js"
+    "db-init": "node comments-core/bin/db-init.js",
+    "db-migrate": "node comments-core/bin/db-migrate.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.1.0",
+    "faker": "^4.1.0",
     "tap": "^12.0.1"
   }
 }
