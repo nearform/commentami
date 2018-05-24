@@ -30,18 +30,6 @@
       "react-app"
     ]
   },
-  "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "semi": [
-        2,
-        "never"
-      ],
-      "no-console": [
-        "warn"
-      ]
-    }
-  },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.15",
     "@storybook/addon-links": "^3.3.15",
