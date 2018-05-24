@@ -5,13 +5,14 @@ const tap = require('tap')
 const config = require('../config')
 const resetDb = require('./reset-db')
 const { initPool } = require('../lib/db')
+const initCommentsService = require('../lib/comments')
 
 const db = initPool(config.pg)
+const commentsService = initCommentsService(db)
 
 tap.beforeEach((done) => resetDb(config.pg, done))
 
 tap.test('Comments: update one comment', function (t) {
-  const comments = require('../lib/comments')(db)
   const comment = {
     reference: 'uuid-of-some-sort',
     content: 'lorm ipsum ....',
@@ -21,10 +22,10 @@ tap.test('Comments: update one comment', function (t) {
     content: 'new comment'
   }
 
-  comments.add(comment, (err) => {
+  commentsService.add(comment, (err) => {
     t.notOk(err, 'error returned when adding a comment')
 
-    comments.update(1, commentUpdate, (err, result) => {
+    commentsService.update(1, commentUpdate, (err, result) => {
       t.notOk(err, 'error returned when adding a comment')
       t.ok(result, 'result is empty')
 
@@ -41,7 +42,6 @@ tap.test('Comments: update one comment', function (t) {
 })
 
 tap.test('Comments: update one comment with an empty string is not possible', function (t) {
-  const comments = require('../lib/comments')(db)
   const comment = {
     reference: 'uuid-of-some-sort',
     content: 'lorm ipsum ....',
@@ -51,10 +51,10 @@ tap.test('Comments: update one comment with an empty string is not possible', fu
     content: ''
   }
 
-  comments.add(comment, (err) => {
+  commentsService.add(comment, (err) => {
     t.notOk(err, 'error returned when adding a comment')
 
-    comments.update(1, commentUpdate, (err, result) => {
+    commentsService.update(1, commentUpdate, (err, result) => {
       t.notOk(err, 'error returned when adding a comment')
       t.ok(result, 'result is empty')
 
