@@ -29,20 +29,16 @@ tap.beforeEach((done) => {
       return (next) => commentsService.add(comment, next)
     })
 
-    try {
-      async.series(
-        inserts,
-        (err) => {
-          if (err) return done(err)
+    async.series(
+      inserts,
+      (err) => {
+        if (err) return done(err)
 
-          db.end()
-            .then(() => done())
-            .catch((err) => done(err))
-        }
-      )
-    } catch (e) {
-      console.error('error', e)
-    }
+        db.end()
+          .then(() => done())
+          .catch((err) => done(err))
+      }
+    )
   })
 })
 

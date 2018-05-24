@@ -87,7 +87,6 @@ module.exports = function buildCommentsService (db) {
     `
 
     db.query(sql, (err, res) => {
-      console.error(err)
       if (err) return done(err)
       if (res.rowCount === 0) return done(null, [])
 

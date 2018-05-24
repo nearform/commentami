@@ -14,7 +14,7 @@ function initPool (conf) {
   // the pool with emit an error on behalf of any idle clients
   // it contains if a backend error or network partition happens
   pool.on('error', (err, client) => {
-    console.error('Unexpected error on idle client', err)
+    console.error('Unexpected error on idle client', err) // eslint-disable-line no-console
     process.exit(-1)
   })
 

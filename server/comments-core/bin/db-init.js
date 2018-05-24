@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict'
 
 const _ = require('lodash')
 const async = require('async')
@@ -18,10 +19,10 @@ async.series(
   ],
   (err) => {
     if (err) {
-      console.error(err)
+      console.error(err) // eslint-disable-line no-console
       process.exit(1)
     }
 
-    console.info('Db init: done')
+    console.info('Db init: done') // eslint-disable-line no-console
   }
 )
