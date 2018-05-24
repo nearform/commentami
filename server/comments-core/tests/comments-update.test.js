@@ -6,12 +6,12 @@ const config = require('../config')
 const resetDb = require('./reset-db')
 const { initPool } = require('../lib/db')
 
+const db = initPool(config.pg)
+
 tap.beforeEach((done) => resetDb(config.pg, done))
 
 tap.test('Comments: update one comment', function (t) {
-  const db = initPool(config.pg)
   const comments = require('../lib/comments')(db)
-
   const comment = {
     reference: 'uuid-of-some-sort',
     content: 'lorm ipsum ....',
@@ -35,20 +35,13 @@ tap.test('Comments: update one comment', function (t) {
         author: 'Filippo'
       }
       t.same(result, expected, 'result is not as expected')
-
-      db.end()
-        .then(() => t.end())
-        .catch((err) => {
-          throw err
-        })
+      t.end()
     })
   })
 })
 
 tap.test('Comments: update one comment with an empty string is not possible', function (t) {
-  const db = initPool(config.pg)
   const comments = require('../lib/comments')(db)
-
   const comment = {
     reference: 'uuid-of-some-sort',
     content: 'lorm ipsum ....',
@@ -72,12 +65,9 @@ tap.test('Comments: update one comment with an empty string is not possible', fu
         author: 'Filippo'
       }
       t.same(result, expected, 'result is not as expected')
-
-      db.end()
-        .then(() => t.end())
-        .catch((err) => {
-          throw err
-        })
+      t.end()
     })
   })
 })
+
+tap.teardown(() => db.end())

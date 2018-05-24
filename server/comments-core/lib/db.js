@@ -56,10 +56,31 @@ function createDb (client, databaseName, next) {
   })
 }
 
+function resetTables (client, next) {
+  client.query(`DROP SCHEMA public CASCADE`, function (err) {
+    if (err) return next(err)
+
+    client.query(`CREATE SCHEMA public`, function (err) {
+      if (err) return next(err)
+
+      client.query(`GRANT ALL ON SCHEMA public TO postgres`, function (err) {
+        if (err) return next(err)
+
+        client.query(`GRANT ALL ON SCHEMA public TO public`, function (err) {
+          if (err) return next(err)
+
+          next()
+        })
+      })
+    })
+  })
+}
+
 module.exports = {
   initPool,
   initClient,
   killOutstandingConnections,
   dropDb,
-  createDb
+  createDb,
+  resetTables
 }
