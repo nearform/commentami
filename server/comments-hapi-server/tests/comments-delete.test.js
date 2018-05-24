@@ -1,15 +1,17 @@
 'use strict'
 
-const tap = require('tap')
+const { beforeEach, test, teardown } = require('tap')
 
 const { setupServer } = require('../server.js')
 
 const config = require('../../comments-core/config')
 const resetDb = require('../../comments-core/tests/reset-db')
-tap.beforeEach((done) => resetDb(config.pg, done))
+const { getServer, stopServer } = require('./utils')
 
-tap.test('Comments DELETE: a comment', async function (t) {
-  const server = await setupServer()
+beforeEach((done) => resetDb(config.pg, done))
+
+test('Comments DELETE: a comment', async function (t) {
+  const server = await getServer()
 
   const postRequest = {
     method: 'POST',
@@ -34,6 +36,6 @@ tap.test('Comments DELETE: a comment', async function (t) {
   }
   response = await server.inject(deleteRequest)
   t.equal(response.statusCode, 200, 'status code should be 200')
-
-  return server.stop()
 })
+
+teardown(() => stopServer())

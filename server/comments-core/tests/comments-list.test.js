@@ -1,6 +1,6 @@
 'use strict'
 
-const tap = require('tap')
+const { beforeEach, test, teardown } = require('tap')
 const faker = require('faker')
 
 const loadComments = require('./load-comments')
@@ -16,7 +16,7 @@ const commentsService = initCommentsService(db)
 const reference = faker.random.uuid()
 let loaded = false
 
-tap.beforeEach((done) => {
+beforeEach((done) => {
   if (loaded) return done()
 
   resetDb(config.pg, (err) => {
@@ -31,7 +31,7 @@ tap.beforeEach((done) => {
   })
 })
 
-tap.test('Comments: list all comments will return 100 by default', function (t) {
+test('Comments: list all comments will return 100 by default', function (t) {
   return commentsService.list(reference)
     .then((list) => {
       t.ok(list, 'list is empty')
@@ -44,7 +44,7 @@ tap.test('Comments: list all comments will return 100 by default', function (t) 
     })
 })
 
-tap.test('Comments: can ask for comments using limits and offset', function (t) {
+test('Comments: can ask for comments using limits and offset', function (t) {
   return commentsService.list(reference, { limit: 15, offset: 3 })
     .then((list) => {
       t.ok(list, 'list is empty')
@@ -58,4 +58,4 @@ tap.test('Comments: can ask for comments using limits and offset', function (t) 
     })
 })
 
-tap.teardown(() => db.end())
+teardown(() => db.end())

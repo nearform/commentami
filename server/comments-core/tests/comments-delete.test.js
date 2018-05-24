@@ -1,6 +1,6 @@
 'use strict'
 
-const tap = require('tap')
+const { beforeEach, test, teardown } = require('tap')
 
 const config = require('../config')
 const resetDb = require('./reset-db')
@@ -10,9 +10,9 @@ const initCommentsService = require('../lib/comments')
 const db = initPool(config.pg)
 const commentsService = initCommentsService(db)
 
-tap.beforeEach((done) => resetDb(config.pg, done))
+beforeEach((done) => resetDb(config.pg, done))
 
-tap.test('Comments: delete one comment', function (t) {
+test('Comments: delete one comment', function (t) {
   const comment = {
     reference: 'uuid-of-some-sort',
     content: 'lorm ipsum ....',
@@ -32,7 +32,7 @@ tap.test('Comments: delete one comment', function (t) {
     })
 })
 
-tap.test('Comments: deleting a non existed objecct will return success', function (t) {
+test('Comments: deleting a non existed objecct will return success', function (t) {
   return commentsService.delete(123)
     .then((result) => {
       t.ok(result, 'result is empty')
@@ -43,7 +43,7 @@ tap.test('Comments: deleting a non existed objecct will return success', functio
     })
 })
 
-tap.test('Comments: deleting without reference return success', function (t) {
+test('Comments: deleting without reference return success', function (t) {
   return commentsService.delete(null)
     .then((result) => {
       t.ok(result, 'result is empty')
@@ -54,4 +54,4 @@ tap.test('Comments: deleting without reference return success', function (t) {
     })
 })
 
-tap.teardown(() => db.end())
+teardown(() => db.end())

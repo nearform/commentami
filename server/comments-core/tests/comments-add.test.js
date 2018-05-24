@@ -1,6 +1,6 @@
 'use strict'
 
-const tap = require('tap')
+const { beforeEach, test, teardown } = require('tap')
 
 const config = require('../config')
 const resetDb = require('./reset-db')
@@ -10,9 +10,9 @@ const initCommentsService = require('../lib/comments')
 const db = initPool(config.pg)
 const commentsService = initCommentsService(db)
 
-tap.beforeEach((done) => resetDb(config.pg, done))
+beforeEach((done) => resetDb(config.pg, done))
 
-tap.test('Comments: add a comment', function (t) {
+test('Comments: add a comment', function (t) {
   const comment = {
     reference: 'uuid-of-some-sort',
     content: 'lorm ipsum ....',
@@ -32,4 +32,4 @@ tap.test('Comments: add a comment', function (t) {
     })
 })
 
-tap.teardown(() => db.end())
+teardown(() => db.end())

@@ -24,7 +24,6 @@ const setupServer = async () => {
 const start = async () => {
   await setupServer()
   await server.start()
-  console.log(`Server running at: ${server.info.uri}`)
 };
 
 module.exports = {
