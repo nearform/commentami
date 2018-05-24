@@ -25,11 +25,7 @@ tap.beforeEach((done) => {
   resetDb(config.pg, (err) => {
     if (err) return done(err)
 
-    const inserts = comments.map(comment => {
-      return (next) => commentsService.add(comment, next)
-    })
-
-    async.series(inserts, done)
+    async.series(comments.map(comment => (next) => commentsService.add(comment, next)), done)
   })
 })
 
@@ -48,7 +44,8 @@ tap.test('Comments: can ask for comments using limits and offset', function (t) 
     t.notOk(err, 'error returned when adding a comment')
     t.ok(list, 'list is empty')
 
-    t.equal(list.length, 15, 'list is not 10 long')
+    t.equal(list.length, 15, 'list is not 15 long')
+    t.equal(list[0].id, 4, 'list should start from 4')
     t.end()
   })
 })
