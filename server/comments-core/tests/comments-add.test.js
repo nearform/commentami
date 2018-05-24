@@ -19,19 +19,17 @@ tap.test('Comments: add a comment', function (t) {
     author: 'Filippo'
   }
 
-  commentsService.add(comment, (err, result) => {
-    t.notOk(err, 'error returned when adding a comment')
-    t.ok(result, 'result is empty')
-
-    const expected = {
-      id: 1,
-      reference: 'uuid-of-some-sort',
-      content: 'lorm ipsum ....',
-      author: 'Filippo'
-    }
-    t.same(result, expected, 'result is not as expected')
-    t.end()
-  })
+  return commentsService.add(comment)
+    .then((result) => {
+      t.ok(result, 'result is empty')
+      const expected = {
+        id: 1,
+        reference: 'uuid-of-some-sort',
+        content: 'lorm ipsum ....',
+        author: 'Filippo'
+      }
+      t.same(result, expected, 'result is not as expected')
+    })
 })
 
 tap.teardown(() => db.end())

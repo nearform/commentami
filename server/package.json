@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test tap comments-core/tests/*.test.js && npm run lint",
+    "test": "NODE_ENV=test tap comments-core/tests/*.test.js && NODE_ENV=test tap comments-hapi-server/tests/*.test.js && npm run lint",
     "lint": "eslint comments-core",
     "setup-dev-db": "npm run db-init && npm run db-migrate",
     "db-init": "node comments-core/bin/db-init.js",
@@ -19,6 +19,10 @@
   "dependencies": {
     "@nearform/sql": "^1.0.1",
     "async": "^2.6.1",
+    "boom": "^7.2.0",
+    "hapi": "^17.5.0",
+    "hapi-pino": "^4.0.4",
+    "joi": "^13.3.0",
     "lodash": "^4.17.10",
     "pg": "^7.4.3",
     "postgrator": "^3.6.0"

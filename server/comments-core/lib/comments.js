@@ -10,30 +10,34 @@ function mapCommentFromDb (comment) {
 }
 
 module.exports = function buildCommentsService (db) {
-  return { add, update, delete: deleteComment, list }
+  return { add, update, delete: deleteComment, list, close }
 
-  function add (data, done) {
+  function close () {
+    return db.end()
+  }
+
+  function add (data) {
     const { reference, content, author } = data
-    db.query(SQL`
+    const sql = SQL`
       INSERT INTO
         comment (reference, content, author)
       VALUES (${reference}, ${content}, ${author})
       RETURNING *
-    `, (err, res) => {
-      if (err) return done(err)
+    `
 
-      done(null, mapCommentFromDb(_.get(res, 'rows.0')))
+    return db.query(sql).then((res) => {
+      return mapCommentFromDb(_.get(res, 'rows.0'))
     })
   }
 
-  function update (id, data, done) {
+  function update (id, data) {
     const { content } = data
 
     if (!content) {
-      return getComment(id, done)
+      return getComment(id)
     }
 
-    db.query(SQL`
+    const sql = SQL`
       UPDATE
         comment
       SET
@@ -41,42 +45,50 @@ module.exports = function buildCommentsService (db) {
       WHERE
         id = ${id}
       RETURNING *
-    `, (err, res) => {
-      if (err) return done(err)
+    `
 
-      done(null, mapCommentFromDb(_.get(res, 'rows.0')))
+    return db.query(sql).then((res) => {
+      if (res.rowCount === 0) {
+        throw new Error(`Cannot fine comment with id ${id}`)
+      }
+
+      return mapCommentFromDb(_.get(res, 'rows.0'))
     })
   }
 
-  function deleteComment (id, done) {
+  function deleteComment (id) {
     if (!id) {
-      return done(null, { success: true })
+      return Promise.resolve({ success: true })
     }
 
-    db.query(SQL`DELETE FROM comment WHERE id = ${id}`, (err, res) => {
-      if (err) return done(err)
+    const sql = SQL`DELETE FROM comment WHERE id = ${id}`
 
-      done(null, { success: true })
+    return db.query(sql).then(() => ({ success: true }))
+  }
+
+  function getComment (id) {
+    const sql = SQL` SELECT * FROM comment WHERE id = ${id}`
+
+    return db.query(sql).then((res) => {
+      if (!_.get(res, 'rows.0')) {
+        throw new Error(`Cannot fine comment with id ${id}`)
+      }
+
+      return mapCommentFromDb(_.get(res, 'rows.0'))
     })
   }
 
-  function getComment (id, done) {
-    db.query(SQL` SELECT * FROM comment WHERE id = ${id}`, (err, res) => {
-      if (err) return done(err)
-
-      done(null, mapCommentFromDb(_.get(res, 'rows.0')))
-    })
-  }
-
-  function list (reference, options, done) {
-    if (_.isFunction(options)) {
-      done = options
-      options = {}
-    }
-
-    const { limit = 10, offset = 0 } = options
-
-    const sql = SQL`
+  function list (reference, options = {}) {
+    const { limit = 100, offset = 0 } = options
+    const sqlCount = SQL`
+      SELECT
+        COUNT(*)
+      FROM
+        comment
+      WHERE
+        reference = ${reference}
+    `
+    const sqlFilter = SQL`
       SELECT
         *
       FROM
@@ -86,11 +98,15 @@ module.exports = function buildCommentsService (db) {
       LIMIT ${limit} OFFSET ${offset}
     `
 
-    db.query(sql, (err, res) => {
-      if (err) return done(err)
-      if (res.rowCount === 0) return done(null, [])
+    return Promise.all([db.query(sqlCount), db.query(sqlFilter)]).then((res) => {
+      const [countRes, filterRes] = res
 
-      done(null, res.rows.map(mapCommentFromDb))
+      return {
+        comments: _.get(filterRes, 'rows', []).map(mapCommentFromDb),
+        total: _.get(countRes, 'rows.0.count', 0),
+        limit,
+        offset
+      }
     })
   }
 }

@@ -22,23 +22,20 @@ tap.test('Comments: update one comment', function (t) {
     content: 'new comment'
   }
 
-  commentsService.add(comment, (err) => {
-    t.notOk(err, 'error returned when adding a comment')
-
-    commentsService.update(1, commentUpdate, (err, result) => {
-      t.notOk(err, 'error returned when adding a comment')
-      t.ok(result, 'result is empty')
-
-      const expected = {
-        id: 1,
-        reference: 'uuid-of-some-sort',
-        content: 'new comment',
-        author: 'Filippo'
-      }
-      t.same(result, expected, 'result is not as expected')
-      t.end()
+  return commentsService.add(comment)
+    .then(() => {
+      return commentsService.update(1, commentUpdate)
+        .then((result) => {
+          t.ok(result, 'result is empty')
+          const expected = {
+            id: 1,
+            reference: 'uuid-of-some-sort',
+            content: 'new comment',
+            author: 'Filippo'
+          }
+          t.same(result, expected, 'result is not as expected')
+        })
     })
-  })
 })
 
 tap.test('Comments: update one comment with an empty string is not possible', function (t) {
@@ -51,23 +48,20 @@ tap.test('Comments: update one comment with an empty string is not possible', fu
     content: ''
   }
 
-  commentsService.add(comment, (err) => {
-    t.notOk(err, 'error returned when adding a comment')
-
-    commentsService.update(1, commentUpdate, (err, result) => {
-      t.notOk(err, 'error returned when adding a comment')
-      t.ok(result, 'result is empty')
-
-      const expected = {
-        id: 1,
-        reference: 'uuid-of-some-sort',
-        content: 'lorm ipsum ....',
-        author: 'Filippo'
-      }
-      t.same(result, expected, 'result is not as expected')
-      t.end()
+  return commentsService.add(comment)
+    .then(() => {
+      return commentsService.update(1, commentUpdate)
+        .then((result) => {
+          t.ok(result, 'result is empty')
+          const expected = {
+            id: 1,
+            reference: 'uuid-of-some-sort',
+            content: 'lorm ipsum ....',
+            author: 'Filippo'
+          }
+          t.same(result, expected, 'result is not as expected')
+        })
     })
-  })
 })
 
 tap.teardown(() => db.end())

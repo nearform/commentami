@@ -19,40 +19,39 @@ tap.test('Comments: delete one comment', function (t) {
     author: 'Filippo'
   }
 
-  commentsService.add(comment, (err) => {
-    t.notOk(err, 'error returned when adding a comment')
+  return commentsService.add(comment)
+    .then(() => {
+      return commentsService.delete(1)
+        .then((result) => {
+          t.ok(result, 'result is empty')
 
-    commentsService.delete(1, (err, result) => {
-      t.notOk(err, 'error returned when adding a comment')
+          const expected = { success: true }
+          t.same(result, expected, 'result is not as expected')
+          t.end()
+        })
+    })
+})
+
+tap.test('Comments: deleting a non existed objecct will return success', function (t) {
+  return commentsService.delete(123)
+    .then((result) => {
       t.ok(result, 'result is empty')
 
       const expected = { success: true }
       t.same(result, expected, 'result is not as expected')
       t.end()
     })
-  })
-})
-
-tap.test('Comments: deleting a non existed objecct will return success', function (t) {
-  commentsService.delete(123, (err, result) => {
-    t.notOk(err, 'error returned when adding a comment')
-    t.ok(result, 'result is empty')
-
-    const expected = { success: true }
-    t.same(result, expected, 'result is not as expected')
-    t.end()
-  })
 })
 
 tap.test('Comments: deleting without reference return success', function (t) {
-  commentsService.delete(null, (err, result) => {
-    t.notOk(err, 'error returned when adding a comment')
-    t.ok(result, 'result is empty')
+  return commentsService.delete(null)
+    .then((result) => {
+      t.ok(result, 'result is empty')
 
-    const expected = { success: true }
-    t.same(result, expected, 'result is not as expected')
-    t.end()
-  })
+      const expected = { success: true }
+      t.same(result, expected, 'result is not as expected')
+      t.end()
+    })
 })
 
 tap.teardown(() => db.end())
