@@ -1,6 +1,5 @@
 'use strict'
 
-const async = require('async')
 const faker = require('faker')
 
 const config = require('../config')
@@ -19,13 +18,10 @@ async function loadComments (options = {}) {
 
   const db = initPool(config.pg)
   const commentsService = initCommentsService(db)
+  const promises = comments.map(comment => commentsService.add(comment))
 
-  return new Promise((resolve) => {
-    async.series(comments.map(comment => async () => commentsService.add(comment)), async () => {
-      await commentsService.close()
-      resolve()
-    })
-  })
+  await Promise.all(promises)
+  await commentsService.close()
 }
 
 module.exports = loadComments
