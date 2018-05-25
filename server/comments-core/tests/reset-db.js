@@ -1,38 +1,31 @@
 'use strict'
 
-const _ = require('lodash')
-const async = require('async')
+const { assign, cloneDeep } = require('lodash')
 const SQL = require('@nearform/sql')
 
 const dbMigrate = require('../bin/db-migrate')
 const { initClient, killOutstandingConnections, createDb, resetTables } = require('../lib/db')
 
-module.exports = function resetDb (conf, done) {
-  const initDbConfig = _.assign({}, _.cloneDeep(conf), { database: 'postgres' })
+module.exports = async function resetDb (conf) {
+  const initDbConfig = assign({}, cloneDeep(conf), { database: 'postgres' })
   var postgresClient = initClient(initDbConfig)
   var commentsClient = initClient(conf)
-  var databaseExists = false
 
-  async.series(
-    [
-      (next) => postgresClient.connect(next),
-      (next) => {
-        // If the db exists we kill the generic client and connect directly to the db
-        postgresClient.query(SQL`SELECT * FROM pg_database WHERE datname=${conf.database}`, (err, res) => {
-          if (err) return next(err)
+  await postgresClient.connect()
+  const res = await postgresClient.query(SQL`SELECT * FROM pg_database WHERE datname=${conf.database}`)
+  const databaseExists = res.rowCount >= 1
 
-          databaseExists = res.rowCount >= 1
-          next()
-        })
-      },
-      (next) => { !databaseExists ? killOutstandingConnections(postgresClient, conf.database, next) : next() },
-      (next) => { !databaseExists ? createDb(postgresClient, conf.database, next) : next() },
-      (next) => { databaseExists ? commentsClient.connect(next) : next() },
-      (next) => { databaseExists ? resetTables(commentsClient, next) : next() },
-      (next) => { databaseExists ? commentsClient.end(next) : next() },
-      (next) => postgresClient.end(next),
-      (next) => dbMigrate('max', next)
-    ],
-    done
-  )
+  if (!databaseExists) {
+    await killOutstandingConnections(postgresClient, conf.database)
+    await createDb(postgresClient, conf.database)
+    await postgresClient.end()
+
+    return
+  }
+
+  await commentsClient.connect()
+  await resetTables(commentsClient)
+  await commentsClient.end()
+  await postgresClient.end()
+  await dbMigrate('max')
 }

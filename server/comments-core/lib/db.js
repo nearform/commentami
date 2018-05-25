@@ -29,51 +29,23 @@ function initClient (conf) {
   return new Client(conf)
 }
 
-function killOutstandingConnections (client, databaseName, next) {
-  client.query(
-    `SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${databaseName}' AND pid <> pg_backend_pid()`,
-    function (err) {
-      if (err) return next(err)
-
-      next()
-    }
-  )
+function killOutstandingConnections (client, databaseName) {
+  return client.query(`SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${databaseName}' AND pid <> pg_backend_pid()`)
 }
 
-function dropDb (client, databaseName, next) {
-  client.query(`DROP DATABASE IF EXISTS "${databaseName}"`, function (err) {
-    if (err) return next(err)
-
-    next()
-  })
+function dropDb (client, databaseName) {
+  return client.query(`DROP DATABASE IF EXISTS "${databaseName}"`)
 }
 
-function createDb (client, databaseName, next) {
-  client.query(`CREATE DATABASE "${databaseName}"`, function (err) {
-    if (err) return next(err)
-
-    next()
-  })
+function createDb (client, databaseName) {
+  return client.query(`CREATE DATABASE "${databaseName}"`)
 }
 
-function resetTables (client, next) {
-  client.query(`DROP SCHEMA public CASCADE`, function (err) {
-    if (err) return next(err)
-
-    client.query(`CREATE SCHEMA public`, function (err) {
-      if (err) return next(err)
-
-      client.query(`GRANT ALL ON SCHEMA public TO postgres`, function (err) {
-        if (err) return next(err)
-
-        client.query(`GRANT ALL ON SCHEMA public TO public`, function (err) {
-          if (err) return next(err)
-
-          next()
-        })
-      })
-    })
-  })
+async function resetTables (client) {
+  await client.query(`DROP SCHEMA public CASCADE`)
+  await client.query(`CREATE SCHEMA public`)
+  await client.query(`GRANT ALL ON SCHEMA public TO postgres`)
+  await client.query(`GRANT ALL ON SCHEMA public TO public`)
 }
 
 module.exports = {

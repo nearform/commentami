@@ -1,53 +1,48 @@
 'use strict'
 
-const async = require('async')
-const tap = require('tap')
+const { beforeEach, test, teardown } = require('tap')
 const faker = require('faker')
+
+const loadComments = require('./load-comments')
 
 const config = require('../config')
 const resetDb = require('./reset-db')
 const { initPool } = require('../lib/db')
 const initCommentsService = require('../lib/comments')
 
-const reference = faker.random.uuid()
-const comments = (new Array(20)).fill(null).map(v => {
-  return {
-    reference: reference,
-    content: faker.lorem.words(),
-    author: faker.name.firstName()
-  }
-})
-
 const db = initPool(config.pg)
 const commentsService = initCommentsService(db)
 
-tap.beforeEach((done) => {
-  resetDb(config.pg, (err) => {
-    if (err) return done(err)
+const reference = faker.random.uuid()
 
-    async.series(comments.map(comment => (next) => commentsService.add(comment, next)), done)
-  })
+beforeEach(async () => {
+  await resetDb(config.pg)
+  await loadComments({ reference })
 })
 
-tap.test('Comments: list all comments will return 10 by default', function (t) {
-  commentsService.list(reference, (err, list) => {
-    t.notOk(err, 'error returned when adding a comment')
-    t.ok(list, 'list is empty')
+test('Comments: list all comments will return 100 by default', async function (t) {
+  const list = await commentsService.list(reference)
 
-    t.equal(list.length, 10, 'list is not 10 long')
-    t.end()
+  t.ok(list, 'list is empty')
+  t.match(list, {
+    total: 20,
+    limit: 100,
+    offset: 0
   })
+  t.equal(list.comments.length, 20, 'list is not 100 long')
 })
 
-tap.test('Comments: can ask for comments using limits and offset', function (t) {
-  commentsService.list(reference, { limit: 15, offset: 3 }, (err, list) => {
-    t.notOk(err, 'error returned when adding a comment')
-    t.ok(list, 'list is empty')
+test('Comments: can ask for comments using limits and offset', async function (t) {
+  const list = await commentsService.list(reference, { limit: 15, offset: 3 })
 
-    t.equal(list.length, 15, 'list is not 15 long')
-    t.equal(list[0].id, 4, 'list should start from 4')
-    t.end()
+  t.ok(list, 'list is empty')
+  t.match(list, {
+    total: 20,
+    limit: 15,
+    offset: 3
   })
+  t.equal(list.comments.length, 15, 'list.comments is not 15 long')
+  t.equal(list.comments[0].id, 4, 'list.comments should start from 4')
 })
 
-tap.teardown(() => db.end())
+teardown(() => db.end())
