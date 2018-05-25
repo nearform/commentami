@@ -2,11 +2,11 @@ import React from 'react'
 
 import { storiesOf } from '@storybook/react'
 
-import { CommentableProvider } from '../components/Commentable/Provider'
-import { CommentableTextBlock } from '../components/Commentable/TextBlock'
+import { CommentableProvider } from '../src/components/Commentable/Provider'
+import { CommentableTextBlock } from '../src/components/Commentable/TextBlock'
 
-import { CommentsBlock } from '../components/Commentable/CommentsBlock'
-import { CommentIcon } from '../components/Commentable/CommentIcon'
+import { CommentsBlock } from '../src/components/Commentable/CommentsBlock'
+import { CommentIcon } from '../src/components/Commentable/CommentIcon'
 
 storiesOf('Commentable', module).add('Sample Text', () => (
   <CommentableProvider>
