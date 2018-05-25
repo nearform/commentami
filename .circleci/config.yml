@@ -44,4 +44,4 @@ jobs:
             - packages/comments-backend-hapi-server/node_modules
 
       - run:
-          command: lerna run sanity
+          command: npm run sanity
