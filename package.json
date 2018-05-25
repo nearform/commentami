@@ -22,9 +22,14 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "depcheck": "depcheck --ignores='@cowtech/eslint-config,eslint-*,husky,remark-*'",
+    "depcheck": "lerna run depcheck",
     "doc:lint": "remark .",
     "lint": "eslint --ignore-path .gitignore **/*.js **/*.jsx",
+    "outdated:all": "npm outdated || echo 'Outdated packages found.'; lerna exec \"npm outdated || echo 'Outdated packages found.'\"",
+    "pg:init": "cd packages/comments-backend-core && npm run pg:init",
+    "pg:test:init": "cd packages/comments-backend-core && npm run pg:test:init",
+    "pg:migrate": "cd packages/comments-backend-core && npm run pg:migrate",
+    "postinstall": "lerna bootstrap",
     "sanity:environment": "npm run doc:lint && npm run lint && npm run depcheck",
     "sanity": "npm run sanity:environment && npm run test",
     "test": "cd packages/comments-react-components && npm run test && cd ../../server && npm run test"
@@ -33,6 +38,7 @@
     "@cowtech/eslint-config": "^4.19.4",
     "depcheck": "^0.6.9",
     "husky": "^1.0.0-rc.2",
+    "lerna": "^2.11.0",
     "remark-cli": "^5.0.0",
     "remark-lint": "^6.0.1",
     "remark-preset-lint-recommended": "^3.0.1"
