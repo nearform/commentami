@@ -5,34 +5,19 @@ const { beforeEach, test, teardown } = require('tap')
 const faker = require('faker')
 
 const { setupServer } = require('../server.js')
+const { getServer, stopServer, resetDb, loadComments } = require('./utils')
 
-const config = require('../../comments-core/config')
-const resetDb = require('../../comments-core/tests/reset-db')
-const loadComments = require('../../comments-core/tests/load-comments')
-const { getServer, stopServer } = require('./utils')
-
-let loader = false
 const reference = faker.random.uuid()
+let loader = false
+let server
 
-beforeEach((done) => {
-  if (loader) return done()
-
-  async.series(
-    [
-      (next) => resetDb(config.pg, next),
-      (next) => loadComments({ reference }, next)
-    ],
-    (err) => {
-      if (err) return done(err)
-      loader = true
-
-      done()
-    }
-  )
+beforeEach(async () => {
+  server = await getServer()
+  await resetDb()
+  await loadComments({ reference })
 })
 
 test('Comments GET: list comments', async function (t) {
-  const server = await getServer()
   const request = {
     method: 'GET',
     url: `/comments?reference=${reference}`
@@ -50,7 +35,6 @@ test('Comments GET: list comments', async function (t) {
 })
 
 test('Comments GET: list comments', async function (t) {
-  const server = await getServer()
   const request = {
     method: 'GET',
     url: `/comments?reference=${reference}&limit=5&offset=15`

@@ -10,7 +10,7 @@ const initCommentsService = require('../lib/comments')
 const db = initPool(config.pg)
 const commentsService = initCommentsService(db)
 
-beforeEach((done) => resetDb(config.pg, done))
+beforeEach(() => resetDb(config.pg))
 
 test('Comments: add a comment', function (t) {
   const comment = {

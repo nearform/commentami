@@ -1,5 +1,9 @@
 'use strict'
 
+const config = require('../../comments-core/config')
+const resetDb = require('../../comments-core/tests/reset-db')
+const loadComments = require('../../comments-core/tests/load-comments')
+
 const { setupServer } = require('../server.js')
 let s
 
@@ -22,6 +26,8 @@ async function stopServer () {
 
 module.exports = {
   getServer,
-  stopServer
+  stopServer,
+  resetDb: async () => resetDb(config.pg),
+  loadComments
 }
 

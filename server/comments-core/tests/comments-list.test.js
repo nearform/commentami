@@ -14,21 +14,10 @@ const db = initPool(config.pg)
 const commentsService = initCommentsService(db)
 
 const reference = faker.random.uuid()
-let loaded = false
 
-beforeEach((done) => {
-  if (loaded) return done()
-
-  resetDb(config.pg, (err) => {
-    if (err) return done(err)
-
-    loadComments({ reference }, (err) => {
-      if (err) return done(err)
-      done()
-
-      loaded = true
-    })
-  })
+beforeEach(async () => {
+  await resetDb(config.pg)
+  await loadComments({ reference })
 })
 
 test('Comments: list all comments will return 100 by default', function (t) {

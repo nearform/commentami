@@ -3,12 +3,9 @@
 const { beforeEach, test, teardown } = require('tap')
 
 const { setupServer } = require('../server.js')
+const { getServer, stopServer, resetDb } = require('./utils')
 
-const config = require('../../comments-core/config')
-const resetDb = require('../../comments-core/tests/reset-db')
-const { getServer, stopServer } = require('./utils')
-
-beforeEach((done) => resetDb(config.pg, done))
+beforeEach(() => resetDb())
 
 test('Comments PUT: update a comment', async function (t) {
   const server = await getServer()
