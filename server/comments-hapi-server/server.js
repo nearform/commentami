@@ -1,10 +1,9 @@
 'use strict'
 
 const Hapi = require('hapi')
-const server = Hapi.server({
-    port: 8080,
-    host: 'localhost'
-});
+const config = require('./config')
+
+const server = Hapi.server(config)
 
 const setupServer = async () => {
   await server.register([
@@ -19,12 +18,14 @@ const setupServer = async () => {
   ])
 
   return server
-};
+}
 
 const start = async () => {
   await setupServer()
   await server.start()
-};
+
+  console.log('server running', config) // eslint-disable-line no-console
+}
 
 module.exports = {
   setupServer,

@@ -7,7 +7,7 @@ const routes = []
 routes.push({
   method: 'GET',
   path: '/comments',
-  handler: async function (request, h) {
+  handler: function (request, h) {
     const { reference, limit, offset } = request.query
 
     return request.commentsService.list(reference, { limit, offset })

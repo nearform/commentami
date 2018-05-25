@@ -3,8 +3,8 @@
 const { start } = require('./server.js')
 
 process.on('unhandledRejection', (err) => {
-    console.log(err)
-    process.exit(1)
-});
+  console.log(err) // eslint-disable-line no-console
+  process.exit(1)
+})
 
 start()

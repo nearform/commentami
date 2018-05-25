@@ -2,7 +2,6 @@
 
 const { beforeEach, test, teardown } = require('tap')
 
-const { setupServer } = require('../server.js')
 const { getServer, stopServer, resetDb } = require('./utils')
 
 beforeEach(() => resetDb())

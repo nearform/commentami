@@ -30,4 +30,3 @@ module.exports = {
   resetDb: async () => resetDb(config.pg),
   loadComments
 }
-

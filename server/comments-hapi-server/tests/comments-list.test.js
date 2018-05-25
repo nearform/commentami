@@ -1,14 +1,11 @@
 'use strict'
 
-const async = require('async')
 const { beforeEach, test, teardown } = require('tap')
 const faker = require('faker')
 
-const { setupServer } = require('../server.js')
 const { getServer, stopServer, resetDb, loadComments } = require('./utils')
 
 const reference = faker.random.uuid()
-let loader = false
 let server
 
 beforeEach(async () => {
