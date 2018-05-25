@@ -20,10 +20,11 @@ jobs:
 
       - run:
           command: |
-            cd client && npm install && cd ../server && npm install
+            npm install && cd client && npm install && cd ../server && npm install
 
       - save_cache:
           paths:
+            - node_modules
             - server/node_modules
             - client/node_modules
           key: dependencies-{{ checksum "server/package.json" }}-{{ checksum "client/package.json" }}
