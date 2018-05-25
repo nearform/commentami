@@ -95,6 +95,7 @@ module.exports = function buildCommentsService (db) {
         comment
       WHERE
         reference = ${reference}
+      ORDER BY id
       LIMIT ${limit} OFFSET ${offset}
     `
 
