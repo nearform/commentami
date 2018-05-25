@@ -12,7 +12,7 @@ const commentsService = initCommentsService(db)
 
 beforeEach(() => resetDb(config.pg))
 
-test('Comments: update one comment', function (t) {
+test('Comments: update one comment', async function (t) {
   const comment = {
     reference: 'uuid-of-some-sort',
     content: 'lorm ipsum ....',
@@ -21,24 +21,22 @@ test('Comments: update one comment', function (t) {
   const commentUpdate = {
     content: 'new comment'
   }
+  const expected = {
+    id: 1,
+    reference: 'uuid-of-some-sort',
+    content: 'new comment',
+    author: 'Filippo'
+  }
 
-  return commentsService.add(comment)
-    .then(() => {
-      return commentsService.update(1, commentUpdate)
-        .then((result) => {
-          t.ok(result, 'result is empty')
-          const expected = {
-            id: 1,
-            reference: 'uuid-of-some-sort',
-            content: 'new comment',
-            author: 'Filippo'
-          }
-          t.same(result, expected, 'result is not as expected')
-        })
-    })
+  await commentsService.add(comment)
+  const result = await commentsService.update(1, commentUpdate)
+
+  t.ok(result, 'result is empty')
+  t.same(result, expected, 'result is not as expected')
+  t.end()
 })
 
-test('Comments: update one comment with an empty string is not possible', function (t) {
+test('Comments: update one comment with an empty string is not possible', async function (t) {
   const comment = {
     reference: 'uuid-of-some-sort',
     content: 'lorm ipsum ....',
@@ -47,21 +45,19 @@ test('Comments: update one comment with an empty string is not possible', functi
   const commentUpdate = {
     content: ''
   }
+  const expected = {
+    id: 1,
+    reference: 'uuid-of-some-sort',
+    content: 'lorm ipsum ....',
+    author: 'Filippo'
+  }
 
-  return commentsService.add(comment)
-    .then(() => {
-      return commentsService.update(1, commentUpdate)
-        .then((result) => {
-          t.ok(result, 'result is empty')
-          const expected = {
-            id: 1,
-            reference: 'uuid-of-some-sort',
-            content: 'lorm ipsum ....',
-            author: 'Filippo'
-          }
-          t.same(result, expected, 'result is not as expected')
-        })
-    })
+  await commentsService.add(comment)
+  const result = await commentsService.update(1, commentUpdate)
+
+  t.ok(result, 'result is empty')
+  t.same(result, expected, 'result is not as expected')
+  t.end()
 })
 
 teardown(() => db.end())

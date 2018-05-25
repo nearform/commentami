@@ -12,24 +12,23 @@ const commentsService = initCommentsService(db)
 
 beforeEach(() => resetDb(config.pg))
 
-test('Comments: add a comment', function (t) {
+test('Comments: add a comment', async function (t) {
   const comment = {
     reference: 'uuid-of-some-sort',
     content: 'lorm ipsum ....',
     author: 'Filippo'
   }
 
-  return commentsService.add(comment)
-    .then((result) => {
-      t.ok(result, 'result is empty')
-      const expected = {
-        id: 1,
-        reference: 'uuid-of-some-sort',
-        content: 'lorm ipsum ....',
-        author: 'Filippo'
-      }
-      t.same(result, expected, 'result is not as expected')
-    })
+  const result = await commentsService.add(comment)
+  t.ok(result, 'result is empty')
+  const expected = {
+    id: 1,
+    reference: 'uuid-of-some-sort',
+    content: 'lorm ipsum ....',
+    author: 'Filippo'
+  }
+  t.same(result, expected, 'result is not as expected')
+  t.end()
 })
 
 teardown(() => db.end())

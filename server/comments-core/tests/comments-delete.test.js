@@ -12,46 +12,38 @@ const commentsService = initCommentsService(db)
 
 beforeEach(() => resetDb(config.pg))
 
-test('Comments: delete one comment', function (t) {
+test('Comments: delete one comment', async function (t) {
   const comment = {
     reference: 'uuid-of-some-sort',
     content: 'lorm ipsum ....',
     author: 'Filippo'
   }
+  const expected = { success: true }
 
-  return commentsService.add(comment)
-    .then(() => {
-      return commentsService.delete(1)
-        .then((result) => {
-          t.ok(result, 'result is empty')
+  await commentsService.add(comment)
+  const result = await commentsService.delete(1)
 
-          const expected = { success: true }
-          t.same(result, expected, 'result is not as expected')
-          t.end()
-        })
-    })
+  t.ok(result, 'result is empty')
+  t.same(result, expected, 'result is not as expected')
+  t.end()
 })
 
-test('Comments: deleting a non existed objecct will return success', function (t) {
-  return commentsService.delete(123)
-    .then((result) => {
-      t.ok(result, 'result is empty')
+test('Comments: deleting a non existed objecct will return success', async function (t) {
+  const expected = { success: true }
+  const result = await commentsService.delete(123)
 
-      const expected = { success: true }
-      t.same(result, expected, 'result is not as expected')
-      t.end()
-    })
+  t.ok(result, 'result is empty')
+  t.same(result, expected, 'result is not as expected')
+  t.end()
 })
 
-test('Comments: deleting without reference return success', function (t) {
-  return commentsService.delete(null)
-    .then((result) => {
-      t.ok(result, 'result is empty')
+test('Comments: deleting without reference return success', async function (t) {
+  const expected = { success: true }
+  const result = await commentsService.delete(null)
 
-      const expected = { success: true }
-      t.same(result, expected, 'result is not as expected')
-      t.end()
-    })
+  t.ok(result, 'result is empty')
+  t.same(result, expected, 'result is not as expected')
+  t.end()
 })
 
 teardown(() => db.end())
