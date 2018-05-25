@@ -24,6 +24,9 @@ jobs:
           key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-server/package-lock.json" }}
 
       - run:
+          command: npm install
+
+      - run:
           command: lerna bootstrap
 
       - save_cache:
