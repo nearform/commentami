@@ -30,4 +30,4 @@ jobs:
 
       - run:
           command: |
-            cd server && npm test && cd ../client && npm test
+            cd server && npm run setup-dev-db && npm test && cd ../client && npm test
