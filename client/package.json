@@ -22,11 +22,11 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "ci": "CI=true npm run test",
     "depcheck": "depcheck",
     "format": "prettier src/**/*.js",
     "storybook": "start-storybook -p 6006 -c .storybook",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "test:watch": "WATCH=true node scripts/test.js --env=jsdom"
   },
   "dependencies": {
     "react": "^16.4.0",

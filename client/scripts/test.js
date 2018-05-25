@@ -17,8 +17,8 @@ const jest = require('jest')
 const argv = process.argv.slice(2)
 argv.push('--coverage')
 
-// Watch unless on CI
-if (!process.env.CI) {
+// Watch if asked to
+if (process.env.WATCH) {
   argv.push('--watch')
 }
 
