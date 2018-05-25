@@ -44,7 +44,7 @@ const chartOptions = {
   barDatasetSpacing: 1
 }
 
-storiesOf('Commentable', module).add('Sample Text', () => (
+storiesOf('Commentable/Text', module).add('Sample Text', () => (
   <CommentableProvider>
     <NewCommentPopUp />
     <div style={{ marginLeft: '20px' }}>
