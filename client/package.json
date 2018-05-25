@@ -25,7 +25,6 @@
     "depcheck": "depcheck",
     "format": "prettier src/**/*.js",
     "storybook": "start-storybook -p 6006 -c .storybook",
-    "lint": "eslint src stories test",
     "test": "node test/start.js",
     "test:watch": "WATCH=true node scripts/test.js --env=jsdom"
   },
