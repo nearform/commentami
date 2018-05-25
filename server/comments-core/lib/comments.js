@@ -12,11 +12,11 @@ function mapCommentFromDb (comment) {
 module.exports = function buildCommentsService (db) {
   return { add, update, delete: deleteComment, list, close }
 
-  function close () {
-    return db.end()
+  async function close () {
+    await db.end()
   }
 
-  function add (data) {
+  async function add (data) {
     const { reference, content, author } = data
     const sql = SQL`
       INSERT INTO
@@ -25,12 +25,12 @@ module.exports = function buildCommentsService (db) {
       RETURNING *
     `
 
-    return db.query(sql).then((res) => {
-      return mapCommentFromDb(get(res, 'rows.0'))
-    })
+    const res = await db.query(sql)
+
+    return mapCommentFromDb(get(res, 'rows.0'))
   }
 
-  function update (id, data) {
+  async function update (id, data) {
     const { content } = data
 
     if (!content) {
@@ -47,38 +47,32 @@ module.exports = function buildCommentsService (db) {
       RETURNING *
     `
 
-    return db.query(sql).then((res) => {
-      if (res.rowCount === 0) {
-        throw new Error(`Cannot fine comment with id ${id}`)
-      }
+    const res = await db.query(sql)
+    if (res.rowCount === 0) throw new Error(`Cannot fine comment with id ${id}`)
 
-      return mapCommentFromDb(get(res, 'rows.0'))
-    })
+    return mapCommentFromDb(get(res, 'rows.0'))
   }
 
-  function deleteComment (id) {
+  async function deleteComment (id) {
     if (!id) {
-      return Promise.resolve({ success: true })
+      return { success: true }
     }
 
     const sql = SQL`DELETE FROM comment WHERE id = ${id}`
-
-    return db.query(sql).then(() => ({ success: true }))
+    await db.query(sql)
+    return { success: true }
   }
 
-  function getComment (id) {
+  async function getComment (id) {
     const sql = SQL` SELECT * FROM comment WHERE id = ${id}`
 
-    return db.query(sql).then((res) => {
-      if (!get(res, 'rows.0')) {
-        throw new Error(`Cannot fine comment with id ${id}`)
-      }
+    const res = await db.query(sql)
+    if (!get(res, 'rows.0')) throw new Error(`Cannot fine comment with id ${id}`)
 
-      return mapCommentFromDb(get(res, 'rows.0'))
-    })
+    return mapCommentFromDb(get(res, 'rows.0'))
   }
 
-  function list (reference, options = {}) {
+  async function list (reference, options = {}) {
     const { limit = 100, offset = 0 } = options
     const sqlCount = SQL`
       SELECT
@@ -98,16 +92,12 @@ module.exports = function buildCommentsService (db) {
       ORDER BY id
       LIMIT ${limit} OFFSET ${offset}
     `
-
-    return Promise.all([db.query(sqlCount), db.query(sqlFilter)]).then((res) => {
-      const [countRes, filterRes] = res
-
-      return {
-        comments: get(filterRes, 'rows', []).map(mapCommentFromDb),
-        total: get(countRes, 'rows.0.count', 0),
-        limit,
-        offset
-      }
-    })
+    const [countRes, filterRes] = await Promise.all([db.query(sqlCount), db.query(sqlFilter)])
+    return {
+      comments: get(filterRes, 'rows', []).map(mapCommentFromDb),
+      total: get(countRes, 'rows.0.count', 0),
+      limit,
+      offset
+    }
   }
 }

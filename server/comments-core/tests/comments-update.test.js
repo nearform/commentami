@@ -33,7 +33,6 @@ test('Comments: update one comment', async function (t) {
 
   t.ok(result, 'result is empty')
   t.same(result, expected, 'result is not as expected')
-  t.end()
 })
 
 test('Comments: update one comment with an empty string is not possible', async function (t) {
@@ -57,7 +56,6 @@ test('Comments: update one comment with an empty string is not possible', async 
 
   t.ok(result, 'result is empty')
   t.same(result, expected, 'result is not as expected')
-  t.end()
 })
 
 teardown(() => db.end())

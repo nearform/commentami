@@ -28,7 +28,6 @@ test('Comments: add a comment', async function (t) {
     author: 'Filippo'
   }
   t.same(result, expected, 'result is not as expected')
-  t.end()
 })
 
 teardown(() => db.end())

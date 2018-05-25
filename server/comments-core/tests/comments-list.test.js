@@ -30,7 +30,6 @@ test('Comments: list all comments will return 100 by default', async function (t
     offset: 0
   })
   t.equal(list.comments.length, 20, 'list is not 100 long')
-  t.end()
 })
 
 test('Comments: can ask for comments using limits and offset', async function (t) {
@@ -44,7 +43,6 @@ test('Comments: can ask for comments using limits and offset', async function (t
   })
   t.equal(list.comments.length, 15, 'list.comments is not 15 long')
   t.equal(list.comments[0].id, 4, 'list.comments should start from 4')
-  t.end()
 })
 
 teardown(() => db.end())

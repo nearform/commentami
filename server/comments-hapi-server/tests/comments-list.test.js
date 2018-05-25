@@ -28,7 +28,6 @@ test('Comments GET: list comments', async function (t) {
     offset: 0
   })
   t.equal(response.result.comments.length, 20, 'response.comments should be 20')
-  t.end()
 })
 
 test('Comments GET: list comments', async function (t) {
@@ -46,7 +45,6 @@ test('Comments GET: list comments', async function (t) {
   })
   t.equal(response.result.comments.length, 5, 'response.comments should be 20')
   t.equal(response.result.comments[0].id, 16, 'response.comments[0] should be the 16th comment')
-  t.end()
 })
 
 teardown(() => stopServer())

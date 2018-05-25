@@ -34,7 +34,6 @@ test('Comments: deleting a non existed objecct will return success', async funct
 
   t.ok(result, 'result is empty')
   t.same(result, expected, 'result is not as expected')
-  t.end()
 })
 
 test('Comments: deleting without reference return success', async function (t) {
@@ -43,7 +42,6 @@ test('Comments: deleting without reference return success', async function (t) {
 
   t.ok(result, 'result is empty')
   t.same(result, expected, 'result is not as expected')
-  t.end()
 })
 
 teardown(() => db.end())

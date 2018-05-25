@@ -27,6 +27,6 @@ async function stopServer () {
 module.exports = {
   getServer,
   stopServer,
-  resetDb: async () => resetDb(config.pg),
+  resetDb: () => resetDb(config.pg),
   loadComments
 }
