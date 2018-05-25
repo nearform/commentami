@@ -11,6 +11,7 @@ class CommentableTextBlockElement extends React.Component {
     super(props)
 
     this.blockId = this.props.blockId
+    this.contentBlockRef = React.createRef()
 
     this.handleDoubleClick = this.handleDoubleClick.bind(this)
     this.handleMouseEnter = this.handleMouseEnter.bind(this)
@@ -32,6 +33,12 @@ class CommentableTextBlockElement extends React.Component {
 
   handleDoubleClick(e) {
     if (this.hasCommentable()) {
+      const range = document.createRange()
+      range.selectNodeContents(this.contentBlockRef.current)
+      const sel = window.getSelection()
+      sel.removeAllRanges()
+      sel.addRange(range)
+
       this.props.commentable.textBlockDoubleClick(e, this.blockId)
     }
   }
@@ -86,6 +93,7 @@ class CommentableTextBlockElement extends React.Component {
         }}
       >
         <div
+          ref={this.contentBlockRef}
           onMouseEnter={this.handleMouseEnter}
           onMouseLeave={this.handleMouseLeave}
           onDoubleClick={this.handleDoubleClick}

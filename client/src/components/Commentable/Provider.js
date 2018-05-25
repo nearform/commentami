@@ -7,6 +7,7 @@ export const CommentableContext = React.createContext('commentable')
 
 // A mock id generator
 let commentIdProg = 10
+
 function getCommentId() {
   return commentIdProg++
 }
@@ -39,6 +40,9 @@ export class CommentableProvider extends React.Component {
       textBlockMouseLeave: this.handleTextBlockMouseLeave.bind(this),
       commentIconClick: this.handleCommentIconClick.bind(this)
     }
+
+    this.handleAddNewComment = this.handleAddNewComment.bind(this)
+    this.handleAddNewCommentCancel = this.handleAddNewCommentCancel.bind(this)
   }
 
   addComment(idBlock, message) {
@@ -51,6 +55,30 @@ export class CommentableProvider extends React.Component {
 
   hasComment(id) {
     return !!this.comments.find(currentComment => currentComment.id === id)
+  }
+
+  handleAddNewComment(comment, reference) {
+    window.getSelection().removeAllRanges()
+    this.comments.addComment(
+      new Comment(getCommentId(), reference, comment, 'Davide')
+    )
+    this.setState({
+      showNewCommentPopUp: false,
+      newCommentPopUpX: 0,
+      newCommentPopUpY: 0,
+      contextMenuCustomValues: null
+    })
+  }
+
+  handleAddNewCommentCancel() {
+    window.getSelection().removeAllRanges()
+
+    this.setState({
+      showNewCommentPopUp: false,
+      newCommentPopUpX: 0,
+      newCommentPopUpY: 0,
+      contextMenuCustomValues: null
+    })
   }
 
   handleCommentIconClick(event, commentId) {
@@ -72,10 +100,14 @@ export class CommentableProvider extends React.Component {
   handleTextBlockDoubleClick(event, textBlockId) {
     this.logger.info('[CommentableProvider:handleDoubleClick]', textBlockId)
 
-    const result = prompt('Add a comment?')
-    if (result) {
-      this.addComment(textBlockId, result)
-    }
+    this.setState({
+      showNewCommentPopUp: true,
+      newCommentPopUpX: event.pageX + 30,
+      newCommentPopUpY: event.pageY - 20,
+      contextMenuCustomValues: { block: textBlockId },
+      addNewComment: this.handleAddNewComment,
+      addNewCommentCancel: this.handleAddNewCommentCancel
+    })
   }
 
   /**
