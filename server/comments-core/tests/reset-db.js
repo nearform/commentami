@@ -1,6 +1,6 @@
 'use strict'
 
-const _ = require('lodash')
+const { assign, cloneDeep } = require('lodash')
 const async = require('async')
 const SQL = require('@nearform/sql')
 
@@ -8,7 +8,7 @@ const dbMigrate = require('../bin/db-migrate')
 const { initClient, killOutstandingConnections, createDb, resetTables } = require('../lib/db')
 
 module.exports = function resetDb (conf) {
-  const initDbConfig = _.assign({}, _.cloneDeep(conf), { database: 'postgres' })
+  const initDbConfig = assign({}, cloneDeep(conf), { database: 'postgres' })
   var postgresClient = initClient(initDbConfig)
   var commentsClient = initClient(conf)
   var databaseExists = false

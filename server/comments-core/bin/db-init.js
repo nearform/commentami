@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 'use strict'
 
-const _ = require('lodash')
+const { assign, cloneDeep } = require('lodash')
 const async = require('async')
 const conf = require('../config')
 const { initClient, killOutstandingConnections, dropDb, createDb } = require('../lib/db')
 
-const initDbConfig = _.assign({}, _.cloneDeep(conf.pg), { database: 'postgres' })
+const initDbConfig = assign({}, cloneDeep(conf.pg), { database: 'postgres' })
 const client = initClient(initDbConfig)
 
 async.series(

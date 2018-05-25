@@ -1,12 +1,12 @@
 'use strict'
 
-const _ = require('lodash')
+const { pick, get } = require('lodash')
 const SQL = require('@nearform/sql')
 
 function mapCommentFromDb (comment) {
   if (!comment) return null
 
-  return _.pick(comment, ['id', 'reference', 'content', 'author'])
+  return pick(comment, ['id', 'reference', 'content', 'author'])
 }
 
 module.exports = function buildCommentsService (db) {
@@ -26,7 +26,7 @@ module.exports = function buildCommentsService (db) {
     `
 
     return db.query(sql).then((res) => {
-      return mapCommentFromDb(_.get(res, 'rows.0'))
+      return mapCommentFromDb(get(res, 'rows.0'))
     })
   }
 
@@ -52,7 +52,7 @@ module.exports = function buildCommentsService (db) {
         throw new Error(`Cannot fine comment with id ${id}`)
       }
 
-      return mapCommentFromDb(_.get(res, 'rows.0'))
+      return mapCommentFromDb(get(res, 'rows.0'))
     })
   }
 
@@ -70,11 +70,11 @@ module.exports = function buildCommentsService (db) {
     const sql = SQL` SELECT * FROM comment WHERE id = ${id}`
 
     return db.query(sql).then((res) => {
-      if (!_.get(res, 'rows.0')) {
+      if (!get(res, 'rows.0')) {
         throw new Error(`Cannot fine comment with id ${id}`)
       }
 
-      return mapCommentFromDb(_.get(res, 'rows.0'))
+      return mapCommentFromDb(get(res, 'rows.0'))
     })
   }
 
@@ -102,8 +102,8 @@ module.exports = function buildCommentsService (db) {
       const [countRes, filterRes] = res
 
       return {
-        comments: _.get(filterRes, 'rows', []).map(mapCommentFromDb),
-        total: _.get(countRes, 'rows.0.count', 0),
+        comments: get(filterRes, 'rows', []).map(mapCommentFromDb),
+        total: get(countRes, 'rows.0.count', 0),
         limit,
         offset
       }
