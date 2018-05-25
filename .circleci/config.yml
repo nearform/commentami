@@ -15,18 +15,26 @@ jobs:
 
       - restore_cache:
           keys:
-            - dependencies-{{ checksum "server/package.json" }}-{{ checksum "client/package.json" }}
-            - dependencies-
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-core/package.json" }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-plugin/package.json" }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-server/package.json" }}
 
       - run:
           command: lerna bootstrap
 
       - save_cache:
           paths:
+            - node_modules
             - packages/comments-backend-core/node_modules
             - packages/comments-backend-hapi-plugin/node_modules
             - packages/comments-backend-hapi-server/node_modules
-          key: dependencies-{{ checksum "server/package.json" }}-{{ checksum "client/package.json" }}
+          keys:
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-core/package.json" }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-plugin/package.json" }}
+            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-server/package.json" }}
+
 
       - run:
           command: lerna run sanity
