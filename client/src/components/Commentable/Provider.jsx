@@ -1,6 +1,5 @@
 import React from 'react'
-import Comment from './state/Comment'
-import Comments from './state/Comments'
+import { Comment, Comments } from './state/Comments'
 
 // The context for the Provider
 export const CommentableContext = React.createContext('commentable')

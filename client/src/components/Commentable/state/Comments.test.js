@@ -1,5 +1,4 @@
-import Comments from './Comments'
-import Comment from './Comment'
+import { Comment, Comments } from './Comments'
 
 describe('Comments', () => {
   describe('When a new instance is created', () => {

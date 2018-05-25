@@ -26,7 +26,7 @@ class CommentsBlockElement extends React.Component {
         <div style={{ border: '1px solid red' }}>
           <h3>Comments:</h3>
           {comments.map(comment => (
-            <div ref={comment.id}>
+            <div key={comment.id} ref={comment.id}>
               <h4>by {comment.author}</h4>
               <p>{comment.content}</p>{' '}
             </div>
