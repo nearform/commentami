@@ -14,7 +14,7 @@ function initPool (conf) {
   // the pool with emit an error on behalf of any idle clients
   // it contains if a backend error or network partition happens
   pool.on('error', (err, client) => {
-    console.error('Unexpected error on idle client', err)
+    console.error('Unexpected error on idle client', err) // eslint-disable-line no-console
     process.exit(-1)
   })
 
@@ -29,31 +29,23 @@ function initClient (conf) {
   return new Client(conf)
 }
 
-function killOutstandingConnections (client, databaseName, next) {
-  client.query(
-    `SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${databaseName}' AND pid <> pg_backend_pid()`,
-    function (err) {
-      if (err) return next(err)
-
-      next()
-    }
-  )
+function killOutstandingConnections (client, databaseName) {
+  return client.query(`SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${databaseName}' AND pid <> pg_backend_pid()`)
 }
 
-function dropDb (client, databaseName, next) {
-  client.query(`DROP DATABASE IF EXISTS "${databaseName}"`, function (err) {
-    if (err) return next(err)
-
-    next()
-  })
+function dropDb (client, databaseName) {
+  return client.query(`DROP DATABASE IF EXISTS "${databaseName}"`)
 }
 
-function createDb (client, databaseName, next) {
-  client.query(`CREATE DATABASE "${databaseName}"`, function (err) {
-    if (err) return next(err)
+function createDb (client, databaseName) {
+  return client.query(`CREATE DATABASE "${databaseName}"`)
+}
 
-    next()
-  })
+async function resetTables (client) {
+  await client.query(`DROP SCHEMA public CASCADE`)
+  await client.query(`CREATE SCHEMA public`)
+  await client.query(`GRANT ALL ON SCHEMA public TO postgres`)
+  await client.query(`GRANT ALL ON SCHEMA public TO public`)
 }
 
 module.exports = {
@@ -61,5 +53,6 @@ module.exports = {
   initClient,
   killOutstandingConnections,
   dropDb,
-  createDb
+  createDb,
+  resetTables
 }

@@ -1,24 +1,31 @@
 'use strict'
 
-const _ = require('lodash')
-const async = require('async')
+const { assign, cloneDeep } = require('lodash')
+const SQL = require('@nearform/sql')
 
 const dbMigrate = require('../bin/db-migrate')
-const { initClient, killOutstandingConnections, dropDb, createDb } = require('../lib/db')
+const { initClient, killOutstandingConnections, createDb, resetTables } = require('../lib/db')
 
-module.exports = function resetDb (conf, done) {
-  const initDbConfig = _.assign({}, _.cloneDeep(conf), { database: 'postgres' })
-  const client = initClient(initDbConfig)
+module.exports = async function resetDb (conf) {
+  const initDbConfig = assign({}, cloneDeep(conf), { database: 'postgres' })
+  var postgresClient = initClient(initDbConfig)
+  var commentsClient = initClient(conf)
 
-  async.series(
-    [
-      (next) => client.connect(next),
-      (next) => killOutstandingConnections(client, conf.database, next),
-      (next) => dropDb(client, conf.database, next),
-      (next) => createDb(client, conf.database, next),
-      (next) => client.end(next),
-      (next) => dbMigrate('max', next)
-    ],
-    done
-  )
+  await postgresClient.connect()
+  const res = await postgresClient.query(SQL`SELECT * FROM pg_database WHERE datname=${conf.database}`)
+  const databaseExists = res.rowCount >= 1
+
+  if (!databaseExists) {
+    await killOutstandingConnections(postgresClient, conf.database)
+    await createDb(postgresClient, conf.database)
+    await postgresClient.end()
+
+    return
+  }
+
+  await commentsClient.connect()
+  await resetTables(commentsClient)
+  await commentsClient.end()
+  await postgresClient.end()
+  await dbMigrate('max')
 }

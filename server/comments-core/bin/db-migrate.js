@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 'use strict'
 
 const path = require('path')
@@ -5,7 +6,7 @@ const Postgrator = require('postgrator')
 
 const config = require('../config')
 
-function migrate (to = 'max', callback) {
+function migrate (to = 'max') {
   const postgrator = new Postgrator({
     migrationDirectory: path.join(__dirname, '../migrations'),
     driver: 'pg',
@@ -17,22 +18,18 @@ function migrate (to = 'max', callback) {
     schemaTable: 'schemaversion'
   })
 
-  postgrator
-    .migrate(to)
-    .then(() => callback())
-    .catch((err) => callback(err))
+  return postgrator.migrate(to)
 }
 
 module.exports = migrate
 
 if (require.main === module) {
-  migrate('max', (err, migrations) => {
-    /* eslint-disable no-console */
-    if (err) {
-      console.log('Migrations error!', err)
+  migrate('max')
+    .then(() => {
+      console.log('Migrations done!') // eslint-disable-line no-console
+    })
+    .catch((err) => {
+      console.log('Migrations error!', err) // eslint-disable-line no-console
       process.exit(1)
-    }
-    console.log('Migrations done!')
-    /* eslint-enable */
-  })
+    })
 }

@@ -1,15 +1,10 @@
-import React from 'react'
-import { configure, addDecorator } from '@storybook/react'
+import { configure } from '@storybook/react'
 
-// automatically import all files ending in *.stories.js
-const req = require.context('../src', true, /.story.js$/)
-
-// To add a decorator
-const decorator = story => <div style={{ margin: '10px' }}>{story()}</div>
+const req = require.context('../stories')
 
 function loadStories() {
-  // addDecorator(decorator)
   req.keys().forEach(filename => req(filename))
+  // You can require as many stories as you need.
 }
 
 configure(loadStories, module)
