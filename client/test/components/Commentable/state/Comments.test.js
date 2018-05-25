@@ -1,5 +1,7 @@
-import Comments from './Comments'
-import Comment from './Comment'
+import {
+  Comment,
+  Comments
+} from '../../../../src/components/Commentable/state/Comments'
 
 describe('Comments', () => {
   describe('When a new instance is created', () => {

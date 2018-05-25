@@ -1,4 +1,13 @@
-class Comments {
+export class Comment {
+  constructor(id, reference, content, author) {
+    this.id = id
+    this.reference = reference
+    this.content = content
+    this.author = author
+  }
+}
+
+export class Comments {
   constructor() {
     this.comments = []
   }
@@ -15,5 +24,3 @@ class Comments {
     return this.comments.filter(comment => comment.reference.block === idBlock)
   }
 }
-
-export default Comments

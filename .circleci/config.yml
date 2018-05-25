@@ -8,7 +8,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
-          PGPORT: 5433
+          PGPORT: 5432
     working_directory: ~/repo
     steps:
       - checkout
@@ -20,10 +20,11 @@ jobs:
 
       - run:
           command: |
-            cd client && npm install && cd ../server && npm install
+            npm install && cd client && npm install && cd ../server && npm install
 
       - save_cache:
           paths:
+            - node_modules
             - server/node_modules
             - client/node_modules
           key: dependencies-{{ checksum "server/package.json" }}-{{ checksum "client/package.json" }}
