@@ -6,7 +6,7 @@ const path = require('path')
 
 async function run() {
   const version = process.argv[2]
-  const { host, port, database, username: user, password } = config.pg
+  const { host, port, database, user, password } = config.pg
   const migrationDirectory = path.join(__dirname, '/migrations')
   if (!version) throw new Error('Please provide the version to migrate to as first command line argument')
 

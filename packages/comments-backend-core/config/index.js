@@ -11,6 +11,8 @@ const config = {
     host: NF_COMMENTS_PGHOST || 'localhost',
     port: NF_COMMENTS_PGPORT || 5432,
     password: NF_COMMENTS_PGPASSWORD || 'postgres',
+    // Allow both syntaxes for username - pg driver uses "user"
+    user: NF_COMMENTS_PGUSER || 'postgres',
     username: NF_COMMENTS_PGUSER || 'postgres',
     database: NF_COMMENTS_PGDATABASE || (isTest ? 'comments_test' : 'comments')
   }

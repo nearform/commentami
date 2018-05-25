@@ -4,7 +4,7 @@ const config = require('../config')
 const { Client } = require('pg')
 
 async function run() {
-  const { host, port, database, username: user, password } = config.pg
+  const { host, port, database, user, password } = config.pg
   const client = new Client({ host, port, database: 'postgres', user, password })
 
   await client.connect()
