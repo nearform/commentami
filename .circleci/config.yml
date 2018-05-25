@@ -9,32 +9,39 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
           PGPORT: 5432
+          NODE_ENV: test
     working_directory: ~/repo
     steps:
       - checkout
 
       - restore_cache:
-          keys:
-            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
-            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-core/package.json" }}
-            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-plugin/package.json" }}
-            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-server/package.json" }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
+      - restore_cache:
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-core/package-lock.json" }}
+      - restore_cache:
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-plugin/package-lock.json" }}
+      - restore_cache:
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-server/package-lock.json" }}
 
       - run:
           command: lerna bootstrap
 
       - save_cache:
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
+      - save_cache:
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-core/package-lock.json" }}
+          paths:
             - packages/comments-backend-core/node_modules
+      - save_cache:
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-plugin/package-lock.json" }}
+          paths:
             - packages/comments-backend-hapi-plugin/node_modules
+      - save_cache:
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-server/package-lock.json" }}
+          paths:
             - packages/comments-backend-hapi-server/node_modules
-          keys:
-            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
-            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-core/package.json" }}
-            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-plugin/package.json" }}
-            - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-server/package.json" }}
-
 
       - run:
           command: lerna run sanity
