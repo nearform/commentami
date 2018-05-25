@@ -8,11 +8,11 @@ const config = {
   isProd: process.env.NODE_ENV === 'production',
   isTest,
   pg: {
-    user: NF_COMMENTS_PGUSER || 'postgres',
     host: NF_COMMENTS_PGHOST || 'localhost',
-    database: NF_COMMENTS_PGDATABASE || (isTest ? 'comments_test' : 'comments'),
+    port: NF_COMMENTS_PGPORT || 5432,
     password: NF_COMMENTS_PGPASSWORD || 'postgres',
-    port: NF_COMMENTS_PGPORT || 5432
+    username: NF_COMMENTS_PGUSER || 'postgres',
+    database: NF_COMMENTS_PGDATABASE || (isTest ? 'comments_test' : 'comments')
   }
 }
 
