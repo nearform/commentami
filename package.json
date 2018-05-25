@@ -24,7 +24,7 @@
   "scripts": {
     "depcheck": "depcheck --ignores='@cowtech/eslint-config,eslint-*,husky,remark-*'",
     "doc:lint": "remark .",
-    "lint": "eslint src/**/*.js src/**/*.jsx",
+    "lint": "eslint **/*.js **/*.jsx",
     "sanity:environment": "npm run doc:lint && npm run lint && npm run depcheck",
     "sanity": "npm run sanity:environment && npm run test",
     "test": "cd client && npm run test && cd ../server && npm run test"
