@@ -44,4 +44,7 @@ jobs:
             - packages/comments-backend-hapi-server/node_modules
 
       - run:
+          command: npm run pg:test:init
+
+      - run:
           command: npm run sanity
