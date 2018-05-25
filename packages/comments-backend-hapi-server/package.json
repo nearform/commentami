@@ -1,5 +1,5 @@
 {
-  "name": "@nearform/comments-backend-core",
+  "name": "@nearform/comments-backend-hapi-server",
   "version": "0.1.0",
   "private": true,
   "description": "Comments",
@@ -25,19 +25,16 @@
   "scripts": {
     "coverage": "NODE_ENV=test lab --coverage-exclude config test -c",
     "depcheck": "../../node_modules/depcheck/bin/depcheck",
-    "pg:init": "node ./database/init.js && npm run pg:migrate",
-    "pg:test:init": "NODE_ENV=test node ./database/init.js && NODE_ENV=test npm run pg:migrate",
-    "pg:migrate": "node ./database/migrate.js max",
+    "start": "node start.js",
     "test": "NODE_ENV=test lab test"
   },
   "dependencies": {
-    "@nearform/sql": "^1.0.1",
-    "pg": "^7.4.3",
-    "postgrator": "^3.6.0"
+    "@nearform/comments-backend-hapi-plugin": "^0.1.0",
+    "hapi": "^17.5.0",
+    "hapi-pino": "^4.0.4"
   },
   "devDependencies": {
     "code": "^5.2.0",
-    "faker": "^4.1.0",
     "lab": "^15.4.5",
     "sinon": "^5.0.10"
   }

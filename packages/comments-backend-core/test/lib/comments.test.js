@@ -3,21 +3,20 @@
 const { expect } = require('code')
 const Lab = require('lab')
 module.exports.lab = Lab.script()
-const { describe, it: test, beforeEach, afterEach } = module.exports.lab
+const { describe, it: test, beforeEach, before, after } = module.exports.lab
 
 const config = require('../../config')
 const { random, lorem, name } = require('faker')
 
-const buildPool = require('../../lib/dbPool')
-const buildCommentsService = require('../../lib/comments')
+const { buildPool, buildCommentsService } = require('../../lib')
 
 describe('Comments', () => {
-  beforeEach(() => {
+  before(() => {
     const db = buildPool(config.pg)
     this.commentsService = buildCommentsService(db)
   })
 
-  afterEach(() => {
+  after(() => {
     return this.commentsService.close()
   })
 

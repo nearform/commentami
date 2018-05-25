@@ -7,7 +7,7 @@ const { describe, it: test } = module.exports.lab
 const sinon = require('sinon')
 
 const config = require('../../config')
-const buildPool = require('../../lib/dbPool')
+const { buildPool } = require('../../lib')
 
 describe('buildPool', () => {
   test('should require a configuration to work', () => {

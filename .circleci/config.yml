@@ -19,16 +19,14 @@ jobs:
             - dependencies-
 
       - run:
-          command: |
-            npm install && cd packages/comments-react-components && npm install && cd ../../server && npm install
+          command: lerna bootstrap
 
       - save_cache:
           paths:
-            - node_modules
-            - server/node_modules
-            - client/node_modules
+            - packages/comments-backend-core/node_modules
+            - packages/comments-backend-hapi-plugin/node_modules
+            - packages/comments-backend-hapi-server/node_modules
           key: dependencies-{{ checksum "server/package.json" }}-{{ checksum "client/package.json" }}
 
       - run:
-          command: |
-            cd server && npm run setup-dev-db && npm test && cd ../packages/comments-react-components && npm test
+          command: lerna run sanity

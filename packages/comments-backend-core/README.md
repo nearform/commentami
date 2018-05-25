@@ -1,8 +1,8 @@
-# Comments - Server
+# @nearform/comments-backend-core
 
-## How to use the core `comments` module
+## Setup
 
-To use the `comments` module you will need to pass a connection object to it's initialization function.
+To use the `comments-backend-core` module you will need to pass a connection object to it's initialization function.
 
 This connection object should be an instance of the `Pool`/`Client` from `node-postgres` or an object with the same interface.
 
@@ -13,12 +13,12 @@ This connection object should be an instance of the `Pool`/`Client` from `node-p
 To initialize the db you can run:
 
 ```
-npm run setup-dev-db
+npm run pg:test:init
 ```
 
-This will drop the `comments-db` if it exists. Re-create it and migrate it to the latest schema.
+This will drop the `comments` if it exists. Re-create it and migrate it to the latest schema.
 
-The configuration for the postgres db connection can be changed through the following ENV variables
+The configuration for the postgres db connection can be changed through the following ENV variables:
 
 ```
 NF_COMMENTS_PGHOST
@@ -28,7 +28,7 @@ NF_COMMENTS_PGPASSWORD
 NF_COMMENTS_PGPORT
 ```
 
-For local development there should be sensible defaults in [`config/index.js`](/server/src/config/index.js).
+For local development there should be sensible defaults in [`config/index.js`](./config/index.js).
 
 #### postgres on docker?
 
@@ -38,10 +38,16 @@ If you want to run postgres on docker, install [docker](https://docs.docker.com/
 docker-compose up postgres
 ```
 
-### Run test
+### Run tests
 
 Once the db is up, to run the tests use
 
 ```
 npm test
 ```
+
+## License
+
+Copyright nearForm Ltd 2018. Licensed under [MIT][license].
+
+[license]: ./LICENSE.md

@@ -21,9 +21,14 @@
   "engines": {
     "node": ">=8.9.0"
   },
+  "main": "lib/index.js",
+  "bin": {
+    "comments-backend-hapi-server": "start.js"
+  },
   "scripts": {
     "depcheck": "lerna run depcheck",
     "doc:lint": "remark .",
+    "coverage": "lerna run coverage",
     "lint": "eslint --ignore-path .gitignore **/*.js **/*.jsx",
     "outdated:all": "npm outdated || echo 'Outdated packages found.'; lerna exec \"npm outdated || echo 'Outdated packages found.'\"",
     "pg:init": "cd packages/comments-backend-core && npm run pg:init",
@@ -32,7 +37,8 @@
     "postinstall": "lerna bootstrap",
     "sanity:environment": "npm run doc:lint && npm run lint && npm run depcheck",
     "sanity": "npm run sanity:environment && npm run test",
-    "test": "cd packages/comments-react-components && npm run test && cd ../../server && npm run test"
+    "start": "cd packages/comments-backend-hapi-server && npm run start",
+    "test": "lerna run test"
   },
   "devDependencies": {
     "@cowtech/eslint-config": "^4.19.4",
