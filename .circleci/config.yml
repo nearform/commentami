@@ -20,7 +20,7 @@ jobs:
 
       - run:
           command: |
-            npm install && cd client && npm install && cd ../server && npm install
+            npm install && cd packages/comments-react-components && npm install && cd ../../server && npm install
 
       - save_cache:
           paths:
@@ -31,4 +31,4 @@ jobs:
 
       - run:
           command: |
-            cd server && npm run setup-dev-db && npm test && cd ../client && npm test
+            cd server && npm run setup-dev-db && npm test && cd ../packages/comments-react-components && npm test
