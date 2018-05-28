@@ -7,17 +7,17 @@ const { random, lorem, name, internet } = require('faker')
 module.exports.lab = Lab.script()
 const { describe, it: test, before, after, beforeEach } = module.exports.lab
 
-const testServer = require('./test-server')
+const buildServer = require('./test-server')
 
 describe('Comments REST API', () => {
   let server = null
 
   before(async () => {
-    server = await testServer.buildDefault()
+    server = await buildServer()
   })
 
   after(async () => {
-    return testServer.stopAll()
+    return server.stop()
   })
 
   describe('GET /comments', () => {
