@@ -2,6 +2,7 @@ import React from 'react'
 import { Bar as BarChart } from 'react-chartjs'
 import { storiesOf } from '@storybook/react'
 
+import { CommentsInMemoryService } from '../src/services/CommentsInMemoryService'
 import { CommentableProvider } from '../src/components/Commentable/Provider'
 import { CommentableTextBlock } from '../src/components/Commentable/TextBlock'
 
@@ -44,8 +45,10 @@ const chartOptions = {
   barDatasetSpacing: 1
 }
 
+const commentService = CommentsInMemoryService()
+
 storiesOf('Commentable/Text', module).add('Sample Text', () => (
-  <CommentableProvider>
+  <CommentableProvider service={commentService}>
     <NewCommentPopUp />
     <div style={{ marginLeft: '20px' }}>
       <CommentableTextBlock blockId="comm-1">
@@ -66,8 +69,7 @@ storiesOf('Commentable/Text', module).add('Sample Text', () => (
         </div>
 
         <p>
-          2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and{' '}
-          <code>monospace</code>. Itemized lists look like:
+          2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
         </p>
       </CommentableTextBlock>
       <CommentableTextBlock blockId="comm-4">
@@ -93,10 +95,7 @@ storiesOf('Commentable/Text', module).add('Sample Text', () => (
         <div style={{ position: 'absolute', left: '-0px' }}>
           <CommentIcon />
         </div>
-        <p>
-          Note that --- not considering the asterisk --- the actual text content
-          starts at 4-columns in.
-        </p>
+        <p>Note that --- not considering the asterisk --- the actual text content starts at 4-columns in.</p>
       </CommentableTextBlock>
       <CommentableTextBlock blockId="comm-7">
         <div style={{ position: 'absolute', left: '-0px' }}>
