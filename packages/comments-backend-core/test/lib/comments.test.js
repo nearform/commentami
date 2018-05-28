@@ -6,7 +6,7 @@ module.exports.lab = Lab.script()
 const { describe, it: test, beforeEach, before, after } = module.exports.lab
 
 const config = require('../../config')
-const { random, lorem, name } = require('faker')
+const { random, lorem, name, internet } = require('faker')
 
 const { buildPool, buildCommentsService } = require('../../lib')
 
@@ -22,10 +22,12 @@ describe('Comments', () => {
 
   describe('listing', () => {
     beforeEach(() => {
+      this.url = internet.url()
       this.reference = random.uuid()
 
-      const comments = new Array(20).fill(0).map(v => ({
-        reference: this.reference,
+      const comments = new Array(20).fill(0).map((v, i) => ({
+        url: this.url,
+        reference: i === 0 ? this.reference : random.uuid(),
         content: lorem.words(),
         author: name.firstName()
       }))
@@ -33,8 +35,8 @@ describe('Comments', () => {
       return Promise.all(comments.map(comment => this.commentsService.add(comment)))
     })
 
-    test('Comments: list all comments will return 100 by default', async () => {
-      const list = await this.commentsService.list(this.reference)
+    test('Comments: list all comments will return 100 by default (filtering only by url)', async () => {
+      const list = await this.commentsService.list(this.url)
 
       expect(list).to.include({
         total: 20,
@@ -45,9 +47,21 @@ describe('Comments', () => {
       expect(list.comments.length).to.equal(20)
     })
 
+    test('Comments: list all comments will return 100 by default (filtering by url and reference)', async () => {
+      const list = await this.commentsService.list(this.url, this.reference)
+
+      expect(list).to.include({
+        total: 1,
+        limit: 100,
+        offset: 0
+      })
+
+      expect(list.comments.length).to.equal(1)
+    })
+
     test('Comments: can ask for comments using limits and offset', async () => {
-      const all = await this.commentsService.list(this.reference)
-      const list = await this.commentsService.list(this.reference, { limit: 15, offset: 3 })
+      const all = await this.commentsService.list(this.url)
+      const list = await this.commentsService.list(this.url, { limit: 15, offset: 3 })
 
       expect(list).to.include({
         total: 20,
@@ -69,6 +83,7 @@ describe('Comments', () => {
   describe('adding', () => {
     test('should correctly create a comment', async () => {
       const comment = {
+        url: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
         author: 'Filippo'
@@ -84,6 +99,7 @@ describe('Comments', () => {
   describe('updating', () => {
     test('should correctly update one comment', async () => {
       const comment = {
+        url: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
         author: 'Filippo'
@@ -92,6 +108,7 @@ describe('Comments', () => {
         content: 'new comment'
       }
       const expected = {
+        url: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'new comment',
         author: 'Filippo'
@@ -105,6 +122,7 @@ describe('Comments', () => {
 
     test('should not allow updating one comment with an empty string', async () => {
       const comment = {
+        url: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
         author: 'Filippo'
@@ -131,6 +149,7 @@ describe('Comments', () => {
   describe('deleting', () => {
     test('should correctly delete one comment', async () => {
       const comment = {
+        url: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
         author: 'Filippo'

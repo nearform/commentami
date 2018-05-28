@@ -40,6 +40,7 @@ describe('Server', () => {
     describe('GET /comments/{id}', () => {
       test('it should retrieve a comment', async () => {
         const created = await server.commentsService.add({
+          url: 'URL',
           reference: 'OLD-UUID',
           content: 'OLD-MESSAGE',
           author: 'OLD-AUTHOR'

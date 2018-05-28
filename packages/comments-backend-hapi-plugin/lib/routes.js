@@ -9,16 +9,19 @@ module.exports = {
       method: 'GET',
       path: '/comments',
       handler: function(request, h) {
-        const { reference, limit, offset } = request.query
+        const { url, reference, limit, offset } = request.query
 
-        return request.commentsService.list(reference, { limit, offset })
+        return request.commentsService.list(url, reference, { limit, offset })
       },
       options: {
         validate: {
           query: {
-            reference: Joi.string()
+            url: Joi.string()
               .min(1)
               .required(),
+            reference: Joi.string()
+              .min(1)
+              .optional(),
             limit: Joi.number()
               .min(1)
               .optional(),
@@ -39,6 +42,7 @@ module.exports = {
       options: {
         validate: {
           payload: {
+            url: Joi.string().required(),
             reference: Joi.string().required(),
             content: Joi.string().required(),
             author: Joi.string().required()
