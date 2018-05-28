@@ -1,33 +1,19 @@
-const Hapi = require('hapi')
+'use strict'
 
-module.exports = (function() {
-  let defaultServer = null
-  let port = 8080
-  const servers = []
+module.exports = async function buildServer() {
+  // If forked as child, send output message via ipc to parent, otherwise output to console
+  const logMessage = process.send ? process.send : console.log // eslint-disable-line no-console
 
-  const build = async function(additionalConfig) {
-    const server = Hapi.Server({
+  try {
+    const server = require('hapi').Server({
       host: '127.0.0.1',
-      port: port++,
-      ...additionalConfig
+      port: 8080
     })
-
     await server.register({ plugin: require('../lib/index') })
-    await server.start()
 
-    servers.push(server)
     return server
+  } catch (err) {
+    logMessage(`Failed to build server: ${err.message}`)
+    process.exit(1)
   }
-
-  return {
-    build,
-    async buildDefault(additionalConfig, force) {
-      if (!defaultServer || force) defaultServer = await build(additionalConfig)
-
-      return defaultServer
-    },
-    stopAll() {
-      return Promise.all(servers.map(s => s.stop()))
-    }
-  }
-})()
+}
