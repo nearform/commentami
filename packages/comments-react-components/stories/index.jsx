@@ -3,12 +3,10 @@ import { Bar as BarChart } from 'react-chartjs'
 import { storiesOf } from '@storybook/react'
 
 import { CommentsInMemoryService } from '../src/services/CommentsInMemoryService'
-import { CommentableProvider } from '../src/components/Commentable/Provider'
-import { CommentableTextBlock } from '../src/components/Commentable/TextBlock'
+import { CommentableProvider } from '../src/components/CommentableProvider'
+import { CommentableBlock } from '../src/components/CommentableBlock'
 
-import { CommentsBlock } from '../src/components/Commentable/CommentsBlock'
-import { CommentIcon } from '../src/components/Commentable/CommentIcon'
-import { NewCommentPopUp } from '../src/components/Commentable/NewCommentPopUp'
+import { sidebarClassName, highlightedBlockClassName } from './components/styling'
 
 const chartData = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -47,65 +45,50 @@ const chartOptions = {
 
 const commentService = CommentsInMemoryService()
 
-storiesOf('Commentable/Text', module).add('Sample Text', () => (
-  <CommentableProvider service={commentService}>
-    <NewCommentPopUp />
-    <div style={{ marginLeft: '20px' }}>
-      <CommentableTextBlock blockId="comm-1">
-        <div style={{ position: 'absolute', left: '-0px' }}>
-          <CommentIcon />
-        </div>
-        <h1>TextBlock 1</h1>
-      </CommentableTextBlock>
-      <CommentableTextBlock blockId="comm-2">
-        <div style={{ position: 'absolute', left: '-0px' }}>
-          <CommentIcon />
-        </div>
-        <p>Paragraphs are separated by a blank line.</p>
-      </CommentableTextBlock>
-      <CommentableTextBlock blockId="comm-3">
-        <div style={{ position: 'absolute', left: '-0px' }}>
-          <CommentIcon />
-        </div>
+function CustomCommentRenderer({ comment }) {
+  return (
+    <div>
+      <h4>{comment.author} had fun saying:</h4>
+      <p>{comment.content}</p>
+    </div>
+  )
+}
 
+storiesOf('Commentable/Text', module).add('Sample Text', () => (
+  <div style={{ margin: '30px' }}>
+    <CommentableProvider sectionId="sample-text-section" sidebarClassName={sidebarClassName} commentComponent1={CustomCommentRenderer} service={commentService}>
+      <CommentableBlock blockId="comm-1" highlightedClassName={highlightedBlockClassName}>
+        <h1>TextBlock 1</h1>
+      </CommentableBlock>
+      <CommentableBlock blockId="comm-2" highlightedClassName={highlightedBlockClassName}>
+        <p>Paragraphs are separated by a blank line.</p>
+      </CommentableBlock>
+      <CommentableBlock blockId="comm-3" highlightedClassName={highlightedBlockClassName}>
         <p>
           2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
         </p>
-      </CommentableTextBlock>
-      <CommentableTextBlock blockId="comm-4">
-        <div style={{ position: 'absolute', left: '-0px' }}>
-          <CommentIcon />
-        </div>
+      </CommentableBlock>
+      <CommentableBlock blockId="comm-4" highlightedClassName={highlightedBlockClassName}>
         <ul>
           <li>this one</li>
           <li>that one</li>
           <li>the other one</li>
         </ul>
-      </CommentableTextBlock>
-      <CommentableTextBlock blockId="comm-5">
-        <div style={{ position: 'absolute', left: '-0px' }}>
-          <CommentIcon />
-        </div>
+      </CommentableBlock>
+      <CommentableBlock blockId="comm-5" highlightedClassName={highlightedBlockClassName}>
         <blockquote>
           <p>Block quotes are written like so.</p>
           <p>They can span multiple paragraphs, if you like.</p>
         </blockquote>
-      </CommentableTextBlock>
-      <CommentableTextBlock blockId="comm-6">
-        <div style={{ position: 'absolute', left: '-0px' }}>
-          <CommentIcon />
-        </div>
+      </CommentableBlock>
+      <CommentableBlock blockId="comm-6" highlightedClassName={highlightedBlockClassName}>
         <p>Note that --- not considering the asterisk --- the actual text content starts at 4-columns in.</p>
-      </CommentableTextBlock>
-      <CommentableTextBlock blockId="comm-7">
-        <div style={{ position: 'absolute', left: '-0px' }}>
-          <CommentIcon />
-        </div>
+      </CommentableBlock>
+      <CommentableBlock blockId="comm-7" highlightedClassName={highlightedBlockClassName}>
         <div>
           <BarChart data={chartData} options={chartOptions} />
         </div>
-      </CommentableTextBlock>
-    </div>
-    <CommentsBlock />
-  </CommentableProvider>
+      </CommentableBlock>
+    </CommentableProvider>
+  </div>
 ))

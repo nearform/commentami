@@ -1,25 +1,19 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 
-import sampleData from './data/sample'
 import { CommentsInMemoryService } from '../src/services/CommentsInMemoryService'
-import { CommentableProvider } from '../src/components/Commentable/Provider'
-import { CommentsBlock } from '../src/components/Commentable/CommentsBlock'
-import { NewCommentPopUp } from '../src/components/Commentable/NewCommentPopUp'
+import { CommentableProvider } from '../src/components/CommentableProvider'
 
+import sampleData from './data/sample'
 import { Table } from './components/table'
+import { sidebarClassName } from './components/styling'
 
 const commentService = CommentsInMemoryService()
 
 storiesOf('Commentable/Table', module).add('Sample', () => (
-  <CommentableProvider service={commentService}>
-    <NewCommentPopUp />
-    <div style={{ marginLeft: '20px' }}>
-      <Table
-        data={sampleData}
-        columns={['name', 'gender', 'email', 'balance']}
-      />
+  <CommentableProvider sectionId="sample-table-section" sidebarClassName={sidebarClassName} service={commentService}>
+    <div style={{ margin: '30px' }}>
+      <Table data={sampleData} columns={['name', 'gender', 'email', 'balance']} />
     </div>
-    <CommentsBlock />
   </CommentableProvider>
 ))

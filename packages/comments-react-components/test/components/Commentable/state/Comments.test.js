@@ -1,4 +1,4 @@
-import { Comments } from '../../../../src/components/Commentable/state/Comments'
+import { Comments } from '../../../../src/state/Comments'
 
 import { CommentsInMemoryService } from '../../../../src/services/CommentsInMemoryService'
 
