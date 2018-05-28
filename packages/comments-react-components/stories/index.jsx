@@ -1,10 +1,11 @@
 import React from 'react'
 import { Bar as BarChart } from 'react-chartjs'
-import { style } from 'typestyle'
 import { storiesOf } from '@storybook/react'
 
 import { CommentableProvider } from '../src/components/CommentableProvider'
 import { CommentableBlock } from '../src/components/CommentableBlock'
+
+import { sidebarClassName, highlightedBlockClassName } from './components/styling'
 
 const chartData = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -40,43 +41,6 @@ const chartOptions = {
   barValueSpacing: 5,
   barDatasetSpacing: 1
 }
-
-const sidebarClassName = style({
-  backgroundColor: '#E0E0E0',
-  borderLeft: '2px solid #808080',
-  zIndex: 10,
-  padding: '15px',
-  height: '100vh',
-  $nest: {
-    '[data-role=form]': {
-      display: 'grid',
-      gridTemplateRows: 'auto 75px auto',
-      gridTemplateColumns: '1fr 1fr 1fr',
-      gridGap: '5px',
-      justifyContent: 'flex-end'
-    },
-    '[data-role=form] h2, [data-role=form] textarea': {
-      gridColumn: '1 / span 3'
-    },
-    '[data-role=form] button:first-of-type': {
-      gridColumn: '2 / 3',
-      height: '30px'
-    },
-    '[data-role=comments] > div': {
-      margin: 0,
-      padding: '0 0 0 20px'
-    },
-    '[data-role=close]': {
-      position: 'absolute',
-      top: '15px',
-      right: '15px'
-    }
-  }
-})
-
-const highlightedBlockClassName = style({
-  backgroundColor: '#e3ead4'
-})
 
 function CustomCommentRenderer({ comment }) {
   return (

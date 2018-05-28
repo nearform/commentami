@@ -57,7 +57,9 @@ class CommentableBlockComponent extends React.Component {
 
     return (
       <div ref={this.blockRef} className={this.props[this.isToggled ? 'highlightedClassName' : 'className']} onDoubleClick={this.boundHandleDoubleClick}>
-        {this.hasComments && <CommentableMarker rootRef={this.markerRef} handleToggleComment={this.boundHandleToggleComment} />}
+        {this.hasComments && (
+          <CommentableMarker rootRef={this.markerRef} markerComponent={this.props.markerComponent} handleToggleComment={this.boundHandleToggleComment} />
+        )}
         {this.props.children}
       </div>
     )
