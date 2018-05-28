@@ -1,7 +1,6 @@
-import {
-  Comment,
-  Comments
-} from '../../../../src/components/Commentable/state/Comments'
+import { Comments } from '../../../../src/components/Commentable/state/Comments'
+
+import { CommentsInMemoryService } from '../../../../src/services/CommentsInMemoryService'
 
 describe('Comments', () => {
   describe('When a new instance is created', () => {
@@ -17,16 +16,13 @@ describe('Comments', () => {
 
   describe('Adding a comment', () => {
     let comments
-    let addedComment
-    beforeEach(() => {
-      comments = new Comments()
-      addedComment = new Comment(
-        1,
-        { block: 'comm-1' },
-        'somecontent',
-        'someauthor'
-      )
-      comments.addComment(addedComment)
+    beforeEach(async () => {
+      comments = new Comments(new CommentsInMemoryService())
+      await comments.addComment({
+        url: 'url1',
+        reference: 'comm-1',
+        content: 'somecontent'
+      })
     })
 
     test('the size should be 1', () => {
@@ -38,29 +34,24 @@ describe('Comments', () => {
     })
 
     test('the comment should be added correctly', () => {
-      expect(comments.getBlockComments('comm-1')[0]).toEqual(addedComment)
+      expect(comments.getBlockComments('comm-1')[0]).toEqual({
+        author: 'someauthor',
+        content: 'somecontent',
+        id: 12,
+        reference: 'comm-1'
+      })
     })
   })
 
   describe('Get comments by block', () => {
     let comments
     beforeEach(() => {
-      comments = new Comments()
-      comments.addComment(
-        new Comment(1, { block: 'comm-1' }, 'somecontent 1', 'someauthor 1')
-      )
-      comments.addComment(
-        new Comment(1, { block: 'comm-1' }, 'somecontent 2', 'someauthor 2')
-      )
-      comments.addComment(
-        new Comment(1, { block: 'comm-2' }, 'somecontent 3', 'someauthor 3')
-      )
-      comments.addComment(
-        new Comment(1, { block: 'comm-2' }, 'somecontent 4', 'someauthor 4')
-      )
-      comments.addComment(
-        new Comment(1, { block: 'comm-1' }, 'somecontent 5', 'someauthor 5')
-      )
+      comments = new Comments(new CommentsInMemoryService())
+      comments.addComment({ url: 'url1', reference: 'comm-1', content: 'somecontent 1' })
+      comments.addComment({ url: 'url1', reference: 'comm-1', content: 'somecontent 2' })
+      comments.addComment({ url: 'url1', reference: 'comm-2', content: 'somecontent 3' })
+      comments.addComment({ url: 'url1', reference: 'comm-2', content: 'somecontent 4' })
+      comments.addComment({ url: 'url1', reference: 'comm-1', content: 'somecontent 5' })
     })
 
     test('the size should be 5', () => {
@@ -72,26 +63,16 @@ describe('Comments', () => {
     })
 
     test('the size of the list of comments related to block comm-2 should be 2', () => {
-      expect(comments.getBlockComments('comm-1').length).toBe(3)
+      expect(comments.getBlockComments('comm-2').length).toBe(2)
     })
 
     test('the comments should be returned correctly', () => {
-      expect(comments.getBlockComments('comm-1')[0].content).toBe(
-        'somecontent 1'
-      )
-      expect(comments.getBlockComments('comm-1')[1].content).toBe(
-        'somecontent 2'
-      )
-      expect(comments.getBlockComments('comm-1')[2].content).toBe(
-        'somecontent 5'
-      )
+      expect(comments.getBlockComments('comm-1')[0].content).toBe('somecontent 1')
+      expect(comments.getBlockComments('comm-1')[1].content).toBe('somecontent 2')
+      expect(comments.getBlockComments('comm-1')[2].content).toBe('somecontent 5')
 
-      expect(comments.getBlockComments('comm-2')[0].content).toBe(
-        'somecontent 3'
-      )
-      expect(comments.getBlockComments('comm-2')[1].content).toBe(
-        'somecontent 4'
-      )
+      expect(comments.getBlockComments('comm-2')[0].content).toBe('somecontent 3')
+      expect(comments.getBlockComments('comm-2')[1].content).toBe('somecontent 4')
     })
   })
 })
