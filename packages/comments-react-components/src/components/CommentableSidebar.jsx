@@ -78,6 +78,7 @@ export class CommentableSidebar extends React.Component {
 
     if (!this.target) {
       this.target = document.createElement('div')
+      this.target.id = 'comments-sidebar-root'
       this.target.style.position = 'fixed'
       this.target.style.right = 0
       this.target.style.top = 0
