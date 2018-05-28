@@ -8,7 +8,8 @@ const styles = {
     width: '300px',
     padding: '10px',
     border: '1px solid black',
-    backgroundColor: '#c9ccb3'
+    backgroundColor: '#c9ccb3',
+    zIndex: 100
   },
   button: {
     width: '100%',

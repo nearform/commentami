@@ -1,23 +1,24 @@
 'use strict'
 
+const { isObject } = require('lodash')
 const SQL = require('@nearform/sql')
 
 module.exports = function buildCommentsService(db) {
   function mapCommentFromDb(raw) {
     if (!raw) return null
 
-    const { id, reference, content, author } = raw
-    return { id, reference, content, author }
+    const { id, url, reference, content, author } = raw
+    return { id, url, reference, content, author }
   }
   async function closeDatabase() {
     return db.end()
   }
 
-  async function addComment({ reference, content, author }) {
+  async function addComment({ reference, content, author, url }) {
     const sql = SQL`
       INSERT INTO
-        comment (reference, content, author)
-      VALUES (${reference}, ${content}, ${author})
+        comment (url, reference, content, author)
+      VALUES (${url}, ${reference}, ${content}, ${author})
       RETURNING *
     `
 
@@ -66,14 +67,20 @@ module.exports = function buildCommentsService(db) {
     return { success: true }
   }
 
-  async function listComments(reference, { limit = 100, offset = 0 } = {}) {
+  async function listComments(url, reference = null, options = {}) {
+    if (isObject(reference)) {
+      options = reference
+      reference = null
+    }
+
+    const { limit = 100, offset = 0 } = options
     const sqlCount = SQL`
       SELECT
         COUNT(*)
       FROM
         comment
       WHERE
-        reference = ${reference}
+        url = ${url}
     `
     const sqlFilter = SQL`
       SELECT
@@ -81,10 +88,18 @@ module.exports = function buildCommentsService(db) {
       FROM
         comment
       WHERE
-        reference = ${reference}
+        url = ${url}
+    `
+
+    if (reference) {
+      sqlCount.append(SQL` AND reference = ${reference}`)
+      sqlFilter.append(SQL` AND reference = ${reference}`)
+    }
+
+    sqlFilter.append(SQL`
       ORDER BY id DESC
       LIMIT ${limit} OFFSET ${offset}
-    `
+    `)
 
     const [countRes, filterRes] = await Promise.all([db.query(sqlCount), db.query(sqlFilter)])
     return {

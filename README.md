@@ -62,6 +62,69 @@ lerna run test
 npm run lint
 ```
 
+## Runnig the server on docker
+
+If you don't want to run things locally you can use docker.
+
+To setup the images/containers you should have docker installed locally and then run:
+
+```
+docker-compose build
+```
+
+This should produce something as the following output
+
+```
+# docker-compose build
+
+postgres uses an image, skipping
+Building app
+Step 1/4 : FROM node:8.11.2-alpine
+ ---> 348d500a6d80
+Step 2/4 : WORKDIR /usr/app
+ ---> Using cache
+ ---> 52dc46987fdb
+Step 3/4 : COPY . .
+ ---> 4014adb5d79e
+Step 4/4 : RUN npm install --quiet
+ ---> Running in 889e76abe927
+up to date in 2.931s
+Removing intermediate container 889e76abe927
+ ---> ca0ed1c45dae
+Successfully built ca0ed1c45dae
+Successfully tagged server_app:latest
+```
+
+### Initializing the db
+
+you can run
+
+```
+docker exec comments_app_1 npm run pg:init
+```
+
+### Run tests
+
+to run the tests use
+
+```
+docker exec comments_app_1 npm test
+```
+
+### Pinging the app from curl
+
+Once you have a database running and all the tables set up, you can try to run `curl` for the list endpoint
+
+```
+curl http://localhost:8080/comments\?reference\=\test
+```
+
+the output should be something like
+
+```
+{"comments":[],"total":"0","limit":100,"offset":0}
+```
+
 ## License
 
 Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].

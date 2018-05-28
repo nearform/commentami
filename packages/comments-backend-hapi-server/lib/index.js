@@ -1,22 +1,14 @@
 'use strict'
 
 const config = require('../config')
+const buildServer = require('./server')
 
-module.exports = async function server() {
+module.exports = async function start() {
   // If forked as child, send output message via ipc to parent, otherwise output to console
   const logMessage = process.send ? process.send : console.log // eslint-disable-line no-console
 
-  const server = require('hapi').Server(config)
-
   try {
-    await server.register([
-      {
-        plugin: require('hapi-pino'),
-        options: { prettyPrint: process.env.NODE_ENV !== 'production', logEvents: ['error'] }
-      },
-      require('@nearform/comments-backend-hapi-plugin')
-    ])
-
+    const server = await buildServer(config)
     await server.start()
     logMessage(`Server running at: ${server.info.uri}`)
 
