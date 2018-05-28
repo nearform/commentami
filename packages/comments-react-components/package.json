@@ -42,6 +42,7 @@
     "chart.js": "^1.1.1",
     "jest": "^23.0.0",
     "react-chartjs": "^1.2.0",
+    "typestyle": "^2.0.1",
     "webpack": "^3.12.0"
   }
 }
