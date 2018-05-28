@@ -32,7 +32,7 @@ describe('Server', () => {
 
   describe('generic', () => {
     test('should log in case of listen errors', async () => {
-      process.send = console.log
+      process.send = console.log // eslint-disable-line no-console
       await expect(testServer.build()).to.reject(Error, 'EXITED - 1')
       expect(stubs[1].called).to.be.true()
     })

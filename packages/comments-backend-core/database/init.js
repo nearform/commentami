@@ -11,10 +11,10 @@ async function run() {
   await client.query(`DROP DATABASE IF EXISTS ${database}`)
   await client.query(`CREATE DATABASE ${database}`)
   await client.end()
-  console.log(`\x1b[32m\u2714 Database \x1b[1m${database}\x1b[22m created successfully!\x1b[0m`)
+  console.log(`\x1b[32m\u2714 Database \x1b[1m${database}\x1b[22m created successfully!\x1b[0m`) // eslint-disable-line no-console
 }
 
 run().catch(err => {
-  console.error(err)
+  console.error(err) // eslint-disable-line no-console
   process.exit(1)
 })

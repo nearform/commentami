@@ -13,10 +13,10 @@ async function run() {
   const postgrator = new Postgrator({ driver: 'pg', migrationDirectory, schemaTable: 'schemaversion', host, port, database, user, password })
 
   await postgrator.migrate(version)
-  console.log(`\x1b[32m\u2714 Database \x1b[1m${database}\x1b[22m migrated successfully to version ${version}!\x1b[0m`)
+  console.log(`\x1b[32m\u2714 Database \x1b[1m${database}\x1b[22m migrated successfully to version ${version}!\x1b[0m`) // eslint-disable-line no-console
 }
 
 run().catch(err => {
-  console.error(err)
+  console.error(err) // eslint-disable-line no-console
   process.exit(1)
 })

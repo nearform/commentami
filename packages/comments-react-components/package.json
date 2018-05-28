@@ -1,5 +1,5 @@
 {
-  "name": "@nearform/comments-client",
+  "name": "@nearform/comments-react-components",
   "version": "0.1.0",
   "private": true,
   "description": "Comments",
@@ -22,11 +22,10 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "depcheck": "depcheck",
-    "format": "prettier src/**/*.js",
+    "depcheck": "../../node_modules/depcheck/bin/depcheck --ignores=webpack",
     "storybook": "start-storybook -p 6006 -c .storybook",
     "test": "node test/start.js",
-    "test:watch": "WATCH=true node scripts/test.js --env=jsdom"
+    "test:watch": "WATCH=truenode test/start.js"
   },
   "dependencies": {
     "react": "^16.4.0",
@@ -37,6 +36,7 @@
     "@babel/core": "^7.0.0-beta.48",
     "@babel/preset-env": "^7.0.0-beta.48",
     "@babel/preset-react": "^7.0.0-beta.48",
+    "@storybook/addon-actions": "^3.4.6",
     "@storybook/react": "^3.3.15",
     "babel-core": "^7.0.0-bridge.0",
     "chart.js": "^1.1.1",

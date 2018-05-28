@@ -4,7 +4,7 @@ const config = require('../config')
 
 module.exports = async function server() {
   // If forked as child, send output message via ipc to parent, otherwise output to console
-  const logMessage = process.send ? process.send : console.log
+  const logMessage = process.send ? process.send : console.log // eslint-disable-line no-console
 
   const server = require('hapi').Server(config)
 
