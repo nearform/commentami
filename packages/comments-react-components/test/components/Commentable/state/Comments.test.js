@@ -1,7 +1,4 @@
-import {
-  Comment,
-  Comments
-} from '../../../../src/components/Commentable/state/Comments'
+import { Comment, Comments } from '../../../../src/state/Comments'
 
 describe('Comments', () => {
   describe('When a new instance is created', () => {
@@ -20,12 +17,7 @@ describe('Comments', () => {
     let addedComment
     beforeEach(() => {
       comments = new Comments()
-      addedComment = new Comment(
-        1,
-        { block: 'comm-1' },
-        'somecontent',
-        'someauthor'
-      )
+      addedComment = new Comment(1, { block: 'comm-1' }, 'somecontent', 'someauthor')
       comments.addComment(addedComment)
     })
 
@@ -46,21 +38,11 @@ describe('Comments', () => {
     let comments
     beforeEach(() => {
       comments = new Comments()
-      comments.addComment(
-        new Comment(1, { block: 'comm-1' }, 'somecontent 1', 'someauthor 1')
-      )
-      comments.addComment(
-        new Comment(1, { block: 'comm-1' }, 'somecontent 2', 'someauthor 2')
-      )
-      comments.addComment(
-        new Comment(1, { block: 'comm-2' }, 'somecontent 3', 'someauthor 3')
-      )
-      comments.addComment(
-        new Comment(1, { block: 'comm-2' }, 'somecontent 4', 'someauthor 4')
-      )
-      comments.addComment(
-        new Comment(1, { block: 'comm-1' }, 'somecontent 5', 'someauthor 5')
-      )
+      comments.addComment(new Comment(1, { block: 'comm-1' }, 'somecontent 1', 'someauthor 1'))
+      comments.addComment(new Comment(1, { block: 'comm-1' }, 'somecontent 2', 'someauthor 2'))
+      comments.addComment(new Comment(1, { block: 'comm-2' }, 'somecontent 3', 'someauthor 3'))
+      comments.addComment(new Comment(1, { block: 'comm-2' }, 'somecontent 4', 'someauthor 4'))
+      comments.addComment(new Comment(1, { block: 'comm-1' }, 'somecontent 5', 'someauthor 5'))
     })
 
     test('the size should be 5', () => {
@@ -76,22 +58,12 @@ describe('Comments', () => {
     })
 
     test('the comments should be returned correctly', () => {
-      expect(comments.getBlockComments('comm-1')[0].content).toBe(
-        'somecontent 1'
-      )
-      expect(comments.getBlockComments('comm-1')[1].content).toBe(
-        'somecontent 2'
-      )
-      expect(comments.getBlockComments('comm-1')[2].content).toBe(
-        'somecontent 5'
-      )
+      expect(comments.getBlockComments('comm-1')[0].content).toBe('somecontent 1')
+      expect(comments.getBlockComments('comm-1')[1].content).toBe('somecontent 2')
+      expect(comments.getBlockComments('comm-1')[2].content).toBe('somecontent 5')
 
-      expect(comments.getBlockComments('comm-2')[0].content).toBe(
-        'somecontent 3'
-      )
-      expect(comments.getBlockComments('comm-2')[1].content).toBe(
-        'somecontent 4'
-      )
+      expect(comments.getBlockComments('comm-2')[0].content).toBe('somecontent 3')
+      expect(comments.getBlockComments('comm-2')[1].content).toBe('somecontent 4')
     })
   })
 })

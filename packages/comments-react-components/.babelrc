@@ -1,6 +1,9 @@
 {
   "presets": [
-    ["@babel/preset-env", {"targets": {"browsers": ["last 1 versions"]}}],
+    ["@babel/preset-env", {
+      "targets": {"browsers": ["last 1 versions"]},
+      "exclude": ["transform-regenerator"]
+    }],
     "@babel/preset-react"
   ]
 }
