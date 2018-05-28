@@ -2,7 +2,7 @@
 
 const { expect } = require('code')
 const Lab = require('lab')
-const { random, lorem, name } = require('faker')
+const { random, lorem, name, internet } = require('faker')
 
 module.exports.lab = Lab.script()
 const { describe, it: test, before, after, beforeEach } = module.exports.lab
@@ -22,10 +22,12 @@ describe('Comments REST API', () => {
 
   describe('GET /comments', () => {
     beforeEach(() => {
+      this.url = internet.url()
       this.reference = random.uuid()
 
-      const comments = new Array(20).fill(0).map(v => ({
-        reference: this.reference,
+      const comments = new Array(20).fill(0).map((v, i) => ({
+        url: this.url,
+        reference: i === 0 ? this.reference : random.uuid(),
         content: lorem.words(),
         author: name.firstName()
       }))
@@ -33,12 +35,12 @@ describe('Comments REST API', () => {
       return Promise.all(comments.map(comment => server.commentsService.add(comment)))
     })
 
-    test('it should search comments and return them with 200', async () => {
-      const all = await server.commentsService.list(this.reference)
+    test('it should search comments by url and return them with 200', async () => {
+      const all = await server.commentsService.list(this.url)
 
       const response = await server.inject({
         method: 'GET',
-        url: `/comments?reference=${this.reference}&limit=3&offset=5`
+        url: `/comments?url=${this.url}&limit=3&offset=5`
       })
 
       expect(response.statusCode).to.equal(200)
@@ -53,6 +55,24 @@ describe('Comments REST API', () => {
       expect(result.comments.length).to.equal(3)
       expect(result.comments[0].id).to.equal(all.comments[5].id)
     })
+
+    test('it should search comments by url and reference and return them with 200', async () => {
+      const response = await server.inject({
+        method: 'GET',
+        url: `/comments?url=${this.url}&reference=${this.reference}&limit=3`
+      })
+
+      expect(response.statusCode).to.equal(200)
+      const result = JSON.parse(response.payload)
+
+      expect(result).to.include({
+        total: 1,
+        limit: 3,
+        offset: 0
+      })
+
+      expect(result.comments.length).to.equal(1)
+    })
   })
 
   describe('POST /comments', () => {
@@ -61,6 +81,7 @@ describe('Comments REST API', () => {
         method: 'POST',
         url: '/comments',
         payload: {
+          url: 'URL',
           reference: 'UUID',
           content: 'MESSAGE',
           author: 'AUTHOR'
@@ -71,6 +92,7 @@ describe('Comments REST API', () => {
       const result = JSON.parse(response.payload)
 
       expect(result).to.include({
+        url: 'URL',
         reference: 'UUID',
         content: 'MESSAGE',
         author: 'AUTHOR'
@@ -81,6 +103,7 @@ describe('Comments REST API', () => {
   describe('GET /comments/{id}', () => {
     test('it should retrieve a comment', async () => {
       const created = await server.commentsService.add({
+        url: 'URL',
         reference: 'OLD-UUID',
         content: 'OLD-MESSAGE',
         author: 'OLD-AUTHOR'
@@ -101,6 +124,7 @@ describe('Comments REST API', () => {
   describe('PUT /comments/{id}', () => {
     test('it should update a comment', async () => {
       const created = await server.commentsService.add({
+        url: 'URL',
         reference: 'OLD-UUID',
         content: 'OLD-MESSAGE',
         author: 'OLD-AUTHOR'
@@ -119,6 +143,7 @@ describe('Comments REST API', () => {
 
       expect(result).to.include({
         id: created.id,
+        url: 'URL',
         reference: 'OLD-UUID',
         content: 'MESSAGE',
         author: 'OLD-AUTHOR'
@@ -129,6 +154,7 @@ describe('Comments REST API', () => {
   describe('DELETE /comments/{id}', () => {
     test('it should delete a comment', async () => {
       const created = await server.commentsService.add({
+        url: 'URL',
         reference: 'OLD-UUID',
         content: 'OLD-MESSAGE',
         author: 'OLD-AUTHOR'
