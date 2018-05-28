@@ -1,13 +1,13 @@
 # @nearform/comments-backend-hapi-plugin
 
-`@nearform/comments-backend-hapi-plugin` is a plugin to add the trail REST API to a [Hapi][hapi] server.
+`@nearform/comments-backend-hapi-plugin` is a plugin to add the comments REST API to a [Hapi][hapi] server.
 
 ## Install
 
 To install via npm:
 
 ```
-npm install @nearform/trail-hapi-plugin
+npm install @nearform/comments-backend-hapi-plugin
 ```
 
 ## Usage
@@ -29,11 +29,11 @@ const main = async function() {
 main().catch(console.error)
 ```
 
-Trails route will be then accessible on the `/comments` path.
+Comments route will be then accessible on the `/comments` path.
 
 ## License
 
-Copyright nearForm Ltd 2018. Licensed under [MIT][license].
+Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].
 
 [hapi]: https://hapijs.com/
 [license]: ./LICENSE.md

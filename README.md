@@ -24,7 +24,7 @@ docker-compose up
 ```
 
 * **Note:** Ensure you are using the latest version of Docker for (Linux/OSX/Windows)
-* **Note:** Trails needs PostgreSQL >= 9.5
+* **Note:** Comments needs PostgreSQL >= 9.5
 
 #### Populate the database
 
@@ -64,11 +64,11 @@ npm run lint
 
 ## License
 
-Copyright nearForm Ltd 2018. Licensed under [MIT][license].
+Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].
 
 [comments-backend-core]: https://www.npmjs.com/package/@nearform/comments-backend-core
-[comments-backend-hapi-plugin]: https://www.npmjs.com/package/trail/@nearform/comments-backend-hapi-plugin
-[comments-backend-hapi-server]: https://www.npmjs.com/package/trail/@nearform/comments-backend-hapi-server
+[comments-backend-hapi-plugin]: https://www.npmjs.com/package/@nearform/comments-backend-hapi-plugin
+[comments-backend-hapi-server]: https://www.npmjs.com/package/@nearform/comments-backend-hapi-server
 [node]: https://nodejs.org/it/
 [hapi]: https://hapijs.com/
 [postgrator]: https://github.com/rickbergfalk/postgrator

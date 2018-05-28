@@ -3,7 +3,7 @@
 const Joi = require('joi')
 
 module.exports = {
-  name: 'trails',
+  name: 'comments',
   register(server, options) {
     server.route({
       method: 'GET',

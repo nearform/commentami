@@ -48,6 +48,6 @@ npm test
 
 ## License
 
-Copyright nearForm Ltd 2018. Licensed under [MIT][license].
+Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].
 
 [license]: ./LICENSE.md

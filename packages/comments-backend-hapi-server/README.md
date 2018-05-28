@@ -20,7 +20,7 @@ This will start a server on `localhost:8080`.
 
 ## License
 
-Copyright nearForm Ltd 2018. Licensed under [MIT][license].
+Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].
 
 [hapi]: https://hapijs.com/
 [license]: ./LICENSE.md
