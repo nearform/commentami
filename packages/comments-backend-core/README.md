@@ -6,6 +6,13 @@ To use the `comments-backend-core` module you will need to pass a connection obj
 
 This connection object should be an instance of the `Pool`/`Client` from `node-postgres` or an object with the same interface.
 
+## Hooks
+
+When instantiating the `comments` service you can pass two optionsl hooks to decorate comments. Those functions should be either async or return a promise that will yeld the final augmented comment/comments list as their result:
+
+- `fetchedComment`: `[async] (comment) => { ... }` decorates a single comment
+- `fetchedComments`: `[async] (comments) => { ... }`  decorates a list of comments
+
 ## Development
 
 ### Initializing the db

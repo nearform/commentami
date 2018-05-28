@@ -3,13 +3,20 @@
 const { isObject } = require('lodash')
 const SQL = require('@nearform/sql')
 
-module.exports = function buildCommentsService(db) {
+module.exports = function buildCommentsService(db, hooks = {}) {
+  const {
+    fetchedComment,
+    fetchedComments
+  } = hooks
+
   function mapCommentFromDb(raw) {
     if (!raw) return null
 
-    const { id, url, reference, content, author } = raw
-    return { id, url, reference, content, author }
+    const { id, url, reference, content, author, created_at: createdAt } = raw
+
+    return { id, url, reference, content, author, createdAt }
   }
+
   async function closeDatabase() {
     return db.end()
   }
@@ -23,8 +30,9 @@ module.exports = function buildCommentsService(db) {
     `
 
     const res = await db.query(sql)
+    const comment = mapCommentFromDb(res.rows[0])
 
-    return mapCommentFromDb(res.rows[0])
+    return fetchedComment ? fetchedComment(comment) : comment
   }
 
   async function getComment(id) {
@@ -32,8 +40,9 @@ module.exports = function buildCommentsService(db) {
 
     const res = await db.query(sql)
     if (res.rowCount === 0) throw new Error(`Cannot find comment with id ${id}`)
+    const comment = mapCommentFromDb(res.rows[0])
 
-    return mapCommentFromDb(res.rows[0])
+    return fetchedComment ? fetchedComment(comment) : comment
   }
 
   async function updateComment(id, { content }) {
@@ -54,7 +63,9 @@ module.exports = function buildCommentsService(db) {
     const res = await db.query(sql)
     if (res.rowCount === 0) throw new Error(`Cannot find comment with id ${id}`)
 
-    return mapCommentFromDb(res.rows[0])
+    const comment = mapCommentFromDb(res.rows[0])
+
+    return fetchedComment ? fetchedComment(comment) : comment
   }
 
   async function deleteComment(id) {
@@ -102,8 +113,10 @@ module.exports = function buildCommentsService(db) {
     `)
 
     const [countRes, filterRes] = await Promise.all([db.query(sqlCount), db.query(sqlFilter)])
+    const comments = filterRes.rows.map(mapCommentFromDb)
+
     return {
-      comments: filterRes.rows.map(mapCommentFromDb),
+      comments: fetchedComments ? await fetchedComments(comments) : comments,
       total: parseInt(countRes.rows[0].count, 0),
       limit,
       offset

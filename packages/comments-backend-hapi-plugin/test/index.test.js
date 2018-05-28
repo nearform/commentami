@@ -95,7 +95,8 @@ describe('Comments REST API', () => {
         url: 'URL',
         reference: 'UUID',
         content: 'MESSAGE',
-        author: 'AUTHOR'
+        author: 'AUTHOR',
+        createdAt: result.createdAt
       })
     })
   })
@@ -117,6 +118,10 @@ describe('Comments REST API', () => {
       expect(response.statusCode).to.equal(200)
       const result = JSON.parse(response.payload)
 
+      expect(result.createdAt).to.exists()
+
+      delete result.createdAt
+      delete created.createdAt
       expect(result).to.equal(created)
     })
   })
@@ -141,7 +146,10 @@ describe('Comments REST API', () => {
       expect(response.statusCode).to.equal(200)
       const result = JSON.parse(response.payload)
 
-      expect(result).to.include({
+      expect(result.createdAt).to.exists()
+      delete result.createdAt
+
+      expect(result).to.equal({
         id: created.id,
         url: 'URL',
         reference: 'OLD-UUID',

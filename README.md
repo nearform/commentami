@@ -95,6 +95,12 @@ Successfully built ca0ed1c45dae
 Successfully tagged server_app:latest
 ```
 
+To run the backend app you can now use the following command
+
+```
+docker-compose up
+```
+
 ### Initializing the db
 
 you can run
