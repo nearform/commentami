@@ -1,19 +1,19 @@
-# Comments - Client
+# @nearform/comments-react-components
+
+comments-react-components is a ready to use set of React components to add commenting functionality on existing React applications.
+
+It uses the [@nearform/comments-backend-\*][comments] packages as backend.
 
 ## Quick start
 
-The project contains a full React application but it is not currently connected to the Commentable module.
-
-The development should be done using `storybook`
-
-**to run**
+To explore components, use storybook:
 
 ```
 npm install
 npm run storybook
 ```
 
-open the browser at: [http://localhost:6006/](http://localhost:6006/)
+and then open the browser at: [http://localhost:6006/](http://localhost:6006/)
 
 ## First implemetation (POC)
 
@@ -48,3 +48,10 @@ The Components created use the new React Context API (> 16).
   <CommentsBlock />
 </CommentableProvider>
 ```
+
+## License
+
+Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].
+
+[comments]: https://github.com/nearform/comments/tree/master/packages
+[license]: ./LICENSE.md
