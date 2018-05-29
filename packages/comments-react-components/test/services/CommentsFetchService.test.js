@@ -49,7 +49,6 @@ describe('CommentsFetchServer', () => {
     }
     fetch.mockResponseOnce(JSON.stringify(response))
 
-
     const result = await commentsFetchService.addComment(resource, reference, content)
 
     expect(fetch.mock.calls.length).toBe(1)
