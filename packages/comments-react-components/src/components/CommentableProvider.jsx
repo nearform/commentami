@@ -1,17 +1,10 @@
 import React from 'react'
 
-import { Comment, Comments } from '../state/Comments'
+import { Comments } from '../state/Comments'
 import { CommentableSidebar } from './CommentableSidebar'
 
 // The context for the Provider
 export const CommentableContext = React.createContext('commentable')
-
-// A mock id generator
-let commentIdProg = 10
-
-function getCommentId() {
-  return commentIdProg++
-}
 
 export class CommentableProvider extends React.Component {
   constructor(props) {
@@ -19,7 +12,7 @@ export class CommentableProvider extends React.Component {
     this.commentsTextBlock = []
     this.logger = this.props.logger || console
 
-    this.comments = new Comments()
+    this.comments = new Comments(this.props.service)
 
     this.state = {
       logger: this.logger,
@@ -30,19 +23,50 @@ export class CommentableProvider extends React.Component {
 
       // Actions
       addComment: this.addComment.bind(this),
-      toggleComments: this.toggleComments.bind(this)
+      toggleComments: this.toggleComments.bind(this),
+
+      lastResourceRefreshed: null
     }
   }
 
-  addComment(blockId, message) {
-    this.comments.addComment(new Comment(getCommentId(), { block: blockId }, message, 'Davide'))
-
-    // Required to propagate the update, search for a better solution
-    this.setState({})
+  getCurrentResource() {
+    return this.props.resource
   }
 
-  toggleComments(blockId) {
-    this.setState(() => ({ toggledBlock: !blockId || this.state.toggledBlock === blockId ? null : blockId }))
+  async addComment(reference, content) {
+    try {
+      await this.comments.addComment({
+        url: this.getCurrentResource(),
+        reference,
+        content
+      })
+      this.setState({})
+    } catch (e) {
+      this.logger.error(e)
+    }
+  }
+
+  toggleComments(referenceId) {
+    this.setState(() => ({ toggledBlock: !referenceId || this.state.toggledBlock === referenceId ? null : referenceId }))
+  }
+
+  async refreshCommentList() {
+    try {
+      await this.comments.refresh(this.getCurrentResource())
+      this.setState({ lastResourceRefreshed: this.getCurrentResource() })
+    } catch (e) {
+      this.logger.error(e)
+    }
+  }
+
+  componentDidMount() {
+    this.refreshCommentList()
+  }
+
+  componentDidUpdate() {
+    if (this.getCurrentResource() !== this.state.lastResourceRefreshed) {
+      this.refreshCommentList()
+    }
   }
 
   render() {

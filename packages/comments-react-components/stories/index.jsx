@@ -2,6 +2,7 @@ import React from 'react'
 import { Bar as BarChart } from 'react-chartjs'
 import { storiesOf } from '@storybook/react'
 
+import { CommentsInMemoryService } from './helpers/CommentsInMemoryService'
 import { CommentableProvider } from '../src/components/CommentableProvider'
 import { CommentableBlock } from '../src/components/CommentableBlock'
 
@@ -42,6 +43,8 @@ const chartOptions = {
   barDatasetSpacing: 1
 }
 
+const commentService = CommentsInMemoryService()
+
 function CustomCommentRenderer({ comment }) {
   return (
     <div>
@@ -53,35 +56,35 @@ function CustomCommentRenderer({ comment }) {
 
 storiesOf('Commentable/Text', module).add('Sample Text', () => (
   <div style={{ margin: '30px' }}>
-    <CommentableProvider sidebarClassName={sidebarClassName} commentComponent1={CustomCommentRenderer}>
-      <CommentableBlock blockId="comm-1" highlightedClassName={highlightedBlockClassName}>
+    <CommentableProvider resource="sample-text-section" sidebarClassName={sidebarClassName} commentComponent1={CustomCommentRenderer} service={commentService}>
+      <CommentableBlock referenceId="comm-1" highlightedClassName={highlightedBlockClassName}>
         <h1>TextBlock 1</h1>
       </CommentableBlock>
-      <CommentableBlock blockId="comm-2" highlightedClassName={highlightedBlockClassName}>
+      <CommentableBlock referenceId="comm-2" highlightedClassName={highlightedBlockClassName}>
         <p>Paragraphs are separated by a blank line.</p>
       </CommentableBlock>
-      <CommentableBlock blockId="comm-3" highlightedClassName={highlightedBlockClassName}>
+      <CommentableBlock referenceId="comm-3" highlightedClassName={highlightedBlockClassName}>
         <p>
           2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
         </p>
       </CommentableBlock>
-      <CommentableBlock blockId="comm-4" highlightedClassName={highlightedBlockClassName}>
+      <CommentableBlock referenceId="comm-4" highlightedClassName={highlightedBlockClassName}>
         <ul>
           <li>this one</li>
           <li>that one</li>
           <li>the other one</li>
         </ul>
       </CommentableBlock>
-      <CommentableBlock blockId="comm-5" highlightedClassName={highlightedBlockClassName}>
+      <CommentableBlock referenceId="comm-5" highlightedClassName={highlightedBlockClassName}>
         <blockquote>
           <p>Block quotes are written like so.</p>
           <p>They can span multiple paragraphs, if you like.</p>
         </blockquote>
       </CommentableBlock>
-      <CommentableBlock blockId="comm-6" highlightedClassName={highlightedBlockClassName}>
+      <CommentableBlock referenceId="comm-6" highlightedClassName={highlightedBlockClassName}>
         <p>Note that --- not considering the asterisk --- the actual text content starts at 4-columns in.</p>
       </CommentableBlock>
-      <CommentableBlock blockId="comm-7" highlightedClassName={highlightedBlockClassName}>
+      <CommentableBlock referenceId="comm-7" highlightedClassName={highlightedBlockClassName}>
         <div>
           <BarChart data={chartData} options={chartOptions} />
         </div>

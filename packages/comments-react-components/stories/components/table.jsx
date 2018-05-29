@@ -56,7 +56,7 @@ export const CommentLabel = ({ rootRef, handleToggleComment }) => (
 
 export const Cell = ({ id, data }) => (
   <td className={cellClassName}>
-    <CommentableBlock blockId={id} markerComponent={CommentLabel} className={cellContentsClassName} highlightedClassName={highlightCellContentsClassName}>
+    <CommentableBlock referenceId={id} markerComponent={CommentLabel} className={cellContentsClassName} highlightedClassName={highlightCellContentsClassName}>
       {data}
     </CommentableBlock>
   </td>

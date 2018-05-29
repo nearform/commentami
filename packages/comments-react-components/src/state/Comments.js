@@ -8,7 +8,8 @@ export class Comment {
 }
 
 export class Comments {
-  constructor() {
+  constructor(service) {
+    this.service = service
     this.comments = []
   }
 
@@ -16,11 +17,22 @@ export class Comments {
     return this.comments.length
   }
 
-  addComment(comment) {
-    this.comments.push(comment)
+  async refresh(url) {
+    const result = await this.service.getComments(url)
+    this.comments = []
+    result.forEach(comment => this.comments.push(new Comment(comment.id, comment.reference, comment.content, comment.author)))
   }
 
-  getBlockComments(idBlock) {
-    return this.comments.filter(comment => comment.reference.block === idBlock)
+  async addComment({ url, reference, content }) {
+    const result = await this.service.addComment(url, reference, content)
+
+    // FIXME Refresh the list at every add, optimize this
+    await this.refresh(url)
+    return result
+  }
+
+  // FIXME Currently uses the local list, further improvement allow to refresh the list from the server
+  getBlockComments(referenceId) {
+    return this.comments.filter(comment => comment.reference === referenceId)
   }
 }
