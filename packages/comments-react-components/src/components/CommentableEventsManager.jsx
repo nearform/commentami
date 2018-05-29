@@ -50,8 +50,31 @@ export class CommentableEventsManager extends React.Component {
   }
 }
 
+export class CommentableDefaultEventsManager extends CommentableEventsManager {
+  handleOnDoubleClick(payload, event) {
+    event.preventDefault()
+
+    this.props.commentable.toggleComments(payload.id)
+
+    const sel = window.getSelection()
+    sel.removeAllRanges()
+  }
+
+  handleOnClick(payload, event) {
+    event.preventDefault()
+
+    if (payload.scope === 'marker') {
+      event.stopPropagation() // Do not trigger a parent click event
+    } else {
+      return
+    }
+
+    this.props.commentable.toggleComments(payload.id)
+  }
+}
+
 export function CommentableEventsManagerWrapper({ component: Component, children }) {
-  if (!Component) Component = CommentableEventsManager
+  if (!Component) Component = CommentableDefaultEventsManager
 
   return <CommentableContext.Consumer>{commentable => <Component children={children} commentable={commentable} />}</CommentableContext.Consumer>
 }

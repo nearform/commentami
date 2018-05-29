@@ -28,11 +28,11 @@ The Components created use the new React Context API (> 16).
 #### A page sample
 
 ```
-import { EventManager } from 'your/event/manager'
-
-const service = buildService()
-
-<CommentableProvider resource="main" service={...} eventsManagerComponent={EventsManager}>
+<CommentableProvider
+  resource="main"
+  service={buildService()} // This is a service you must provide
+  eventsManagerComponent={EventsManager} // This prop is optional and must be a descendant of CommentsEventManager
+>
     <div style={{ marginLeft: '30px' }}>
       <CommentableBlock referenceId="comm-1">
         <h1>Text Title 1</h1>

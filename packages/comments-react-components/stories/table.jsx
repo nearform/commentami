@@ -6,7 +6,7 @@ import { CommentsFetchService } from '../src/services/CommentsFetchService'
 import { CommentableProvider } from '../src/components/CommentableProvider'
 
 import sampleData from './data/sample'
-import { Table } from './components/Table'
+import { Table } from './components/table'
 import { sidebarClassName } from './components/styling'
 
 const commentsInMemoryService = CommentsInMemoryService()
