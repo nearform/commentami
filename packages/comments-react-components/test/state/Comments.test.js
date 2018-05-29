@@ -1,6 +1,6 @@
-import { Comments } from '../../../../src/state/Comments'
+import { Comments } from '../../src/state/Comments'
 
-import { CommentsInMemoryService } from '../../../helpers/CommentsInMemoryService'
+import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
 
 describe('Comments', () => {
   describe('When a new instance is created', () => {
