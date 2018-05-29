@@ -25,20 +25,18 @@ export class CommentableProvider extends React.Component {
       addComment: this.addComment.bind(this),
       toggleComments: this.toggleComments.bind(this),
 
-      // TODO Rename this with a more suitable name
-      // SectionId, CommentableSectionId
-      lastSectionId: null
+      lastResourceRefreshed: null
     }
   }
 
-  getCurrentSectionId() {
-    return this.props.sectionId
+  getCurrentResource() {
+    return this.props.resource
   }
 
   async addComment(reference, content) {
     try {
       await this.comments.addComment({
-        url: this.getCurrentSectionId(),
+        url: this.getCurrentResource(),
         reference,
         content
       })
@@ -54,8 +52,8 @@ export class CommentableProvider extends React.Component {
 
   async refreshCommentList() {
     try {
-      await this.comments.refresh(this.getCurrentSectionId())
-      this.setState({ lastSectionId: this.getCurrentSectionId() })
+      await this.comments.refresh(this.getCurrentResource())
+      this.setState({ lastResourceRefreshed: this.getCurrentResource() })
     } catch (e) {
       this.logger.error(e)
     }
@@ -66,7 +64,7 @@ export class CommentableProvider extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.getCurrentSectionId() !== this.state.lastSectionId) {
+    if (this.getCurrentResource() !== this.state.lastResourceRefreshed) {
       this.refreshCommentList()
     }
   }

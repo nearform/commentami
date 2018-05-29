@@ -56,7 +56,7 @@ function CustomCommentRenderer({ comment }) {
 
 storiesOf('Commentable/Text', module).add('Sample Text', () => (
   <div style={{ margin: '30px' }}>
-    <CommentableProvider sectionId="sample-text-section" sidebarClassName={sidebarClassName} commentComponent1={CustomCommentRenderer} service={commentService}>
+    <CommentableProvider resource="sample-text-section" sidebarClassName={sidebarClassName} commentComponent1={CustomCommentRenderer} service={commentService}>
       <CommentableBlock blockId="comm-1" highlightedClassName={highlightedBlockClassName}>
         <h1>TextBlock 1</h1>
       </CommentableBlock>

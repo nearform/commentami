@@ -11,7 +11,7 @@ import { sidebarClassName } from './components/styling'
 const commentService = CommentsInMemoryService()
 
 storiesOf('Commentable/Table', module).add('Sample', () => (
-  <CommentableProvider sectionId="sample-table-section" sidebarClassName={sidebarClassName} service={commentService}>
+  <CommentableProvider resource="sample-table-section" sidebarClassName={sidebarClassName} service={commentService}>
     <div style={{ margin: '30px' }}>
       <Table data={sampleData} columns={['name', 'gender', 'email', 'balance']} />
     </div>
