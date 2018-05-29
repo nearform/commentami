@@ -51,11 +51,11 @@ describe('Hooks', () => {
 
   describe('listing', () => {
     beforeEach(() => {
-      this.url = internet.url()
+      this.resource = internet.url()
       this.reference = random.uuid()
 
       const comments = new Array(20).fill(0).map((v, i) => ({
-        url: this.url,
+        resource: this.resource,
         reference: i === 0 ? this.reference : random.uuid(),
         content: lorem.words(),
         author: name.firstName()
@@ -64,8 +64,8 @@ describe('Hooks', () => {
       return Promise.all(comments.map(comment => this.commentsService.add(comment)))
     })
 
-    test('Comments: list all comments will return 100 by default (filtering only by url)', async () => {
-      const list = await this.commentsService.list(this.url)
+    test('Comments: list all comments will return 100 by default (filtering only by resource)', async () => {
+      const list = await this.commentsService.list(this.resource)
 
       expect(list).to.include({
         total: 20,
@@ -84,7 +84,7 @@ describe('Hooks', () => {
   describe('adding', () => {
     test('should correctly create a comment', async () => {
       const comment = {
-        url: 'http://example.com/example',
+        resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
         author: 'Filippo',

@@ -12,20 +12,20 @@ module.exports = function buildCommentsService(db, hooks = {}) {
   function mapCommentFromDb(raw) {
     if (!raw) return null
 
-    const { id, url, reference, content, author, created_at: createdAt } = raw
+    const { id, resource, reference, content, author, created_at: createdAt } = raw
 
-    return { id, url, reference, content, author, createdAt }
+    return { id, resource, reference, content, author, createdAt }
   }
 
   async function closeDatabase() {
     return db.end()
   }
 
-  async function addComment({ reference, content, author, url }) {
+  async function addComment({ reference, content, author, resource }) {
     const sql = SQL`
       INSERT INTO
-        comment (url, reference, content, author)
-      VALUES (${url}, ${reference}, ${content}, ${author})
+        comment (resource, reference, content, author)
+      VALUES (${resource}, ${reference}, ${content}, ${author})
       RETURNING *
     `
 
@@ -78,7 +78,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
     return { success: true }
   }
 
-  async function listComments(url, reference = null, options = {}) {
+  async function listComments(resource, reference = null, options = {}) {
     if (isObject(reference)) {
       options = reference
       reference = null
@@ -91,7 +91,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       FROM
         comment
       WHERE
-        url = ${url}
+        resource = ${resource}
     `
     const sqlFilter = SQL`
       SELECT
@@ -99,7 +99,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       FROM
         comment
       WHERE
-        url = ${url}
+        resource = ${resource}
     `
 
     if (reference) {
@@ -123,14 +123,32 @@ module.exports = function buildCommentsService(db, hooks = {}) {
     }
   }
 
+  async function listOnlyReferences(resource) {
+    const sql = SQL`
+      SELECT
+        DISTINCT(reference)
+      FROM
+        comment
+      WHERE
+        resource = ${resource}
+    `
+
+    const result = await db.query(sql)
+
+    return {
+      resource: resource,
+      references: result.rows.map(item => item.reference)
+    }
+  }
+
   return {
-    db,
     close: closeDatabase,
     add: addComment,
     get: getComment,
     update: updateComment,
     delete: deleteComment,
     list: listComments,
+    listOnlyReferences,
     mapCommentFromDb
   }
 }
