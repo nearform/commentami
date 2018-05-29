@@ -47,10 +47,22 @@ docker-compose up postgres
 
 ### Run tests
 
-Once the db is up, to run the tests use
+Once the db is up, you need to create the database
+
+```
+npm run pg:test:init
+```
+
+and the run
 
 ```
 npm test
+```
+
+To run a single test you can use the following command
+
+```
+npx lab <test/to/run.js> // (ie: npx lab test/lib/comments.test.js)
 ```
 
 ## License
