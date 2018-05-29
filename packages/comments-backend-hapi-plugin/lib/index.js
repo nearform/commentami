@@ -1,5 +1,6 @@
 'use strict'
 
+const Nes = require('nes')
 const { buildCommentsService, buildPool, config } = require('@nearform/comments-backend-core')
 
 const commentsHapiPlugin = {
@@ -11,6 +12,10 @@ const commentsHapiPlugin = {
 
     server.decorate('server', 'commentsService', commentsService)
     server.decorate('request', 'commentsService', commentsService)
+
+    if (options.disableWebsocket !== true) {
+      await server.register(Nes)
+    }
 
     await server.register(require('./routes'))
 

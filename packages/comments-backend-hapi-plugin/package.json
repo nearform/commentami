@@ -30,7 +30,8 @@
   },
   "dependencies": {
     "@nearform/comments-backend-core": "^0.1.0",
-    "joi": "^13.3.0"
+    "joi": "^13.3.0",
+    "nes": "^8.1.0"
   },
   "devDependencies": {
     "code": "^5.2.0",
