@@ -41,6 +41,28 @@ When adding the `comments-backend-hapi-plugin` you can pass some hooks. These ho
 
 Those 2 functions should be either async or return a promise that will yeld the final augmented comment/comments list as its result.
 
+## Run tests
+
+You will need a postgres server up and running.
+
+To create the db needed for the tests you can use the following command
+
+```
+npm run pg:test:init
+```
+
+and the run
+
+```
+npm test
+```
+
+To run a single test you can use the following command
+
+```
+npx lab <test/to/run.js> // (ie: npx lab test/index.test.js)
+```
+
 ## License
 
 Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].

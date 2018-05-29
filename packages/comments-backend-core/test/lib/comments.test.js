@@ -5,13 +5,16 @@ const Lab = require('lab')
 module.exports.lab = Lab.script()
 const { describe, it: test, beforeEach, before, after } = module.exports.lab
 
+const { resetDb } = require('../utils')
 const config = require('../../config')
 const { random, lorem, name, internet } = require('faker')
 
 const { buildPool, buildCommentsService } = require('../../lib')
 
 describe('Comments', () => {
-  before(() => {
+  before(async () => {
+    await resetDb()
+
     const db = buildPool(config.pg)
     this.commentsService = buildCommentsService(db)
   })
