@@ -7,16 +7,33 @@ module.exports = {
   register(server, options) {
     server.route({
       method: 'GET',
+      path: '/comments-references/{resource*}',
+      handler: function(request, h) {
+        const { resource } = request.params
+
+        return request.commentsService.listOnlyReferences(resource)
+      },
+      options: {
+        validate: {
+          params: {
+            resource: Joi.string().required()
+          }
+        }
+      }
+    })
+
+    server.route({
+      method: 'GET',
       path: '/comments',
       handler: function(request, h) {
-        const { url, reference, limit, offset } = request.query
+        const { resource, reference, limit, offset } = request.query
 
-        return request.commentsService.list(url, reference, { limit, offset })
+        return request.commentsService.list(resource, reference, { limit, offset })
       },
       options: {
         validate: {
           query: {
-            url: Joi.string()
+            resource: Joi.string()
               .min(1)
               .required(),
             reference: Joi.string()
@@ -42,7 +59,7 @@ module.exports = {
       options: {
         validate: {
           payload: {
-            url: Joi.string().required(),
+            resource: Joi.string().required(),
             reference: Joi.string().required(),
             content: Joi.string().required(),
             author: Joi.string().required()
