@@ -23,29 +23,24 @@ The Components created use the new React Context API (> 16).
 ### Components
 
 * `<CommentableProvider/>`: To make an area commentable it should be wrapped around a `<CommentableProvider>` component. This component manage the state.
-* `<CommentableTextBlock/>`: Every commentable part should be wrapped around a `<CommentableTextBlock>` component. This is currently the smallest part commentable, all the comments related to his children will be connected to the parent element.
-* `<CommentIcon/>`: Is required to show the action `Icon`. If clicked shows the comments related to the block.
-* `<CommentsBlock/>`: Shows the comments if a `CommentableTextBlock` is selected clicking the `CommentIcon`.
+* `<CommentableBlock/>`: Every commentable part should be wrapped around a `<CommentableBlock>` component. This is currently the smallest part commentable, all the comments related to his children will be connected to the parent element.
 
 #### A page sample
 
 ```
- <CommentableProvider>
-    <div style={{ marginLeft: '20px' }}>
-      <CommentableTextBlock blockId="comm-1">
-        <div style={{ position: 'absolute', left: '-0px' }}>
-          <CommentIcon />
-        </div>
-        <h1>TextBlock 1</h1>
-      </CommentableTextBlock>
-      <CommentableTextBlock blockId="comm-2">
-        <div style={{ position: 'absolute', left: '-0px' }}>
-          <CommentIcon />
-        </div>
+<CommentableProvider
+  resource="main"
+  service={buildService()} // This is a service you must provide
+  eventsManagerComponent={EventsManager} // This prop is optional and must be a descendant of CommentsEventManager
+>
+    <div style={{ marginLeft: '30px' }}>
+      <CommentableBlock referenceId="comm-1">
+        <h1>Text Title 1</h1>
+      </CommentableBlock>
+      <CommentableBlock referenceId="comm-2">
         <p>Paragraphs are separated by a blank line.</p>
-      </CommentableTextBlock>
+      </CommentableBlock>
     </div>
-  <CommentsBlock />
 </CommentableProvider>
 ```
 
