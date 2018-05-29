@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Comments } from '../state/Comments'
 import { CommentableSidebar } from './CommentableSidebar'
+import { CommentableEventsManagerWrapper } from './CommentableEventsManager'
 
 // The context for the Provider
 export const CommentableContext = React.createContext('commentable')
@@ -73,7 +74,7 @@ export class CommentableProvider extends React.Component {
     return (
       <CommentableContext.Provider value={this.state}>
         <CommentableSidebar className={this.props.sidebarClassName} commentComponent={this.props.commentComponent} />
-        {this.props.children}
+        <CommentableEventsManagerWrapper component={this.props.eventsManagerComponent} children={this.props.children} />
       </CommentableContext.Provider>
     )
   }

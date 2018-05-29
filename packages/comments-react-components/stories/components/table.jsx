@@ -50,9 +50,18 @@ export const Table = ({ data, columns }) => (
   </table>
 )
 
-export const CommentLabel = ({ rootRef, handleToggleComment }) => (
-  <div className={commentLabelClassName} ref={rootRef} onDoubleClick={handleToggleComment} onClick={handleToggleComment} />
-)
+export const CommentLabel = ({ rootRef, blockId, events, handleToggleComment }) => {
+  const boundHandleClick = events.onClick.bind(null, { id: blockId, ref: rootRef, scope: 'marker' })
+
+  return (
+    <div
+      className={commentLabelClassName}
+      ref={rootRef}
+      onDoubleClick={handleToggleComment}
+      onClick={boundHandleClick} // eslint-disable-line react/jsx-no-bind
+    />
+  )
+}
 
 export const Cell = ({ id, data }) => (
   <td className={cellClassName}>

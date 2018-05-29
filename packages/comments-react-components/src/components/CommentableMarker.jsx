@@ -3,14 +3,20 @@ import React from 'react'
 import { CommentableIcon, isValidSize } from './CommentableIcon'
 
 export class CommentableMarker extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.boundHandleClick = this.props.events.onClick.bind(null, { id: this.props.blockId, ref: this.props.rootRef, scope: 'marker' })
+  }
+
   render() {
     const MarkerComponent = this.props.markerComponent
-    if (MarkerComponent) return <MarkerComponent rootRef={this.props.rootRef} handleToggleComment={this.props.handleToggleComment} />
+    if (MarkerComponent) return <MarkerComponent {...this.props} />
 
     const { color, width, height } = this.props
 
     return (
-      <span ref={this.props.rootRef} className={this.props.className} onDoubleClick={this.props.handleToggleComment} onClick={this.props.handleToggleComment}>
+      <span ref={this.props.rootRef} className={this.props.className} onClick={this.boundHandleClick}>
         <CommentableIcon width={width} height={height} color={color} id="comment" />
       </span>
     )

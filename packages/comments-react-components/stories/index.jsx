@@ -7,6 +7,7 @@ import { CommentableProvider } from '../src/components/CommentableProvider'
 import { CommentableBlock } from '../src/components/CommentableBlock'
 
 import { sidebarClassName, highlightedBlockClassName } from './components/styling'
+import { EventsManager } from './components/EventsManager'
 
 const chartData = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -56,7 +57,13 @@ function CustomCommentRenderer({ comment }) {
 
 storiesOf('Commentable/Text', module).add('Sample Text', () => (
   <div style={{ margin: '30px' }}>
-    <CommentableProvider resource="sample-text-section" sidebarClassName={sidebarClassName} commentComponent1={CustomCommentRenderer} service={commentService}>
+    <CommentableProvider
+      resource="sample-text-section"
+      service={commentService}
+      sidebarClassName={sidebarClassName}
+      commentComponent={CustomCommentRenderer}
+      eventsManagerComponent={EventsManager}
+    >
       <CommentableBlock referenceId="comm-1" highlightedClassName={highlightedBlockClassName}>
         <h1>TextBlock 1</h1>
       </CommentableBlock>
