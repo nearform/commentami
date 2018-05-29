@@ -19,7 +19,7 @@ describe('CommentsFetchServer', () => {
     const result = await commentsFetchService.getComments('some-resource')
 
     expect(fetch.mock.calls.length).toBe(1)
-    expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments?url=some-resource')
+    expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments?resource=some-resource')
     expect(fetch.mock.calls[0][1]).toEqual({
       method: 'GET',
       headers: {
@@ -35,13 +35,21 @@ describe('CommentsFetchServer', () => {
   })
 
   test('Call the POST comments endpoint returns the commend added', async () => {
-    fetch.mockResponseOnce(JSON.stringify(commentsGETvalid.comments[0]))
-
-    const url = 'some-url'
-    const reference = '12345'
+    const resource = 'page-1'
+    const reference = 'block-10'
     const content = 'some content'
 
-    const result = await commentsFetchService.addComment(url, reference, content)
+    const response = {
+      id: 3,
+      resource,
+      reference,
+      content,
+      author: 'An author',
+      createdAt: '2018-05-29T12:48:17.462Z'
+    }
+    fetch.mockResponseOnce(JSON.stringify(response))
+
+    const result = await commentsFetchService.addComment(resource, reference, content)
 
     expect(fetch.mock.calls.length).toBe(1)
     expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments')
@@ -52,13 +60,13 @@ describe('CommentsFetchServer', () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        url,
+        resource,
         reference,
         content,
         author: 'An author' // This value should be removed and get directly from the session in the server
       })
     })
 
-    expect(result).toEqual(commentsGETvalid.comments[0])
+    expect(result).toEqual(response)
   })
 })
