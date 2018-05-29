@@ -3,62 +3,67 @@ import warning from 'warning'
 
 import { CommentableContext } from './CommentableProvider'
 import { CommentableMarker } from './CommentableMarker'
-
-export const CommentableBlockContext = React.createContext('commentableTextBlock')
+import { CommentableEventsContext } from './CommentableEventsManager'
 
 class CommentableBlockComponent extends React.Component {
   constructor(props) {
     super(props)
 
     this.referenceId = this.props.referenceId
-    this.blockRef = React.createRef()
+    this.rootRef = React.createRef()
     this.markerRef = React.createRef()
 
-    this.boundHandleDoubleClick = this.handleDoubleClick.bind(this)
-    this.boundHandleToggleComment = this.handleToggleComment.bind(this)
+    /*
+      Bind events to the current component
+      Note: the events have already be bound on the eventsmanager, which means the new bind will append arguments but will not change the scope of this.
+      See: https://stackoverflow.com/questions/20925138/bind-more-arguments-of-an-already-bound-function-in-javascript#comment31419400_20925268
+    */
+    const events = this.props.events
+    const payload = { id: this.referenceId, ref: this.rootRef, scope: 'block' }
+    this.boundHandleClick = events.onClick.bind(null, payload)
+    this.boundHandleContextMenu = events.onContextMenu.bind(null, payload)
+    this.boundHandleDoubleClick = events.onDoubleClick.bind(null, payload)
+    this.boundHandleMouseEnter = events.onMouseEnter.bind(null, payload)
+    this.boundHandleMouseLeave = events.onMouseLeave.bind(null, payload)
+    this.boundHandleSelect = events.onSelect.bind(null, payload)
   }
 
   get hasCommentable() {
-    return this.props.commentable && typeof this.props.commentable.getBlockComments === 'function'
+    // This check works since the consumer will provide the context default value, which is 'commentable'
+    return this.props.commentable !== 'commentable'
   }
 
   get hasComments() {
-    return this.hasCommentable && !!this.props.commentable.getBlockComments(this.referenceId).length
+    return this.hasCommentable && !!this.props.commentable.getReferenceComments(this.referenceId).length
   }
 
   get isToggled() {
-    return this.props.commentable.toggledBlock === this.referenceId
-  }
-
-  handleDoubleClick(e) {
-    e.preventDefault()
-    this.props.commentable.toggleComments(this.referenceId)
-
-    const sel = window.getSelection()
-    sel.removeAllRanges()
-  }
-
-  handleToggleComment(e) {
-    e.preventDefault()
-    this.props.commentable.toggleComments(this.referenceId)
+    return this.props.commentable.toggledReference === this.referenceId
   }
 
   componentDidMount() {
-    warning(this.hasCommentable, 'The CommentableTextBlock component should be inside a CommentableProvider')
-    const rootElement = this.blockRef.current
+    warning(this.hasCommentable, 'The CommentableBlock component should be inside a CommentableProvider')
+    const rootElement = this.rootRef.current
 
     if (window.getComputedStyle(rootElement).getPropertyValue('position') === 'static') rootElement.style.position = 'relative'
   }
 
   render() {
-    if (!this.hasCommentable) {
-      return false
-    }
+    if (!this.hasCommentable) return false
 
     return (
-      <div ref={this.blockRef} className={this.props[this.isToggled ? 'highlightedClassName' : 'className']} onDoubleClick={this.boundHandleDoubleClick}>
+      <div
+        ref={this.rootRef}
+        className={this.props[this.isToggled ? 'highlightedClassName' : 'className']}
+        onClick={this.boundHandleClick}
+        onContextMenu={this.boundHandleContextMenu}
+        onDoubleClick={this.boundHandleDoubleClick}
+        onMouseEnter={this.boundHandleMouseEnter}
+        onMouseLeave={this.boundHandleMouseLeave}
+        onSelect={this.boundHandleSelect}
+      >
         {this.hasComments && (
-          <CommentableMarker rootRef={this.markerRef} markerComponent={this.props.markerComponent} handleToggleComment={this.boundHandleToggleComment} />
+          <CommentableMarker referenceId={this.referenceId} rootRef={this.markerRef} markerComponent={this.props.markerComponent} events={this.props.events} />
         )}
         {this.props.children}
       </div>
@@ -71,9 +76,13 @@ export class CommentableBlock extends React.Component {
     return (
       <CommentableContext.Consumer>
         {commentable => (
-          <CommentableBlockComponent {...this.props} commentable={commentable}>
-            {this.props.children}
-          </CommentableBlockComponent>
+          <CommentableEventsContext.Consumer>
+            {events => (
+              <CommentableBlockComponent {...this.props} commentable={commentable} events={events}>
+                {this.props.children}
+              </CommentableBlockComponent>
+            )}
+          </CommentableEventsContext.Consumer>
         )}
       </CommentableContext.Consumer>
     )

@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Comments } from '../state/Comments'
 import { CommentableSidebar } from './CommentableSidebar'
+import { CommentableEventsManagerWrapper } from './CommentableEventsManager'
 
 // The context for the Provider
 export const CommentableContext = React.createContext('commentable')
@@ -9,17 +10,16 @@ export const CommentableContext = React.createContext('commentable')
 export class CommentableProvider extends React.Component {
   constructor(props) {
     super(props)
-    this.commentsTextBlock = []
     this.logger = this.props.logger || console
 
     this.comments = new Comments(this.props.service)
 
     this.state = {
       logger: this.logger,
-      toggledBlock: null,
+      toggledReference: null,
 
-      // Return the list of commend for a specific block
-      getBlockComments: this.comments.getBlockComments.bind(this.comments),
+      // Return the list of commend for a specific reference
+      getReferenceComments: this.comments.getReferenceComments.bind(this.comments),
 
       // Actions
       addComment: this.addComment.bind(this),
@@ -47,7 +47,7 @@ export class CommentableProvider extends React.Component {
   }
 
   toggleComments(referenceId) {
-    this.setState(() => ({ toggledBlock: !referenceId || this.state.toggledBlock === referenceId ? null : referenceId }))
+    this.setState(() => ({ toggledReference: !referenceId || this.state.toggledReference === referenceId ? null : referenceId }))
   }
 
   async refreshCommentList() {
@@ -73,7 +73,7 @@ export class CommentableProvider extends React.Component {
     return (
       <CommentableContext.Provider value={this.state}>
         <CommentableSidebar className={this.props.sidebarClassName} commentComponent={this.props.commentComponent} />
-        {this.props.children}
+        <CommentableEventsManagerWrapper component={this.props.eventsManagerComponent} children={this.props.children} />
       </CommentableContext.Provider>
     )
   }

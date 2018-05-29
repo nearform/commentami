@@ -28,7 +28,7 @@ class CommentableSidebarComponent extends React.Component {
   handleAddComment() {
     const value = (this.textareaRef.current.value || '').trim()
 
-    if (value) this.props.commentable.addComment(this.props.commentable.toggledBlock, this.textareaRef.current.value)
+    if (value) this.props.commentable.addComment(this.props.commentable.toggledReference, this.textareaRef.current.value)
     this.textareaRef.current.value = ''
   }
 
@@ -47,7 +47,7 @@ class CommentableSidebarComponent extends React.Component {
   }
 
   render() {
-    const comments = this.props.commentable.getBlockComments(this.props.commentable.toggledBlock)
+    const comments = this.props.commentable.getReferenceComments(this.props.commentable.toggledReference)
     const CommentComponent = this.props.commentComponent || DefaultCommentComponent
 
     return (
@@ -73,16 +73,14 @@ class CommentableSidebarComponent extends React.Component {
 }
 
 export class CommentableSidebar extends React.Component {
-  componentWillMount() {
-    this.target = document.getElementById('comments-sidebar-root')
+  constructor(props) {
+    super(props)
+
+    this.target = document.getElementById('comments-sidebar-container')
 
     if (!this.target) {
       this.target = document.createElement('div')
-      this.target.id = 'comments-sidebar-root'
-      this.target.style.position = 'fixed'
-      this.target.style.right = 0
-      this.target.style.top = 0
-
+      this.target.id = 'comments-sidebar-container'
       document.body.append(this.target)
     }
   }
@@ -90,7 +88,7 @@ export class CommentableSidebar extends React.Component {
   render() {
     return (
       <CommentableContext.Consumer>
-        {commentable => commentable.toggledBlock && createPortal(<CommentableSidebarComponent {...this.props} commentable={commentable} />, this.target)}
+        {commentable => commentable.toggledReference && createPortal(<CommentableSidebarComponent {...this.props} commentable={commentable} />, this.target)}
       </CommentableContext.Consumer>
     )
   }

@@ -29,12 +29,12 @@ describe('Comments', () => {
       expect(comments.size()).toBe(1)
     })
 
-    test('the size of the list of comments related to block comm-1 should be 1', () => {
-      expect(comments.getBlockComments('comm-1').length).toBe(1)
+    test('the size of the list of comments related to reference comm-1 should be 1', () => {
+      expect(comments.getReferenceComments('comm-1').length).toBe(1)
     })
 
     test('the comment should be added correctly', () => {
-      expect(comments.getBlockComments('comm-1')[0]).toEqual({
+      expect(comments.getReferenceComments('comm-1')[0]).toEqual({
         author: 'someauthor',
         content: 'somecontent',
         id: 1,
@@ -43,7 +43,7 @@ describe('Comments', () => {
     })
   })
 
-  describe('Get comments by block', () => {
+  describe('Get comments by reference', () => {
     let comments
     beforeEach(() => {
       comments = new Comments(new CommentsInMemoryService())
@@ -58,21 +58,21 @@ describe('Comments', () => {
       expect(comments.size()).toBe(5)
     })
 
-    test('the size of the list of comments related to block comm-1 should be 3', () => {
-      expect(comments.getBlockComments('comm-1').length).toBe(3)
+    test('the size of the list of comments related to reference comm-1 should be 3', () => {
+      expect(comments.getReferenceComments('comm-1').length).toBe(3)
     })
 
-    test('the size of the list of comments related to block comm-2 should be 2', () => {
-      expect(comments.getBlockComments('comm-2').length).toBe(2)
+    test('the size of the list of comments related to reference comm-2 should be 2', () => {
+      expect(comments.getReferenceComments('comm-2').length).toBe(2)
     })
 
     test('the comments should be returned correctly', () => {
-      expect(comments.getBlockComments('comm-1')[0].content).toBe('somecontent 1')
-      expect(comments.getBlockComments('comm-1')[1].content).toBe('somecontent 2')
-      expect(comments.getBlockComments('comm-1')[2].content).toBe('somecontent 5')
+      expect(comments.getReferenceComments('comm-1')[0].content).toBe('somecontent 1')
+      expect(comments.getReferenceComments('comm-1')[1].content).toBe('somecontent 2')
+      expect(comments.getReferenceComments('comm-1')[2].content).toBe('somecontent 5')
 
-      expect(comments.getBlockComments('comm-2')[0].content).toBe('somecontent 3')
-      expect(comments.getBlockComments('comm-2')[1].content).toBe('somecontent 4')
+      expect(comments.getReferenceComments('comm-2')[0].content).toBe('somecontent 3')
+      expect(comments.getReferenceComments('comm-2')[1].content).toBe('somecontent 4')
     })
   })
 })
