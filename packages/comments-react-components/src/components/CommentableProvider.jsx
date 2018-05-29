@@ -36,7 +36,7 @@ export class CommentableProvider extends React.Component {
   async addComment(reference, content) {
     try {
       await this.comments.addComment({
-        url: this.getCurrentResource(),
+        resource: this.getCurrentResource(),
         reference,
         content
       })

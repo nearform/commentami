@@ -17,17 +17,17 @@ export class Comments {
     return this.comments.length
   }
 
-  async refresh(url) {
-    const result = await this.service.getComments(url)
+  async refresh(resource) {
+    const result = await this.service.getComments(resource)
     this.comments = []
     result.forEach(comment => this.comments.push(new Comment(comment.id, comment.reference, comment.content, comment.author)))
   }
 
-  async addComment({ url, reference, content }) {
-    const result = await this.service.addComment(url, reference, content)
+  async addComment({ resource, reference, content }) {
+    const result = await this.service.addComment(resource, reference, content)
 
     // FIXME Refresh the list at every add, optimize this
-    await this.refresh(url)
+    await this.refresh(resource)
     return result
   }
 
