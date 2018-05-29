@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { CommentableIcon, isValidSize } from './CommentableIcon'
+import { CommentableIcon } from './CommentableIcon'
 
 export class CommentableMarker extends React.Component {
   constructor(props) {
@@ -16,20 +16,9 @@ export class CommentableMarker extends React.Component {
     const { color, width, height } = this.props
 
     return (
-      <span ref={this.props.rootRef} className={this.props.className} onClick={this.boundHandleClick}>
+      <span ref={this.props.rootRef} className={this.props.className || 'comments-marker'} onClick={this.boundHandleClick}>
         <CommentableIcon width={width} height={height} color={color} id="comment" />
       </span>
     )
-  }
-
-  componentDidMount() {
-    if (!this.props.className && !this.props.markerComponent) {
-      const rootElement = this.props.rootRef.current
-      const width = isValidSize(this.props.width) ? CommentableIcon.defaultSize : 22
-
-      rootElement.style.position = 'absolute'
-      rootElement.style.top = 0
-      rootElement.style.left = `-${width}px`
-    }
   }
 }

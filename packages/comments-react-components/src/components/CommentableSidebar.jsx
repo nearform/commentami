@@ -73,16 +73,14 @@ class CommentableSidebarComponent extends React.Component {
 }
 
 export class CommentableSidebar extends React.Component {
-  componentWillMount() {
-    this.target = document.getElementById('comments-sidebar-root')
+  constructor(props) {
+    super(props)
+
+    this.target = document.getElementById('comments-sidebar-container')
 
     if (!this.target) {
       this.target = document.createElement('div')
-      this.target.id = 'comments-sidebar-root'
-      this.target.style.position = 'fixed'
-      this.target.style.right = 0
-      this.target.style.top = 0
-
+      this.target.id = 'comments-sidebar-container'
       document.body.append(this.target)
     }
   }

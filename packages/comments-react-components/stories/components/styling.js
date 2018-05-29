@@ -1,4 +1,16 @@
-import { style } from 'typestyle'
+import { style, cssRule } from 'typestyle'
+
+cssRule('#comments-sidebar-container', {
+  position: 'fixed',
+  right: 0,
+  top: 0
+})
+
+cssRule('.comments-marker', {
+  position: 'absolute',
+  top: 0,
+  left: `-22px`
+})
 
 export const sidebarClassName = style({
   backgroundColor: '#E0E0E0',
