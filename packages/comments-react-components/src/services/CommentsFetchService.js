@@ -20,7 +20,7 @@ export function CommentsFetchService(baseUrl) {
 
   const getComments = async (url) => {
     const options = {
-      method: 'get',
+      method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
