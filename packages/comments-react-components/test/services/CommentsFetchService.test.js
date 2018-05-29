@@ -34,6 +34,22 @@ describe('CommentsFetchServer', () => {
     expect(result[2]).toEqual(commentsGETvalid.comments[2])
   })
 
+  test('Call the DELETE comments endpoint returns a valid structure', async () => {
+    fetch.mockResponseOnce(JSON.stringify({ success: true }))
+
+    await commentsFetchService.removeComment('comm-1')
+
+    expect(fetch.mock.calls.length).toBe(1)
+    expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments/comm-1')
+    expect(fetch.mock.calls[0][1]).toEqual({
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+  })
+
   test('Call the POST comments endpoint returns the commend added', async () => {
     const resource = 'page-1'
     const reference = 'block-10'
