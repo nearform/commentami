@@ -9,8 +9,6 @@ export class CommentableEventsManager extends React.Component {
   constructor(props) {
     super(props)
 
-    this.context = React.createContext('context')
-
     this.state = {
       onClick: this.handleOnClick.bind(this),
       onContextMenu: this.handleOnContextMenu.bind(this),
