@@ -10,16 +10,16 @@ class CommentableBlockComponent extends React.Component {
     super(props)
 
     this.referenceId = this.props.referenceId
-    this.blockRef = React.createRef()
+    this.rootRef = React.createRef()
     this.markerRef = React.createRef()
 
     /*
-      Bind events to the current block
+      Bind events to the current component
       Note: the events have already be bound on the eventsmanager, which means the new bind will append arguments but will not change the scope of this.
       See: https://stackoverflow.com/questions/20925138/bind-more-arguments-of-an-already-bound-function-in-javascript#comment31419400_20925268
     */
     const events = this.props.events
-    const payload = { id: this.blockId, ref: this.blockRef, scope: 'block' }
+    const payload = { id: this.referenceId, ref: this.rootRef, scope: 'block' }
     this.boundHandleClick = events.onClick.bind(null, payload)
     this.boundHandleContextMenu = events.onContextMenu.bind(null, payload)
     this.boundHandleDoubleClick = events.onDoubleClick.bind(null, payload)
@@ -34,16 +34,16 @@ class CommentableBlockComponent extends React.Component {
   }
 
   get hasComments() {
-    return this.hasCommentable && !!this.props.commentable.getBlockComments(this.referenceId).length
+    return this.hasCommentable && !!this.props.commentable.getReferenceComments(this.referenceId).length
   }
 
   get isToggled() {
-    return this.props.commentable.toggledBlock === this.referenceId
+    return this.props.commentable.toggledReference === this.referenceId
   }
 
   componentDidMount() {
-    warning(this.hasCommentable, 'The CommentableTextBlock component should be inside a CommentableProvider')
-    const rootElement = this.blockRef.current
+    warning(this.hasCommentable, 'The CommentableBlock component should be inside a CommentableProvider')
+    const rootElement = this.rootRef.current
 
     if (window.getComputedStyle(rootElement).getPropertyValue('position') === 'static') rootElement.style.position = 'relative'
   }
@@ -53,7 +53,7 @@ class CommentableBlockComponent extends React.Component {
 
     return (
       <div
-        ref={this.blockRef}
+        ref={this.rootRef}
         className={this.props[this.isToggled ? 'highlightedClassName' : 'className']}
         onClick={this.boundHandleClick}
         onContextMenu={this.boundHandleContextMenu}
@@ -63,7 +63,7 @@ class CommentableBlockComponent extends React.Component {
         onSelect={this.boundHandleSelect}
       >
         {this.hasComments && (
-          <CommentableMarker blockId={this.blockId} rootRef={this.markerRef} markerComponent={this.props.markerComponent} events={this.props.events} />
+          <CommentableMarker referenceId={this.referenceId} rootRef={this.markerRef} markerComponent={this.props.markerComponent} events={this.props.events} />
         )}
         {this.props.children}
       </div>

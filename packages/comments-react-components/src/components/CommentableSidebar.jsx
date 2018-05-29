@@ -28,7 +28,7 @@ class CommentableSidebarComponent extends React.Component {
   handleAddComment() {
     const value = (this.textareaRef.current.value || '').trim()
 
-    if (value) this.props.commentable.addComment(this.props.commentable.toggledBlock, this.textareaRef.current.value)
+    if (value) this.props.commentable.addComment(this.props.commentable.toggledReference, this.textareaRef.current.value)
     this.textareaRef.current.value = ''
   }
 
@@ -47,7 +47,7 @@ class CommentableSidebarComponent extends React.Component {
   }
 
   render() {
-    const comments = this.props.commentable.getBlockComments(this.props.commentable.toggledBlock)
+    const comments = this.props.commentable.getReferenceComments(this.props.commentable.toggledReference)
     const CommentComponent = this.props.commentComponent || DefaultCommentComponent
 
     return (
@@ -90,7 +90,7 @@ export class CommentableSidebar extends React.Component {
   render() {
     return (
       <CommentableContext.Consumer>
-        {commentable => commentable.toggledBlock && createPortal(<CommentableSidebarComponent {...this.props} commentable={commentable} />, this.target)}
+        {commentable => commentable.toggledReference && createPortal(<CommentableSidebarComponent {...this.props} commentable={commentable} />, this.target)}
       </CommentableContext.Consumer>
     )
   }

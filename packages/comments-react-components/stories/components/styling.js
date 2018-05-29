@@ -33,6 +33,6 @@ export const sidebarClassName = style({
   }
 })
 
-export const highlightedBlockClassName = style({
+export const highlightedReferenceClassName = style({
   backgroundColor: '#e3ead4'
 })

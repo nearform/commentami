@@ -32,7 +32,7 @@ export class Comments {
   }
 
   // FIXME Currently uses the local list, further improvement allow to refresh the list from the server
-  getBlockComments(referenceId) {
+  getReferenceComments(referenceId) {
     return this.comments.filter(comment => comment.reference === referenceId)
   }
 }

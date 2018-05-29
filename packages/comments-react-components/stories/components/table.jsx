@@ -50,8 +50,8 @@ export const Table = ({ data, columns }) => (
   </table>
 )
 
-export const CommentLabel = ({ rootRef, blockId, events, handleToggleComment }) => {
-  const boundHandleClick = events.onClick.bind(null, { id: blockId, ref: rootRef, scope: 'marker' })
+export const CommentLabel = ({ rootRef, referenceId, events, handleToggleComment }) => {
+  const boundHandleClick = events.onClick.bind(null, { id: referenceId, ref: rootRef, scope: 'marker' })
 
   return (
     <div

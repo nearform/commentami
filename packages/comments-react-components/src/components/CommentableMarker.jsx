@@ -6,7 +6,7 @@ export class CommentableMarker extends React.Component {
   constructor(props) {
     super(props)
 
-    this.boundHandleClick = this.props.events.onClick.bind(null, { id: this.props.blockId, ref: this.props.rootRef, scope: 'marker' })
+    this.boundHandleClick = this.props.events.onClick.bind(null, { id: this.props.referenceId, ref: this.props.rootRef, scope: 'marker' })
   }
 
   render() {
