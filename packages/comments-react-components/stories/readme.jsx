@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react'
 import { CommentableProvider } from '../src/components/CommentableProvider'
 import { CommentableBlock } from '../src/components/CommentableBlock'
 
-import { CommentsInMemoryService } from './helpers/CommentsInMemoryService'
+import { CommentsInMemoryService } from '../test/helpers/CommentsInMemoryService'
 
 const commentService = CommentsInMemoryService()
 

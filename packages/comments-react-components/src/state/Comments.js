@@ -23,6 +23,13 @@ export class Comments {
     result.forEach(comment => this.comments.push(new Comment(comment.id, comment.reference, comment.content, comment.author)))
   }
 
+  async removeComment({ resource, commentId }) {
+    await this.service.removeComment(commentId)
+
+    // FIXME Refresh the list at every add, optimize this
+    await this.refresh(resource)
+  }
+
   async addComment({ resource, reference, content }) {
     const result = await this.service.addComment(resource, reference, content)
 

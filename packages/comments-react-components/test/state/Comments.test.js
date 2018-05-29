@@ -19,7 +19,7 @@ describe('Comments', () => {
     beforeEach(async () => {
       comments = new Comments(new CommentsInMemoryService())
       await comments.addComment({
-        url: 'url1',
+        resource: 'page-1',
         reference: 'comm-1',
         content: 'somecontent'
       })
@@ -40,6 +40,36 @@ describe('Comments', () => {
         id: 1,
         reference: 'comm-1'
       })
+    })
+  })
+
+  describe('Removing a comment', () => {
+    let comments
+    beforeEach(async () => {
+      comments = new Comments(new CommentsInMemoryService())
+      await comments.addComment({
+        resource: 'page-1',
+        reference: 'comm-2',
+        content: 'somecontent'
+      })
+      await comments.addComment({
+        resource: 'page-1',
+        reference: 'comm-3',
+        content: 'another'
+      })
+      await comments.removeComment({
+        resource: 'page-1',
+        commentId: 1
+      })
+    })
+
+    test('the size should be 1', () => {
+      expect(comments.size()).toBe(1)
+    })
+
+    test('the size of the list of comments related to reference comm-1 should be 1', () => {
+      expect(comments.getReferenceComments('comm-2').length).toBe(0)
+      expect(comments.getReferenceComments('comm-3').length).toBe(1)
     })
   })
 
