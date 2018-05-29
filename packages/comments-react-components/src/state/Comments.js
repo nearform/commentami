@@ -18,28 +18,17 @@ export class Comments {
   }
 
   async refresh(url) {
-    try {
-      const result = await this.service.getComments(url)
-      this.comments = []
-      result.forEach(comment => this.comments.push(new Comment(comment.id, comment.reference, comment.content, comment.author)))
-    } catch (e) {
-      throw new Error(e)
-    }
+    const result = await this.service.getComments(url)
+    this.comments = []
+    result.forEach(comment => this.comments.push(new Comment(comment.id, comment.reference, comment.content, comment.author)))
   }
 
   async addComment({ url, reference, content }) {
-    try {
-      const result = await this.service.addComment(url, reference, content)
+    const result = await this.service.addComment(url, reference, content)
 
-      // FIXME Refresh the list at every add, optimize this
-      await this.refresh(url)
-      return result
-    } catch (e) {
-      return {
-        status: 'ERROR',
-        error: e.message
-      }
-    }
+    // FIXME Refresh the list at every add, optimize this
+    await this.refresh(url)
+    return result
   }
 
   // FIXME Currently uses the local list, further improvement allow to refresh the list from the server

@@ -1,9 +1,7 @@
 export const CommentsInMemoryService = () => {
-  // Temporary storage
-  let comments = []
+  let commentIdProg = 1
 
-  // A mock id generator
-  let commentIdProg = 10
+  let comments = []
 
   function getCommentId() {
     return commentIdProg++
@@ -16,9 +14,7 @@ export const CommentsInMemoryService = () => {
     return newComment
   }
 
-  const getComments = async (url) => {
-    return comments.filter(comment => comment.url === url)
-  }
+  const getComments = async (url) => comments.filter(comment => comment.url === url)
 
   return {
     addComment,
