@@ -7,7 +7,7 @@ const commentsHapiPlugin = {
   version: '1.0.0',
   register: async function(server, options) {
     const db = buildPool(config.pg)
-    const commentsService = buildCommentsService(db)
+    const commentsService = buildCommentsService(db, options)
 
     server.decorate('server', 'commentsService', commentsService)
     server.decorate('request', 'commentsService', commentsService)

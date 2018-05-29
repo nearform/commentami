@@ -36,6 +36,10 @@ describe('Server', () => {
         expect(response.statusCode).to.equal(200)
         const result = JSON.parse(response.payload)
 
+        expect(result.createdAt).to.exists()
+        delete result.createdAt
+        delete created.createdAt
+
         expect(result).to.equal(created)
       })
     })

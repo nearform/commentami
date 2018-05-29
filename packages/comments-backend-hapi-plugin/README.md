@@ -15,10 +15,14 @@ npm install @nearform/comments-backend-hapi-plugin
 ```javascript
 const main = async function() {
   const server = require('hapi').Server({ host: 'localhost', port: 80 })
+  const options = {
+    fetchedComment: [async] (comment) => { ... }// optional async function or function returning a Promise
+    fetchedComments: [async] (comments) => { ... } // optional async function or function returning a Promise
+  }
 
   await server.register([
     {
-      plugin: require('@nearform/comments-backend-hapi-plugin')
+      plugin: require('@nearform/comments-backend-hapi-plugin', options)
     }
   ])
 
@@ -30,6 +34,12 @@ main().catch(console.error)
 ```
 
 Comments route will be then accessible on the `/comments` path.
+
+### Hooks
+
+When adding the `comments-backend-hapi-plugin` you can pass some hooks. These hooks should be intended as decorators of a single comment (`fetchedComment`) or a list of comments (`fetchedComments`).
+
+Those 2 functions should be either async or return a promise that will yeld the final augmented comment/comments list as its result.
 
 ## License
 
