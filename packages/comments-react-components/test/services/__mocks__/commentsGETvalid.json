@@ -1,0 +1,31 @@
+{
+  "comments": [
+    {
+      "id": 3,
+      "url": "sample-table-section",
+      "reference": "5b08197d07be2a06a44044b2-email",
+      "content": "dasd",
+      "author": "An author",
+      "createdAt": "2018-05-29T12:48:17.462Z"
+    },
+    {
+      "id": 2,
+      "url": "sample-table-section",
+      "reference": "5b08197dffe60b077e0835fc-email",
+      "content": "Oila",
+      "author": "An author",
+      "createdAt": "2018-05-29T12:04:35.371Z"
+    },
+    {
+      "id": 1,
+      "url": "sample-table-section",
+      "reference": "5b08197d07be2a06a44044b2-email",
+      "content": "dasdasd",
+      "author": "An author",
+      "createdAt": "2018-05-29T12:04:26.387Z"
+    }
+  ],
+  "total": 3,
+  "limit": 100,
+  "offset": 0
+}

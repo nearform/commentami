@@ -10,6 +10,6 @@ module.exports = {
     expect: true,
     beforeEach: true,
     afterEach: true,
-    prompt: true
+    fetch: true
   }
 }

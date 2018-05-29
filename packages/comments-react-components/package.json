@@ -40,6 +40,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "chart.js": "^1.1.1",
     "jest": "^23.0.0",
+    "jest-fetch-mock": "^1.6.2",
     "react-chartjs": "^1.2.0",
     "typestyle": "^2.0.1",
     "webpack": "^3.12.0"
