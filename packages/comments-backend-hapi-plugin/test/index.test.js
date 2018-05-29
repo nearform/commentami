@@ -5,7 +5,7 @@ const Lab = require('lab')
 const { random, lorem, name, internet } = require('faker')
 
 module.exports.lab = Lab.script()
-const { describe, it: test, before, after, beforeEach } = module.exports.lab
+const { describe, it: test, before, after } = module.exports.lab
 
 const { resetDb } = require('../../comments-backend-core/test/utils')
 const buildServer = require('./test-server')
@@ -16,33 +16,48 @@ describe('Comments REST API', () => {
   before(async () => {
     await resetDb()
     server = await buildServer()
+
+    this.resource = internet.url()
+    this.reference = random.uuid()
+
+    const comments = new Array(20).fill(0).map((v, i) => ({
+      resource: this.resource,
+      reference: i === 0 ? this.reference : random.uuid(),
+      content: lorem.words(),
+      author: name.firstName()
+    }))
+
+    return Promise.all(comments.map(comment => server.commentsService.add(comment)))
   })
 
   after(async () => {
     return server.stop()
   })
 
-  describe('GET /comments', () => {
-    beforeEach(() => {
-      this.url = internet.url()
-      this.reference = random.uuid()
+  describe('GET /comments-references/{resource}', () => {
+    test('it should list all resource refereces', async () => {
+      const response = await server.inject({
+        method: 'GET',
+        url: `/comments-references/${this.resource}`
+      })
 
-      const comments = new Array(20).fill(0).map((v, i) => ({
-        url: this.url,
-        reference: i === 0 ? this.reference : random.uuid(),
-        content: lorem.words(),
-        author: name.firstName()
-      }))
+      expect(response.statusCode).to.equal(200)
+      const result = JSON.parse(response.payload)
 
-      return Promise.all(comments.map(comment => server.commentsService.add(comment)))
+      expect(result.resource).to.equal(this.resource)
+      expect(result.references).to.be.array()
+      expect(result.references.length).to.equal(20)
+      expect(result.references).to.include(this.reference)
     })
+  })
 
+  describe('GET /comments', () => {
     test('it should search comments by url and return them with 200', async () => {
-      const all = await server.commentsService.list(this.url)
+      const all = await server.commentsService.list(this.resource)
 
       const response = await server.inject({
         method: 'GET',
-        url: `/comments?url=${this.url}&limit=3&offset=5`
+        url: `/comments?resource=${this.resource}&limit=3&offset=5`
       })
 
       expect(response.statusCode).to.equal(200)
@@ -61,7 +76,7 @@ describe('Comments REST API', () => {
     test('it should search comments by url and reference and return them with 200', async () => {
       const response = await server.inject({
         method: 'GET',
-        url: `/comments?url=${this.url}&reference=${this.reference}&limit=3`
+        url: `/comments?resource=${this.resource}&reference=${this.reference}&limit=3`
       })
 
       expect(response.statusCode).to.equal(200)
@@ -83,7 +98,7 @@ describe('Comments REST API', () => {
         method: 'POST',
         url: '/comments',
         payload: {
-          url: 'URL',
+          resource: 'URL',
           reference: 'UUID',
           content: 'MESSAGE',
           author: 'AUTHOR'
@@ -94,7 +109,7 @@ describe('Comments REST API', () => {
       const result = JSON.parse(response.payload)
 
       expect(result).to.include({
-        url: 'URL',
+        resource: 'URL',
         reference: 'UUID',
         content: 'MESSAGE',
         author: 'AUTHOR',
@@ -106,7 +121,7 @@ describe('Comments REST API', () => {
   describe('GET /comments/{id}', () => {
     test('it should retrieve a comment', async () => {
       const created = await server.commentsService.add({
-        url: 'URL',
+        resource: 'URL',
         reference: 'OLD-UUID',
         content: 'OLD-MESSAGE',
         author: 'OLD-AUTHOR'
@@ -131,7 +146,7 @@ describe('Comments REST API', () => {
   describe('PUT /comments/{id}', () => {
     test('it should update a comment', async () => {
       const created = await server.commentsService.add({
-        url: 'URL',
+        resource: 'URL',
         reference: 'OLD-UUID',
         content: 'OLD-MESSAGE',
         author: 'OLD-AUTHOR'
@@ -153,7 +168,7 @@ describe('Comments REST API', () => {
 
       expect(result).to.equal({
         id: created.id,
-        url: 'URL',
+        resource: 'URL',
         reference: 'OLD-UUID',
         content: 'MESSAGE',
         author: 'OLD-AUTHOR'
@@ -164,7 +179,7 @@ describe('Comments REST API', () => {
   describe('DELETE /comments/{id}', () => {
     test('it should delete a comment', async () => {
       const created = await server.commentsService.add({
-        url: 'URL',
+        resource: 'URL',
         reference: 'OLD-UUID',
         content: 'OLD-MESSAGE',
         author: 'OLD-AUTHOR'
