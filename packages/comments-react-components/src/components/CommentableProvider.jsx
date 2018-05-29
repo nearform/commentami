@@ -46,8 +46,8 @@ export class CommentableProvider extends React.Component {
     }
   }
 
-  toggleComments(blockId) {
-    this.setState(() => ({ toggledBlock: !blockId || this.state.toggledBlock === blockId ? null : blockId }))
+  toggleComments(referenceId) {
+    this.setState(() => ({ toggledBlock: !referenceId || this.state.toggledBlock === referenceId ? null : referenceId }))
   }
 
   async refreshCommentList() {

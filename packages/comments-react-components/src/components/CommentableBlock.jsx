@@ -10,7 +10,7 @@ class CommentableBlockComponent extends React.Component {
   constructor(props) {
     super(props)
 
-    this.blockId = this.props.blockId
+    this.referenceId = this.props.referenceId
     this.blockRef = React.createRef()
     this.markerRef = React.createRef()
 
@@ -23,16 +23,16 @@ class CommentableBlockComponent extends React.Component {
   }
 
   get hasComments() {
-    return this.hasCommentable && !!this.props.commentable.getBlockComments(this.blockId).length
+    return this.hasCommentable && !!this.props.commentable.getBlockComments(this.referenceId).length
   }
 
   get isToggled() {
-    return this.props.commentable.toggledBlock === this.blockId
+    return this.props.commentable.toggledBlock === this.referenceId
   }
 
   handleDoubleClick(e) {
     e.preventDefault()
-    this.props.commentable.toggleComments(this.blockId)
+    this.props.commentable.toggleComments(this.referenceId)
 
     const sel = window.getSelection()
     sel.removeAllRanges()
@@ -40,7 +40,7 @@ class CommentableBlockComponent extends React.Component {
 
   handleToggleComment(e) {
     e.preventDefault()
-    this.props.commentable.toggleComments(this.blockId)
+    this.props.commentable.toggleComments(this.referenceId)
   }
 
   componentDidMount() {
