@@ -4,22 +4,35 @@ import { createPortal } from 'react-dom'
 import { CommentableContext } from './CommentableProvider'
 import { CommentableIcon } from './CommentableIcon'
 
-function DefaultCommentComponent({ comment }) {
-  return (
-    <div>
-      <h4>{comment.author} said:</h4>
-      <p>{comment.content}</p>
-    </div>
-  )
+class DefaultCommentComponent extends React.Component {
+  constructor(props) {
+    super(props)
+    this.boundHandleRemove = this.handleRemove.bind(this)
+  }
+
+  handleRemove() {
+    this.props.removeComment && this.props.removeComment(this.props.comment.id)
+  }
+
+  render() {
+    return (
+      <div>
+        <h4>{this.props.comment.author} said:</h4>
+        <p>{this.props.comment.content}</p>
+        <button onClick={this.boundHandleRemove}>Remove</button>
+      </div>
+    )
+  }
 }
 
-class CommentableSidebarComponent extends React.Component {
+export class CommentableSidebarComponent extends React.Component {
   constructor(props) {
     super(props)
 
     this.textareaRef = React.createRef()
 
     this.boundHandleAddComment = this.handleAddComment.bind(this)
+    this.boundHandleRemoveComment = this.handleRemoveComment.bind(this)
     this.boundHandleClearComment = this.handleClearComment.bind(this)
     this.boundHandleKeyPress = this.handleKeyPress.bind(this)
     this.boundHandleHideComments = this.handleHideComments.bind(this)
@@ -30,6 +43,10 @@ class CommentableSidebarComponent extends React.Component {
 
     if (value) this.props.commentable.addComment(this.props.commentable.toggledReference, this.textareaRef.current.value)
     this.textareaRef.current.value = ''
+  }
+
+  handleRemoveComment(commentId) {
+    this.props.commentable.removeComment(commentId)
   }
 
   handleClearComment() {
@@ -65,7 +82,13 @@ class CommentableSidebarComponent extends React.Component {
         <div data-role="comments">
           <h2>Existing comments</h2>
 
-          {comments.map(comment => <CommentComponent key={comment.id} comment={comment} />)}
+          {comments.map(comment => (
+            <CommentComponent
+              key={comment.id}
+              comment={comment}
+              removeComment={this.boundHandleRemoveComment}
+            />
+          ))}
         </div>
       </div>
     )
@@ -88,7 +111,11 @@ export class CommentableSidebar extends React.Component {
   render() {
     return (
       <CommentableContext.Consumer>
-        {commentable => commentable.toggledReference && createPortal(<CommentableSidebarComponent {...this.props} commentable={commentable} />, this.target)}
+        {commentable => commentable.toggledReference && createPortal(
+          <CommentableSidebarComponent
+            {...this.props}
+            commentable={commentable}
+          />, this.target)}
       </CommentableContext.Consumer>
     )
   }

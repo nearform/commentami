@@ -12,6 +12,10 @@ cssRule('.comments-marker', {
   left: `-22px`
 })
 
+export const sidebarClassNameWrapper = style({
+  width: '350px'
+})
+
 export const sidebarClassName = style({
   backgroundColor: '#E0E0E0',
   borderLeft: '2px solid #808080',
