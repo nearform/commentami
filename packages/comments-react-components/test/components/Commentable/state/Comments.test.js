@@ -1,6 +1,6 @@
 import { Comments } from '../../../../src/state/Comments'
 
-import { CommentsInMemoryService } from '../../../../src/services/CommentsInMemoryService'
+import { CommentsInMemoryService } from '../../.././helpers/CommentsInMemoryService'
 
 describe('Comments', () => {
   describe('When a new instance is created', () => {
@@ -37,7 +37,7 @@ describe('Comments', () => {
       expect(comments.getBlockComments('comm-1')[0]).toEqual({
         author: 'someauthor',
         content: 'somecontent',
-        id: 12,
+        id: 10,
         reference: 'comm-1'
       })
     })

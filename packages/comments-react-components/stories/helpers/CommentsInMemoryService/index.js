@@ -1,13 +1,13 @@
-// A mock id generator
-let commentIdProg = 10
-
-function getCommentId() {
-  return commentIdProg++
-}
-
 export const CommentsInMemoryService = () => {
   // Temporary storage
   let comments = []
+
+  // A mock id generator
+  let commentIdProg = 10
+
+  function getCommentId() {
+    return commentIdProg++
+  }
 
   const addComment = async (url, reference, content) => {
     const newComment = { id: getCommentId(), url, reference, content, author: 'someauthor' }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 
-import { CommentsInMemoryService } from '../src/services/CommentsInMemoryService'
+import { CommentsInMemoryService } from './helpers/CommentsInMemoryService'
 import { CommentableProvider } from '../src/components/CommentableProvider'
 
 import sampleData from './data/sample'

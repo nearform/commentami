@@ -2,7 +2,7 @@ import React from 'react'
 import { Bar as BarChart } from 'react-chartjs'
 import { storiesOf } from '@storybook/react'
 
-import { CommentsInMemoryService } from '../src/services/CommentsInMemoryService'
+import { CommentsInMemoryService } from './helpers/CommentsInMemoryService'
 import { CommentableProvider } from '../src/components/CommentableProvider'
 import { CommentableBlock } from '../src/components/CommentableBlock'
 
