@@ -1,4 +1,4 @@
-import { selectCommentsByReference } from '../../src/state/selectors'
+import { selectCommentsByReference, totalCommentsCount } from '../../src/state/selectors'
 import { CommentsState } from '../../src/state/Comments'
 
 import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
@@ -13,7 +13,7 @@ describe('Comments', () => {
 
   describe('When a new instance is created', () => {
     test('the size should be 0', () => {
-      expect(state.comments).toBe(undefined)
+      expect(totalCommentsCount(state)).toBe(0)
     })
   })
 
@@ -30,15 +30,15 @@ describe('Comments', () => {
     })
 
     test('the size should be 1', () => {
-      expect(state.comments.length).toBe(1)
+      expect(totalCommentsCount(state)).toBe(1)
     })
 
     test('the size of the list of comments related to reference comm-1 should be 1', () => {
-      expect(selectCommentsByReference(state.comments, 'comm-1').length).toBe(1)
+      expect(selectCommentsByReference(state, 'comm-1').length).toBe(1)
     })
 
     test('the comment should be added correctly', () => {
-      expect(selectCommentsByReference(state.comments, 'comm-1')[0]).toEqual({
+      expect(selectCommentsByReference(state, 'comm-1')[0]).toEqual({
         author: 'someauthor',
         content: 'somecontent',
         id: 1,
@@ -68,12 +68,12 @@ describe('Comments', () => {
     })
 
     test('the size should be 1', () => {
-      expect(state.comments.length).toBe(1)
+      expect(totalCommentsCount(state)).toBe(1)
     })
 
     test('the size of the list of comments related to reference comm-1 should be 1', () => {
-      expect(selectCommentsByReference(state.comments, 'comm-2').length).toBe(0)
-      expect(selectCommentsByReference(state.comments, 'comm-3').length).toBe(1)
+      expect(selectCommentsByReference(state, 'comm-2').length).toBe(0)
+      expect(selectCommentsByReference(state, 'comm-3').length).toBe(1)
     })
   })
 
@@ -89,24 +89,24 @@ describe('Comments', () => {
     })
 
     test('the size should be 5', () => {
-      expect(state.comments.length).toBe(5)
+      expect(totalCommentsCount(state)).toBe(5)
     })
 
     test('the size of the list of comments related to reference comm-1 should be 3', () => {
-      expect(selectCommentsByReference(state.comments, 'comm-1').length).toBe(3)
+      expect(selectCommentsByReference(state, 'comm-1').length).toBe(3)
     })
 
     test('the size of the list of comments related to reference comm-2 should be 2', () => {
-      expect(selectCommentsByReference(state.comments, 'comm-2').length).toBe(2)
+      expect(selectCommentsByReference(state, 'comm-2').length).toBe(2)
     })
 
     test('the comments should be returned correctly', () => {
-      expect(selectCommentsByReference(state.comments, 'comm-1')[0].content).toBe('somecontent 1')
-      expect(selectCommentsByReference(state.comments, 'comm-1')[1].content).toBe('somecontent 2')
-      expect(selectCommentsByReference(state.comments, 'comm-1')[2].content).toBe('somecontent 5')
+      expect(selectCommentsByReference(state, 'comm-1')[0].content).toBe('somecontent 1')
+      expect(selectCommentsByReference(state, 'comm-1')[1].content).toBe('somecontent 2')
+      expect(selectCommentsByReference(state, 'comm-1')[2].content).toBe('somecontent 5')
 
-      expect(selectCommentsByReference(state.comments, 'comm-2')[0].content).toBe('somecontent 3')
-      expect(selectCommentsByReference(state.comments, 'comm-2')[1].content).toBe('somecontent 4')
+      expect(selectCommentsByReference(state, 'comm-2')[0].content).toBe('somecontent 3')
+      expect(selectCommentsByReference(state, 'comm-2')[1].content).toBe('somecontent 4')
     })
   })
 })

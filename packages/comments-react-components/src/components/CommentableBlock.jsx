@@ -35,7 +35,7 @@ export class CommentableBlockComponent extends React.Component {
   }
 
   get hasComments() {
-    return this.hasCommentable && !!selectCommentsByReference(this.props.commentable.comments, this.referenceId).length
+    return this.hasCommentable && !!selectCommentsByReference(this.props.commentable, this.referenceId).length
   }
 
   get isToggled() {

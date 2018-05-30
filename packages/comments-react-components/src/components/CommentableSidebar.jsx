@@ -65,7 +65,7 @@ export class CommentableSidebarComponent extends React.Component {
   }
 
   render() {
-    const comments = selectCommentsByReference(this.props.commentable.comments, this.props.commentable.toggledReference)
+    const comments = selectCommentsByReference(this.props.commentable, this.props.commentable.toggledReference)
     const CommentComponent = this.props.commentComponent || DefaultCommentComponent
 
     return (
