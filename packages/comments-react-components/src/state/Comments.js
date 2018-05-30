@@ -7,11 +7,15 @@ export class Comment {
   }
 }
 
-export class Comments {
+export class CommentsState {
   constructor(service, setState) {
     this.service = service
     this.setState = setState
     this.comments = []
+  }
+
+  get defaultState() {
+    return this.comments
   }
 
   size() {

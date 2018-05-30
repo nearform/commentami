@@ -1,5 +1,5 @@
 import { selectCommentsByReference } from '../../src/state/selectors'
-import { Comments } from '../../src/state/Comments'
+import { CommentsState } from '../../src/state/Comments'
 
 import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
 
@@ -21,7 +21,7 @@ describe('Comments', () => {
     let comments
 
     beforeEach(async () => {
-      comments = new Comments(new CommentsInMemoryService(), setState)
+      comments = new CommentsState(new CommentsInMemoryService(), setState)
       await comments.addComment({
         resource: 'page-1',
         reference: 'comm-1',
@@ -50,7 +50,7 @@ describe('Comments', () => {
   describe('Removing a comment', () => {
     let comments
     beforeEach(async () => {
-      comments = new Comments(new CommentsInMemoryService(), setState)
+      comments = new CommentsState(new CommentsInMemoryService(), setState)
       await comments.addComment({
         resource: 'page-1',
         reference: 'comm-2',
@@ -80,7 +80,7 @@ describe('Comments', () => {
   describe('Get comments by reference', () => {
     let comments
     beforeEach(() => {
-      comments = new Comments(new CommentsInMemoryService(), setState)
+      comments = new CommentsState(new CommentsInMemoryService(), setState)
       comments.addComment({ url: 'url1', reference: 'comm-1', content: 'somecontent 1' })
       comments.addComment({ url: 'url1', reference: 'comm-1', content: 'somecontent 2' })
       comments.addComment({ url: 'url1', reference: 'comm-2', content: 'somecontent 3' })

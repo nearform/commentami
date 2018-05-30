@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Comments } from '../state/Comments'
+import { CommentsState } from '../state/Comments'
 import { CommentableSidebar } from './CommentableSidebar'
 import { CommentableEventsManagerWrapper } from './CommentableEventsManager'
 
@@ -12,9 +12,10 @@ export class CommentableProvider extends React.Component {
     super(props)
     this.logger = this.props.logger || console
 
-    this.comments = new Comments(this.props.service, this.setState.bind(this))
+    this.commentsState = new CommentsState(this.props.service, this.setState.bind(this))
 
     this.state = {
+      ...this.commentsState.defaultState,
       logger: this.logger,
       toggledReference: null,
 
@@ -33,7 +34,7 @@ export class CommentableProvider extends React.Component {
 
   async removeComment(commentId) {
     try {
-      await this.comments.removeComment({ resource: this.getCurrentResource(), commentId })
+      await this.commentsState.removeComment({ resource: this.getCurrentResource(), commentId })
       this.setState({})
     } catch (e) {
       this.logger.error(e)
@@ -42,7 +43,7 @@ export class CommentableProvider extends React.Component {
 
   async addComment(reference, content) {
     try {
-      await this.comments.addComment({
+      await this.commentsState.addComment({
         resource: this.getCurrentResource(),
         reference,
         content
@@ -59,8 +60,8 @@ export class CommentableProvider extends React.Component {
 
   async refreshCommentList() {
     try {
-      await this.comments.refresh(this.getCurrentResource())
       this.setState({ lastResourceRefreshed: this.getCurrentResource() })
+      await this.commentsState.refresh(this.getCurrentResource())
     } catch (e) {
       this.logger.error(e)
     }

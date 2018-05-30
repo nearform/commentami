@@ -4,7 +4,7 @@ import sleep from 'sleep-promise'
 
 import { CommentableSidebarComponent } from '../../src/components/CommentableSidebar'
 import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
-import { Comments } from '../../src/state/Comments'
+import { CommentsState } from '../../src/state/Comments'
 
 import { sidebarClassName } from '../../stories/components/styling'
 
@@ -25,7 +25,7 @@ describe('CommentableSidebarComponent', () => {
       removeComment: jest.fn()
     }
 
-    const commentObject = new Comments(new CommentsInMemoryService(), setState)
+    const commentObject = new CommentsState(new CommentsInMemoryService(), setState)
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment' })
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 2' })
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 3' })

@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 
 import { CommentableBlockComponent } from '../../src/components/CommentableBlock'
 import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
-import { Comments } from '../../src/state/Comments'
+import { CommentsState } from '../../src/state/Comments'
 
 describe('CommentableBlockComponent', () => {
   let events
@@ -34,7 +34,7 @@ describe('CommentableBlockComponent', () => {
   })
 
   test('if comments are present the block should contain a marker', async () => {
-    const commentObject = new Comments(new CommentsInMemoryService(), setState)
+    const commentObject = new CommentsState(new CommentsInMemoryService(), setState)
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment' })
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 2' })
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 3' })
