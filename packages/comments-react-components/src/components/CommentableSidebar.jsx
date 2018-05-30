@@ -41,7 +41,7 @@ export class CommentableSidebarComponent extends React.Component {
   handleAddComment() {
     const value = (this.textareaRef.current.value || '').trim()
 
-    if (value) this.props.commentable.addComment(this.props.commentable.toggledReference, this.textareaRef.current.value)
+    if (value) this.props.commentable.addComment(this.props.commentable.toggledReference, value)
     this.textareaRef.current.value = ''
   }
 
@@ -95,7 +95,9 @@ export class CommentableSidebarComponent extends React.Component {
   }
 }
 
+// FIXME find a way to test correctly a ContextContainer with a Portal
 export class CommentableSidebar extends React.Component {
+  /* istanbul ignore next */
   constructor(props) {
     super(props)
 
@@ -108,6 +110,7 @@ export class CommentableSidebar extends React.Component {
     }
   }
 
+  /* istanbul ignore next */
   render() {
     return (
       <CommentableContext.Consumer>
