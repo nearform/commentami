@@ -8,7 +8,9 @@ import { sidebarClassName } from '../../stories/components/styling'
 describe('CommentableSidebarComponent', () => {
   let commentable
   let wrapper
-  let formComponent = beforeEach(() => {
+  let formComponent
+
+  beforeEach(() => {
     commentable = {
       toggledReference: 'block-1',
       toggleComments: jest.fn(),
