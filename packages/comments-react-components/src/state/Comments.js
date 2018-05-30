@@ -7,26 +7,25 @@ export class Comment {
   }
 }
 
+const defaultState = { comments: [] }
+
 export class CommentsState {
   constructor(service, setState) {
     this.service = service
     this.setState = setState
-    this.comments = []
+    this.localState = defaultState
   }
 
   get defaultState() {
-    return this.comments
-  }
-
-  size() {
-    return this.comments.length
+    return defaultState
   }
 
   async refresh(resource) {
     const result = await this.service.getComments(resource)
-    this.comments = []
-    result.forEach(comment => this.comments.push(new Comment(comment.id, comment.reference, comment.content, comment.author)))
-    this.setState({ comments: this.comments })
+    const newCommentList = []
+    result.forEach(comment => newCommentList.push(new Comment(comment.id, comment.reference, comment.content, comment.author)))
+    this.localState = Object.assign({}, this.localState, { comments: newCommentList })
+    this.setState(this.localState)
   }
 
   async removeComment({ resource, commentId }) {
