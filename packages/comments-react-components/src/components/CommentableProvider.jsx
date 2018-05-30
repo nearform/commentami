@@ -23,6 +23,7 @@ export class CommentableProvider extends React.Component {
 
       // Actions
       addComment: this.addComment.bind(this),
+      removeComment: this.removeComment.bind(this),
       toggleComments: this.toggleComments.bind(this),
 
       lastResourceRefreshed: null
@@ -31,6 +32,15 @@ export class CommentableProvider extends React.Component {
 
   getCurrentResource() {
     return this.props.resource
+  }
+
+  async removeComment(commentId) {
+    try {
+      await this.comments.removeComment({ resource: this.getCurrentResource(), commentId })
+      this.setState({})
+    } catch (e) {
+      this.logger.error(e)
+    }
   }
 
   async addComment(reference, content) {

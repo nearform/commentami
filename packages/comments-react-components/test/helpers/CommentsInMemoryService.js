@@ -14,10 +14,15 @@ export const CommentsInMemoryService = () => {
     return newComment
   }
 
+  const removeComment = async (commentId) => {
+    comments = comments.filter(comment => comment.id !== commentId)
+  }
+
   const getComments = async (url) => comments.filter(comment => comment.url === url)
 
   return {
     addComment,
+    removeComment,
     getComments
   }
 }

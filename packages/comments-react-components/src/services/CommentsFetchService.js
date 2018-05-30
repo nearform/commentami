@@ -18,6 +18,18 @@ export function CommentsFetchService(baseUrl) {
     return response.json()
   }
 
+  const removeComment = async (commentId) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }
+
+    await fetch(`${baseUrl}comments/${commentId}`, options)
+  }
+
   const getComments = async (url) => {
     const options = {
       method: 'GET',
@@ -33,6 +45,7 @@ export function CommentsFetchService(baseUrl) {
 
   return {
     addComment,
+    removeComment,
     getComments
   }
 }
