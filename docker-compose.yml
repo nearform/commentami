@@ -13,7 +13,6 @@ services:
       NF_COMMENTS_PGHOST: postgres
     volumes:
       - .:/usr/app/
-      - /usr/app/node_modules
   postgres:
     image: postgres:10
     ports:

@@ -157,23 +157,20 @@ describe('Comments', () => {
         content: 'lorm ipsum ....',
         author: 'Filippo'
       }
-      const expected = { success: true }
       const created = await this.commentsService.add(comment)
 
       const result = await this.commentsService.delete(created.id)
-      expect(result).to.equal(expected)
+      expect(result).to.include(comment)
     })
 
     test('deleting a non existed object should return success', async () => {
-      const expected = { success: true }
       const result = await this.commentsService.delete(123)
-      expect(result).to.equal(expected)
+      expect(result).to.be.undefined()
     })
 
     test('deleting without reference should return success', async () => {
-      const expected = { success: true }
       const result = await this.commentsService.delete(null)
-      expect(result).to.equal(expected)
+      expect(result).to.be.undefined()
     })
   })
 

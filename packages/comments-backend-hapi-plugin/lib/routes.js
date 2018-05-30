@@ -53,8 +53,11 @@ module.exports = {
     server.route({
       method: 'POST',
       path: '/comments',
-      handler: function(request, h) {
-        return request.commentsService.add(request.payload)
+      handler: async function(request, h) {
+        const comment = await request.commentsService.add(request.payload)
+        server.methods.notifyComment(comment, { action: 'add' })
+
+        return comment
       },
       options: {
         validate: {
@@ -88,10 +91,13 @@ module.exports = {
     server.route({
       method: 'PUT',
       path: '/comments/{id}',
-      handler: function(request, h) {
+      handler: async function(request, h) {
         const { id } = request.params
 
-        return request.commentsService.update(id, request.payload)
+        const comment = await request.commentsService.update(id, request.payload)
+        server.methods.notifyComment(comment, { action: 'update' })
+
+        return comment
       },
       options: {
         validate: {
@@ -108,10 +114,13 @@ module.exports = {
     server.route({
       method: 'DELETE',
       path: '/comments/{id}',
-      handler: function(request, h) {
+      handler: async function(request, h) {
         const { id } = request.params
 
-        return request.commentsService.delete(id)
+        const comment = await request.commentsService.delete(id)
+        server.methods.notifyComment(comment, { action: 'delete' })
+
+        return { success: true }
       },
       options: {
         validate: {

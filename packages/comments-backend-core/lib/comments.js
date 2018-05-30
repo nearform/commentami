@@ -69,13 +69,21 @@ module.exports = function buildCommentsService(db, hooks = {}) {
   }
 
   async function deleteComment(id) {
+    let comment
     if (!id) {
-      return { success: true }
+      return
     }
 
-    const sql = SQL`DELETE FROM comment WHERE id = ${id}`
-    await db.query(sql)
-    return { success: true }
+    const selectSql = SQL`SELECT * FROM comment WHERE id = ${id}`
+    const res = await db.query(selectSql)
+    if (res.rowCount === 1) {
+      comment = res.rows[0]
+    }
+
+    const deleteSql = SQL`DELETE FROM comment WHERE id = ${id}`
+    await db.query(deleteSql)
+
+    return comment
   }
 
   async function listComments(resource, reference = null, options = {}) {
