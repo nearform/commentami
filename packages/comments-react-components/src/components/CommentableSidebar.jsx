@@ -11,7 +11,7 @@ class DefaultCommentComponent extends React.Component {
   }
 
   handleRemove() {
-    this.props.removeComment && this.props.removeComment(this.props.comment.id)
+    this.props.onRemoveComment && this.props.onRemoveComment(this.props.comment.id)
   }
 
   render() {
@@ -86,7 +86,7 @@ export class CommentableSidebarComponent extends React.Component {
             <CommentComponent
               key={comment.id}
               comment={comment}
-              removeComment={this.boundHandleRemoveComment}
+              onRemoveComment={this.boundHandleRemoveComment}
             />
           ))}
         </div>
