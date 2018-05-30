@@ -12,14 +12,11 @@ export class CommentableProvider extends React.Component {
     super(props)
     this.logger = this.props.logger || console
 
-    this.comments = new Comments(this.props.service)
+    this.comments = new Comments(this.props.service, this.setState.bind(this))
 
     this.state = {
       logger: this.logger,
       toggledReference: null,
-
-      // Return the list of commend for a specific reference
-      getReferenceComments: this.comments.getReferenceComments.bind(this.comments),
 
       // Actions
       addComment: this.addComment.bind(this),

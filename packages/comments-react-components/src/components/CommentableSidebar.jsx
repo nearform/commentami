@@ -1,6 +1,7 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
 
+import { selectCommentsByReference } from '../state/selectors'
 import { CommentableContext } from './CommentableProvider'
 import { CommentableIcon } from './CommentableIcon'
 
@@ -64,7 +65,7 @@ export class CommentableSidebarComponent extends React.Component {
   }
 
   render() {
-    const comments = this.props.commentable.getReferenceComments(this.props.commentable.toggledReference)
+    const comments = selectCommentsByReference(this.props.commentable.comments, this.props.commentable.toggledReference)
     const CommentComponent = this.props.commentComponent || DefaultCommentComponent
 
     return (

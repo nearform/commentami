@@ -3,6 +3,9 @@ import { mount } from 'enzyme'
 import sleep from 'sleep-promise'
 
 import { CommentableSidebarComponent } from '../../src/components/CommentableSidebar'
+import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
+import { Comments } from '../../src/state/Comments'
+
 import { sidebarClassName } from '../../stories/components/styling'
 
 describe('CommentableSidebarComponent', () => {
@@ -10,18 +13,23 @@ describe('CommentableSidebarComponent', () => {
   let wrapper
   let formComponent
 
-  beforeEach(() => {
+  const setState = newState => {
+    commentable = Object.assign({}, commentable, newState)
+  }
+
+  beforeEach(async () => {
     commentable = {
       toggledReference: 'block-1',
       toggleComments: jest.fn(),
       addComment: jest.fn(),
-      removeComment: jest.fn(),
-      getReferenceComments: () => [
-        { id: 1, content: 'This is a comment', author: 'Davide' },
-        { id: 2, content: 'This is a comment', author: 'Paolo' },
-        { id: 3, content: 'This is a comment', author: 'Filippo' }
-      ]
+      removeComment: jest.fn()
     }
+
+    const commentObject = new Comments(new CommentsInMemoryService(), setState)
+    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment' })
+    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 2' })
+    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 3' })
+
     wrapper = mount(<CommentableSidebarComponent commentable={commentable} className={sidebarClassName} />)
     formComponent = wrapper.find('div[data-role="form"]')
   })

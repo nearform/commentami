@@ -8,8 +8,9 @@ export class Comment {
 }
 
 export class Comments {
-  constructor(service) {
+  constructor(service, setState) {
     this.service = service
+    this.setState = setState
     this.comments = []
   }
 
@@ -21,6 +22,7 @@ export class Comments {
     const result = await this.service.getComments(resource)
     this.comments = []
     result.forEach(comment => this.comments.push(new Comment(comment.id, comment.reference, comment.content, comment.author)))
+    this.setState({ comments: this.comments })
   }
 
   async removeComment({ resource, commentId }) {
@@ -36,10 +38,5 @@ export class Comments {
     // FIXME Refresh the list at every add, optimize this
     await this.refresh(resource)
     return result
-  }
-
-  // FIXME Currently uses the local list, further improvement allow to refresh the list from the server
-  getReferenceComments(referenceId) {
-    return this.comments.filter(comment => comment.reference === referenceId)
   }
 }

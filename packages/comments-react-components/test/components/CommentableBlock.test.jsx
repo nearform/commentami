@@ -2,11 +2,17 @@ import React from 'react'
 import { mount } from 'enzyme'
 
 import { CommentableBlockComponent } from '../../src/components/CommentableBlock'
+import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
+import { Comments } from '../../src/state/Comments'
 
 describe('CommentableBlockComponent', () => {
-  let commentable
   let events
   let wrapper
+  let commentable
+
+  const setState = newState => {
+    commentable = Object.assign({}, commentable, newState)
+  }
 
   beforeEach(() => {
     events = {
@@ -27,12 +33,12 @@ describe('CommentableBlockComponent', () => {
     }
   })
 
-  test('if comments are present the block should contain a marker', () => {
-    commentable.getReferenceComments.mockReturnValue([
-      { id: 1, content: 'This is a comment', author: 'Davide' },
-      { id: 2, content: 'This is a comment', author: 'Paolo' },
-      { id: 3, content: 'This is a comment', author: 'Filippo' }
-    ])
+  test('if comments are present the block should contain a marker', async () => {
+    const commentObject = new Comments(new CommentsInMemoryService(), setState)
+    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment' })
+    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 2' })
+    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 3' })
+
     wrapper = mount(
       <CommentableBlockComponent referenceId="block-1" commentable={commentable} events={events}>
         <div className="my-content">Some content</div>
@@ -42,7 +48,6 @@ describe('CommentableBlockComponent', () => {
   })
 
   test('if comments are not present the block should not contain a marker', () => {
-    commentable.getReferenceComments.mockReturnValue([])
     wrapper = mount(
       <CommentableBlockComponent referenceId="block-1" commentable={commentable} events={events}>
         <div className="my-content">Some content</div>
