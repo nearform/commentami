@@ -11,7 +11,7 @@ const { describe, it: test, before, after } = module.exports.lab
 const { resetDb } = require('../../comments-backend-core/test/utils')
 const buildServer = require('./test-server')
 
-describe('Comments REST API', () => {
+describe('Comments Websocket - routes', () => {
   let server = null
   let client = null
 

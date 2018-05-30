@@ -2,6 +2,7 @@
 
 const Nes = require('nes')
 const { buildCommentsService, buildPool, config } = require('@nearform/comments-backend-core')
+const { notifyComment } = require('./subscriptions')
 
 const commentsHapiPlugin = {
   name: 'comments-hapi-plugin',
@@ -15,6 +16,10 @@ const commentsHapiPlugin = {
 
     if (options.disableWebsocket !== true) {
       await server.register(Nes)
+
+      server.subscription('/resources/{resource*}')
+      server.subscription('/resources-reference/{reference}/{resource*}')
+      server.method('notifyComment', notifyComment.bind(server))
     }
 
     await server.register(require('./routes'))
