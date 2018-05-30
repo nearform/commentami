@@ -3,5 +3,6 @@
 module.exports = {
   collectCoverageFrom: ['src/**/*.js', 'src/**/*.jsx'],
   coverageReporters: ['text', 'html'],
-  testMatch: ['**/*.test.js', '**/*.test.jsx']
+  testMatch: ['**/*.test.js', '**/*.test.jsx'],
+  setupTestFrameworkScriptFile: './test/config.js'
 }
