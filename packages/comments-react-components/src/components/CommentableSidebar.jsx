@@ -76,7 +76,7 @@ export class CommentableSidebarComponent extends React.Component {
           </a>
           <textarea ref={this.textareaRef} onKeyPress={this.boundHandleKeyPress} />
           <button onClick={this.boundHandleClearComment}>Cancel</button>
-          <button onClick={this.boundHandleAddComment}>Add a comment</button>
+          <button onClick={this.boundHandleAddComment}>Submit</button>
         </div>
 
         <div data-role="comments">

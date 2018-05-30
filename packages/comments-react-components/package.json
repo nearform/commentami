@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Comments",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "nearForm Ltd",
   "contributors": [
     "Filippo De Santis (https://github.com/p16)",
@@ -21,8 +21,13 @@
   "engines": {
     "node": ">=8.9.0"
   },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "depcheck": "../../node_modules/depcheck/bin/depcheck --ignores=webpack",
+    "build": "babel -d dist src",
     "storybook": "start-storybook -p 6006 -c .storybook",
     "test": "node test/start.js",
     "test:watch": "WATCH=truenode test/start.js"
@@ -33,6 +38,7 @@
     "warning": "^4.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.49",
     "@babel/core": "^7.0.0-beta.48",
     "@babel/preset-env": "^7.0.0-beta.48",
     "@babel/preset-react": "^7.0.0-beta.48",
