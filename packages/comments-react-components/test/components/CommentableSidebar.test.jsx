@@ -9,28 +9,30 @@ import { CommentsState } from '../../src/state/Comments'
 import { sidebarClassName } from '../../stories/components/styling'
 
 describe('CommentableSidebarComponent', () => {
-  let commentable
+  let commentableState
   let wrapper
   let formComponent
 
   const setState = newState => {
-    commentable = Object.assign({}, commentable, newState)
+    commentableState = Object.assign({}, commentableState, newState)
   }
 
+  const getState = () => commentableState
+
   beforeEach(async () => {
-    commentable = {
+    commentableState = {
       toggledReference: 'block-1',
       toggleComments: jest.fn(),
       addComment: jest.fn(),
       removeComment: jest.fn()
     }
 
-    const commentObject = new CommentsState(new CommentsInMemoryService(), setState)
+    const commentObject = new CommentsState(new CommentsInMemoryService(), getState, setState)
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment' })
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 2' })
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 3' })
 
-    wrapper = mount(<CommentableSidebarComponent commentable={commentable} className={sidebarClassName} />)
+    wrapper = mount(<CommentableSidebarComponent commentable={commentableState} className={sidebarClassName} />)
     formComponent = wrapper.find('div[data-role="form"]')
   })
 
@@ -52,7 +54,7 @@ describe('CommentableSidebarComponent', () => {
         .find('button')
         .at(1)
         .simulate('click')
-      expect(commentable.addComment).toHaveBeenCalledWith('block-1', 'new value')
+      expect(commentableState.addComment).toHaveBeenCalledWith('block-1', 'new value')
     })
 
     test('should not call the add comment if the text trimmed is empty ', () => {
@@ -62,7 +64,7 @@ describe('CommentableSidebarComponent', () => {
         .find('button')
         .at(1)
         .simulate('click')
-      expect(commentable.addComment).not.toHaveBeenCalled()
+      expect(commentableState.addComment).not.toHaveBeenCalled()
     })
 
     test('should call the add comment if the text is trimmed and not empty', () => {
@@ -72,7 +74,7 @@ describe('CommentableSidebarComponent', () => {
         .find('button')
         .at(1)
         .simulate('click')
-      expect(commentable.addComment).toHaveBeenCalledWith('block-1', 'new value')
+      expect(commentableState.addComment).toHaveBeenCalledWith('block-1', 'new value')
     })
 
     test('should not call the add comment if the text area has no value', () => {
@@ -80,14 +82,14 @@ describe('CommentableSidebarComponent', () => {
         .find('button')
         .at(1)
         .simulate('click')
-      expect(commentable.addComment).not.toHaveBeenCalled()
+      expect(commentableState.addComment).not.toHaveBeenCalled()
     })
   })
 
   describe('Click on "Hide"', () => {
     test('should call the toggleComments', () => {
       wrapper.find('a[data-role="close"]').simulate('click')
-      expect(commentable.toggleComments).toHaveBeenCalled()
+      expect(commentableState.toggleComments).toHaveBeenCalled()
     })
   })
 
@@ -110,7 +112,7 @@ describe('CommentableSidebarComponent', () => {
         .at(0)
         .find('button')
         .simulate('click')
-      expect(commentable.removeComment).toHaveBeenCalledWith({
+      expect(commentableState.removeComment).toHaveBeenCalledWith({
         id: 1,
         content: 'This is a comment',
         reference: 'block-1',
@@ -126,7 +128,7 @@ describe('CommentableSidebarComponent', () => {
       formComponent.find('textarea').simulate('change')
       formComponent.find('textarea').simulate('keypress', { key: 'Enter', shiftKey: false })
       await sleep(50)
-      expect(commentable.addComment).toHaveBeenCalledWith('block-1', 'new value')
+      expect(commentableState.addComment).toHaveBeenCalledWith('block-1', 'new value')
     })
 
     test('should not call the add comment if shift is pressed', async () => {
@@ -134,7 +136,7 @@ describe('CommentableSidebarComponent', () => {
       formComponent.find('textarea').simulate('change')
       formComponent.find('textarea').simulate('keypress', { key: 'Enter', shiftKey: true })
       await sleep(50)
-      expect(commentable.addComment).not.toHaveBeenCalled()
+      expect(commentableState.addComment).not.toHaveBeenCalled()
     })
   })
 })

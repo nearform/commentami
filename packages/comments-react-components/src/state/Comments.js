@@ -10,23 +10,34 @@ export class Comment {
 
 const defaultState = { comments: [] }
 
+export const STATE_FIELD_NAME = 'commentsState'
+
 export class CommentsState {
-  constructor(service, onCommentsStateUpdate) {
+  constructor(service, getProviderState, onCommentsStateUpdate) {
     this.service = service
+    this.getProviderState = getProviderState
     this.onCommentsStateUpdate = onCommentsStateUpdate
-    this.localState = defaultState
+  }
+
+  get state() {
+    return this.getProviderState()[STATE_FIELD_NAME] || {}
   }
 
   get defaultState() {
     return defaultState
   }
 
+  updateState(state) {
+    const newState = Object.assign({}, this.state, state)
+    this.onCommentsStateUpdate({ [STATE_FIELD_NAME]: newState })
+  }
+
   async refresh(resource) {
     const result = await this.service.getComments(resource)
     const newCommentList = []
     result.forEach(comment => newCommentList.push(new Comment(comment)))
-    this.localState = Object.assign({}, this.localState, { comments: newCommentList })
-    this.onCommentsStateUpdate(this.localState)
+
+    this.updateState({ comments: newCommentList })
   }
 
   async removeComment(comment) {
