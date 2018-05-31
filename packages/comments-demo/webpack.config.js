@@ -51,11 +51,16 @@ module.exports = function(environment) {
               plugins: ['@babel/plugin-proposal-object-rest-spread']
             }
           }
+        },
+        {
+          test: /\.md$/,
+          use: 'raw-loader'
         }
       ]
     },
     devServer: {
-      historyApiFallback: true
+      historyApiFallback: true,
+      port: 4200
     }
   }
 }

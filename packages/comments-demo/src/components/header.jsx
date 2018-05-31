@@ -65,6 +65,9 @@ export function Header() {
         <NavLink to="/table" className={headerLinkClassName}>
           Table
         </NavLink>
+        <NavLink to="/markdown" className={headerLinkClassName}>
+          Markdown
+        </NavLink>
       </nav>
     </header>
   )
