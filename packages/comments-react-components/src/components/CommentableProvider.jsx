@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Comments } from '../state/Comments'
+import { CommentsState } from '../state/Comments'
 import { CommentableSidebar } from './CommentableSidebar'
 import { CommentableEventsManagerWrapper } from './CommentableEventsManager'
 
@@ -12,14 +12,12 @@ export class CommentableProvider extends React.Component {
     super(props)
     this.logger = this.props.logger || console
 
-    this.comments = new Comments(this.props.service)
+    this.commentsState = new CommentsState(this.props.service, this.onCommentsStateUpdate.bind(this))
 
     this.state = {
+      ...this.commentsState.defaultState,
       logger: this.logger,
       toggledReference: null,
-
-      // Return the list of commend for a specific reference
-      getReferenceComments: this.comments.getReferenceComments.bind(this.comments),
 
       // Actions
       addComment: this.addComment.bind(this),
@@ -34,10 +32,13 @@ export class CommentableProvider extends React.Component {
     return this.props.resource
   }
 
-  async removeComment(commentId) {
+  onCommentsStateUpdate(newState) {
+    return this.setState(newState)
+  }
+
+  async removeComment(comment) {
     try {
-      await this.comments.removeComment({ resource: this.getCurrentResource(), commentId })
-      this.setState({})
+      await this.commentsState.removeComment(comment)
     } catch (e) {
       this.logger.error(e)
     }
@@ -45,12 +46,11 @@ export class CommentableProvider extends React.Component {
 
   async addComment(reference, content) {
     try {
-      await this.comments.addComment({
+      await this.commentsState.addComment({
         resource: this.getCurrentResource(),
         reference,
         content
       })
-      this.setState({})
     } catch (e) {
       this.logger.error(e)
     }
@@ -62,8 +62,8 @@ export class CommentableProvider extends React.Component {
 
   async refreshCommentList() {
     try {
-      await this.comments.refresh(this.getCurrentResource())
       this.setState({ lastResourceRefreshed: this.getCurrentResource() })
+      await this.commentsState.refresh(this.getCurrentResource())
     } catch (e) {
       this.logger.error(e)
     }

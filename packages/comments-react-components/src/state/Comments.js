@@ -1,45 +1,46 @@
 export class Comment {
-  constructor(id, reference, content, author) {
-    this.id = id
-    this.reference = reference
-    this.content = content
-    this.author = author
+  constructor(data) {
+    this.id = data.id
+    this.resource = data.resource
+    this.reference = data.reference
+    this.content = data.content
+    this.author = data.author
   }
 }
 
-export class Comments {
-  constructor(service) {
+const defaultState = { comments: [] }
+
+export class CommentsState {
+  constructor(service, onCommentsStateUpdate) {
     this.service = service
-    this.comments = []
+    this.onCommentsStateUpdate = onCommentsStateUpdate
+    this.localState = defaultState
   }
 
-  size() {
-    return this.comments.length
+  get defaultState() {
+    return defaultState
   }
 
   async refresh(resource) {
     const result = await this.service.getComments(resource)
-    this.comments = []
-    result.forEach(comment => this.comments.push(new Comment(comment.id, comment.reference, comment.content, comment.author)))
+    const newCommentList = []
+    result.forEach(comment => newCommentList.push(new Comment(comment)))
+    this.localState = Object.assign({}, this.localState, { comments: newCommentList })
+    this.onCommentsStateUpdate(this.localState)
   }
 
-  async removeComment({ resource, commentId }) {
-    await this.service.removeComment(commentId)
+  async removeComment(comment) {
+    await this.service.removeComment(comment)
 
     // FIXME Refresh the list at every add, optimize this
-    await this.refresh(resource)
+    await this.refresh(comment.resource)
   }
 
   async addComment({ resource, reference, content }) {
-    const result = await this.service.addComment(resource, reference, content)
+    const result = await this.service.addComment(new Comment({ resource, reference, content }))
 
     // FIXME Refresh the list at every add, optimize this
     await this.refresh(resource)
     return result
-  }
-
-  // FIXME Currently uses the local list, further improvement allow to refresh the list from the server
-  getReferenceComments(referenceId) {
-    return this.comments.filter(comment => comment.reference === referenceId)
   }
 }

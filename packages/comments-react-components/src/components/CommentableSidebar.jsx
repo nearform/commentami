@@ -1,6 +1,7 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
 
+import { selectCommentsByReference } from '../state/selectors'
 import { CommentableContext } from './CommentableProvider'
 import { CommentableIcon } from './CommentableIcon'
 
@@ -11,7 +12,7 @@ class DefaultCommentComponent extends React.Component {
   }
 
   handleRemove() {
-    this.props.onRemoveComment && this.props.onRemoveComment(this.props.comment.id)
+    this.props.onRemoveComment && this.props.onRemoveComment(this.props.comment)
   }
 
   render() {
@@ -45,8 +46,8 @@ export class CommentableSidebarComponent extends React.Component {
     this.textareaRef.current.value = ''
   }
 
-  handleRemoveComment(commentId) {
-    this.props.commentable.removeComment(commentId)
+  handleRemoveComment(comment) {
+    this.props.commentable.removeComment(comment)
   }
 
   handleClearComment() {
@@ -64,7 +65,7 @@ export class CommentableSidebarComponent extends React.Component {
   }
 
   render() {
-    const comments = this.props.commentable.getReferenceComments(this.props.commentable.toggledReference)
+    const comments = selectCommentsByReference(this.props.commentable, this.props.commentable.toggledReference)
     const CommentComponent = this.props.commentComponent || DefaultCommentComponent
 
     return (

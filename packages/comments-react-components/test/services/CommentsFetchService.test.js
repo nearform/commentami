@@ -1,5 +1,5 @@
 import { CommentsFetchService } from '../../src/services/CommentsFetchService'
-
+import { Comment } from '../../src/state/Comments'
 import commentsGETvalid from './__mocks__/commentsGETvalid'
 
 global.fetch = require('jest-fetch-mock')
@@ -37,7 +37,7 @@ describe('CommentsFetchServer', () => {
   test('Call the DELETE comments endpoint returns a valid structure', async () => {
     fetch.mockResponseOnce(JSON.stringify({ success: true }))
 
-    await commentsFetchService.removeComment('comm-1')
+    await commentsFetchService.removeComment(new Comment({ id: 'comm-1' }))
 
     expect(fetch.mock.calls.length).toBe(1)
     expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments/comm-1')
@@ -65,7 +65,7 @@ describe('CommentsFetchServer', () => {
     }
     fetch.mockResponseOnce(JSON.stringify(response))
 
-    const result = await commentsFetchService.addComment(resource, reference, content)
+    const result = await commentsFetchService.addComment({ resource, reference, content })
 
     expect(fetch.mock.calls.length).toBe(1)
     expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments')
