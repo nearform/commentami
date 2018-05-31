@@ -110,7 +110,13 @@ describe('CommentableSidebarComponent', () => {
         .at(0)
         .find('button')
         .simulate('click')
-      expect(commentable.removeComment).toHaveBeenCalledWith(1)
+      expect(commentable.removeComment).toHaveBeenCalledWith({
+        id: 1,
+        content: 'This is a comment',
+        reference: 'block-1',
+        resource: 'page-1',
+        author: 'someauthor'
+      })
     })
   })
 

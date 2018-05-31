@@ -29,11 +29,11 @@ export class CommentsState {
     this.setState(this.localState)
   }
 
-  async removeComment({ resource, commentId }) {
-    await this.service.removeComment(commentId)
+  async removeComment(comment) {
+    await this.service.removeComment(comment)
 
     // FIXME Refresh the list at every add, optimize this
-    await this.refresh(resource)
+    await this.refresh(comment.resource)
   }
 
   async addComment({ resource, reference, content }) {

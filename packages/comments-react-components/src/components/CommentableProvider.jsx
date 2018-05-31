@@ -36,9 +36,9 @@ export class CommentableProvider extends React.Component {
     return this.setState(newState)
   }
 
-  async removeComment(commentId) {
+  async removeComment(comment) {
     try {
-      await this.commentsState.removeComment({ resource: this.getCurrentResource(), commentId })
+      await this.commentsState.removeComment(comment)
       this.setState({})
     } catch (e) {
       this.logger.error(e)

@@ -63,8 +63,8 @@ describe('Comments', () => {
         content: 'another'
       })
       await comments.removeComment({
-        resource: 'page-1',
-        commentId: 1
+        id: 1,
+        resource: 'page-1'
       })
     })
 

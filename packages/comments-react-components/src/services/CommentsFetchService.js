@@ -18,7 +18,7 @@ export function CommentsFetchService(baseUrl) {
     return response.json()
   }
 
-  const removeComment = async (commentId) => {
+  const removeComment = async (comment) => {
     const options = {
       method: 'DELETE',
       headers: {
@@ -27,10 +27,10 @@ export function CommentsFetchService(baseUrl) {
       }
     }
 
-    await fetch(`${baseUrl}comments/${commentId}`, options)
+    await fetch(`${baseUrl}comments/${comment.id}`, options)
   }
 
-  const getComments = async (url) => {
+  const getComments = async (resource) => {
     const options = {
       method: 'GET',
       headers: {
@@ -39,7 +39,7 @@ export function CommentsFetchService(baseUrl) {
       }
     }
 
-    const response = await fetch(`${baseUrl}comments?resource=${url}`, options)
+    const response = await fetch(`${baseUrl}comments?resource=${resource}`, options)
     return (await response.json()).comments
   }
 

@@ -12,7 +12,7 @@ class DefaultCommentComponent extends React.Component {
   }
 
   handleRemove() {
-    this.props.onRemoveComment && this.props.onRemoveComment(this.props.comment.id)
+    this.props.onRemoveComment && this.props.onRemoveComment(this.props.comment)
   }
 
   render() {
@@ -46,8 +46,8 @@ export class CommentableSidebarComponent extends React.Component {
     this.textareaRef.current.value = ''
   }
 
-  handleRemoveComment(commentId) {
-    this.props.commentable.removeComment(commentId)
+  handleRemoveComment(comment) {
+    this.props.commentable.removeComment(comment)
   }
 
   handleClearComment() {

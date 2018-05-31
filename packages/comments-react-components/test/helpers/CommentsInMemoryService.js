@@ -20,8 +20,8 @@ export const CommentsInMemoryService = () => {
     return newComment
   }
 
-  const removeComment = async (commentId) => {
-    comments = comments.filter(comment => comment.id !== commentId)
+  const removeComment = async ({id}) => {
+    comments = comments.filter(comment => comment.id !== id)
   }
 
   const getComments = async (resource) => comments.filter(comment => comment.resource === resource)
