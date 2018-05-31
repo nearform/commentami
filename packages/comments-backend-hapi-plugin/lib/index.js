@@ -1,5 +1,6 @@
 'use strict'
 
+const { assign } = require('lodash')
 const Nes = require('nes')
 const Multines = require('multines')
 const { buildCommentsService, buildPool, config } = require('@nearform/comments-backend-core')
@@ -10,24 +11,21 @@ const commentsHapiPlugin = {
   version: '1.0.0',
   register: async function(server, options) {
     // rewrite so it takes the options instead of the config?
-    const db = buildPool(config.pg)
+    const db = buildPool(assign({}, config.pg, (options && options.pg) || {}))
     const commentsService = buildCommentsService(db, options)
 
     server.decorate('server', 'commentsService', commentsService)
     server.decorate('request', 'commentsService', commentsService)
 
     if (options.disableWebsocket !== true) {
-      let { redis } = options
-      if (!redis) {
-        redis = {}
-      }
+      let multinesOptions = options.multines || {}
 
       await server.register([Nes, {
         plugin: {
           name: 'multines',
           register: Multines.register
         },
-        options: { type: 'redis', ...redis }
+        options: multinesOptions
       }])
 
       server.subscriptionFar('/resources/{resource*}')

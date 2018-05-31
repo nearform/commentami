@@ -10,6 +10,12 @@ const { describe, it: test, before, after } = module.exports.lab
 const { resetDb } = require('../../comments-backend-core/test/utils')
 const buildServer = require('./test-server')
 
+const multinesConfig = {
+  type: 'redis',
+  host: 'localhost',
+  port: 6379
+}
+
 describe('Comments Websocket - routes', () => {
   let server1 = null
   let server2 = null
@@ -18,8 +24,8 @@ describe('Comments Websocket - routes', () => {
 
   before(async () => {
     await resetDb()
-    server1 = await buildServer({ host: '127.0.0.1', port: 8281, pluginOptions: { redis: { host: 'localhost', port: 6379 } } })
-    server2 = await buildServer({ host: '127.0.0.1', port: 8282, pluginOptions: { redis: { host: 'localhost', port: 6379 } } })
+    server1 = await buildServer({ host: '127.0.0.1', port: 8281, pluginOptions: { multines: multinesConfig } })
+    server2 = await buildServer({ host: '127.0.0.1', port: 8282, pluginOptions: { multines: multinesConfig } })
     await server1.start()
     await server2.start()
   })

@@ -15,9 +15,25 @@ npm install @nearform/comments-backend-hapi-plugin
 ```javascript
 const main = async function() {
   const server = require('hapi').Server({ host: 'localhost', port: 80 })
+
   const options = {
-    fetchedComment: [async] (comment) => { ... }// optional async function or function returning a Promise
-    fetchedComments: [async] (comments) => { ... } // optional async function or function returning a Promise
+    // hooks to decorate comments (ie: adding user data)
+    fetchedComment: [async] (comment) => { ... }, // optional async function or function returning a Promise
+    fetchedComments: [async] (comments) => { ... }, // optional async function or function returning a Promise
+
+    // override comments-core db configuration
+    pg : {
+      host: '127.0.0.1',
+      port: 5432
+    },
+
+    // enable websocket and pass the configuration for multines (mqemitter or redis or mongo)
+    disableWebsocket: false,
+    multines: {
+      type: 'redis',
+      host: '127.0.0.1',
+      port: 6379
+    }
   }
 
   await server.register([
