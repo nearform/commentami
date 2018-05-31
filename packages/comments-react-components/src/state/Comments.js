@@ -11,9 +11,9 @@ export class Comment {
 const defaultState = { comments: [] }
 
 export class CommentsState {
-  constructor(service, setState) {
+  constructor(service, onCommentsStateUpdate) {
     this.service = service
-    this.setState = setState
+    this.onCommentsStateUpdate = onCommentsStateUpdate
     this.localState = defaultState
   }
 
@@ -26,7 +26,7 @@ export class CommentsState {
     const newCommentList = []
     result.forEach(comment => newCommentList.push(new Comment(comment)))
     this.localState = Object.assign({}, this.localState, { comments: newCommentList })
-    this.setState(this.localState)
+    this.onCommentsStateUpdate(this.localState)
   }
 
   async removeComment(comment) {
