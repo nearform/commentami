@@ -12,7 +12,7 @@ export class CommentableProvider extends React.Component {
     super(props)
     this.logger = this.props.logger || console
 
-    this.commentsState = new CommentsState(this.props.service, this.setState.bind(this))
+    this.commentsState = new CommentsState(this.props.service, this.updateState.bind(this))
 
     this.state = {
       ...this.commentsState.defaultState,
@@ -30,6 +30,10 @@ export class CommentableProvider extends React.Component {
 
   getCurrentResource() {
     return this.props.resource
+  }
+
+  updateState(newState) {
+    return this.setState(newState)
   }
 
   async removeComment(commentId) {

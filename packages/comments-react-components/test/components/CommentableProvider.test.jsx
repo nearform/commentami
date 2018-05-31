@@ -1,131 +1,44 @@
 import React from 'react'
-import { mount } from 'enzyme'
+import { shallow } from 'enzyme'
 
-import { CommentableBlockComponent } from '../../src/components/CommentableBlock'
-import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
-import { CommentsState } from '../../src/state/Comments'
+import { CommentableProvider } from '../../src/components/CommentableProvider'
+import { CommentsMockService } from '../helpers/CommentsMockService'
 
 describe('CommentableBlockComponent', () => {
-  let events
   let wrapper
-  let commentable
-
-  const setState = newState => {
-    commentable = Object.assign({}, commentable, newState)
-  }
+  let service
 
   beforeEach(() => {
-    events = {
-      onClick: jest.fn(),
-      onContextMenu: jest.fn(),
-      onDoubleClick: jest.fn(),
-      onMouseEnter: jest.fn(),
-      onMouseLeave: jest.fn(),
-      onSelect: jest.fn()
-    }
-
-    commentable = {
-      toggledReference: 'block-1',
-      toggleComments: jest.fn(),
-      addComment: jest.fn(),
-      removeComment: jest.fn(),
-      getReferenceComments: jest.fn()
-    }
+    service = new CommentsMockService()
+    service.getComments.mockReturnValue([])
+    wrapper = shallow(<CommentableProvider resource="page-1" service={service} />)
   })
 
-  test('if comments are present the block should contain a marker', async () => {
-    const commentObject = new CommentsState(new CommentsInMemoryService(), setState)
-    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment' })
-    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 2' })
-    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 3' })
-
-    wrapper = mount(
-      <CommentableBlockComponent referenceId="block-1" commentable={commentable} events={events}>
-        <div className="my-content">Some content</div>
-      </CommentableBlockComponent>
-    )
-    expect(wrapper.find('CommentableMarker').length).toBe(1)
+  test('when the component is mounted it should refresh the comment list', async () => {
+    expect(service.getComments).toHaveBeenCalledWith('page-1')
   })
 
-  test('if comments are not present the block should not contain a marker', () => {
-    wrapper = mount(
-      <CommentableBlockComponent referenceId="block-1" commentable={commentable} events={events}>
-        <div className="my-content">Some content</div>
-      </CommentableBlockComponent>
-    )
-    expect(wrapper.find('CommentableMarker').length).toBe(0)
+  test('when the component is updated it should refresh the comment list', async () => {
+    service.getComments.mockClear()
+    wrapper.setProps({ resource: 'page-2' })
+    expect(service.getComments).toHaveBeenCalledWith('page-2')
   })
 
-  test("if the component doesn't have a commentable context should not render and send a warning", () => {
-    const mockWarning = jest.fn()
-    const tempConsoleError = console.error // eslint-disable-line
-    console.error = mockWarning // eslint-disable-line
-
-    wrapper = mount(
-      <CommentableBlockComponent referenceId="block-1" events={events}>
-        <div className="my-content">Some content</div>
-      </CommentableBlockComponent>
-    )
-
-    expect(mockWarning).toHaveBeenCalledWith('Warning: The CommentableBlock component should be inside a CommentableProvider')
-    console.error = tempConsoleError // eslint-disable-line
+  test("when the component is updated but the resource doesn't change it should not refresh the comment list", async () => {
+    service.getComments.mockClear()
+    wrapper.setProps({ anotherprop: 'some prop' })
+    expect(service.getComments).not.toHaveBeenCalled()
   })
 
-  test('if the component is toggled then the classname should be highlighted', () => {
-    commentable.getReferenceComments.mockReturnValue([])
-
-    wrapper = mount(
-      <CommentableBlockComponent
-        referenceId="block-1"
-        className="classname"
-        highlightedClassName="highlighted-classname"
-        commentable={Object.assign({}, commentable, { toggledReference: 'block-1' })}
-        events={events}
-      >
-        <div className="my-content">Some content</div>
-      </CommentableBlockComponent>
-    )
-
-    expect(
-      wrapper
-        .find('div')
-        .at(0)
-        .hasClass('classname')
-    ).toBeFalsy()
-    expect(
-      wrapper
-        .find('div')
-        .at(0)
-        .hasClass('highlighted-classname')
-    ).toBeTruthy()
+  test('call the removeComment should call the api', async () => {
+    service.getComments.mockClear()
+    wrapper.instance().removeComment('comm-1')
+    expect(service.removeComment).toHaveBeenCalledWith('comm-1')
   })
 
-  test('if the component is toggled then the classname should be highlighted', () => {
-    commentable.getReferenceComments.mockReturnValue([])
-
-    wrapper = mount(
-      <CommentableBlockComponent
-        referenceId="block-1"
-        className="classname"
-        highlightedClassName="highlighted-classname"
-        commentable={Object.assign({}, commentable, { toggledReference: 'block-2' })}
-        events={events}
-      >
-        <div className="my-content">Some content</div>
-      </CommentableBlockComponent>
-    )
-
-    expect(
-      wrapper
-        .find('div')
-        .at(0)
-        .hasClass('highlighted-classname')
-    ).toBeFalsy()
-    expect(
-      wrapper
-        .find('div')
-        .at(0)
-        .hasClass('classname')
-    ).toBeTruthy()
+  test('call the addComment should call the api', async () => {
+    service.getComments.mockClear()
+    wrapper.instance().addComment('block-1', 'somecontent')
+    expect(service.addComment).toHaveBeenCalledWith('page-1', 'block-1', 'somecontent')
   })
 })
