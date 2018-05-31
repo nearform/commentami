@@ -8,6 +8,7 @@ lerna-debug.log*
 
 # Coverage directory used by tools like istanbul
 coverage
+dist
 .nyc_output
 
 # Dependency directories and caches

@@ -65,7 +65,13 @@ export class CommentableBlockComponent extends React.Component {
         onSelect={this.boundHandleSelect}
       >
         {this.hasComments && (
-          <CommentableMarker referenceId={this.referenceId} rootRef={this.markerRef} markerComponent={this.props.markerComponent} events={this.props.events} />
+          <CommentableMarker
+            referenceId={this.referenceId}
+            rootRef={this.markerRef}
+            className={this.props.markerClassName}
+            markerComponent={this.props.markerComponent}
+            events={this.props.events}
+          />
         )}
         {this.props.children}
       </div>

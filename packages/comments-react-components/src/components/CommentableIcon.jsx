@@ -18,7 +18,7 @@ export function CommentableIcon({ className, color: fill, width, height, id }) {
   if (!fill) fill = CommentableIcon.defaultColor
 
   return (
-    <svg version="1.1" viewBox="0 0 96 96" className={className} width={width} height={height}>
+    <svg version="1.1" viewBox="0 0 96 96" className={className} width={!className ? width : null} height={!className ? height : null}>
       <g>
         <path style={!className ? { fill } : {}} d={icons[id]} />
       </g>
