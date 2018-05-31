@@ -7,8 +7,14 @@ export const CommentsInMemoryService = () => {
     return commentIdProg++
   }
 
-  const addComment = async (url, reference, content) => {
-    const newComment = { id: getCommentId(), url, reference, content, author: 'someauthor' }
+  const addComment = async (comment) => {
+    const newComment = {
+      id: getCommentId(),
+      resource: comment.resource,
+      reference: comment.reference,
+      content: comment.content,
+      author: 'someauthor'
+    }
     comments.push(newComment)
 
     return newComment
@@ -18,7 +24,7 @@ export const CommentsInMemoryService = () => {
     comments = comments.filter(comment => comment.id !== commentId)
   }
 
-  const getComments = async (url) => comments.filter(comment => comment.url === url)
+  const getComments = async (resource) => comments.filter(comment => comment.resource === resource)
 
   return {
     addComment,

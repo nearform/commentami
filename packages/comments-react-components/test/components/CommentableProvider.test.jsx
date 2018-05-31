@@ -39,6 +39,10 @@ describe('CommentableBlockComponent', () => {
   test('call the addComment should call the api', async () => {
     service.getComments.mockClear()
     wrapper.instance().addComment('block-1', 'somecontent')
-    expect(service.addComment).toHaveBeenCalledWith('page-1', 'block-1', 'somecontent')
+    expect(service.addComment).toHaveBeenCalledWith({
+      content: 'somecontent',
+      reference: 'block-1',
+      resource: 'page-1'
+    })
   })
 })

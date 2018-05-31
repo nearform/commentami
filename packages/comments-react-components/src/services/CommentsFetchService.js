@@ -1,5 +1,5 @@
 export function CommentsFetchService(baseUrl) {
-  const addComment = async (resource, reference, content) => {
+  const addComment = async (comment) => {
     const options = {
       method: 'POST',
       headers: {
@@ -7,9 +7,9 @@ export function CommentsFetchService(baseUrl) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        resource,
-        reference,
-        content,
+        resource: comment.resource,
+        reference: comment.reference,
+        content: comment.content,
         author: 'An author' // This value should be removed and get directly from the session in the server
       })
     }

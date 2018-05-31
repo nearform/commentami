@@ -42,7 +42,8 @@ describe('Comments', () => {
         author: 'someauthor',
         content: 'somecontent',
         id: 1,
-        reference: 'comm-1'
+        reference: 'comm-1',
+        resource: 'page-1'
       })
     })
   })

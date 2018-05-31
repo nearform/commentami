@@ -1,9 +1,10 @@
 export class Comment {
-  constructor(id, reference, content, author) {
-    this.id = id
-    this.reference = reference
-    this.content = content
-    this.author = author
+  constructor(data) {
+    this.id = data.id
+    this.resource = data.resource
+    this.reference = data.reference
+    this.content = data.content
+    this.author = data.author
   }
 }
 
@@ -23,7 +24,7 @@ export class CommentsState {
   async refresh(resource) {
     const result = await this.service.getComments(resource)
     const newCommentList = []
-    result.forEach(comment => newCommentList.push(new Comment(comment.id, comment.reference, comment.content, comment.author)))
+    result.forEach(comment => newCommentList.push(new Comment(comment)))
     this.localState = Object.assign({}, this.localState, { comments: newCommentList })
     this.setState(this.localState)
   }
@@ -36,7 +37,7 @@ export class CommentsState {
   }
 
   async addComment({ resource, reference, content }) {
-    const result = await this.service.addComment(resource, reference, content)
+    const result = await this.service.addComment(new Comment({ resource, reference, content }))
 
     // FIXME Refresh the list at every add, optimize this
     await this.refresh(resource)

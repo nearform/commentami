@@ -65,7 +65,7 @@ describe('CommentsFetchServer', () => {
     }
     fetch.mockResponseOnce(JSON.stringify(response))
 
-    const result = await commentsFetchService.addComment(resource, reference, content)
+    const result = await commentsFetchService.addComment({resource, reference, content})
 
     expect(fetch.mock.calls.length).toBe(1)
     expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments')
