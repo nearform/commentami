@@ -1,3 +1,5 @@
+/* globals localStorage */
+
 import { CommentableBlock, CommentableProvider } from '@nearform/comments-react-components'
 import { rem } from 'csx'
 import React from 'react'
@@ -8,18 +10,31 @@ import { pageClassName } from './index'
 
 function buildInMemoryService() {
   let id = 1
-  let comments = []
 
   return {
-    addComment(url, reference, content) {
-      comments.push({ id: id++, url, reference, content, author: 'someauthor' })
+    addComment(resource, reference, content) {
+      const key = `comments:${resource}`
+      const raw = localStorage.getItem(key) || '[]'
+      const existing = JSON.parse(raw)
+
+      existing.push({ id: id++, resource, reference, content, author: 'someauthor' })
+      localStorage.setItem(key, JSON.stringify(existing))
     },
 
-    getComments(url, reference) {
-      let filter = c => c.url === url
-      if (reference) filter = c => c.url === url && c.reference === reference
+    removeComment({ resource, commentId: id }) {
+      const key = `comments:${resource}`
+      const raw = localStorage.getItem(key) || '[]'
+      let existing = JSON.parse(raw)
 
-      return comments.filter(filter)
+      existing = existing.filter(c => c.id !== id)
+
+      localStorage.setItem(key, JSON.stringify(existing))
+    },
+
+    getComments(url) {
+      const raw = localStorage.getItem(`comments:${url}`) || '[]'
+
+      return JSON.parse(raw)
     }
   }
 }

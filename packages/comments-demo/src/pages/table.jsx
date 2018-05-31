@@ -1,4 +1,4 @@
-import { CommentableBlock, CommentableProvider } from '@nearform/comments-react-components'
+import { CommentableBlock, CommentableProvider, CommentsFetchService } from '@nearform/comments-react-components'
 import { em, percent, rem } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
@@ -83,24 +83,6 @@ function humanize(str) {
   )
 }
 
-function buildInMemoryService() {
-  let id = 1
-  let comments = []
-
-  return {
-    addComment(url, reference, content) {
-      comments.push({ id: id++, url, reference, content, author: 'someauthor' })
-    },
-
-    getComments(url, reference) {
-      let filter = c => c.url === url
-      if (reference) filter = c => c.url === url && c.reference === reference
-
-      return comments.filter(filter)
-    }
-  }
-}
-
 function CommentMarker({ rootRef, referenceId, events, handleToggleComment }) {
   const boundHandleClick = events.onClick.bind(null, { id: referenceId, ref: rootRef, scope: 'marker' })
 
@@ -166,10 +148,14 @@ export function TablePage() {
       <h1>Welcome!</h1>
 
       <h2>
-        The table below is generated out of some data structure. <br />Each cell is commentable.
+        The tables below are generated out of some data structure. <br />Each cell is commentable.
       </h2>
 
-      <CommentableProvider resource="foo" service={buildInMemoryService()} sidebarClassName={sidebarClassName}>
+      <CommentableProvider resource="foo" service={CommentsFetchService('http://localhost:8080/')} sidebarClassName={sidebarClassName}>
+        <Table data={data} />
+      </CommentableProvider>
+
+      <CommentableProvider resource="bar" service={CommentsFetchService('http://localhost:8080/')} sidebarClassName={sidebarClassName}>
         <Table data={data} />
       </CommentableProvider>
     </div>

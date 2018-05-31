@@ -56,6 +56,7 @@
     "@cowtech/eslint-config": "^4.19.4",
     "babel-loader": "^8.0.0-beta.2",
     "html-webpack-plugin": "^3.2.0",
+    "raw-loader": "^0.5.1",
     "webpack": "^4.8.1",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^2.1.3",

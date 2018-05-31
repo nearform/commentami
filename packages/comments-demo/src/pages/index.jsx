@@ -22,10 +22,10 @@ export function IndexPage() {
       Please select one of the available demo:
       <ul>
         <li>
-          <Link to="/plain">Plain</Link>: Simple plain text page
+          <Link to="/plain">Plain</Link>: Simple plain text page with localStorage backend.
         </li>
         <li>
-          <Link to="/table">Table</Link>: Dynamic table page
+          <Link to="/table">Table</Link>: Dynamic table page with remote HTTP backend.
         </li>
       </ul>
     </div>
