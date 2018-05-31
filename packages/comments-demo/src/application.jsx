@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { IndexPage } from './pages/index'
 import { PlainPage } from './pages/plain'
 import { TablePage } from './pages/table'
+import { MarkdownPage } from './pages/markdown'
 import { Header } from './components/header'
 import { mainClassName } from './styling/environment'
 
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <Switch>
           <Route exact path="/plain" component={PlainPage} />
           <Route exact path="/table" component={TablePage} />
+          <Route exact path="/markdown" component={MarkdownPage} />
           <Route component={IndexPage} />
         </Switch>
       </div>
