@@ -39,7 +39,6 @@ export class CommentableProvider extends React.Component {
   async removeComment(comment) {
     try {
       await this.commentsState.removeComment(comment)
-      this.setState({})
     } catch (e) {
       this.logger.error(e)
     }
@@ -52,7 +51,6 @@ export class CommentableProvider extends React.Component {
         reference,
         content
       })
-      this.setState({})
     } catch (e) {
       this.logger.error(e)
     }
