@@ -16,8 +16,8 @@ function notifyComment (comment, { action }) {
   }
 
   const notifications = [
-    server.publish(`/resources/${comment.resource}`, event).catch(log),
-    server.publish(`/resources-reference/${comment.reference}/${comment.resource}`, event).catch(log)
+    server.publishFar(`/resources/${comment.resource}`, event).catch(log),
+    server.publishFar(`/resources-reference/${comment.reference}/${comment.resource}`, event).catch(log)
   ]
 
   return Promise.all(notifications).catch(log)
