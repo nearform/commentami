@@ -10,6 +10,7 @@ jobs:
           POSTGRES_DB: postgres
           PGPORT: 5432
           NODE_ENV: test
+      - image: redis:4.0.9
     working_directory: ~/repo
     steps:
       - checkout

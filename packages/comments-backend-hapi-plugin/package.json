@@ -31,7 +31,7 @@
   "dependencies": {
     "@nearform/comments-backend-core": "^0.1.0",
     "joi": "^13.3.0",
-    "mqemitter-redis": "^2.3.0",
+    "multines": "git+https://git@github.com/p16/multines.git#updagrde-for-hapi-v17",
     "nes": "^8.1.0"
   },
   "devDependencies": {
