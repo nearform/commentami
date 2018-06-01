@@ -1,6 +1,6 @@
 # @nearform/comments-backend-hapi-plugin
 
-`@nearform/comments-backend-hapi-plugin` is a plugin to add the comments REST API to a [Hapi][hapi] server.
+`@nearform/comments-backend-hapi-plugin` is a plugin to add the comments REST API/Websockets to a [Hapi][hapi] server.
 
 ## Install
 
@@ -27,8 +27,9 @@ const main = async function() {
       port: 5432
     },
 
-    // enable websocket and pass the configuration for multines (mqemitter or redis or mongo)
+    // enable websocket
     disableWebsocket: false,
+    // pass the configuration for multines (`redis`, `mongo`, default is `mqemitter`)
     multines: {
       type: 'redis',
       host: '127.0.0.1',

@@ -10,7 +10,6 @@ const commentsHapiPlugin = {
   name: 'comments-hapi-plugin',
   version: '1.0.0',
   register: async function(server, options) {
-    // rewrite so it takes the options instead of the config?
     const db = buildPool(assign({}, config.pg, (options && options.pg) || {}))
     const commentsService = buildCommentsService(db, options)
 
