@@ -1,4 +1,10 @@
-export const selectCommentsByReference = (state, referenceId) =>
-  (state.comments || []).filter(comment => comment.reference === referenceId)
+import { STATE_FIELD_NAME } from './Comments'
 
-export const totalCommentsCount = (state) => (state.comments || []).length
+const getCommentsState = state => {
+  return state[STATE_FIELD_NAME] || {}
+}
+
+export const selectCommentsByReference = (state, referenceId) =>
+  (getCommentsState(state).comments || []).filter(comment => comment.reference === referenceId)
+
+export const totalCommentsCount = (state) => (getCommentsState(state).comments || []).length

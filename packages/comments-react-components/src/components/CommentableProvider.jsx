@@ -12,10 +12,9 @@ export class CommentableProvider extends React.Component {
     super(props)
     this.logger = this.props.logger || console
 
-    this.commentsState = new CommentsState(this.props.service, this.onCommentsStateUpdate.bind(this))
+    this.commentsState = new CommentsState(this.props.service, this.getProviderState.bind(this), this.onCommentsStateUpdate.bind(this))
 
     this.state = {
-      ...this.commentsState.defaultState,
       logger: this.logger,
       toggledReference: null,
 
@@ -30,6 +29,10 @@ export class CommentableProvider extends React.Component {
 
   getCurrentResource() {
     return this.props.resource
+  }
+
+  getProviderState() {
+    return this.state
   }
 
   onCommentsStateUpdate(newState) {

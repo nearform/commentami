@@ -1,14 +1,17 @@
 import { selectCommentsByReference, totalCommentsCount } from '../../src/state/selectors'
-import { CommentsState } from '../../src/state/Comments'
+import { CommentsState, STATE_FIELD_NAME } from '../../src/state/Comments'
 
 import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
 
 describe('Comments', () => {
-  let state = {}
+  let state
   const setState = newState => (state = Object.assign({}, state, newState))
+  const getState = () => state
 
   beforeEach(() => {
-    state = {}
+    state = {
+      [STATE_FIELD_NAME]: {}
+    }
   })
 
   describe('When a new instance is created', () => {
@@ -21,7 +24,7 @@ describe('Comments', () => {
     let comments
 
     beforeEach(async () => {
-      comments = new CommentsState(new CommentsInMemoryService(), setState)
+      comments = new CommentsState(new CommentsInMemoryService(), getState, setState)
       await comments.addComment({
         resource: 'page-1',
         reference: 'comm-1',
@@ -51,7 +54,7 @@ describe('Comments', () => {
   describe('Removing a comment', () => {
     let comments
     beforeEach(async () => {
-      comments = new CommentsState(new CommentsInMemoryService(), setState)
+      comments = new CommentsState(new CommentsInMemoryService(), getState, setState)
       await comments.addComment({
         resource: 'page-1',
         reference: 'comm-2',
@@ -81,7 +84,7 @@ describe('Comments', () => {
   describe('Get comments by reference', () => {
     let comments
     beforeEach(() => {
-      comments = new CommentsState(new CommentsInMemoryService(), setState)
+      comments = new CommentsState(new CommentsInMemoryService(), getState, setState)
       comments.addComment({ url: 'url1', reference: 'comm-1', content: 'somecontent 1' })
       comments.addComment({ url: 'url1', reference: 'comm-1', content: 'somecontent 2' })
       comments.addComment({ url: 'url1', reference: 'comm-2', content: 'somecontent 3' })

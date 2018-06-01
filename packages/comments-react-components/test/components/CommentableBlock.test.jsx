@@ -3,16 +3,18 @@ import { mount } from 'enzyme'
 
 import { CommentableBlockComponent } from '../../src/components/CommentableBlock'
 import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
-import { CommentsState } from '../../src/state/Comments'
+import { CommentsState, STATE_FIELD_NAME } from '../../src/state/Comments'
 
 describe('CommentableBlockComponent', () => {
   let events
   let wrapper
-  let commentable
+  let commentableState
 
   const setState = newState => {
-    commentable = Object.assign({}, commentable, newState)
+    commentableState = Object.assign({}, commentableState, newState)
   }
+
+  const getState = () => commentableState
 
   beforeEach(() => {
     events = {
@@ -24,23 +26,24 @@ describe('CommentableBlockComponent', () => {
       onSelect: jest.fn()
     }
 
-    commentable = {
+    commentableState = {
       toggledReference: 'block-1',
       toggleComments: jest.fn(),
       addComment: jest.fn(),
       removeComment: jest.fn(),
-      getReferenceComments: jest.fn()
+      getReferenceComments: jest.fn(),
+      [STATE_FIELD_NAME]: {}
     }
   })
 
   test('if comments are present the block should contain a marker', async () => {
-    const commentObject = new CommentsState(new CommentsInMemoryService(), setState)
+    const commentObject = new CommentsState(new CommentsInMemoryService(), getState, setState)
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment' })
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 2' })
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 3' })
 
     wrapper = mount(
-      <CommentableBlockComponent referenceId="block-1" commentable={commentable} events={events}>
+      <CommentableBlockComponent referenceId="block-1" commentable={commentableState} events={events}>
         <div className="my-content">Some content</div>
       </CommentableBlockComponent>
     )
@@ -49,7 +52,7 @@ describe('CommentableBlockComponent', () => {
 
   test('if comments are not present the block should not contain a marker', () => {
     wrapper = mount(
-      <CommentableBlockComponent referenceId="block-1" commentable={commentable} events={events}>
+      <CommentableBlockComponent referenceId="block-1" commentable={commentableState} events={events}>
         <div className="my-content">Some content</div>
       </CommentableBlockComponent>
     )
@@ -72,14 +75,14 @@ describe('CommentableBlockComponent', () => {
   })
 
   test('if the component is toggled then the classname should be highlighted', () => {
-    commentable.getReferenceComments.mockReturnValue([])
+    commentableState.getReferenceComments.mockReturnValue([])
 
     wrapper = mount(
       <CommentableBlockComponent
         referenceId="block-1"
         className="classname"
         highlightedClassName="highlighted-classname"
-        commentable={Object.assign({}, commentable, { toggledReference: 'block-1' })}
+        commentable={Object.assign({}, commentableState, { toggledReference: 'block-1' })}
         events={events}
       >
         <div className="my-content">Some content</div>
@@ -101,14 +104,14 @@ describe('CommentableBlockComponent', () => {
   })
 
   test('if the component is toggled then the classname should be highlighted', () => {
-    commentable.getReferenceComments.mockReturnValue([])
+    commentableState.getReferenceComments.mockReturnValue([])
 
     wrapper = mount(
       <CommentableBlockComponent
         referenceId="block-1"
         className="classname"
         highlightedClassName="highlighted-classname"
-        commentable={Object.assign({}, commentable, { toggledReference: 'block-2' })}
+        commentable={Object.assign({}, commentableState, { toggledReference: 'block-2' })}
         events={events}
       >
         <div className="my-content">Some content</div>
