@@ -67,6 +67,8 @@ multines: {
 }
 ```
 
+**Note**: if you pass `options.multines = {}` the websockets will be active but the pub/sub system will work only for the single server and not between multiple servers (ie: through resid pub/sub).
+
 An example on how to install the plugin with all the options:
 
 ```javascript
