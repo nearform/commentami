@@ -16,10 +16,9 @@ The [Hapi][hapi] plugin and server packages require Hapi 17+.
 
 ### Database support
 
-Comments requires an instance of Postgres (version 9.5+) to function correctly. For simplicity, a preconfigured `docker-compose` file has been provided. To run:
+Comments requires an instance of Postgres (version 9.5+) to function correctly. For simplicity, a preconfigured `docker-compose` file has been provided. To run it:
 
 ```
-cd packages/comments-backend-core
 docker-compose up
 ```
 
