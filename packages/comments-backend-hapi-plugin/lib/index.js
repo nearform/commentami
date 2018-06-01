@@ -9,14 +9,14 @@ const { notifyComment } = require('./subscriptions')
 const commentsHapiPlugin = {
   name: 'comments-hapi-plugin',
   version: '1.0.0',
-  register: async function(server, options) {
+  register: async function(server, options = {}) {
     const db = buildPool(assign({}, config.pg, (options && options.pg) || {}))
-    const commentsService = buildCommentsService(db, options)
+    const commentsService = buildCommentsService(db, options.hooks || {})
 
     server.decorate('server', 'commentsService', commentsService)
     server.decorate('request', 'commentsService', commentsService)
 
-    if (options.disableWebsocket !== true) {
+    if (options.multines) {
       let multinesOptions = options.multines || {}
 
       await server.register([Nes, {

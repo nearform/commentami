@@ -15,7 +15,7 @@ describe('Comments REST API', () => {
 
   before(async () => {
     await resetDb()
-    server = await buildServer({ host: '127.0.0.1', port: 8281, pluginOptions: { disableWebsocket: true } })
+    server = await buildServer({ host: '127.0.0.1', port: 8281 })
     await server.start()
   })
 

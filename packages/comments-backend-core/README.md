@@ -207,21 +207,21 @@ To initialize the db you can run:
 npm run pg:test:init
 ```
 
-This will drop the `comments` if it exists. Re-create it and migrate it to the latest schema.
+This will drop the `comments` databse if it exists. Re-create it and migrate it to the latest schema.
 
 For local development there should be sensible defaults in [`config/index.js`](./config/index.js).
 
-#### postgres on docker?
+#### Postgres and Redis on Docker?
 
-If you want to run postgres on docker, install [docker](https://docs.docker.com/install/) and run the following command
+If you want to run postgres/redis on docker, install [docker](https://docs.docker.com/install/) and run the following command
 
 ```
-docker-compose up postgres
+docker-compose up postgres redis
 ```
 
 ### Run tests
 
-Once the db is up, you need to create the database
+Once the db is up, you need to initialize the database
 
 ```
 npm run pg:test:init

@@ -1,6 +1,6 @@
 # @nearform/comments-backend-hapi-plugin
 
-`@nearform/comments-backend-hapi-plugin` is a plugin to add the comments REST API/Websockets to a [Hapi][hapi] server.
+`@nearform/comments-backend-hapi-plugin` is a plugin to add the comments REST API and (if specified) Websockets to a [Hapi][hapi] server.
 
 ## Install
 
@@ -12,14 +12,75 @@ npm install @nearform/comments-backend-hapi-plugin
 
 ## Usage
 
+`comments-backend-hapi-plugin` has some options you can specifiy to customize the installation
+
+
+### `options.pg` [optional]
+
+It should contain an object with the postgres connection parameters.
+
+```
+options.pg = {
+  host: '127.0.0.1',
+  port: 9876
+}
+```
+
+Any parameter in this object will override whatever comes from `@nearform/comments-backend-core` `config.pg`.
+
+### `options.hooks` [optional]
+
+It should contain the hooks to decorate a single comment or a list of comments with data.
+
+An example could be adding users data to each comments based on it's author.
+
+```
+options.hooks = {
+  fetchedComment: async (comment) => {
+    // ... fetch user data
+
+    return augmentedComment
+  },
+  fetchedComments: async (comments) => {
+    // ... fetch users data
+
+    return augmentedComments
+  }
+}
+```
+
+### `options.multines` [optional]
+
+By default the server will start with only the http endpoints available. If you also want to interact through websocket you should provide a `multines` option.
+
+The option whould be an object with the following format
+
+```
+multines: {
+  type: 'redis', // accepcts only "redis" or "mongo"
+
+  // specific configurations for redis/mongo
+  host: '127.0.0.1',
+  port: 6379
+}
+```
+
+An example on how to install the plugin with all the options:
+
 ```javascript
 const main = async function() {
   const server = require('hapi').Server({ host: 'localhost', port: 80 })
 
   const options = {
     // hooks to decorate comments (ie: adding user data)
-    fetchedComment: [async] (comment) => { ... }, // optional async function or function returning a Promise
-    fetchedComments: [async] (comments) => { ... }, // optional async function or function returning a Promise
+    fetchedComment: async (comment) => {
+      // ...
+      return augmentedComment
+    },
+    fetchedComments: async (comments) => {
+      //...
+      return augmentedComments
+    },
 
     // override comments-core db configuration
     pg : {
@@ -27,9 +88,7 @@ const main = async function() {
       port: 5432
     },
 
-    // enable websocket
-    disableWebsocket: false,
-    // pass the configuration for multines (`redis`, `mongo`, default is `mqemitter`)
+    // pass the configuration for multines
     multines: {
       type: 'redis',
       host: '127.0.0.1',
@@ -52,13 +111,10 @@ main().catch(console.error)
 
 Comments route will be then accessible on the `/comments` path.
 
-### Hooks
 
-When adding the `comments-backend-hapi-plugin` you can pass some hooks. These hooks should be intended as decorators of a single comment (`fetchedComment`) or a list of comments (`fetchedComments`).
+## Development
 
-Those 2 functions should be either async or return a promise that will yeld the final augmented comment/comments list as its result.
-
-## Run tests
+### Run tests
 
 You will need a postgres server up and running.
 
