@@ -2,17 +2,19 @@
 
 Comments is a comments management system. [...tbd...]
 
-`comments-backend-core` is the low level library used by `comments-backend-hapi-plugin`. This library manages the CRUD actions for comments.
+`@nearform/comments-backend-core` is the low level library used by `@nearform/comments-backend-hapi-plugin`. This library manages the CRUD actions for comments.
 
 ## Install
 
 To install via npm:
 
+```
 npm install @nearform/comments-backend-core
+```
 
 ## Model
 
-In `comments-backend-core` a comment is an obejct with the following property
+In `@nearform/comments-backend-core` a comment is an obejct with the following property
 
 ```
 Comment {

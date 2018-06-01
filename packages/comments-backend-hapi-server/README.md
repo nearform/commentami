@@ -1,6 +1,6 @@
 # @nearform/comments-backend-hapi-server
 
-`comments-backend-hapi-server` is a ready to use [Hapi][hapi] server with the `comments-backend-hapi-plugin` registered and websockets enabled.
+`@nearform/comments-backend-hapi-server` is a ready to use [Hapi][hapi] server with the `@nearform/comments-backend-hapi-plugin` registered and websockets enabled.
 
 ## Install
 

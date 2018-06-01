@@ -14,7 +14,7 @@ npm install @nearform/comments-backend-hapi-plugin
 
 ## Usage
 
-`comments-backend-hapi-plugin` has some options you can specifiy to customize the installation
+`@nearform/comments-backend-hapi-plugin` has some options you can specifiy to customize it
 
 
 ### `options.pg` [optional]
@@ -59,7 +59,7 @@ The option whould be an object with the following format
 
 ```
 multines: {
-  type: 'redis', // accepcts only "redis" or "mongo"
+  type: 'redis', // only "redis" or "mongo"
 
   // specific configurations for redis/mongo
   host: '127.0.0.1',
@@ -74,23 +74,20 @@ const main = async function() {
   const server = require('hapi').Server({ host: 'localhost', port: 80 })
 
   const options = {
-    // hooks to decorate comments (ie: adding user data)
-    fetchedComment: async (comment) => {
-      // ...
-      return augmentedComment
+    hooks : {
+      fetchedComment: async (comment) => {
+        // ...
+        return augmentedComment
+      },
+      fetchedComments: async (comments) => {
+        //...
+        return augmentedComments
+      }
     },
-    fetchedComments: async (comments) => {
-      //...
-      return augmentedComments
-    },
-
-    // override comments-core db configuration
     pg : {
       host: '127.0.0.1',
       port: 5432
     },
-
-    // pass the configuration for multines
     multines: {
       type: 'redis',
       host: '127.0.0.1',
@@ -112,6 +109,154 @@ main().catch(console.error)
 ```
 
 Comments route will be then accessible on the `/comments` path.
+
+## HTTP APIs
+
+The plugin mounts the following endpoints
+
+### `GET /comments-references/{resource*}`
+
+This endpoint will return the list of `reference`s linked to a `resource`.
+
+```
+GET /comments-references/some-resource
+
+{
+  resource: `some-resource`,
+  references: [ 'ref1', 'ref2', ... ]
+}
+```
+
+### `GET /comments?resource={resource}[&reference={reference}][&limit={limit}][&offset={offset}]`
+
+This endpoint will return a paginated list of comments relative to a `resource` (this parameter is required) and a `reference` (when specified)
+
+```
+GET /comments?resource=some-resource
+
+{
+  comments: [ ... ],
+  total: 10,
+  limit: 100
+  offset: 0
+}
+```
+
+The list is paginated based on `limit` (default 100) and `offset` (default 0) parameters.
+
+### `GET /comments{id}`
+
+This endpoint will return a single comment
+
+```
+GET /comments/1234
+
+{
+  id: 1234,
+  resource: 'some-resource',
+  reference: 'some-reference',
+  content: 'some content',
+  author: 'author',
+  createdAt: 2018-05-31T08:01:25.296Z
+}
+```
+
+The list is paginated based on `limit` (default 100) and `offset` (default 0) parameters.
+
+### `POST /comments`
+
+This endpoint will create a new comment.
+
+The body of the request is as follow and all parameters are required
+
+```
+POST /comments
+
+{
+  resource: 'some-resource',
+  reference: 'some-reference',
+  content: 'some content',
+  author: 'author'
+}
+```
+
+### `PUT /comments/{id}`
+
+This endpoint will update the content of a comment
+
+```
+POST /comments/{id}
+
+{
+  content: 'some new content'
+}
+```
+
+### `DELETE /comments/{id}`
+
+This endpoint will delete a comment
+
+```
+POST /comments/{id}
+```
+
+## Websockets
+
+If you enabled `multines` on the server (see [options](#Usage)) you will be able to use a [`nes`](https://github.com/hapijs/nes) client to communicate with it through websocket.
+
+A `nes` client will map all the server HTTP API enpoints
+
+```
+client = new Nes.Client('ws://<my-server>')
+await client.connect()
+const response = await client.request(`/comments-references/${this.resource}`) // list comments
+
+// or
+
+const response = await client.request({ // create a new comment
+  method: 'POST',
+  path: `/comments`,
+  payload: {
+    resource: 'URL',
+    reference: 'UUID',
+    content: 'MESSAGE',
+    author: 'AUTHOR'
+  }
+})
+```
+
+Moreover you will have the ability to subscribe to `resource`s and `reference`s
+
+```
+client = new Nes.Client('ws://127.0.0.1:8281')
+await client.connect()
+
+await client.subscribe(`/resources/some-resource`, (event) => {
+  // do something
+})
+
+await client.subscribe(`/resources-reference/some-reference/some-resource`, (event) => {
+  // do something
+})
+```
+
+The `event` object will have the following format
+
+```
+{
+  comment: {
+    id: 1234,
+    resource: 'URL',
+    reference: 'UUID',
+    content: 'MESSAGE',
+    author: 'AUTHOR',
+    createdAt: 2018-05-31T08:01:25.296Z
+  },
+  action: 'add'
+}
+```
+
+The `action` property can have one of the following values: `add`, `delete` or `update`.
 
 
 ## Development
