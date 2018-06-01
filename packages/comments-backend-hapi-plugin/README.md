@@ -1,5 +1,7 @@
 # @nearform/comments-backend-hapi-plugin
 
+Comments is a comments management system. [...tbd...]
+
 `@nearform/comments-backend-hapi-plugin` is a plugin to add the comments REST API and (if specified) Websockets to a [Hapi][hapi] server.
 
 ## Install
