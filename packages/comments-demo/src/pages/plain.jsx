@@ -9,20 +9,19 @@ import { sidebarClassName } from '../styling/sidebar'
 import { pageClassName } from './index'
 
 function buildInMemoryService() {
-  let id = 1
-
   return {
-    addComment(resource, reference, content) {
-      const key = `comments:${resource}`
+    addComment(comment) {
+      const key = `comments:${comment.resource}`
       const raw = localStorage.getItem(key) || '[]'
       const existing = JSON.parse(raw)
 
-      existing.push({ id: id++, resource, reference, content, author: 'someauthor' })
+      existing.push({ id: new Date().getTime(), resource: comment.resource, reference: comment.reference, content: comment.content, author: 'someauthor' })
       localStorage.setItem(key, JSON.stringify(existing))
     },
 
-    removeComment({ resource, commentId: id }) {
-      const key = `comments:${resource}`
+    removeComment(comment) {
+      const id = comment.id
+      const key = `comments:${comment.resource}`
       const raw = localStorage.getItem(key) || '[]'
       let existing = JSON.parse(raw)
 
@@ -31,8 +30,8 @@ function buildInMemoryService() {
       localStorage.setItem(key, JSON.stringify(existing))
     },
 
-    getComments(url) {
-      const raw = localStorage.getItem(`comments:${url}`) || '[]'
+    getComments(resource) {
+      const raw = localStorage.getItem(`comments:${resource}`) || '[]'
 
       return JSON.parse(raw)
     }
