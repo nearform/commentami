@@ -37,7 +37,7 @@ describe('CommentsFetchServer', () => {
   test('Call the DELETE comments endpoint returns a valid structure', async () => {
     fetch.mockResponseOnce(JSON.stringify({ success: true }))
 
-    await commentsFetchService.removeComment(new Comment({ id: 'comm-1' }))
+    await commentsFetchService.removeComment({ id: 'comm-1' })
 
     expect(fetch.mock.calls.length).toBe(1)
     expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments/comm-1')
