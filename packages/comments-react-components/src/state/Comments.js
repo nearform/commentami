@@ -1,14 +1,8 @@
-export class Comment {
-  constructor(data) {
-    this.id = data.id
-    this.resource = data.resource
-    this.reference = data.reference
-    this.content = data.content
-    this.author = data.author
-  }
-}
-
-const defaultState = { comments: [] }
+import {
+  getDefaultState,
+  setCommentByPath,
+  removeCommentByPath
+} from './helpers'
 
 export const STATE_FIELD_NAME = 'commentsState'
 
@@ -19,39 +13,81 @@ export class CommentsState {
     this.onCommentsStateUpdate = onCommentsStateUpdate
   }
 
-  get state() {
-    return this.getProviderState()[STATE_FIELD_NAME] || {}
-  }
-
+  /**
+   * the default state of the CommentsState
+   * @returns {State}
+   */
   get defaultState() {
-    return defaultState
+    return getDefaultState()
   }
 
+  /**
+   * @returns {State}
+   */
+  get state() {
+    return this.getProviderState()[STATE_FIELD_NAME] || this.defaultState
+  }
+
+  /**
+   * Update the state in the provider
+   * @param {State} state
+   */
   updateState(state) {
     const newState = Object.assign({}, this.state, state)
     this.onCommentsStateUpdate({ [STATE_FIELD_NAME]: newState })
   }
 
+  /**
+   * @param {Resource} resource
+   * @returns {Promise<void>}
+   */
+  async subscribe(resource) {
+    this.refresh(resource)
+  }
+
+  /**
+   * @param {Resource} resource
+   * @returns {Promise<void>}
+   */
+  async unsubscribe(resource) {
+    // console.log('unsubscribe', reference)
+  }
+
+  /**
+   *
+   * @param {Resource} resource
+   * @returns {Promise<void>}
+   */
   async refresh(resource) {
     const result = await this.service.getComments(resource)
-    const newCommentList = []
-    result.forEach(comment => newCommentList.push(new Comment(comment)))
 
-    this.updateState({ comments: newCommentList })
+    let state = this.state
+    result.forEach(comment => {
+      state = setCommentByPath(state, { id: comment.resource }, { id: comment.reference }, comment)
+    })
+
+    this.updateState(state)
   }
 
+  /**
+   *
+   * @param {Comment} comment
+   * @returns {Promise<void>}
+   */
   async removeComment(comment) {
     await this.service.removeComment(comment)
-
-    // FIXME Refresh the list at every add, optimize this
-    await this.refresh(comment.resource)
+    this.updateState(removeCommentByPath(this.state, comment.resource, comment.reference, comment))
   }
 
-  async addComment({ resource, reference, content }) {
-    const result = await this.service.addComment(new Comment({ resource, reference, content }))
+  /**
+   *
+   * @param {Comment} comment
+   * @returns {Promise<*|void>}
+   */
+  async addComment(comment) {
+    const result = await this.service.addComment(comment)
 
-    // FIXME Refresh the list at every add, optimize this
-    await this.refresh(resource)
+    this.updateState(setCommentByPath(this.state, comment.resource, comment.reference, result))
     return result
   }
 }

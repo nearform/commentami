@@ -27,32 +27,32 @@ describe('CommentableBlockComponent', () => {
     }
 
     commentableState = {
-      toggledReference: 'block-1',
+      lastResourceRefreshed: { id: 'res-1' },
+      toggledReference: {id: 'ref-1'},
       toggleComments: jest.fn(),
       addComment: jest.fn(),
       removeComment: jest.fn(),
-      getReferenceComments: jest.fn(),
-      [STATE_FIELD_NAME]: {}
+      getReferenceComments: jest.fn()
     }
   })
 
   test('if comments are present the block should contain a marker', async () => {
     const commentObject = new CommentsState(new CommentsInMemoryService(), getState, setState)
-    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment' })
-    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 2' })
-    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 3' })
+    await commentObject.addComment({ resource: {id: 'res-1'}, reference: {id: 'ref-1'}, content: 'This is a comment' })
+    await commentObject.addComment({ resource: {id: 'res-1'}, reference: {id: 'ref-1'}, content: 'This is a comment 2' })
+    await commentObject.addComment({ resource: {id: 'res-1'}, reference: {id: 'ref-1'}, content: 'This is a comment 3' })
 
     wrapper = mount(
-      <CommentableBlockComponent referenceId="block-1" commentable={commentableState} events={events}>
-        <div className="my-content">Some content</div>
-      </CommentableBlockComponent>
+      <CommentableBlockComponent referenceId="ref-1" commentable={commentableState} events={events}>
+         <div className="my-content">Some content</div>
+       </CommentableBlockComponent>
     )
     expect(wrapper.find('CommentableMarker').length).toBe(1)
   })
 
   test('if comments are not present the block should not contain a marker', () => {
     wrapper = mount(
-      <CommentableBlockComponent referenceId="block-1" commentable={commentableState} events={events}>
+      <CommentableBlockComponent referenceId="ref-1" commentable={commentableState} events={events}>
         <div className="my-content">Some content</div>
       </CommentableBlockComponent>
     )
@@ -65,7 +65,7 @@ describe('CommentableBlockComponent', () => {
     console.error = mockWarning // eslint-disable-line
 
     wrapper = mount(
-      <CommentableBlockComponent referenceId="block-1" events={events}>
+      <CommentableBlockComponent referenceId="ref-1" events={events}>
         <div className="my-content">Some content</div>
       </CommentableBlockComponent>
     )
@@ -79,10 +79,10 @@ describe('CommentableBlockComponent', () => {
 
     wrapper = mount(
       <CommentableBlockComponent
-        referenceId="block-1"
+        referenceId="ref-1"
         className="classname"
         highlightedClassName="highlighted-classname"
-        commentable={Object.assign({}, commentableState, { toggledReference: 'block-1' })}
+        commentable={Object.assign({}, commentableState, { toggledReference: {id: 'ref-1'} })}
         events={events}
       >
         <div className="my-content">Some content</div>
@@ -108,10 +108,10 @@ describe('CommentableBlockComponent', () => {
 
     wrapper = mount(
       <CommentableBlockComponent
-        referenceId="block-1"
+        referenceId="ref-1"
         className="classname"
         highlightedClassName="highlighted-classname"
-        commentable={Object.assign({}, commentableState, { toggledReference: 'block-2' })}
+        commentable={Object.assign({}, commentableState, { toggledReference: 'ref-2' })}
         events={events}
       >
         <div className="my-content">Some content</div>

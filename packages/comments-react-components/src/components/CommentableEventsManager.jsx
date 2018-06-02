@@ -52,7 +52,7 @@ export class CommentableDefaultEventsManager extends CommentableEventsManager {
   handleOnDoubleClick(payload, event) {
     event.preventDefault()
 
-    this.props.commentable.toggleComments(payload.id)
+    this.props.commentable.toggleComments({id: payload.id})
 
     const sel = window.getSelection()
     sel.removeAllRanges()
@@ -67,7 +67,7 @@ export class CommentableDefaultEventsManager extends CommentableEventsManager {
       return
     }
 
-    this.props.commentable.toggleComments(payload.id)
+    this.props.commentable.toggleComments({id: payload.id})
   }
 }
 
