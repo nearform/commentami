@@ -1,11 +1,5 @@
 /**
- * The state object.
- * @typedef {Object} State
- * @property {Object.<string, Resource>} resources - The resources managed by the state
- */
-
-/**
- * The resource object
+ * The state object
  * @typedef {Object} Resource
  * @property {string} id - The resource identifier
  * @property {Object.<string, Reference>} references - The references stored in the resource
@@ -22,7 +16,6 @@
  * The comment object
  * @typedef {Object} Comment
  * @property {string} id - The Comment identifier
- * @property {?Resource} resource
  * @property {?Reference} reference
  * @property {?string} content
  * @property {?string} author
@@ -36,17 +29,9 @@
 
 /**
  * Generate the default state
- * @returns {State}
- */
-export const getDefaultState = () => ({ resources: {} })
-
-/**
- * Create a new Resource
- * @param {Resource|Object} resourceOptions The resource object
- * @param {string} resourceOptions.id The resource identifier
  * @returns {Resource}
  */
-export const createResource = ({ id }) => ({ id, references: {} })
+export const getDefaultState = idResource => ({ id: idResource, references: {} })
 
 /**
  * Create a new Reference
@@ -60,7 +45,6 @@ export const createReference = ({ id }) => ({ id, comments: {} })
  * Create a new comment
  * @param {Comment|Object} commentOptions - The options required to generate the comment
  * @param {?string} commentOptions.id          The comment identifier
- * @param {?Resource} commentOptions.resource    The resource identifier
  * @param {?Reference} commentOptions.reference   The reference identifier
  * @param {?string} commentOptions.content     The content of the comment
  * @param {?string} commentOptions.author      The author of the comment
@@ -68,9 +52,8 @@ export const createReference = ({ id }) => ({ id, comments: {} })
  *
  * @returns {Comment}
  */
-export const createComment = ({ id = null, resource = null, reference = null, content = null, author = null, createdAt = null }) => ({
+export const createComment = ({ id = null, reference = null, content = null, author = null, createdAt = null }) => ({
   id,
-  resource,
   reference,
   content,
   author,
@@ -79,22 +62,12 @@ export const createComment = ({ id = null, resource = null, reference = null, co
 
 /**
  *
- * @param {State} state
- * @param {Resource} resourceOptions The resource object
- * @param {string} resourceOptions.id The resource identifier
- * @returns {Resource}
- */
-export const getResource = (state, { id } = {}) =>
-  state.resources[id] || createResource({ id })
-
-/**
- *
- * @param {Resource} resource
+ * @param {Resource} state
  * @param {Reference} referenceOptions The reference options object
  * @param {string} referenceOptions.id The reference identifier
  * @returns {Reference}
  */
-export const getReference = (resource, { id }) => resource.references[id] || createReference({ id })
+export const getReference = (state, { id }) => state.references[id] || createReference({ id })
 
 /**
  *
@@ -106,32 +79,14 @@ export const getReference = (resource, { id }) => resource.references[id] || cre
 export const getComment = (reference, { id }) => reference.comments[id] || createComment({ id })
 
 /**
- * @param {State} state
- * @param {Resource} resourceOptions The resource object
- * @param {string} resourceOptions.id The resource identifier
- * @returns {State}
- */
-export const removeResource = (state, { id }) =>
-  Object.assign({}, state, {
-    resources: Object.entries(state.resources)
-      .filter(([key]) => {
-        return key !== String(id)
-      })
-      .reduce((accumulator, [key, data]) => {
-        accumulator[key] = data
-        return accumulator
-      }, {})
-  })
-
-/**
- * @param {Resource} resource
+ * @param {Resource} state
  * @param {Reference} referenceOptions The reference object
  * @param {string} referenceOptions.id The reference identifier
  * @returns {Resource}
  */
-export const removeReference = (resource, { id }) =>
-  Object.assign({}, resource, {
-    references: Object.entries(resource.references)
+export const removeReference = (state, { id }) =>
+  Object.assign({}, state, {
+    references: Object.entries(state.references)
       .filter(([key]) => {
         return key !== String(id)
       })
@@ -160,32 +115,17 @@ export const removeComment = (reference, { id }) =>
   })
 
 /**
- * Set a resource in the current state,
- * if the resource exists, it's updated in the fields specified by the `resource` param
- *
- * @param {State} state
- * @param {Resource} resource
- * @returns {State}
- */
-export const setResource = (state, resource) =>
-  Object.assign({}, state, {
-    resources: Object.assign({}, state.resources, {
-      [resource.id]: Object.assign({}, getResource(state, { id: resource.id }), resource)
-    })
-  })
-
-/**
- * Set a reference in the current resource,
+ * Set a reference in the current state,
  * if the reference exists, it's updated in the fields specified by the `reference` param
  *
- * @param {Resource} resource
+ * @param {Resource} state
  * @param {Reference} reference
  * @returns {Resource}
  */
-export const setReferenceToResource = (resource, reference) =>
-  Object.assign({}, resource, {
-    references: Object.assign({}, resource.references, {
-      [reference.id]: Object.assign({}, getReference(resource, { id: reference.id }), reference)
+export const setReference = (state, reference) =>
+  Object.assign({}, state, {
+    references: Object.assign({}, state.references, {
+      [reference.id]: Object.assign({}, getReference(state, { id: reference.id }), reference)
     })
   })
 
@@ -200,36 +140,32 @@ export const setReferenceToResource = (resource, reference) =>
 export const setCommentToReference = (reference, comment) =>
   Object.assign({}, reference, {
     comments: Object.assign({}, reference.comments, {
-      [comment.id]: Object.assign({}, getComment(reference, { id: comment.id }), comment)
+      [comment.id]: Object.assign({}, getComment(reference, { id: comment.id }), Object.assign({}, comment, { reference: { id: reference.id } }))
     })
   })
 
 /**
- * Set a comment in the state, specifying the resource and reference
+ * Set a comment in the state, specifying the reference
  *
- * @param {State} state
- * @param {Resource} resource
+ * @param {Resource} state
  * @param {Reference} reference
  * @param {Comment} comment
- * @returns {State}
+ * @returns {Resource}
  */
-export const setCommentByPath = (state, resource, reference, comment) => {
-  const localResource = getResource(state, resource)
-  const localReference = getReference(localResource, reference)
-  return setResource(state, setReferenceToResource(localResource, setCommentToReference(localReference, comment)))
+export const setCommentToState = (state, reference, comment) => {
+  const localReference = getReference(state, reference)
+  return setReference(state, setCommentToReference(localReference, comment))
 }
 
 /**
- * Remove a comment from the state, specifying the resource and reference
+ * Remove a comment from the state, specifying the reference
  *
- * @param {State} state
- * @param {Resource} resource
+ * @param {Resource} state
  * @param {Reference} reference
  * @param {Comment} comment
- * @returns {State}
+ * @returns {Resource}
  */
-export const removeCommentByPath = (state, resource, reference, comment) => {
-  const localResource = getResource(state, resource)
-  const localReference = getReference(localResource, reference)
-  return setResource(state, setReferenceToResource(localResource, removeComment(localReference, comment)))
+export const removeCommentFromState = (state, reference, comment) => {
+  const localReference = getReference(state, reference)
+  return setReference(state, removeComment(localReference, comment))
 }

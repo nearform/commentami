@@ -15,7 +15,8 @@ export class CommentableProvider extends React.Component {
     this.commentsState = new CommentsState(
       this.props.service,
       this.getProviderState.bind(this),
-      this.onCommentsStateUpdate.bind(this)
+      this.onCommentsStateUpdate.bind(this),
+      this.getCurrentResource()
     )
 
     /**
@@ -46,7 +47,7 @@ export class CommentableProvider extends React.Component {
    * @returns {Resource}
    */
   getCurrentResource() {
-    return { id: this.props.resource }
+    return this.props.resource
   }
 
   /**
@@ -88,7 +89,6 @@ export class CommentableProvider extends React.Component {
   async addComment(reference, content) {
     try {
       await this.commentsState.addComment({
-        resource: this.getCurrentResource(),
         reference,
         content
       })
@@ -105,44 +105,42 @@ export class CommentableProvider extends React.Component {
     const referenceId = reference && reference.id
     const currentReferenceId = this.state.toggledReference && this.state.toggledReference.id
     this.setState(() => ({
-      toggledReference: !referenceId || (currentReferenceId === referenceId) ? null : referenceId
+      toggledReference: !referenceId || currentReferenceId === referenceId ? null : {id: referenceId}
     }))
   }
 
-  async refreshCommentList() {
-    try {
-      this.setState({ lastResourceRefreshed: this.getCurrentResource() })
-      await this.commentsState.refresh(this.getCurrentResource())
-    } catch (e) {
-      this.logger.error(e)
-    }
-  }
-
   componentDidMount() {
-    // this.refreshCommentList()
     this.commentsState.subscribe(this.getCurrentResource())
     this.setState({ lastResourceRefreshed: this.getCurrentResource() })
   }
 
   componentWillUnmount() {
     this.commentsState.unsubscribe(this.getCurrentResource())
-    // this.refreshCommentList()
   }
 
   componentDidUpdate() {
-    if ((this.getCurrentResource() || {}).id !== (this.state.lastResourceRefreshed || {}).id) {
+    if (this.getCurrentResource() !== this.state.lastResourceRefreshed) {
       this.commentsState.unsubscribe(this.state.lastResourceRefreshed)
+      this.commentsState = new CommentsState(
+        this.props.service,
+        this.getProviderState.bind(this),
+        this.onCommentsStateUpdate.bind(this),
+        this.getCurrentResource()
+      )
       this.commentsState.subscribe(this.getCurrentResource())
-      this.setState({ lastResourceRefreshed: this.getCurrentResource() })
-      // this.refreshCommentList()
+
+      // FIXME setState should not called in componentDidUpdate, this value can be set directly in the compoent instance
+      // but is used in Sidebar and Block that can take the value from the CommentsState. Once refactored that part
+      // this value can be replaced with a `this.lastResourceRefreshed` assignement
+      this.setState({ lastResourceRefreshed: this.getCurrentResource() }) // eslint-disable-line
     }
   }
 
   render() {
     return (
       <CommentableContext.Provider value={this.state}>
-        <CommentableSidebar className={this.props.sidebarClassName} commentComponent={this.props.commentComponent}/>
-        <CommentableEventsManagerWrapper component={this.props.eventsManagerComponent} children={this.props.children}/>
+        <CommentableSidebar className={this.props.sidebarClassName} commentComponent={this.props.commentComponent} />
+        <CommentableEventsManagerWrapper component={this.props.eventsManagerComponent} children={this.props.children} />
       </CommentableContext.Provider>
     )
   }
