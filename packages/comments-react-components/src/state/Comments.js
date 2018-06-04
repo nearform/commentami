@@ -8,6 +8,8 @@ export class CommentsState {
     this.service = service
     this.getProviderState = getProviderState
     this.onCommentsStateUpdate = onCommentsStateUpdate
+
+    this.subscribeToResourceChange()
   }
 
   /**
@@ -87,5 +89,26 @@ export class CommentsState {
 
     this.updateState(setCommentToState(this.state, comment.reference, result))
     return result
+  }
+
+  /**
+   *
+   * @param {Comment} comment
+   * @returns {Promise<*|void>}
+   */
+  async subscribeToResourceChange() {
+    if (!this.service.onResourceChange) return
+    await this.service.onResourceChange(this.resource, event => {
+      switch (event.action) {
+        case 'add':
+          this.updateState(setCommentToState(this.state, { id: event.comment.reference }, event.comment))
+          break
+        case 'delete':
+          this.updateState(removeCommentFromState(this.state, { id: event.comment.reference }, event.comment))
+          break
+        default:
+          console.warn('Event note expected', event.action)
+      }
+    })
   }
 }
