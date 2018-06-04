@@ -8,7 +8,7 @@ module.exports = async function start() {
   const logMessage = process.send ? process.send : console.log // eslint-disable-line no-console
 
   try {
-    const server = await buildServer(config)
+    const server = await buildServer(config, logMessage)
     await server.start()
     logMessage(`Server running at: ${server.info.uri}`)
 

@@ -1,11 +1,8 @@
 'use strict'
 
-module.exports = async function buildServer(config) {
-  // If forked as child, send output message via ipc to parent, otherwise output to console
-  const logMessage = process.send ? process.send : console.log // eslint-disable-line no-console
-
+module.exports = async function buildServer(config = {}, logMessage) {
   try {
-    const server = require('hapi').Server(config.server || {})
+    const server = require('hapi').Server(config.server)
     await server.register([
       {
         plugin: require('hapi-pino'),
@@ -13,7 +10,7 @@ module.exports = async function buildServer(config) {
       },
       {
         plugin: require('@nearform/comments-backend-hapi-plugin'),
-        options: config.pluginOptions || {}
+        options: config.pluginOptions
       }
     ])
 
