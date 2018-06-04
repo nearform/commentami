@@ -32,7 +32,7 @@ describe('Comments', () => {
         resource: this.resource,
         reference: i === 0 ? this.reference : random.uuid(),
         content: lorem.words(),
-        author: name.firstName()
+        author: i < 15 ? name.firstName() : null
       }))
 
       return Promise.all(comments.map(comment => this.commentsService.add(comment)))
@@ -88,8 +88,7 @@ describe('Comments', () => {
       const comment = {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
-        content: 'lorm ipsum ....',
-        author: 'Filippo'
+        content: 'lorm ipsum ....'
       }
 
       const result = await this.commentsService.add(comment)

@@ -65,7 +65,7 @@ module.exports = {
             resource: Joi.string().required(),
             reference: Joi.string().required(),
             content: Joi.string().required(),
-            author: Joi.string().required()
+            author: Joi.string().optional()
           }
         }
       }
