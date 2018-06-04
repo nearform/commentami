@@ -169,7 +169,7 @@ The list is paginated based on `limit` (default 100) and `offset` (default 0) pa
 
 This endpoint will create a new comment.
 
-The body of the request is as follow and all parameters are required
+The body of the request is as follow and all parameters but author are required
 
 ```
 POST /comments

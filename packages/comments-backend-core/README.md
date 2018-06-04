@@ -130,7 +130,7 @@ async function myFn () => {
     resource: 'some-resource',
     reference: 'some-reference',
     content: 'some content',
-    author: 'author'
+    author: 'author' // optional
   }
   const created = await commentsService.add(comment)
 
