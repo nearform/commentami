@@ -23,7 +23,7 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "coverage": "NODE_ENV=test lab -c --coverage-exclude config -r html -o coverage-core.html test",
+    "coverage": "NODE_ENV=test lab -c --coverage-exclude config -r lcov test",
     "depcheck": "../../node_modules/depcheck/bin/depcheck",
     "pg:init": "node ./database/init.js && npm run pg:migrate",
     "pg:test:init": "NODE_ENV=test node ./database/init.js && NODE_ENV=test npm run pg:migrate",
