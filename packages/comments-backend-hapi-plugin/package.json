@@ -26,7 +26,7 @@
     "coverage": "NODE_ENV=test lab test -c",
     "pg:test:init": "NODE_ENV=test node ../comments-backend-core/database/init.js && NODE_ENV=test node ../comments-backend-core/database/migrate.js max",
     "depcheck": "../../node_modules/depcheck/bin/depcheck",
-    "test": "NODE_ENV=test lab test"
+    "test": "NODE_ENV=test lab -c test"
   },
   "dependencies": {
     "@nearform/comments-backend-core": "^0.1.0",

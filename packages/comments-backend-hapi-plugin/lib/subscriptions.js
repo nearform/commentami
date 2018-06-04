@@ -1,7 +1,8 @@
 'use strict'
 
-function notifyComment (comment, { action }) {
+function notifyComment (comment, { action } = {}) {
   const server = this
+
   const log = (err) => {
     server.log(['subscription', 'error'], err)
   }
