@@ -1,5 +1,7 @@
 # @nearform/comments
 
+[![CircleCI](https://circleci.com/gh/nearform/comments/tree/master.svg?style=svg&circle-token=560be71ca1b0f5855e1e3462a69221bc34da3aac)](https://circleci.com/gh/nearform/comments/tree/master)
+
 React Comments system
 
 | Module                                                                 | Package                                                                            |
