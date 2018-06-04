@@ -5,14 +5,16 @@ module.exports = async function buildServer(config) {
   const logMessage = process.send ? process.send : console.log // eslint-disable-line no-console
 
   try {
-    const server = require('hapi').Server(config)
-
+    const server = require('hapi').Server(config.server || {})
     await server.register([
       {
         plugin: require('hapi-pino'),
         options: { prettyPrint: process.env.NODE_ENV !== 'production', logEvents: ['error'] }
       },
-      require('@nearform/comments-backend-hapi-plugin')
+      {
+        plugin: require('@nearform/comments-backend-hapi-plugin'),
+        options: config.pluginOptions || {}
+      }
     ])
 
     return server

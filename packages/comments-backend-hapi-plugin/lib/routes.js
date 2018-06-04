@@ -55,7 +55,7 @@ module.exports = {
       path: '/comments',
       handler: async function(request, h) {
         const comment = await request.commentsService.add(request.payload)
-        server.methods.notifyComment(comment, { action: 'add' })
+        server.methods.notifyComment && server.methods.notifyComment(comment, { action: 'add' })
 
         return comment
       },
@@ -95,7 +95,7 @@ module.exports = {
         const { id } = request.params
 
         const comment = await request.commentsService.update(id, request.payload)
-        server.methods.notifyComment(comment, { action: 'update' })
+        server.methods.notifyComment && server.methods.notifyComment(comment, { action: 'update' })
 
         return comment
       },
@@ -118,7 +118,7 @@ module.exports = {
         const { id } = request.params
 
         const comment = await request.commentsService.delete(id)
-        server.methods.notifyComment(comment, { action: 'delete' })
+        server.methods.notifyComment && server.methods.notifyComment(comment, { action: 'delete' })
 
         return { success: true }
       },

@@ -7,13 +7,14 @@ module.exports.lab = Lab.script()
 const { describe, it: test, before, after } = module.exports.lab
 
 const { resetDb } = require('../../comments-backend-core/test/utils')
+const config = require('../config')
 const buildServer = require('../lib/server')
 
 describe('Server', () => {
   let server = null
   before(async () => {
     await resetDb()
-    server = await buildServer()
+    server = await buildServer(config)
   })
 
   after(async () => {

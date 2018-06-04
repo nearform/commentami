@@ -1,6 +1,6 @@
 # @nearform/comments-backend-hapi-server
 
-comments-backend-hapi-server is a ready to use [Hapi][hapi] server with the comments-backend-hapi-plugin registered.
+`@nearform/comments-backend-hapi-server` is a ready to use [Hapi][hapi] server with the `@nearform/comments-backend-hapi-plugin` registered and websockets enabled.
 
 ## Install
 
@@ -9,6 +9,29 @@ To install via npm:
 ```
 npm install @nearform/comments-backend-hapi-server
 ```
+
+## Configuration
+
+You can use the following env variables to configure the server:
+
+```
+## server specific variables
+NF_COMMENTS_SERVER_HOST
+NF_COMMENTS_SERVER_PORT
+
+# websocket specific variables
+NF_COMMENTS_SERVER_MULTINES_TYPE
+NF_COMMENTS_SERVER_MULTINES_HOST
+NF_COMMENTS_SERVER_MULTINES_PORT
+```
+
+By default the configuration of the server is for running locally.
+
+You can also change the databse connection parameters through `@nearform/comments-backend-core` env variables. See `@nearform/comments-backend-core` documentation for more info
+
+## Dependency
+
+To run the server you will need a postgres server (store comments) and a redis server (pub.sub system for notifications via websocket).
 
 ## Usage
 

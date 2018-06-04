@@ -93,6 +93,16 @@ module.exports = function buildCommentsService(db, hooks = {}) {
     }
 
     const { limit = 100, offset = 0 } = options
+
+    if (!resource) {
+      return {
+        comments: [],
+        total: 0,
+        limit,
+        offset
+      }
+    }
+
     const sqlCount = SQL`
       SELECT
         COUNT(*)

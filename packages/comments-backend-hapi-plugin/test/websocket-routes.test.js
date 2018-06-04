@@ -17,7 +17,7 @@ describe('Comments Websocket - routes', () => {
 
   before(async () => {
     await resetDb()
-    server = await buildServer({ host: '127.0.0.1', port: 8281 })
+    server = await buildServer({ host: '127.0.0.1', port: 8281, pluginOptions: { multines: {} } })
     await server.start()
 
     client = new Nes.Client('ws://127.0.0.1:8281')

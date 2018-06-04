@@ -5,6 +5,7 @@ services:
     command: npm run start
     depends_on:
       - postgres
+      - redis
     ports:
       - "8080:8080"
     environment:
@@ -26,3 +27,7 @@ services:
       - /tmp
       - /var/run/postgresql
       - /var/lib/postgresql/data/pgdata:rw
+  redis:
+    image: "redis:alpine"
+    ports:
+      - 6379:6379
