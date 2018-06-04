@@ -27,13 +27,19 @@ describe('Comments', () => {
     beforeEach(() => {
       this.resource = internet.url()
       this.reference = random.uuid()
+      this.references = []
 
-      const comments = new Array(20).fill(0).map((v, i) => ({
-        resource: this.resource,
-        reference: i === 0 ? this.reference : random.uuid(),
-        content: lorem.words(),
-        author: i < 15 ? name.firstName() : null
-      }))
+      const comments = new Array(20).fill(0).map((v, i) => {
+        const reference = i === 0 ? this.reference : random.uuid()
+        this.references.push(reference)
+
+        return {
+          resource: this.resource,
+          reference,
+          content: lorem.words(),
+          author: name.firstName()
+        }
+      })
 
       return Promise.all(comments.map(comment => this.commentsService.add(comment)))
     })
@@ -74,6 +80,26 @@ describe('Comments', () => {
 
       expect(list.comments.length).to.equal(15)
       expect(list.comments[0].id).to.equal(all.comments[3].id)
+    })
+
+    test('Comments: asking with no resource will return an empty set', async () => {
+      const list = await this.commentsService.list()
+
+      expect(list).to.equal({
+        comments: [],
+        total: 0,
+        limit: 100,
+        offset: 0
+      })
+    })
+
+    test('Comments: list only reference', async () => {
+      const list = await this.commentsService.listOnlyReferences(this.resource)
+
+      expect(list).to.include({
+        resource: this.resource
+      })
+      expect(list.references.sort()).to.equal(this.references.sort())
     })
   })
 

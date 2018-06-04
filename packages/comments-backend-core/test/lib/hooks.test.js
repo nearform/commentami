@@ -100,4 +100,25 @@ describe('Hooks', () => {
       expect(result).to.include(comment)
     })
   })
+
+  describe('updating', () => {
+    test('should correctly update a comment', async () => {
+      const comment = {
+        content: 'lorm ipsum .... new',
+      }
+
+      const result = await this.commentsService.update(1, comment)
+
+      expect(result.id).to.equal(1)
+      expect(result.content).to.equal('lorm ipsum .... new')
+    })
+  })
+
+  describe('single comment', () => {
+    test('should correctly create a comment', async () => {
+      const result = await this.commentsService.get(1)
+
+      expect(result.id).to.equal(1)
+    })
+  })
 })
