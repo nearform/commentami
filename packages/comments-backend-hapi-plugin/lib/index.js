@@ -26,8 +26,8 @@ const commentsHapiPlugin = {
       throw result.error
     }
 
-    const db = buildPool(Object.assign({}, config.pg, (options && options.pg) || {}))
-    const commentsService = buildCommentsService(db, options.hooks || {})
+    const db = buildPool(Object.assign({}, config.pg, options.pg))
+    const commentsService = buildCommentsService(db, options.hooks)
 
     server.decorate('server', 'commentsService', commentsService)
     server.decorate('request', 'commentsService', commentsService)
