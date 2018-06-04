@@ -77,8 +77,7 @@ describe('CommentsFetchService', () => {
       body: JSON.stringify({
         resource,
         reference: reference.id,
-        content,
-        author: 'An author' // This value should be removed and get directly from the session in the server
+        content
       })
     })
 

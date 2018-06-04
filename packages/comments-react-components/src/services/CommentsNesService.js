@@ -12,7 +12,26 @@ async function getClient(baseUrl) {
   return nesClients[baseUrl]
 }
 
+/**
+ * Socket event callback
+ *
+ * @callback socketEventCallback
+ * @param {Object} event
+ */
+
+/**
+ *
+ * @param baseUrl
+ * @returns {{addComment: function(*=, *): *, removeComment: removeComment, getComments: function(*): *, onResourceChange: function(*, *=): *}}
+ * @constructor
+ */
 export function CommentsNesService(baseUrl) {
+  /**
+   * Add a comment
+   * @param {String} resource
+   * @param {Comment} comment
+   * @returns {Promise<Comment>}
+   */
   const addComment = async (resource, comment) => {
     const client = await getClient(baseUrl)
 
@@ -22,8 +41,7 @@ export function CommentsNesService(baseUrl) {
       payload: {
         resource: resource,
         reference: comment.reference.id,
-        content: comment.content,
-        author: 'An author' // This value should be removed and get directly from the session in the server
+        content: comment.content
       }
     }
 
@@ -31,7 +49,12 @@ export function CommentsNesService(baseUrl) {
     return response.payload
   }
 
-  const removeComment = async (comment) => {
+  /**
+   * Remove a comment
+   * @param {Comment} comment
+   * @returns {Promise<void>}
+   */
+  const removeComment = async comment => {
     const client = await getClient(baseUrl)
 
     const options = {
@@ -42,17 +65,30 @@ export function CommentsNesService(baseUrl) {
     await client.request(options)
   }
 
-  const getComments = async (resource) => {
+  /**
+   * Get the comment list
+   * @param {String} resource
+   * @returns {Promise<Comments[]>}
+   */
+  const getComments = async resource => {
     const client = await getClient(baseUrl)
     const response = await client.request(`/comments?resource=${resource}`)
     const { payload } = response
 
+    // TODO The pagination is not currently supported, the service loads all the comments related to this resource.
     return payload.comments
   }
 
+  /**
+   *
+   * @param resource
+   * @param {socketEventCallback} handler
+   * @returns {Promise<*>}
+   */
   const onResourceChange = async (resource, handler) => {
     const client = await getClient(baseUrl)
 
+    // TODO verify how and when unsubscribe
     return client.subscribe(`/resources/${resource}`, handler)
   }
 

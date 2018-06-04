@@ -9,8 +9,7 @@ export function CommentsFetchService(baseUrl) {
       body: JSON.stringify({
         resource: resource,
         reference: comment.reference.id,
-        content: comment.content,
-        author: 'An author' // This value should be removed and get directly from the session in the server
+        content: comment.content
       })
     }
 
