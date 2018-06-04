@@ -3,9 +3,9 @@ import { mount } from 'enzyme'
 
 import { CommentableBlockComponent } from '../../src/components/CommentableBlock'
 import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
-import { CommentsState, STATE_FIELD_NAME } from '../../src/state/Comments'
+import { CommentsState } from '../../src/state/Comments'
 
-describe('CommentableBlockComponent', () => {
+describe('CommentableBlock', () => {
   let events
   let wrapper
   let commentableState
@@ -28,7 +28,7 @@ describe('CommentableBlockComponent', () => {
 
     commentableState = {
       lastResourceRefreshed: { id: 'res-1' },
-      toggledReference: {id: 'ref-1'},
+      toggledReference: { id: 'ref-1' },
       toggleComments: jest.fn(),
       addComment: jest.fn(),
       removeComment: jest.fn(),
@@ -38,14 +38,14 @@ describe('CommentableBlockComponent', () => {
 
   test('if comments are present the block should contain a marker', async () => {
     const commentObject = new CommentsState(new CommentsInMemoryService(), getState, setState)
-    await commentObject.addComment({ resource: {id: 'res-1'}, reference: {id: 'ref-1'}, content: 'This is a comment' })
-    await commentObject.addComment({ resource: {id: 'res-1'}, reference: {id: 'ref-1'}, content: 'This is a comment 2' })
-    await commentObject.addComment({ resource: {id: 'res-1'}, reference: {id: 'ref-1'}, content: 'This is a comment 3' })
+    await commentObject.addComment({ resource: { id: 'res-1' }, reference: { id: 'ref-1' }, content: 'This is a comment' })
+    await commentObject.addComment({ resource: { id: 'res-1' }, reference: { id: 'ref-1' }, content: 'This is a comment 2' })
+    await commentObject.addComment({ resource: { id: 'res-1' }, reference: { id: 'ref-1' }, content: 'This is a comment 3' })
 
     wrapper = mount(
       <CommentableBlockComponent referenceId="ref-1" commentable={commentableState} events={events}>
-         <div className="my-content">Some content</div>
-       </CommentableBlockComponent>
+        <div className="my-content">Some content</div>
+      </CommentableBlockComponent>
     )
     expect(wrapper.find('CommentableMarker').length).toBe(1)
   })
@@ -82,7 +82,7 @@ describe('CommentableBlockComponent', () => {
         referenceId="ref-1"
         className="classname"
         highlightedClassName="highlighted-classname"
-        commentable={Object.assign({}, commentableState, { toggledReference: {id: 'ref-1'} })}
+        commentable={Object.assign({}, commentableState, { toggledReference: { id: 'ref-1' } })}
         events={events}
       >
         <div className="my-content">Some content</div>

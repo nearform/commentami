@@ -1,13 +1,10 @@
-import {
-  getDefaultState,
-  setCommentByPath,
-  removeCommentByPath
-} from './helpers'
+import { getDefaultState, setCommentToState, removeCommentFromState } from './helpers'
 
 export const STATE_FIELD_NAME = 'commentsState'
 
 export class CommentsState {
-  constructor(service, getProviderState, onCommentsStateUpdate) {
+  constructor(service, getProviderState, onCommentsStateUpdate, resource) {
+    this.resource = resource
     this.service = service
     this.getProviderState = getProviderState
     this.onCommentsStateUpdate = onCommentsStateUpdate
@@ -18,7 +15,7 @@ export class CommentsState {
    * @returns {State}
    */
   get defaultState() {
-    return getDefaultState()
+    return getDefaultState(this.resource)
   }
 
   /**
@@ -58,12 +55,13 @@ export class CommentsState {
    * @param {Resource} resource
    * @returns {Promise<void>}
    */
-  async refresh(resource) {
-    const result = await this.service.getComments(resource)
+  async refresh() {
+    const result = await this.service.getComments(this.resource)
 
     let state = this.state
     result.forEach(comment => {
-      state = setCommentByPath(state, { id: comment.resource }, { id: comment.reference }, comment)
+      // FIXME The service returns the reference as a string, the structure requires an object in the format {id: ...}
+      state = setCommentToState(state, { id: comment.reference }, comment)
     })
 
     this.updateState(state)
@@ -76,7 +74,7 @@ export class CommentsState {
    */
   async removeComment(comment) {
     await this.service.removeComment(comment)
-    this.updateState(removeCommentByPath(this.state, comment.resource, comment.reference, comment))
+    this.updateState(removeCommentFromState(this.state, comment.reference, comment))
   }
 
   /**
@@ -85,9 +83,9 @@ export class CommentsState {
    * @returns {Promise<*|void>}
    */
   async addComment(comment) {
-    const result = await this.service.addComment(comment)
+    const result = await this.service.addComment(this.resource, comment)
 
-    this.updateState(setCommentByPath(this.state, comment.resource, comment.reference, result))
+    this.updateState(setCommentToState(this.state, comment.reference, result))
     return result
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import warning from 'warning'
 
-import { commentsCount, selectCommentsByReference } from '../state/selectors'
+import { commentsCount } from '../state/selectors'
 import { CommentableContext } from './CommentableProvider'
 import { CommentableMarker } from './CommentableMarker'
 import { CommentableEventsContext } from './CommentableEventsManager'
@@ -35,10 +35,7 @@ export class CommentableBlockComponent extends React.Component {
   }
 
   get hasComments() {
-    return this.hasCommentable && !!commentsCount(this.props.commentable, {
-      resource: this.props.commentable.lastResourceRefreshed,
-      reference: {id: this.referenceId}
-    })
+    return this.hasCommentable && !!commentsCount(this.props.commentable, { id: this.referenceId })
   }
 
   get isToggled() {
