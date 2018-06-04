@@ -4,7 +4,7 @@ const { expect } = require('code')
 const Lab = require('lab')
 
 module.exports.lab = Lab.script()
-const { describe, it: test, before, after } = module.exports.lab
+const { describe, it: test } = module.exports.lab
 
 const commentsHapiPlugin = require('../../lib/index')
 

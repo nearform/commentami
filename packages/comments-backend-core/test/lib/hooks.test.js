@@ -104,7 +104,7 @@ describe('Hooks', () => {
   describe('updating', () => {
     test('should correctly update a comment', async () => {
       const comment = {
-        content: 'lorm ipsum .... new',
+        content: 'lorm ipsum .... new'
       }
 
       const result = await this.commentsService.update(1, comment)

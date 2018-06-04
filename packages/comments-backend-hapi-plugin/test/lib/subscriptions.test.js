@@ -4,7 +4,7 @@ const { expect } = require('code')
 const Lab = require('lab')
 
 module.exports.lab = Lab.script()
-const { describe, it: test, before, after } = module.exports.lab
+const { describe, it: test } = module.exports.lab
 
 const { notifyComment } = require('../../lib/subscriptions')
 
@@ -36,7 +36,7 @@ describe('Subscriptions library: notifyComment function', () => {
     })
 
     await fn({ id: 1 }, { action: 'add' })
-    await p
+    await p.catch(error)
   })
 
   test('when no action is provided it returna a resolved promise', async () => {
