@@ -14,6 +14,10 @@ export class CommentableComment extends React.Component {
   }
 
   render() {
+    if (!this.props.comment) {
+      return null
+    }
+
     return (
       <article className={this.props.className || 'nf-comment'}>
         <h4 className="nf-comment__header">{this.props.comment.author} said:</h4>

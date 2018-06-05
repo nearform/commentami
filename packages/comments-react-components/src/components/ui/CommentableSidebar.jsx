@@ -4,11 +4,8 @@ import { CommentableComponent } from '../core/CommentableComponent'
 import { CommentableContext } from '../core/CommentableProvider'
 import { CommentableSidebarsContext } from './CommentableSidebarsContainer'
 
+/** Note: rename `sidebars` into `sidebar` because it's a single object */
 export class CommentableSidebar extends CommentableComponent {
-  get renderProps() {
-    return { ...this.props, commentable: this.commentable, sidebars: this.sidebars }
-  }
-
   render() {
     return (
       <CommentableContext.Consumer>
@@ -19,8 +16,12 @@ export class CommentableSidebar extends CommentableComponent {
 
   _renderInner(commentable, sidebars) {
     this.commentable = commentable
-    this.sidebars = sidebars
 
+    if (!sidebars) {
+      return null
+    }
+
+    this.sidebars = sidebars
     if (!this.sidebars.isActive(this.commentable.resource)) return false
 
     return createPortal(<aside className={this.props.className || 'nf-comments-sidebar'}>{super._renderInner(commentable)}</aside>, document.body)
