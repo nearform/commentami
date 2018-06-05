@@ -27,6 +27,7 @@ describe('state/Comments', () => {
     expect(comments.defaultState).toEqual({ id: 'res-1', references: {} })
   })
 
+<<<<<<< HEAD
   test('if state is null should return a default state', () => {
     state = {}
     comments = new CommentsState({
@@ -36,6 +37,18 @@ describe('state/Comments', () => {
       resource: 'res-1'
     })
     expect(comments.state).toEqual({ id: 'res-1', references: {} })
+=======
+  describe('When a new instance is created', () => {
+    test('the size should be 0 and should have a defaut state', () => {
+      expect(totalCommentsCount(state)).toBe(0)
+    })
+
+    test('should have a fallback state and a default state', () => {
+      const comments = new CommentsState(new CommentsInMemoryService(), () => ({}), setState)
+      expect(comments.state).toEqual({})
+      expect(comments.defaultState).toEqual({ comments: [] })
+    })
+>>>>>>> chore(components): Testing code.
   })
 
   describe('Adding a comment', () => {
@@ -332,6 +345,12 @@ describe('state/Comments', () => {
       await comments.unsubscribe()
 
       expect(unsubscribeMock).toHaveBeenCalledWith()
+    })
+  })
+
+  describe('Selectors', () => {
+    test('should always return something', () => {
+      expect(selectCommentsByReference({})).toEqual([])
     })
   })
 })

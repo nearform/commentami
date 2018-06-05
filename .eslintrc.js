@@ -2,7 +2,7 @@ module.exports = {
   extends: ['./node_modules/@cowtech/eslint-config/react.js'],
   rules: {
     'react/jsx-filename-extension': [2, { extensions: ['.jsx'] }],
-    "no-console": ["warn"]
+    'no-console': ['warn']
   },
   globals: {
     describe: true,
@@ -10,6 +10,8 @@ module.exports = {
     expect: true,
     beforeEach: true,
     afterEach: true,
+    beforeAll: true,
+    afterAll: true,
     fetch: true
   }
 }

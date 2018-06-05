@@ -1,6 +1,6 @@
 import React from 'react'
 import warning from 'warning'
-import { CommentableContext } from '../core/CommentableProvider'
+import { CommentableContext } from './CommentableProvider'
 
 export class CommentableComponent extends React.Component {
   get hasCommentable() {
@@ -13,11 +13,11 @@ export class CommentableComponent extends React.Component {
   }
 
   addComment(reference, content) {
-    this.commentable.addComment(reference, content)
+    return this.commentable.addComment(reference, content)
   }
 
   removeComment(comment) {
-    this.commentable.removeComment(comment)
+    return this.commentable.removeComment(comment)
   }
 
   componentDidMount() {
@@ -29,13 +29,13 @@ export class CommentableComponent extends React.Component {
   }
 
   renderCommentable() {
-    return this.props.children
+    return this.props.children || false
   }
 
   _renderInner(commentable) {
     this.commentable = commentable
     const { render, component: Component, children } = this.props
-    const renderProps = Object.assign({ commentable, resource: commentable.resource, children }, this.renderProps)
+    const renderProps = Object.assign({ commentable, resource: (commentable || {}).resource, children }, this.renderProps)
 
     // render prop takes precedence over component prop - Last resource is to just render components
     if (render) {
