@@ -1,44 +1,35 @@
+import { px } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
-
-import { CommentableBlock } from '../../src/components/CommentableBlock'
+import { CommentableBlock } from '../../src/components/core/CommentableBlock'
+import { Block } from './block'
 
 const tableClassName = style({
   borderSpacing: 1
 })
 
 const headerClassName = style({
-  height: '30px',
+  height: px(30),
   textAlign: 'left',
   textTransform: 'capitalize',
-  backgroundColor: '#ddd',
-  border: '1px solid #aaa'
+  backgroundColor: '#DDD',
+  border: `${px(1)} solid #AAA`
 })
 
 const cellClassName = style({
   textAlign: 'left',
-  height: '30px',
-  border: '1px solid #aaa'
-})
-
-const cellContentsClassName = style({
-  backgroundColor: '#f3f3f3',
-  padding: '8px'
-})
-
-const highlightCellContentsClassName = style({
-  backgroundColor: '#e3ead4',
-  padding: '8px'
+  height: px(30),
+  border: `${px(1)} solid #AAA`,
+  position: 'relative'
 })
 
 const commentLabelClassName = style({
-  height: '10px',
-  width: '10px',
-  position: 'relative',
-  float: 'right',
-  top: '-8px',
-  right: '-8px',
-  backgroundColor: '#f3704c'
+  height: px(10),
+  width: px(10),
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  backgroundColor: '#F3704C'
 })
 
 export const Table = ({ data, columns }) => (
@@ -50,22 +41,13 @@ export const Table = ({ data, columns }) => (
   </table>
 )
 
-export const CommentLabel = ({ rootRef, referenceId, events, handleToggleComment }) => {
-  const boundHandleClick = events.onClick.bind(null, { id: referenceId, ref: rootRef, scope: 'marker' })
-
-  return (
-    <div
-      className={commentLabelClassName}
-      ref={rootRef}
-      onDoubleClick={handleToggleComment}
-      onClick={boundHandleClick} // eslint-disable-line react/jsx-no-bind
-    />
-  )
+export const CommentLabel = ({ onClick }) => {
+  return <div className={commentLabelClassName} onClick={onClick} />
 }
 
 export const Cell = ({ id, data }) => (
   <td className={cellClassName}>
-    <CommentableBlock referenceId={id} markerComponent={CommentLabel} className={cellContentsClassName} highlightedClassName={highlightCellContentsClassName}>
+    <CommentableBlock reference={id} render={props => <Block {...props} markerComponent={CommentLabel} />}>
       {data}
     </CommentableBlock>
   </td>

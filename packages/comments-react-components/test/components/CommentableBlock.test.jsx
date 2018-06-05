@@ -43,7 +43,7 @@ describe('CommentableBlockComponent', () => {
     await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 3' })
 
     wrapper = mount(
-      <CommentableBlockComponent referenceId="block-1" commentable={commentableState} events={events}>
+      <CommentableBlockComponent reference="block-1" commentable={commentableState} events={events}>
         <div className="my-content">Some content</div>
       </CommentableBlockComponent>
     )
@@ -52,7 +52,7 @@ describe('CommentableBlockComponent', () => {
 
   test('if comments are not present the block should not contain a marker', () => {
     wrapper = mount(
-      <CommentableBlockComponent referenceId="block-1" commentable={commentableState} events={events}>
+      <CommentableBlockComponent reference="block-1" commentable={commentableState} events={events}>
         <div className="my-content">Some content</div>
       </CommentableBlockComponent>
     )
@@ -65,7 +65,7 @@ describe('CommentableBlockComponent', () => {
     console.error = mockWarning // eslint-disable-line
 
     wrapper = mount(
-      <CommentableBlockComponent referenceId="block-1" events={events}>
+      <CommentableBlockComponent reference="block-1" events={events}>
         <div className="my-content">Some content</div>
       </CommentableBlockComponent>
     )
@@ -79,7 +79,7 @@ describe('CommentableBlockComponent', () => {
 
     wrapper = mount(
       <CommentableBlockComponent
-        referenceId="block-1"
+        reference="block-1"
         className="classname"
         highlightedClassName="highlighted-classname"
         commentable={Object.assign({}, commentableState, { toggledReference: 'block-1' })}
@@ -108,7 +108,7 @@ describe('CommentableBlockComponent', () => {
 
     wrapper = mount(
       <CommentableBlockComponent
-        referenceId="block-1"
+        reference="block-1"
         className="classname"
         highlightedClassName="highlighted-classname"
         commentable={Object.assign({}, commentableState, { toggledReference: 'block-2' })}
