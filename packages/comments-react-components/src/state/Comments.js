@@ -3,11 +3,12 @@ import { getDefaultState, setCommentToState, removeCommentFromState } from './he
 export const STATE_FIELD_NAME = 'commentsState'
 
 export class CommentsState {
-  constructor(service, getProviderState, onCommentsStateUpdate, resource) {
+  constructor({ service, getProviderState, onCommentsStateUpdate, resource, logger }) {
     this.resource = resource
     this.service = service
     this.getProviderState = getProviderState
     this.onCommentsStateUpdate = onCommentsStateUpdate
+    this.logger = logger || console
 
     this.unsubscribeFromResourceChange = null
   }
@@ -110,7 +111,7 @@ export class CommentsState {
           this.updateState(removeCommentFromState(this.state, { id: event.comment.reference }, event.comment))
           break
         default:
-          console.warn('Event note expected', event.action)
+          this.logger.warn('Event note expected', event.action)
       }
     })
   }

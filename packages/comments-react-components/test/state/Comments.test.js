@@ -18,20 +18,35 @@ describe('state/Comments', () => {
     }
   })
   test('The default state should be correct', () => {
-    comments = new CommentsState(new CommentsInMemoryService(), getState, setState, 'res-1')
+    comments = new CommentsState({
+      service: new CommentsInMemoryService(),
+      getProviderState: getState,
+      onCommentsStateUpdate: setState,
+      resource: 'res-1'
+    })
     expect(comments.defaultState).toEqual({ id: 'res-1', references: {} })
   })
 
   test('if state is null should return a default state', () => {
     state = {}
-    comments = new CommentsState(new CommentsInMemoryService(), getState, setState, 'res-1')
+    comments = new CommentsState({
+      service: new CommentsInMemoryService(),
+      getProviderState: getState,
+      onCommentsStateUpdate: setState,
+      resource: 'res-1'
+    })
     expect(comments.state).toEqual({ id: 'res-1', references: {} })
   })
 
   describe('Adding a comment', () => {
     let comment1
     beforeEach(async () => {
-      comments = new CommentsState(new CommentsInMemoryService(), getState, setState, 'res-1')
+      comments = new CommentsState({
+        service: new CommentsInMemoryService(),
+        getProviderState: getState,
+        onCommentsStateUpdate: setState,
+        resource: 'res-1'
+      })
       comment1 = await comments.addComment({
         reference: { id: 'ref-1' },
         content: 'somecontent'
@@ -53,7 +68,13 @@ describe('state/Comments', () => {
 
   describe('Removing a comment', () => {
     beforeEach(async () => {
-      comments = new CommentsState(new CommentsInMemoryService(), getState, setState, 'res-1')
+      comments = new CommentsState({
+        service: new CommentsInMemoryService(),
+        getProviderState: getState,
+        onCommentsStateUpdate: setState,
+        resource: 'res-1'
+      })
+
       await comments.addComment({
         reference: { id: 'ref-2' },
         content: 'somecontent'
@@ -79,7 +100,13 @@ describe('state/Comments', () => {
 
   describe('Get comments by reference', () => {
     beforeEach(() => {
-      comments = new CommentsState(new CommentsInMemoryService(), getState, setState, 'res-1')
+      comments = new CommentsState({
+        service: new CommentsInMemoryService(),
+        getProviderState: getState,
+        onCommentsStateUpdate: setState,
+        resource: 'res-1'
+      })
+
       comments.addComment({ reference: { id: 'ref-1' }, content: 'somecontent 1' })
       comments.addComment({ reference: { id: 'ref-1' }, content: 'somecontent 2' })
       comments.addComment({ reference: { id: 'ref-2' }, content: 'somecontent 3' })
@@ -111,7 +138,12 @@ describe('state/Comments', () => {
   describe('refresh', () => {
     test('Refresh should fill in the comments', async () => {
       const service = new CommentsMockService()
-      comments = new CommentsState(service, getState, setState, 'res-1')
+      comments = new CommentsState({
+        service,
+        getProviderState: getState,
+        onCommentsStateUpdate: setState,
+        resource: 'res-1'
+      })
 
       service.getComments.mockReturnValue([{ id: 'comm-1', content: 'somecontent', reference: 'ref-1' }])
       await comments.subscribe()
@@ -142,7 +174,13 @@ describe('state/Comments', () => {
     test('Subscribe with no stream should not call only the getComments', async () => {
       const service = new CommentsMockService()
       service.getComments.mockReturnValue([])
-      comments = new CommentsState(service, getState, setState, 'res-1')
+      comments = new CommentsState({
+        service,
+        getProviderState: getState,
+        onCommentsStateUpdate: setState,
+        resource: 'res-1'
+      })
+
 
       await comments.subscribe()
       expect(service.getComments).toHaveBeenCalledWith('res-1')
@@ -151,7 +189,13 @@ describe('state/Comments', () => {
     test('Subscribe with stream should call alse the onResourceChange', async () => {
       const service = new CommentsMockServiceWithStream()
       service.getComments.mockReturnValue([])
-      comments = new CommentsState(service, getState, setState, 'res-1')
+      comments = new CommentsState({
+        service,
+        getProviderState: getState,
+        onCommentsStateUpdate: setState,
+        resource: 'res-1'
+      })
+
 
       await comments.subscribe()
       expect(service.getComments).toHaveBeenCalledWith('res-1')
@@ -170,7 +214,13 @@ describe('state/Comments', () => {
           }
         }
       }
-      comments = new CommentsState(service, getState, setState, 'res-1')
+      comments = new CommentsState({
+        service,
+        getProviderState: getState,
+        onCommentsStateUpdate: setState,
+        resource: 'res-1'
+      })
+
       await comments.subscribe()
 
       service.onResourceChange.mock.calls[0][1]({ action: 'add', comment: { id: 'comm-1', reference: 'ref-1' } })
@@ -219,7 +269,13 @@ describe('state/Comments', () => {
         }
       }
 
-      comments = new CommentsState(service, getState, setState, 'res-1')
+      comments = new CommentsState({
+        service,
+        getProviderState: getState,
+        onCommentsStateUpdate: setState,
+        resource: 'res-1'
+      })
+
       await comments.subscribe()
 
       service.onResourceChange.mock.calls[0][1]({ action: 'delete', comment: { id: 'comm-1', reference: 'ref-1' } })
@@ -238,17 +294,26 @@ describe('state/Comments', () => {
     })
 
     test('unhandled comment event', async () => {
-      const consoleSpy = jest.spyOn(global.console, 'warn')
+      const mockLogger = {
+        warn: jest.fn()
+      }
       const service = new CommentsMockServiceWithStream()
       service.getComments.mockReturnValue([])
       state = {}
 
-      comments = new CommentsState(service, getState, setState, 'res-1')
+      comments = new CommentsState({
+        service,
+        getProviderState: getState,
+        onCommentsStateUpdate: setState,
+        resource: 'res-1',
+        logger: mockLogger
+      })
+
       await comments.subscribe()
 
       service.onResourceChange.mock.calls[0][1]({ action: 'anotheraction' })
 
-      expect(consoleSpy).toHaveBeenCalledWith('Event note expected', 'anotheraction')
+      expect(mockLogger.warn).toHaveBeenCalledWith('Event note expected', 'anotheraction')
     })
 
     test('Unsubscribe without unsubscribe does nothing', async () => {
@@ -258,7 +323,13 @@ describe('state/Comments', () => {
 
       const unsubscribeMock = jest.fn()
       service.onResourceChange.mockReturnValue(unsubscribeMock)
-      comments = new CommentsState(service, getState, setState, 'res-1')
+      comments = new CommentsState({
+        service,
+        getProviderState: getState,
+        onCommentsStateUpdate: setState,
+        resource: 'res-1'
+      })
+
       await comments.subscribe()
       await comments.unsubscribe()
 

@@ -29,7 +29,13 @@ describe('CommentableSidebar', () => {
       lastResourceRefreshed: { id: 'res-1' }
     }
 
-    const commentObject = new CommentsState(new CommentsInMemoryService(), getState, setState)
+    const commentObject = new CommentsState({
+      service: new CommentsInMemoryService(),
+      getProviderState: getState,
+      onCommentsStateUpdate: setState,
+      resource: 'res-1'
+    })
+
     await commentObject.addComment({ reference: { id: 'ref-1' }, content: 'This is a comment' })
     await commentObject.addComment({ reference: { id: 'ref-1' }, content: 'This is a comment 2' })
     await commentObject.addComment({ reference: { id: 'ref-1' }, content: 'This is a comment 3' })

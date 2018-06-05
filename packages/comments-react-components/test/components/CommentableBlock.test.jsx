@@ -37,7 +37,13 @@ describe('CommentableBlock', () => {
   })
 
   test('if comments are present the block should contain a marker', async () => {
-    const commentObject = new CommentsState(new CommentsInMemoryService(), getState, setState)
+    const commentObject = new CommentsState({
+      service: new CommentsInMemoryService(),
+      getProviderState: getState,
+      onCommentsStateUpdate: setState,
+      resource: 'res-1'
+    })
+
     await commentObject.addComment({ resource: { id: 'res-1' }, reference: { id: 'ref-1' }, content: 'This is a comment' })
     await commentObject.addComment({ resource: { id: 'res-1' }, reference: { id: 'ref-1' }, content: 'This is a comment 2' })
     await commentObject.addComment({ resource: { id: 'res-1' }, reference: { id: 'ref-1' }, content: 'This is a comment 3' })
