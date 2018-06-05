@@ -1,4 +1,4 @@
-export { CommentableBlock } from './components/CommentableBlock'
-export { CommentableEventsManager, CommentableDefaultEventsManager } from './components/CommentableEventsManager'
-export { CommentableProvider } from './components/CommentableProvider'
+export { CommentableComponent } from './components/core/CommentableComponent'
+export { CommentableBlock } from './components/core/CommentableBlock'
+export { CommentableProvider } from './components/core/CommentableProvider'
 export { CommentsFetchService } from './services/CommentsFetchService'

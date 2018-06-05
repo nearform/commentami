@@ -27,7 +27,7 @@ describe('CommentableBlock', () => {
     }
 
     commentableState = {
-      lastResourceRefreshed: { id: 'res-1' },
+      lastRefreshedResource: { id: 'res-1' },
       toggledReference: { id: 'ref-1' },
       toggleComments: jest.fn(),
       addComment: jest.fn(),
@@ -49,7 +49,7 @@ describe('CommentableBlock', () => {
     await commentObject.addComment({ resource: { id: 'res-1' }, reference: { id: 'ref-1' }, content: 'This is a comment 3' })
 
     wrapper = mount(
-      <CommentableBlockComponent referenceId="ref-1" commentable={commentableState} events={events}>
+      <CommentableBlockComponent reference="block-1" commentable={commentableState} events={events}>
         <div className="my-content">Some content</div>
       </CommentableBlockComponent>
     )
@@ -58,7 +58,7 @@ describe('CommentableBlock', () => {
 
   test('if comments are not present the block should not contain a marker', () => {
     wrapper = mount(
-      <CommentableBlockComponent referenceId="ref-1" commentable={commentableState} events={events}>
+      <CommentableBlockComponent reference="block-1" commentable={commentableState} events={events}>
         <div className="my-content">Some content</div>
       </CommentableBlockComponent>
     )
@@ -71,7 +71,7 @@ describe('CommentableBlock', () => {
     console.error = mockWarning // eslint-disable-line
 
     wrapper = mount(
-      <CommentableBlockComponent referenceId="ref-1" events={events}>
+      <CommentableBlockComponent reference="block-1" events={events}>
         <div className="my-content">Some content</div>
       </CommentableBlockComponent>
     )
@@ -85,7 +85,7 @@ describe('CommentableBlock', () => {
 
     wrapper = mount(
       <CommentableBlockComponent
-        referenceId="ref-1"
+        reference="block-1"
         className="classname"
         highlightedClassName="highlighted-classname"
         commentable={Object.assign({}, commentableState, { toggledReference: { id: 'ref-1' } })}
@@ -114,7 +114,7 @@ describe('CommentableBlock', () => {
 
     wrapper = mount(
       <CommentableBlockComponent
-        referenceId="ref-1"
+        reference="block-1"
         className="classname"
         highlightedClassName="highlighted-classname"
         commentable={Object.assign({}, commentableState, { toggledReference: 'ref-2' })}

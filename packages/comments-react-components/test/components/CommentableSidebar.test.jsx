@@ -26,7 +26,7 @@ describe('CommentableSidebar', () => {
       toggleComments: jest.fn(),
       addComment: jest.fn(),
       removeComment: jest.fn(),
-      lastResourceRefreshed: { id: 'res-1' }
+      lastRefreshedResource: { id: 'res-1' }
     }
 
     const commentObject = new CommentsState({

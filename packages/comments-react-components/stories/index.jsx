@@ -1,12 +1,13 @@
+import { storiesOf } from '@storybook/react'
 import React from 'react'
 import { Bar as BarChart } from 'react-chartjs'
-import { storiesOf } from '@storybook/react'
-
+import { CommentableBlock } from '../src/components/core/CommentableBlock'
+import { CommentableProvider } from '../src/components/core/CommentableProvider'
+import { CommentableSidebar } from '../src/components/ui/CommentableSidebar'
+import { CommentableSidebarsContainer } from '../src/components/ui/CommentableSidebarsContainer'
 import { CommentsInMemoryService } from '../test/helpers/CommentsInMemoryService'
-import { CommentableProvider } from '../src/components/CommentableProvider'
-import { CommentableBlock } from '../src/components/CommentableBlock'
-
-import { sidebarClassName, highlightedReferenceClassName } from './components/styling'
+import { Block } from './components/block'
+import { Sidebar } from './components/sidebar'
 
 const chartData = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -45,50 +46,54 @@ const chartOptions = {
 
 const commentService = CommentsInMemoryService()
 
-function CustomCommentRenderer({ comment }) {
-  return (
-    <div>
-      <h4>{comment.author} had fun saying:</h4>
-      <p>{comment.content}</p>
-    </div>
-  )
-}
-
 storiesOf('Commentable/Text', module).add('Sample Text', () => (
   <div style={{ margin: '30px' }}>
-    <CommentableProvider resource="sample-text-section" service={commentService} sidebarClassName={sidebarClassName} commentComponent={CustomCommentRenderer}>
-      <CommentableBlock referenceId="comm-1" highlightedClassName={highlightedReferenceClassName}>
-        <h1>Text Title 1</h1>
-      </CommentableBlock>
-      <CommentableBlock referenceId="comm-2" highlightedClassName={highlightedReferenceClassName}>
-        <p>Paragraphs are separated by a blank line.</p>
-      </CommentableBlock>
-      <CommentableBlock referenceId="comm-3" highlightedClassName={highlightedReferenceClassName}>
-        <p>
-          2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
-        </p>
-      </CommentableBlock>
-      <CommentableBlock referenceId="comm-4" highlightedClassName={highlightedReferenceClassName}>
-        <ul>
-          <li>this one</li>
-          <li>that one</li>
-          <li>the other one</li>
-        </ul>
-      </CommentableBlock>
-      <CommentableBlock referenceId="comm-5" highlightedClassName={highlightedReferenceClassName}>
-        <blockquote>
-          <p>Block quotes are written like so.</p>
-          <p>They can span multiple paragraphs, if you like.</p>
-        </blockquote>
-      </CommentableBlock>
-      <CommentableBlock referenceId="comm-6" highlightedClassName={highlightedReferenceClassName}>
-        <p>Note that --- not considering the asterisk --- the actual text content starts at 4-columns in.</p>
-      </CommentableBlock>
-      <CommentableBlock referenceId="comm-7" highlightedClassName={highlightedReferenceClassName}>
-        <div>
-          <BarChart data={chartData} options={chartOptions} />
-        </div>
-      </CommentableBlock>
-    </CommentableProvider>
+    <CommentableSidebarsContainer>
+      <CommentableProvider resource="first" service={commentService}>
+        <CommentableBlock reference="comm-1" render={props => <Block {...props} />}>
+          <h1>First provider</h1>
+        </CommentableBlock>
+        <CommentableBlock reference="comm-2" component={Block}>
+          <p>Paragraphs are separated by a blank line.</p>
+        </CommentableBlock>
+        <CommentableBlock reference="comm-3" component={Block}>
+          <p>
+            2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
+          </p>
+        </CommentableBlock>
+        <CommentableBlock reference="comm-4" component={Block}>
+          <ul>
+            <li>this one</li>
+            <li>that one</li>
+            <li>the other one</li>
+          </ul>
+        </CommentableBlock>
+
+        <CommentableSidebar component={Sidebar} />
+      </CommentableProvider>
+
+      <CommentableProvider resource="another-2" service={commentService}>
+        <CommentableBlock reference="comm-1" render={props => <Block {...props} />}>
+          <h1>Another provider</h1>
+        </CommentableBlock>
+
+        <CommentableBlock reference="comm-5" component={Block}>
+          <blockquote>
+            <p>Block quotes are written like so.</p>
+            <p>They can span multiple paragraphs, if you like.</p>
+          </blockquote>
+        </CommentableBlock>
+        <CommentableBlock reference="comm-6" component={Block}>
+          <p>Note that --- not considering the asterisk --- the actual text content starts at 4-columns in.</p>
+        </CommentableBlock>
+        <CommentableBlock reference="comm-7" component={Block}>
+          <div>
+            <BarChart data={chartData} options={chartOptions} />
+          </div>
+        </CommentableBlock>
+
+        <CommentableSidebar component={Sidebar} />
+      </CommentableProvider>
+    </CommentableSidebarsContainer>
   </div>
 ))

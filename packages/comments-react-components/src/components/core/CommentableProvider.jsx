@@ -1,8 +1,5 @@
 import React from 'react'
-
-import { CommentsState } from '../state/Comments'
-import { CommentableSidebar } from './CommentableSidebar'
-import { CommentableEventsManagerWrapper } from './CommentableEventsManager'
+import { CommentsState } from '../../state/Comments'
 
 // The context for the Provider
 export const CommentableContext = React.createContext('commentable')
@@ -25,7 +22,7 @@ export class CommentableProvider extends React.Component {
      * @type {{
      *  logger: *|Console,
      *  toggledReference: null|Reference,
-     *  lastResourceRefreshed: null|Resource,
+     *  lastRefreshedResource: null|Resource,
      *  addComment: any,
      *  removeComment: any,
      *  toggleComments: any,
@@ -33,13 +30,12 @@ export class CommentableProvider extends React.Component {
      */
     this.state = {
       logger: this.logger,
-      toggledReference: null,
-      lastResourceRefreshed: null,
+      resource: this.currentResource,
+      lastRefreshedResource: null,
 
-      // Actions
+      // Actions / Methods
       addComment: this.addComment.bind(this),
-      removeComment: this.removeComment.bind(this),
-      toggleComments: this.toggleComments.bind(this)
+      removeComment: this.removeComment.bind(this)
     }
   }
 
@@ -47,7 +43,7 @@ export class CommentableProvider extends React.Component {
    * Returns the current resource set in the props
    * @returns {Resource}
    */
-  getCurrentResource() {
+  get currentResource() {
     return this.props.resource
   }
 
@@ -69,6 +65,24 @@ export class CommentableProvider extends React.Component {
   }
 
   /**
+   * Add a comment to a reference
+   * @param {Reference} reference
+   * @param {string} content
+   * @returns {Promise<void>}
+   */
+  async addComment(reference, content) {
+    try {
+      await this.commentsState.addComment({
+        resource: this.currentResource,
+        reference,
+        content
+      })
+    } catch (e) {
+      this.logger.error(e)
+    }
+  }
+
+  /**
    * Remove a comment from the state
    * @param {Comment} comment
    * @returns {Promise<void>}
@@ -81,38 +95,9 @@ export class CommentableProvider extends React.Component {
     }
   }
 
-  /**
-   * Add a comment to a reference
-   * @param {Reference} reference
-   * @param {string} content
-   * @returns {Promise<void>}
-   */
-  async addComment(reference, content) {
-    try {
-      await this.commentsState.addComment({
-        reference,
-        content
-      })
-    } catch (e) {
-      this.logger.error(e)
-    }
-  }
-
-  /**
-   * Toggle the current comment
-   * @param {Reference} referenceId
-   */
-  toggleComments(reference) {
-    const referenceId = reference && reference.id
-    const currentReferenceId = this.state.toggledReference && this.state.toggledReference.id
-    this.setState(() => ({
-      toggledReference: !referenceId || currentReferenceId === referenceId ? null : { id: referenceId }
-    }))
-  }
-
   componentDidMount() {
     this.commentsState.subscribe(this.getCurrentResource())
-    this.setState({ lastResourceRefreshed: this.getCurrentResource() })
+    this.setState({ lastRefreshedResource: this.getCurrentResource() })
   }
 
   componentWillUnmount() {
@@ -120,8 +105,8 @@ export class CommentableProvider extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.getCurrentResource() !== this.state.lastResourceRefreshed) {
-      this.commentsState.unsubscribe(this.state.lastResourceRefreshed)
+    if (this.getCurrentResource() !== this.state.lastRefreshedResource) {
+      this.commentsState.unsubscribe(this.state.lastRefreshedResource)
       this.commentsState = new CommentsState({
         service: this.props.service,
         getProviderState: this.getProviderState.bind(this),
@@ -133,17 +118,12 @@ export class CommentableProvider extends React.Component {
 
       // FIXME setState should not called in componentDidUpdate, this value can be set directly in the compoent instance
       // but is used in Sidebar and Block that can take the value from the CommentsState. Once refactored that part
-      // this value can be replaced with a `this.lastResourceRefreshed` assignement
-      this.setState({ lastResourceRefreshed: this.getCurrentResource() }) // eslint-disable-line
+      // this value can be replaced with a `this.lastRefreshedResource` assignement
+      this.setState({ lastRefreshedResource: this.getCurrentResource() }) // eslint-disable-line
     }
   }
 
   render() {
-    return (
-      <CommentableContext.Provider value={this.state}>
-        <CommentableSidebar className={this.props.sidebarClassName} commentComponent={this.props.commentComponent} />
-        <CommentableEventsManagerWrapper component={this.props.eventsManagerComponent} children={this.props.children} />
-      </CommentableContext.Provider>
-    )
+    return <CommentableContext.Provider value={this.state} children={this.props.children} />
   }
 }

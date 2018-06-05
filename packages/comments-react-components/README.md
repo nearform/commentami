@@ -34,10 +34,10 @@ The Components created use the new React Context API (> 16).
   eventsManagerComponent={EventsManager} // This prop is optional and must be a descendant of CommentsEventManager
 >
     <div style={{ marginLeft: '30px' }}>
-      <CommentableBlock referenceId="comm-1">
+      <CommentableBlock reference="comm-1">
         <h1>Text Title 1</h1>
       </CommentableBlock>
-      <CommentableBlock referenceId="comm-2">
+      <CommentableBlock reference="comm-2">
         <p>Paragraphs are separated by a blank line.</p>
       </CommentableBlock>
     </div>
