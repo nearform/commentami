@@ -9,7 +9,7 @@ export class CommentsState {
     this.getProviderState = getProviderState
     this.onCommentsStateUpdate = onCommentsStateUpdate
 
-    this.subscribeToResourceChange()
+    this.unsubscribeFromResourceChange = null
   }
 
   /**
@@ -24,7 +24,9 @@ export class CommentsState {
    * @returns {State}
    */
   get state() {
-    return this.getProviderState()[STATE_FIELD_NAME] || this.defaultState
+    return this.getProviderState()[STATE_FIELD_NAME] && this.getProviderState()[STATE_FIELD_NAME].id !== this.resource
+      ? this.defaultState
+      : this.getProviderState()[STATE_FIELD_NAME] || this.defaultState
   }
 
   /**
@@ -40,26 +42,27 @@ export class CommentsState {
    * @param {Resource} resource
    * @returns {Promise<void>}
    */
-  async subscribe(resource) {
-    this.refresh(resource)
+  async subscribe() {
+    await this.refresh()
+    // FIXME if the time between the refresh and the subscribe an event occurs, is lost.
+    // (Eg. Fix adding a timestamp for the subscription and returns all the comments since the timestamp)
+    await this.subscribeToResourceChange()
   }
 
   /**
    * @param {Resource} resource
    * @returns {Promise<void>}
    */
-  async unsubscribe(resource) {
-    // console.log('unsubscribe', reference)
+  async unsubscribe() {
+    this.unsubscribeFromResourceChange && await this.unsubscribeFromResourceChange()
   }
 
   /**
    *
-   * @param {Resource} resource
    * @returns {Promise<void>}
    */
   async refresh() {
     const result = await this.service.getComments(this.resource)
-
     let state = this.state
     result.forEach(comment => {
       // FIXME The service returns the reference as a string, the structure requires an object in the format {id: ...}
@@ -98,7 +101,7 @@ export class CommentsState {
    */
   async subscribeToResourceChange() {
     if (!this.service.onResourceChange) return
-    await this.service.onResourceChange(this.resource, event => {
+    this.unsubscribeFromResourceChange = await this.service.onResourceChange(this.resource, event => {
       switch (event.action) {
         case 'add':
           this.updateState(setCommentToState(this.state, { id: event.comment.reference }, event.comment))

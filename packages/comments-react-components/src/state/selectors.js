@@ -8,7 +8,7 @@ import { getDefaultState, getReference } from './helpers'
  * @private
  */
 const _ = state => {
-  return state[STATE_FIELD_NAME] || getDefaultState()
+  return (state && state[STATE_FIELD_NAME]) || getDefaultState()
 }
 
 /**

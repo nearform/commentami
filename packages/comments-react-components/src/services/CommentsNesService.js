@@ -89,7 +89,9 @@ export function CommentsNesService(baseUrl) {
     const client = await getClient(baseUrl)
 
     // TODO verify how and when unsubscribe
-    return client.subscribe(`/resources/${resource}`, handler)
+    await client.subscribe(`/resources/${resource}`, handler)
+
+    return async () => client.unsubscribe(`/resources/${resource}`, handler)
   }
 
   return {
