@@ -3,7 +3,6 @@ import React from 'react'
 import { CommentsState } from '../state/Comments'
 import { CommentableSidebar } from './CommentableSidebar'
 import { CommentableEventsManagerWrapper } from './CommentableEventsManager'
-import { CommentsInMemoryService } from '../../test/helpers/CommentsInMemoryService'
 
 // The context for the Provider
 export const CommentableContext = React.createContext('commentable')
@@ -14,13 +13,12 @@ export class CommentableProvider extends React.Component {
     this.logger = this.props.logger || console
 
     this.commentsState = new CommentsState({
-        service: this.props.service,
-        getProviderState: this.getProviderState.bind(this),
-        onCommentsStateUpdate: this.onCommentsStateUpdate.bind(this),
-        resource: this.getCurrentResource(),
-        logger: this.logger
-      }
-    )
+      service: this.props.service,
+      getProviderState: this.getProviderState.bind(this),
+      onCommentsStateUpdate: this.onCommentsStateUpdate.bind(this),
+      resource: this.getCurrentResource(),
+      logger: this.logger
+    })
 
     /**
      *
@@ -125,13 +123,12 @@ export class CommentableProvider extends React.Component {
     if (this.getCurrentResource() !== this.state.lastResourceRefreshed) {
       this.commentsState.unsubscribe(this.state.lastResourceRefreshed)
       this.commentsState = new CommentsState({
-          service: this.props.service,
-          getProviderState: this.getProviderState.bind(this),
-          onCommentsStateUpdate: this.onCommentsStateUpdate.bind(this),
-          resource: this.getCurrentResource(),
-          logger: this.logger
-        }
-      )
+        service: this.props.service,
+        getProviderState: this.getProviderState.bind(this),
+        onCommentsStateUpdate: this.onCommentsStateUpdate.bind(this),
+        resource: this.getCurrentResource(),
+        logger: this.logger
+      })
       this.commentsState.subscribe(this.getCurrentResource())
 
       // FIXME setState should not called in componentDidUpdate, this value can be set directly in the compoent instance
@@ -144,8 +141,8 @@ export class CommentableProvider extends React.Component {
   render() {
     return (
       <CommentableContext.Provider value={this.state}>
-        <CommentableSidebar className={this.props.sidebarClassName} commentComponent={this.props.commentComponent}/>
-        <CommentableEventsManagerWrapper component={this.props.eventsManagerComponent} children={this.props.children}/>
+        <CommentableSidebar className={this.props.sidebarClassName} commentComponent={this.props.commentComponent} />
+        <CommentableEventsManagerWrapper component={this.props.eventsManagerComponent} children={this.props.children} />
       </CommentableContext.Provider>
     )
   }

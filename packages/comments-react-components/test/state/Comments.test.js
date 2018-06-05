@@ -181,7 +181,6 @@ describe('state/Comments', () => {
         resource: 'res-1'
       })
 
-
       await comments.subscribe()
       expect(service.getComments).toHaveBeenCalledWith('res-1')
     })
@@ -195,7 +194,6 @@ describe('state/Comments', () => {
         onCommentsStateUpdate: setState,
         resource: 'res-1'
       })
-
 
       await comments.subscribe()
       expect(service.getComments).toHaveBeenCalledWith('res-1')
