@@ -15,8 +15,14 @@ describe('Comments', () => {
   })
 
   describe('When a new instance is created', () => {
-    test('the size should be 0', () => {
+    test('the size should be 0 and should have a defaut state', () => {
       expect(totalCommentsCount(state)).toBe(0)
+    })
+
+    test('should have a fallback state and a default state', () => {
+      const comments = new CommentsState(new CommentsInMemoryService(), () => ({}), setState)
+      expect(comments.state).toEqual({})
+      expect(comments.defaultState).toEqual({ comments: [] })
     })
   })
 
@@ -111,6 +117,12 @@ describe('Comments', () => {
 
       expect(selectCommentsByReference(state, 'comm-2')[0].content).toBe('somecontent 3')
       expect(selectCommentsByReference(state, 'comm-2')[1].content).toBe('somecontent 4')
+    })
+  })
+
+  describe('Selectors', () => {
+    test('should always return something', () => {
+      expect(selectCommentsByReference({})).toEqual([])
     })
   })
 })

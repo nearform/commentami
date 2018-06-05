@@ -30,7 +30,7 @@
     "build": "babel -d dist src",
     "storybook": "start-storybook -p 6006 -c .storybook",
     "test": "node test/start.js",
-    "test:watch": "WATCH=truenode test/start.js"
+    "test:watch": "WATCH=true node test/start.js"
   },
   "dependencies": {
     "react": "^16.4.0",
