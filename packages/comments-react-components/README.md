@@ -4,6 +4,9 @@ comments-react-components is a ready to use set of React components to add comme
 
 It uses the [@nearform/comments-backend-\*][comments] packages as backend.
 
+The POC is just an architectural design attemp made to have a starting discussion point.
+The Components created use the new React Context API (> 16).
+
 ## Quick start
 
 To explore components, use storybook:
@@ -15,10 +18,160 @@ npm run storybook
 
 and then open the browser at: [http://localhost:6006/](http://localhost:6006/)
 
-## First implemetation (POC)
+## Make your first page commentable
+We have a sample page with a Title and a couple of paragraphs
+```
+class SamplePage extends React.Component {
+  render() {
+    return (
+      <h1>Text Title 1</h1>
+      <p>Paragraphs are separated by a blank line.</p>
+      <p>
+        2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
+      </p>
+    )
+  }
+}
 
-The POC is just an architectural design attemp made to have a starting discussion point.
-The Components created use the new React Context API (> 16).
+```
+
+The steps we need to make this page commentable are the following:
+
+* Define the commentable area and assign a `resource` identifier
+* Identify the single references in the text
+* Assign a service for the backend integration
+* Assign a component to show/add the comments related to a reference
+
+##### Define the commentable area and assign a `resource` identifier
+This step is done wrapping the interested area in a `CommentableProvider` component and assigning the `resource`
+
+```
+import { CommentableProvider } from '@nearform/comments-react-components'
+
+class SamplePage extends React.Component {
+  render() {
+    return (
+      <CommentableProvider resource="my-resource">
+        <h1>Text Title 1</h1>
+        <p>Paragraphs are separated by a blank line.</p>
+        <p>
+          2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
+        </p>
+      </CommentableProvider>
+    )
+  }
+}
+
+```
+
+##### Identify the single references in the text
+Every part we woul'd like to reference should be wrapped around a `CommentableBlock`. This operation can be easily automated.
+
+```
+import { CommentableProvider, CommentableBlock } from '@nearform/comments-react-components'
+
+class SamplePage extends React.Component {
+  render() {
+    return (
+      <CommentableProvider resource="my-resource">
+        <CommentableBlock reference="reference-1">
+          <h1>Text Title 1</h1>
+        </CommentableBlock>
+        <CommentableBlock reference="reference-2">
+          <p>Paragraphs are separated by a blank line.</p>
+        </CommentableBlock>
+        <CommentableBlock reference="reference-3">
+          <p>
+            2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
+          </p>
+        </CommentableBlock>
+      </CommentableProvider>
+    )
+  }
+}
+
+```
+
+##### Assign a service for the backend integration
+Now that the component is correctly wrapped, we need to configure the service that allows the backend integration.
+
+
+```
+import {
+  CommentableProvider,
+  CommentableBlock,
+  CommentsFetchService
+} from '@nearform/comments-react-components'
+
+const commentsFetchService = CommentsFetchService('http://localhost:8080/')
+
+class SamplePage extends React.Component {
+  render() {
+    return (
+      <CommentableProvider resource="my-resource" service={commentsFetchService}>
+        <CommentableBlock reference="reference-1">
+          <h1>Text Title 1</h1>
+        </CommentableBlock>
+        <CommentableBlock reference="reference-2">
+          <p>Paragraphs are separated by a blank line.</p>
+        </CommentableBlock>
+        <CommentableBlock reference="reference-3">
+          <p>
+            2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
+          </p>
+        </CommentableBlock>
+      </CommentableProvider>
+    )
+  }
+}
+
+```
+
+##### Assign a component to show/add the comments related to a reference
+To provide this feature we need to wrap everithing inside a CommentableController and add the component that acts as a interface for the user to show the comments and add new ones and remove the existents
+
+
+```
+import {
+  CommentableProvider,
+  CommentableBlock,
+  CommentsFetchService,
+  CommentableController,
+  CommentableSidebar
+} from '@nearform/comments-react-components'
+
+const commentsFetchService = CommentsFetchService('http://localhost:8080/')
+
+class SamplePage extends React.Component {
+  render() {
+    return (
+      <CommentableController>
+        <CommentableProvider resource="my-resource" service={commentsFetchService}>
+          <CommentableBlock reference="reference-1">
+            <h1>Text Title 1</h1>
+          </CommentableBlock>
+          <CommentableBlock reference="reference-2">
+            <p>Paragraphs are separated by a blank line.</p>
+          </CommentableBlock>
+          <CommentableBlock reference="reference-3">
+            <p>
+              2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
+            </p>
+          </CommentableBlock>
+          <CommentableSidebar />
+        </CommentableProvider>
+      </CommentableController>
+    )
+  }
+}
+
+```
+
+***The page is now commentable!***
+
+check the [stories](./stories) folder for further examples
+
+
 
 ### Components
 
