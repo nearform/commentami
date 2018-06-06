@@ -1,4 +1,5 @@
 import React from 'react'
+import { omit } from 'lodash'
 import { mount } from 'enzyme'
 import sleep from 'sleep-promise'
 
@@ -8,7 +9,7 @@ import { CommentsState } from '../../src/state/Comments'
 
 import { sidebarClassName } from '../../stories/components/styling'
 
-describe('CommentableSidebarComponent', () => {
+describe('CommentableSidebar', () => {
   let commentableState
   let wrapper
   let formComponent
@@ -21,16 +22,23 @@ describe('CommentableSidebarComponent', () => {
 
   beforeEach(async () => {
     commentableState = {
-      toggledReference: 'block-1',
+      toggledReference: { id: 'ref-1' },
       toggleComments: jest.fn(),
       addComment: jest.fn(),
-      removeComment: jest.fn()
+      removeComment: jest.fn(),
+      lastResourceRefreshed: { id: 'res-1' }
     }
 
-    const commentObject = new CommentsState(new CommentsInMemoryService(), getState, setState)
-    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment' })
-    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 2' })
-    await commentObject.addComment({ resource: 'page-1', reference: 'block-1', content: 'This is a comment 3' })
+    const commentObject = new CommentsState({
+      service: new CommentsInMemoryService(),
+      getProviderState: getState,
+      onCommentsStateUpdate: setState,
+      resource: 'res-1'
+    })
+
+    await commentObject.addComment({ reference: { id: 'ref-1' }, content: 'This is a comment' })
+    await commentObject.addComment({ reference: { id: 'ref-1' }, content: 'This is a comment 2' })
+    await commentObject.addComment({ reference: { id: 'ref-1' }, content: 'This is a comment 3' })
 
     wrapper = mount(<CommentableSidebarComponent commentable={commentableState} className={sidebarClassName} />)
     formComponent = wrapper.find('div[data-role="form"]')
@@ -54,7 +62,7 @@ describe('CommentableSidebarComponent', () => {
         .find('button')
         .at(1)
         .simulate('click')
-      expect(commentableState.addComment).toHaveBeenCalledWith('block-1', 'new value')
+      expect(commentableState.addComment).toHaveBeenCalledWith({ id: 'ref-1' }, 'new value')
     })
 
     test('should not call the add comment if the text trimmed is empty ', () => {
@@ -74,7 +82,7 @@ describe('CommentableSidebarComponent', () => {
         .find('button')
         .at(1)
         .simulate('click')
-      expect(commentableState.addComment).toHaveBeenCalledWith('block-1', 'new value')
+      expect(commentableState.addComment).toHaveBeenCalledWith({ id: 'ref-1' }, 'new value')
     })
 
     test('should not call the add comment if the text area has no value', () => {
@@ -112,11 +120,11 @@ describe('CommentableSidebarComponent', () => {
         .at(0)
         .find('button')
         .simulate('click')
-      expect(commentableState.removeComment).toHaveBeenCalledWith({
+
+      expect(omit(commentableState.removeComment.mock.calls[0][0], ['createdAt'])).toEqual({
         id: 1,
         content: 'This is a comment',
-        reference: 'block-1',
-        resource: 'page-1',
+        reference: { id: 'ref-1' },
         author: 'someauthor'
       })
     })
@@ -128,7 +136,7 @@ describe('CommentableSidebarComponent', () => {
       formComponent.find('textarea').simulate('change')
       formComponent.find('textarea').simulate('keypress', { key: 'Enter', shiftKey: false })
       await sleep(50)
-      expect(commentableState.addComment).toHaveBeenCalledWith('block-1', 'new value')
+      expect(commentableState.addComment).toHaveBeenCalledWith({ id: 'ref-1' }, 'new value')
     })
 
     test('should not call the add comment if shift is pressed', async () => {

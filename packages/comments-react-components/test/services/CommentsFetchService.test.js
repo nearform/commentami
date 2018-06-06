@@ -1,10 +1,9 @@
 import { CommentsFetchService } from '../../src/services/CommentsFetchService'
-import { Comment } from '../../src/state/Comments'
 import commentsGETvalid from './__mocks__/commentsGETvalid'
 
 global.fetch = require('jest-fetch-mock')
 
-describe('CommentsFetchServer', () => {
+describe('CommentsFetchService', () => {
   let commentsFetchService
   beforeEach(() => {
     fetch.resetMocks()
@@ -37,7 +36,7 @@ describe('CommentsFetchServer', () => {
   test('Call the DELETE comments endpoint returns a valid structure', async () => {
     fetch.mockResponseOnce(JSON.stringify({ success: true }))
 
-    await commentsFetchService.removeComment(new Comment({ id: 'comm-1' }))
+    await commentsFetchService.removeComment({ id: 'comm-1' })
 
     expect(fetch.mock.calls.length).toBe(1)
     expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments/comm-1')
@@ -50,9 +49,9 @@ describe('CommentsFetchServer', () => {
     })
   })
 
-  test('Call the POST comments endpoint returns the commend added', async () => {
-    const resource = 'page-1'
-    const reference = 'block-10'
+  test('Call the POST comments endpoint returns the comment added', async () => {
+    const resource = 'res-1'
+    const reference = { id: 'ref-10' }
     const content = 'some content'
 
     const response = {
@@ -65,7 +64,7 @@ describe('CommentsFetchServer', () => {
     }
     fetch.mockResponseOnce(JSON.stringify(response))
 
-    const result = await commentsFetchService.addComment({ resource, reference, content })
+    const result = await commentsFetchService.addComment(resource, { reference, content })
 
     expect(fetch.mock.calls.length).toBe(1)
     expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments')
@@ -77,9 +76,8 @@ describe('CommentsFetchServer', () => {
       },
       body: JSON.stringify({
         resource,
-        reference,
-        content,
-        author: 'An author' // This value should be removed and get directly from the session in the server
+        reference: reference.id,
+        content
       })
     })
 

@@ -1,10 +1,38 @@
 import { STATE_FIELD_NAME } from './Comments'
+import { getDefaultState, getReference } from './helpers'
 
-const getCommentsState = state => {
-  return state[STATE_FIELD_NAME] || {}
+/**
+ * Extract the CommentsState from the generic state
+ * @param {Object}
+ * @returns {State}
+ * @private
+ */
+const _ = state => {
+  return (state && state[STATE_FIELD_NAME]) || getDefaultState()
 }
 
-export const selectCommentsByReference = (state, referenceId) =>
-  (getCommentsState(state).comments || []).filter(comment => comment.reference === referenceId)
+/**
+ *
+ * @param {Resource} state
+ * @param {Reference} reference
+ * @returns {Comment[]}
+ */
+export const selectCommentsByReference = (state, reference) => Object.values(getReference(_(state), reference).comments)
 
-export const totalCommentsCount = (state) => (getCommentsState(state).comments || []).length
+/**
+ * Returns the number of reference for a specified resource
+ *
+ * @param {Resource} state The current state
+ * @returns {number} The number of references
+ */
+export const referencesCount = state => Object.keys(_(state).references).length
+
+/**
+ *
+ * Counts the comments in a specific reference
+ *
+ * @param {Resource} state
+ * @param {Reference} reference The reference object
+ * @returns {number} The number of comments
+ */
+export const commentsCount = (state, reference) => Object.keys(getReference(_(state), reference).comments).length

@@ -66,6 +66,7 @@ export class CommentableSidebarComponent extends React.Component {
 
   render() {
     const comments = selectCommentsByReference(this.props.commentable, this.props.commentable.toggledReference)
+
     const CommentComponent = this.props.commentComponent || DefaultCommentComponent
 
     return (
@@ -83,13 +84,7 @@ export class CommentableSidebarComponent extends React.Component {
         <div data-role="comments">
           <h2>Existing comments</h2>
 
-          {comments.map(comment => (
-            <CommentComponent
-              key={comment.id}
-              comment={comment}
-              onRemoveComment={this.boundHandleRemoveComment}
-            />
-          ))}
+          {comments.map(comment => <CommentComponent key={comment.id} comment={comment} onRemoveComment={this.boundHandleRemoveComment} />)}
         </div>
       </div>
     )
@@ -115,11 +110,7 @@ export class CommentableSidebar extends React.Component {
   render() {
     return (
       <CommentableContext.Consumer>
-        {commentable => commentable.toggledReference && createPortal(
-          <CommentableSidebarComponent
-            {...this.props}
-            commentable={commentable}
-          />, this.target)}
+        {commentable => commentable.toggledReference && createPortal(<CommentableSidebarComponent {...this.props} commentable={commentable} />, this.target)}
       </CommentableContext.Consumer>
     )
   }

@@ -33,6 +33,7 @@
     "test:watch": "WATCH=truenode test/start.js"
   },
   "dependencies": {
+    "nes": "^8.1.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "warning": "^4.0.0"
@@ -46,10 +47,12 @@
     "@storybook/react": "^3.3.15",
     "babel-core": "^7.0.0-bridge.0",
     "chart.js": "^1.1.1",
+    "deep-freeze": "0.0.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "jest": "^23.0.0",
     "jest-fetch-mock": "^1.6.2",
+    "lodash": "^4.17.10",
     "react-chartjs": "^1.2.0",
     "sleep-promise": "^6.0.0",
     "typestyle": "^2.0.1",
