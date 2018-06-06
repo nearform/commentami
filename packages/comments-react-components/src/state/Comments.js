@@ -25,9 +25,10 @@ export class CommentsState {
    * @returns {State}
    */
   get state() {
-    return this.getProviderState()[STATE_FIELD_NAME] && this.getProviderState()[STATE_FIELD_NAME].id !== this.resource
-      ? this.defaultState
-      : this.getProviderState()[STATE_FIELD_NAME] || this.defaultState
+    const providerCommentsState = this.getProviderState()[STATE_FIELD_NAME]
+    return (providerCommentsState && providerCommentsState.id === this.resource)
+      ? providerCommentsState
+      : this.defaultState
   }
 
   /**
