@@ -25,7 +25,7 @@ export class CommentableProvider extends React.Component {
      * @type {{
      *  logger: *|Console,
      *  toggledReference: null|Reference,
-     *  lastResourceRefreshed: null|Resource,
+     *  lastResourceRefreshed: null|string,
      *  addComment: any,
      *  removeComment: any,
      *  toggleComments: any,
@@ -45,7 +45,7 @@ export class CommentableProvider extends React.Component {
 
   /**
    * Returns the current resource set in the props
-   * @returns {Resource}
+   * @returns {string}
    */
   getCurrentResource() {
     return this.props.resource
@@ -111,17 +111,17 @@ export class CommentableProvider extends React.Component {
   }
 
   componentDidMount() {
-    this.commentsState.subscribe(this.getCurrentResource())
+    this.commentsState.subscribe()
     this.setState({ lastResourceRefreshed: this.getCurrentResource() })
   }
 
   componentWillUnmount() {
-    this.commentsState.unsubscribe(this.getCurrentResource())
+    this.commentsState.unsubscribe()
   }
 
   componentDidUpdate() {
     if (this.getCurrentResource() !== this.state.lastResourceRefreshed) {
-      this.commentsState.unsubscribe(this.state.lastResourceRefreshed)
+      this.commentsState.unsubscribe()
       this.commentsState = new CommentsState({
         service: this.props.service,
         getProviderState: this.getProviderState.bind(this),
@@ -129,7 +129,7 @@ export class CommentableProvider extends React.Component {
         resource: this.getCurrentResource(),
         logger: this.logger
       })
-      this.commentsState.subscribe(this.getCurrentResource())
+      this.commentsState.subscribe()
 
       // FIXME setState should not called in componentDidUpdate, this value can be set directly in the compoent instance
       // but is used in Sidebar and Block that can take the value from the CommentsState. Once refactored that part
