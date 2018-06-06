@@ -26,7 +26,7 @@
     "dist"
   ],
   "scripts": {
-    "depcheck": "../../node_modules/depcheck/bin/depcheck --ignores=webpack",
+    "depcheck": "../../node_modules/depcheck/bin/depcheck --ignores=webpack,enzyme-context-patch",
     "build": "babel -d dist src",
     "storybook": "start-storybook -p 6006 -c .storybook",
     "test": "node test/start.js",
