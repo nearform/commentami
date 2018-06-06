@@ -3,7 +3,7 @@ import { commentable } from '../core/CommentableComponents'
 import { CommentableDefaultComment } from './defaults/CommentableDefaultComment'
 import { selectCommentsByReference } from '../../state/selectors'
 
-export const CommentableCommentsList = commentable(function({ commentable, reference, title, className, commentComponent: Component }) {
+export function CommentableCommentsListBase({ commentable, reference, title, className, commentComponent: Component }) {
   const comments = selectCommentsByReference(commentable, reference)
 
   if (!Component) Component = CommentableDefaultComment
@@ -15,4 +15,6 @@ export const CommentableCommentsList = commentable(function({ commentable, refer
       {comments.map(comment => <Component key={comment.id} comment={comment} removeComment={commentable.removeComment} />)}
     </section>
   )
-})
+}
+
+export const CommentableCommentsList = commentable(CommentableCommentsListBase)

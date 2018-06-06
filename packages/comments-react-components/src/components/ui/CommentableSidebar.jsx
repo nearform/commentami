@@ -4,21 +4,17 @@ import { commentable, flexibleRender } from '../core/CommentableComponents'
 import { commentableWithController } from './CommentableController'
 import { CommentableDefaultSidebar } from './defaults/CommentableDefaultSidebar'
 
-export const CommentableSidebar = commentableWithController(
-  commentable(
-    class extends React.Component {
-      render() {
-        const { controller, resource, render, component, children } = this.props
+export function CommentableSidebarBase(props) {
+  const { controller, resource, render, component, children, className } = props
 
-        if (!controller.isActive(resource)) return false
+  if (!controller.isActive(resource)) return false
 
-        return createPortal(
-          <aside className={this.props.className || 'nf-comments-sidebar'}>
-            {flexibleRender({ render, component, children }, { controller, ...this.props }, CommentableDefaultSidebar)}
-          </aside>,
-          document.body
-        )
-      }
-    }
+  return createPortal(
+    <aside className={className || 'nf-comments-sidebar'}>
+      {flexibleRender({ render, component, children }, { controller, props }, CommentableDefaultSidebar)}
+    </aside>,
+    document.body
   )
-)
+}
+
+export const CommentableSidebar = commentableWithController(commentable(CommentableSidebarBase))
