@@ -60,7 +60,7 @@ const myDbClient = //...
 const commentService = buildCommentsService(myDbClient)
 ```
 
-The `commentService` exposes the following functions
+`commentService` exposes the following functions
 
 ```
 commentService.add
@@ -70,6 +70,27 @@ commentService.delete
 commentService.list
 commentService.listOnlyReferences
 ```
+
+and provide events for when a comment is added, updated or deleted.
+
+To add a listener to any of this events follow this example:
+
+```
+// build your commentService object
+
+const { buildCommentsService } = require('@nearform/comments-backend-core')
+const myDbClient = //...
+
+const commentService = buildCommentsService(myDbClient)
+
+// add listeners
+
+commentService.on('add', (comment) => { // do something })
+commentService.on('update', (comment) => { // do something })
+commentService.on('delete', (comment) => { // do something })
+
+```
+
 
 ## `commentService` interface
 

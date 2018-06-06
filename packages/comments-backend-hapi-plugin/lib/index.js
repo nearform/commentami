@@ -49,6 +49,10 @@ const commentsHapiPlugin = {
     await server.register(require('./routes'))
 
     server.ext('onPostStop', async () => {
+      commentsService.removeAllListeners('add')
+      commentsService.removeAllListeners('update')
+      commentsService.removeAllListeners('delete')
+
       await commentsService.close()
     })
   }

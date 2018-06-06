@@ -69,7 +69,21 @@ multines: {
 
 **Note**: if you pass `options.multines = {}` the websockets will be active but the pub/sub system will work only for the single server and not between multiple servers (ie: through resid pub/sub).
 
-An example on how to install the plugin with all the options:
+## Events
+
+Under the hood `@nearform/comments-backend-hapi-plugin` add a `commentsService` object to both `server` and `request`.
+
+If you need to be notified when a comment is added, deleted or updated you can use this object to add your listeners.
+
+```
+server.commentsService.on('add', (comment) => { /*...*/ })
+server.commentsService.on('update', (comment) => { /*...*/ })
+server.commentsService.on('delete', (comment) => { /*...*/ })
+```
+
+## All together
+
+An example on how to install the plugin with all the options and events listeners:
 
 ```javascript
 const main = async function() {
@@ -103,14 +117,17 @@ const main = async function() {
     }
   ])
 
+  server.commentsService.on('add', (comment) => { /* send sms */ })
+  server.commentsService.on('add', (comment) => { /* send email */ })
+  server.commentsService.on('delete', (comment) => { /* store deleted comments somewhere else */ })
+  server.commentsService.on('update', (comment) => { /* log the updated comment somewhere */ })
+
   await server.start()
   logMessage(`Server running at: ${server.info.uri}`)
 }
 
 main().catch(console.error)
 ```
-
-Comments route will be then accessible on the `/comments` path.
 
 ## HTTP APIs
 

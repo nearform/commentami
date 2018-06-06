@@ -14,6 +14,10 @@ module.exports = async function buildServer(config = {}, logMessage) {
       }
     ])
 
+    server.commentsService.on('add', (comment) => logMessage('comment added', comment))
+    server.commentsService.on('delete', (comment) => logMessage('comment deleted', comment))
+    server.commentsService.on('update', (comment) => logMessage('comment updated', comment))
+
     return server
   } catch (err) {
     logMessage(`Failed to build server: ${err.message}`)

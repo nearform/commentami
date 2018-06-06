@@ -14,7 +14,7 @@ describe('Server', () => {
   let server = null
   before(async () => {
     await resetDb()
-    server = await buildServer(config)
+    server = await buildServer(config, () => {})
   })
 
   after(async () => {
