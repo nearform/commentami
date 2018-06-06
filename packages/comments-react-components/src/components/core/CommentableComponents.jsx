@@ -28,24 +28,24 @@ export function commentable(Component) {
       return this.hasCommentable && !!selectCommentsByReference(this.commentable, this.props.reference).length
     }
 
-    get renderProps() {
-      return {}
-    }
-
     _checkProps() {
-      warning(this.hasCommentable, `The commentable ${Component.name} component should be inside a CommentableProvider`)
+      warning(this.hasCommentable, `The commentable component should be inside a CommentableProvider`)
     }
 
     _renderInner(commentable) {
       this.commentable = commentable
 
-      const additionalProps = { commentable: this.commentable, resource: (commentable || {}).resource, hasComments: this.hasComments }
+      return <Component {...this._renderProps()} />
+    }
+
+    _renderProps() {
+      const additionalProps = { commentable: this.commentable, resource: (this.commentable || {}).resource, hasComments: this.hasComments }
       const callbacks = {
         addComment: this.addComment.bind(this),
         removeComment: this.removeComment.bind(this)
       }
 
-      return <Component {...additionalProps} {...this.props} {...callbacks} />
+      return { ...additionalProps, ...callbacks, ...this.props }
     }
 
     addComment(reference, content) {
@@ -75,7 +75,7 @@ export function commentableBlock(Component) {
     class extends React.Component {
       // TODO@PI: Make sure the reference is unique within the provider
       _checkProps() {
-        warning(this.props.reference, `The CommentableBlock component should have a reference prop`)
+        warning(this.props.reference, `The commentable block component should have a reference prop`)
       }
 
       componentDidMount() {

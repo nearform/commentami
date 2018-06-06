@@ -1,28 +1,18 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { getComponentWithContext } from '../../helpers/context'
-
-function createComponent(context) {
-  return getComponentWithContext(
-    'CommentableNewForm',
-    context,
-    'CommentableContext',
-    require.resolve('../../../src/components/ui/CommentableNewForm'),
-    require.resolve('../../../src/components/core/CommentableProvider')
-  )
-}
+import { CommentableContext } from '../../../src/components/core/CommentableProvider'
+import { CommentableNewForm } from '../../../src/components/ui/CommentableNewForm'
 
 describe('CommentableNewForm', () => {
-  afterEach(() => {
-    jest.resetModules()
-    jest.restoreAllMocks()
-  })
-
   describe('.render', () => {
     test('should render the core elements', () => {
-      const CommentableNewForm = createComponent({})
-
-      const wrapper = mount(<CommentableNewForm />)
+      const wrapper = mount(
+        <div>
+          <CommentableContext.Provider value={{}}>
+            <CommentableNewForm reference="REFERENCE" />
+          </CommentableContext.Provider>
+        </div>
+      )
 
       expect(wrapper.find('form').hasClass('nf-comments-new-form')).toBeTruthy()
       expect(wrapper.find('textarea.nf-comments-new-form__textarea').prop('placeholder')).toEqual('Enter some text ...')
@@ -31,9 +21,13 @@ describe('CommentableNewForm', () => {
     })
 
     test('should allow class, title and labels overriding', () => {
-      const CommentableNewForm = createComponent({})
-
-      const wrapper = mount(<CommentableNewForm className="CLS" title="TITLE" placeholder="PLACEHOLDER" cancelLabel="CANCEL" submitLabel="SUBMIT" />)
+      const wrapper = mount(
+        <div>
+          <CommentableContext.Provider value={{}}>
+            <CommentableNewForm className="CLS" title="TITLE" placeholder="PLACEHOLDER" cancelLabel="CANCEL" submitLabel="SUBMIT" />
+          </CommentableContext.Provider>
+        </div>
+      )
 
       expect(wrapper.find('form').hasClass('CLS')).toBeTruthy()
       expect(wrapper.find('h2.nf-comments-new-form__title').text()).toEqual('TITLE')
@@ -45,62 +39,86 @@ describe('CommentableNewForm', () => {
 
   describe('submitting', () => {
     test('should submit when clicking on the button', () => {
-      const CommentableNewForm = createComponent({})
+      const addComment = jest.fn()
 
-      const wrapper = mount(<CommentableNewForm reference="REFERENCE" />)
-      const addCommentSpy = jest.spyOn(wrapper.instance(), 'addComment').mockImplementation()
+      const wrapper = mount(
+        <div>
+          <CommentableContext.Provider value={{}}>
+            <CommentableNewForm reference="REFERENCE" addComment={addComment} />
+          </CommentableContext.Provider>
+        </div>
+      )
 
-      wrapper.instance().textareaRef.current.value = 'VALUE'
+      wrapper.find('textarea').instance().value = 'VALUE'
       wrapper.find('button.nf-comments-new-form__button--primary').simulate('click')
 
-      expect(addCommentSpy).toHaveBeenCalledWith('REFERENCE', 'VALUE')
+      expect(addComment).toHaveBeenCalledWith('REFERENCE', 'VALUE')
     })
 
     test('should submit when typing enter', async () => {
-      const CommentableNewForm = createComponent({})
+      const addComment = jest.fn()
 
-      const wrapper = mount(<CommentableNewForm reference="REFERENCE" />)
-      const addCommentSpy = jest.spyOn(wrapper.instance(), 'addComment').mockImplementation()
+      const wrapper = mount(
+        <div>
+          <CommentableContext.Provider value={{}}>
+            <CommentableNewForm reference="REFERENCE" addComment={addComment} />
+          </CommentableContext.Provider>
+        </div>
+      )
 
-      wrapper.instance().textareaRef.current.value = 'VALUE'
+      wrapper.find('textarea').instance().value = 'VALUE'
       wrapper.find('textarea').simulate('keyPress', { key: 'enter' })
       await new Promise(resolve => setTimeout(resolve, 10))
 
-      expect(addCommentSpy).toHaveBeenCalledWith('REFERENCE', 'VALUE')
+      expect(addComment).toHaveBeenCalledWith('REFERENCE', 'VALUE')
     })
 
     test('should NOT submit when there is no value', () => {
-      const CommentableNewForm = createComponent({})
+      const addComment = jest.fn()
 
-      const wrapper = mount(<CommentableNewForm reference="REFERENCE" />)
-      wrapper.instance().textareaRef.current.value = null
-      const addCommentSpy = jest.spyOn(wrapper.instance(), 'addComment').mockImplementation()
+      const wrapper = mount(
+        <div>
+          <CommentableContext.Provider value={{}}>
+            <CommentableNewForm reference="REFERENCE" addComment={addComment} />
+          </CommentableContext.Provider>
+        </div>
+      )
 
       wrapper.find('button.nf-comments-new-form__button--primary').simulate('click')
 
-      expect(addCommentSpy).not.toHaveBeenCalled()
+      expect(addComment).not.toHaveBeenCalled()
     })
 
     test('should submit when typing shift+enter', async () => {
-      const CommentableNewForm = createComponent({})
+      const addComment = jest.fn()
 
-      const wrapper = mount(<CommentableNewForm reference="REFERENCE" />)
-      const addCommentSpy = jest.spyOn(wrapper.instance(), 'addComment').mockImplementation()
+      const wrapper = mount(
+        <div>
+          <CommentableContext.Provider value={{}}>
+            <CommentableNewForm reference="REFERENCE" addComment={addComment} />
+          </CommentableContext.Provider>
+        </div>
+      )
 
-      wrapper.instance().textareaRef.current.value = 'VALUE'
+      wrapper.find('textarea').instance().value = 'VALUE'
       wrapper.find('textarea').simulate('keyPress', { key: 'enter', shiftKey: true })
       await new Promise(resolve => setTimeout(resolve, 10))
 
-      expect(addCommentSpy).not.toHaveBeenCalled()
+      expect(addComment).not.toHaveBeenCalled()
     })
   })
 
   describe('resetting', () => {
     test('should clear input when clicking on the button', () => {
-      const CommentableNewForm = createComponent({})
+      const wrapper = mount(
+        <div>
+          <CommentableContext.Provider value={{}}>
+            <CommentableNewForm reference="REFERENCE" />
+          </CommentableContext.Provider>
+        </div>
+      )
 
-      const wrapper = mount(<CommentableNewForm reference="REFERENCE" />)
-      const element = wrapper.instance().textareaRef.current
+      const element = wrapper.find('textarea').instance()
 
       element.value = 'VALUE'
 
