@@ -1,13 +1,91 @@
 import { storiesOf } from '@storybook/react'
+import { px, viewHeight, viewWidth } from 'csx'
 import React from 'react'
 import { Bar as BarChart } from 'react-chartjs'
-import { CommentableBlock } from '../src/components/core/CommentableBlock'
+import { cssRule } from 'typestyle'
 import { CommentableProvider } from '../src/components/core/CommentableProvider'
+import { CommentableBlock } from '../src/components/ui/CommentableBlock'
+import { CommentableController } from '../src/components/ui/CommentableController'
 import { CommentableSidebar } from '../src/components/ui/CommentableSidebar'
-import { CommentableSidebarsContainer } from '../src/components/ui/CommentableSidebarsContainer'
 import { CommentsInMemoryService } from '../test/helpers/CommentsInMemoryService'
-import { Block } from './components/block'
-import { Sidebar } from './components/sidebar'
+
+cssRule('.nf-comments-block', {
+  position: 'relative',
+  $nest: {
+    '&:hover, &--active': {
+      backgroundColor: '#FDD835'
+    }
+  }
+})
+
+cssRule('.nf-comments-marker', {
+  position: 'absolute',
+  top: 0,
+  left: px(-30),
+  cursor: 'pointer'
+})
+
+cssRule('.nf-comments-sidebar', {
+  backgroundColor: '#F0F0F0',
+  borderLeft: `${px(2)} solid #808080`,
+  zIndex: 10,
+  padding: px(15),
+  width: px(300),
+  maxWidth: viewWidth(75),
+  height: viewHeight(100),
+  position: 'fixed',
+  top: 0,
+  right: 0,
+  $nest: {
+    header: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    }
+  }
+})
+
+cssRule('.nf-comments-sidebar__close', {
+  display: 'inline-block',
+  height: px(24),
+  $nest: {
+    svg: {
+      fill: '#666'
+    }
+  }
+})
+
+cssRule('.nf-comments-new-form', {
+  display: 'grid',
+  gridTemplate: `
+  "title  title     title" min-content
+  "text   text      text" min-content
+  "null   secondary primary" min-content
+  / 2fr 1fr 1fr
+  `,
+  gridGap: px(10),
+  justifyContent: 'flex-end',
+  paddingBottom: px(20),
+  borderBottom: `${px(2)} solid #E0E0E0`,
+  $nest: {
+    h2: {
+      gridArea: 'title'
+    },
+    textarea: {
+      gridArea: 'text'
+    },
+    button: {
+      $nest: {
+        '&:first-of-type': {
+          gridArea: 'secondary'
+        },
+        '&:last-of-type': {
+          gridArea: 'primary'
+        }
+      }
+    }
+  }
+})
 
 const chartData = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -48,20 +126,20 @@ const commentService = CommentsInMemoryService()
 
 storiesOf('Commentable/Text', module).add('Sample Text', () => (
   <div style={{ margin: '30px' }}>
-    <CommentableSidebarsContainer>
+    <CommentableController>
       <CommentableProvider resource="first" service={commentService}>
-        <CommentableBlock reference="comm-1" render={props => <Block {...props} />}>
+        <CommentableBlock reference="comm-1">
           <h1>First provider</h1>
         </CommentableBlock>
-        <CommentableBlock reference="comm-2" component={Block}>
+        <CommentableBlock reference="comm-2">
           <p>Paragraphs are separated by a blank line.</p>
         </CommentableBlock>
-        <CommentableBlock reference="comm-3" component={Block}>
+        <CommentableBlock reference="comm-3">
           <p>
             2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
           </p>
         </CommentableBlock>
-        <CommentableBlock reference="comm-4" component={Block}>
+        <CommentableBlock reference="comm-4">
           <ul>
             <li>this one</li>
             <li>that one</li>
@@ -69,31 +147,31 @@ storiesOf('Commentable/Text', module).add('Sample Text', () => (
           </ul>
         </CommentableBlock>
 
-        <CommentableSidebar component={Sidebar} />
+        <CommentableSidebar />
       </CommentableProvider>
 
       <CommentableProvider resource="another-2" service={commentService}>
-        <CommentableBlock reference="comm-1" render={props => <Block {...props} />}>
+        <CommentableBlock reference="comm-1">
           <h1>Another provider</h1>
         </CommentableBlock>
 
-        <CommentableBlock reference="comm-5" component={Block}>
+        <CommentableBlock reference="comm-5">
           <blockquote>
             <p>Block quotes are written like so.</p>
             <p>They can span multiple paragraphs, if you like.</p>
           </blockquote>
         </CommentableBlock>
-        <CommentableBlock reference="comm-6" component={Block}>
+        <CommentableBlock reference="comm-6">
           <p>Note that --- not considering the asterisk --- the actual text content starts at 4-columns in.</p>
         </CommentableBlock>
-        <CommentableBlock reference="comm-7" component={Block}>
+        <CommentableBlock reference="comm-7">
           <div>
             <BarChart data={chartData} options={chartOptions} />
           </div>
         </CommentableBlock>
 
-        <CommentableSidebar component={Sidebar} />
+        <CommentableSidebar />
       </CommentableProvider>
-    </CommentableSidebarsContainer>
+    </CommentableController>
   </div>
 ))

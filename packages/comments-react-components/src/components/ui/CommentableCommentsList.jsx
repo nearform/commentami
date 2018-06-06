@@ -1,21 +1,18 @@
 import React from 'react'
-import { CommentableComponent } from '../core/CommentableComponent'
-import { CommentableComment } from './CommentableComment'
+import { commentable } from '../core/CommentableComponents'
+import { CommentableDefaultComment } from './defaults/CommentableDefaultComment'
 import { selectCommentsByReference } from '../../state/selectors'
 
-export class CommentableCommentsList extends CommentableComponent {
-  renderCommentable() {
-    let { title, reference, commentComponent: Component } = this.props
-    const comments = selectCommentsByReference(this.commentable, reference)
+export const CommentableCommentsList = commentable(function({ commentable, reference, title, className, commentComponent: Component }) {
+  const comments = selectCommentsByReference(commentable, reference)
 
-    if (!Component) Component = CommentableComment
+  if (!Component) Component = CommentableDefaultComment
 
-    return (
-      <section className={this.props.className || 'nf-comments-list'}>
-        {title && <h2 className="nf-comments-list__title">{title}</h2>}
+  return (
+    <section className={className || 'nf-comments-list'}>
+      {title && <h2 className="nf-comments-list__title">{title}</h2>}
 
-        {comments.map(comment => <Component key={comment.id} comment={comment} removeComment={this.commentable.removeComment} />)}
-      </section>
-    )
-  }
-}
+      {comments.map(comment => <Component key={comment.id} comment={comment} removeComment={commentable.removeComment} />)}
+    </section>
+  )
+})

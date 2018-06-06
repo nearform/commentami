@@ -1,11 +1,14 @@
-import { CommentableCommentsList, CommentableNewForm } from '@nearform/comments-react-components/dist/ui'
-import { em, rem, viewHeight, viewWidth } from 'csx'
+import { commentable } from '@nearform/comments-react-components'
+import { CommentableCommentsList, CommentableNewForm, commentableWithController } from '@nearform/comments-react-components/dist/ui'
+import { rem, viewHeight, viewWidth } from 'csx'
 import React from 'react'
-import { cssRule, style } from 'typestyle'
+import { createPortal } from 'react-dom'
+import { style } from 'typestyle'
+import { debugClassName } from '../styling/environment'
 import { Comment } from './comment'
 import { Icon } from './icon'
 
-cssRule('.nf-comments-sidebar', {
+const sidebarClassName = style(debugClassName('sidebar'), {
   backgroundColor: '#F0F0F0',
   borderLeft: `${rem(0.2)} solid #808080`,
   zIndex: 10,
@@ -18,86 +21,48 @@ cssRule('.nf-comments-sidebar', {
   right: 0
 })
 
-cssRule('.nf-comments-new-form', {
-  display: 'grid',
-  gridTemplate: `
-  "title  title     title" min-content
-  "text   text      text" min-content
-  "null   secondary primary" min-content
-  / 2fr 1fr 1fr
-  `,
-  gridGap: rem(1),
-  justifyContent: 'flex-end'
-})
-
-cssRule('.nf-comments-new-form__title', { gridArea: 'title' })
-
-cssRule('.nf-comments-new-form__textarea', {
-  gridArea: 'text',
-  border: `${rem(0.1)} solid #E0E0E0`,
-  height: rem(10),
-  padding: rem(0.5)
-})
-
-cssRule('.nf-comments-new-form__button', {
-  border: `${rem(0.1)} solid #E0E0E0`,
-  padding: `${rem(1)} ${rem(2)}`,
-  whiteSpace: 'nowrap',
-  fontWeight: 'bold',
-  fontSize: em(0.8),
-  cursor: 'pointer'
-})
-
-cssRule('.nf-comments-new-form__button--secondary', {
-  gridArea: 'secondary',
-  backgroundColor: '#F0F0F0',
-  $nest: {
-    '&:hover': { backgroundColor: '#E8E8E8' }
-  }
-})
-
-cssRule('.nf-comments-new-form__button--primary', {
-  gridArea: 'primary',
-  backgroundColor: '#DA3338',
-  color: 'white',
-  $nest: {
-    '&:hover': { backgroundColor: '#CC0000' }
-  }
-})
-
 const sidebarHeaderClassName = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between'
 })
 
-export class Sidebar extends React.Component {
-  constructor(props) {
-    super(props)
+export const Sidebar = commentableWithController(
+  commentable(
+    class extends React.Component {
+      constructor(props) {
+        super(props)
 
-    this.boundHandleClose = this.handleClose.bind(this)
-  }
+        this.boundHandleClose = this.handleClose.bind(this)
+      }
 
-  handleClose(ev) {
-    ev.preventDefault()
+      handleClose(ev) {
+        ev.preventDefault()
 
-    this.props.sidebars.updateActive()
-  }
+        this.props.controller.updateActive()
+      }
 
-  render() {
-    const reference = this.props.sidebars.reference
+      render() {
+        const { controller, resource } = this.props
 
-    return (
-      <React.Fragment>
-        <header className={sidebarHeaderClassName}>
-          <h1>{this.props.title || 'Comments'}</h1>
-          <a href="#" onClick={this.boundHandleClose}>
-            <Icon name="close" />
-          </a>
-        </header>
-        <CommentableNewForm reference={reference} />
-        <CommentableCommentsList reference={reference} commentComponent={Comment} />
-      </React.Fragment>
-    )
-  }
-}
+        if (!controller.isActive(resource)) return false
+
+        const reference = this.props.controller.reference
+
+        return createPortal(
+          <aside className={sidebarClassName}>
+            <header className={sidebarHeaderClassName}>
+              <h1>Comments</h1>
+              <a href="#" onClick={this.boundHandleClose}>
+                <Icon name="close" />
+              </a>
+            </header>
+            <CommentableNewForm reference={reference} />
+            <CommentableCommentsList reference={reference} commentComponent={Comment} />
+          </aside>,
+          document.body
+        )
+      }
+    }
+  )
+)

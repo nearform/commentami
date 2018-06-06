@@ -1,8 +1,9 @@
-import { CommentableSidebarsContext } from '@nearform/comments-react-components/dist/ui'
+import { commentableBlock } from '@nearform/comments-react-components'
+import { commentableWithController } from '@nearform/comments-react-components/dist/ui'
 import { rem } from 'csx'
-import { Icon } from './icon'
 import React from 'react'
 import { classes, style } from 'typestyle'
+import { Icon } from './icon'
 
 const blockClassName = style({
   position: 'relative',
@@ -14,7 +15,7 @@ const blockClassName = style({
   }
 })
 
-const highlightedBlockClassName = style({
+const activeBlockClassName = style({
   backgroundColor: '#FDD835',
   color: 'black'
 })
@@ -33,47 +34,43 @@ function CommentsMarker({ onClick }) {
   )
 }
 
-export class BlockComponent extends React.Component {
-  constructor(props) {
-    super(props)
+export const Block = commentableWithController(
+  commentableBlock(
+    class extends React.Component {
+      constructor(props) {
+        super(props)
 
-    this.rootRef = React.createRef()
+        this.rootRef = React.createRef()
 
-    const payload = { resource: this.props.commentable.resource, reference: this.props.reference, ref: this.rootRef, scope: 'block' }
-    this.boundHandleShowComments = this.handleShowComments.bind(this, payload)
-  }
+        const payload = { resource: this.props.commentable.resource, reference: this.props.reference, ref: this.rootRef, scope: 'block' }
+        this.boundHandleShowComments = this.handleShowComments.bind(this, payload)
+      }
 
-  get isToggled() {
-    const { resource, reference } = this.props
+      handleShowComments(payload, event) {
+        event.preventDefault()
 
-    return this.props.sidebars.isActive(resource, reference)
-  }
+        const { resource, reference } = this.props
 
-  handleShowComments(payload, event) {
-    event.preventDefault()
+        this.props.controller.isActive(resource, reference) ? this.props.controller.updateActive() : this.props.controller.updateActive(resource, reference)
 
-    const { resource, reference } = this.props
+        const sel = window.getSelection()
+        sel.removeAllRanges()
+      }
 
-    this.props.sidebars.isActive(resource, reference) ? this.props.sidebars.updateActive() : this.props.sidebars.updateActive(resource, reference)
+      render() {
+        let { children, hasComments, markerComponent: Marker, resource, reference } = this.props
 
-    const sel = window.getSelection()
-    sel.removeAllRanges()
-  }
+        const isActive = this.props.controller.isActive(resource, reference)
 
-  render() {
-    let { children, hasComments, markerComponent: Marker } = this.props
+        if (!Marker) Marker = CommentsMarker
 
-    if (!Marker) Marker = CommentsMarker
-
-    return (
-      <div ref={this.rootRef} onDoubleClick={this.boundHandleShowComments} className={classes(blockClassName, this.isToggled ? highlightedBlockClassName : '')}>
-        {hasComments && <Marker onClick={this.boundHandleShowComments} />}
-        {children}
-      </div>
-    )
-  }
-}
-
-export function Block(props) {
-  return <CommentableSidebarsContext.Consumer>{sidebars => <BlockComponent {...props} sidebars={sidebars} />}</CommentableSidebarsContext.Consumer>
-}
+        return (
+          <div ref={this.rootRef} onDoubleClick={this.boundHandleShowComments} className={classes(blockClassName, isActive ? activeBlockClassName : '')}>
+            {hasComments && <Marker onClick={this.boundHandleShowComments} />}
+            {children}
+          </div>
+        )
+      }
+    }
+  )
+)

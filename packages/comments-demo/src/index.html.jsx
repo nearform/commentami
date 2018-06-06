@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { getStyles, style } from 'typestyle'
 import { mainClassName, debugClassName } from './styling/environment'
 import './styling/reset'
+import './styling/rules'
 import { Spinner } from './components/spinner'
 
 const rootClassName = style(debugClassName('root'), {

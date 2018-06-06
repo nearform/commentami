@@ -38,9 +38,12 @@ describe('CommentableComponent', () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation()
     const CommentableComponent = createComponent(undefined)
 
-    mount(<CommentableComponent />)
+    const wrapper = mount(<CommentableComponent />)
+
+    wrapper.setProps({ a: 1 })
 
     expect(errorSpy).toHaveBeenCalledWith('Warning: The CommentableComponent component should be inside a CommentableProvider')
+    expect(errorSpy).toHaveBeenCalledTimes(2)
   })
 
   describe('.render', () => {
@@ -74,6 +77,20 @@ describe('CommentableComponent', () => {
       const wrapper = mount(<CommentableComponent />)
 
       expect(wrapper.html()).toBe(null)
+    })
+
+    test('should declare no comments by default', () => {
+      const CommentableComponent = createComponent({})
+
+      const wrapper = mount(<CommentableComponent reference="REFERENCE" />)
+      expect(wrapper.instance()._renderProps()).toMatchObject({ hasComments: false })
+    })
+
+    test('should declare comments if they are present', () => {
+      const CommentableComponent = createComponent({ commentsState: { comments: [{ reference: 'REFERENCE' }] } })
+
+      const wrapper = mount(<CommentableComponent reference="REFERENCE" />)
+      expect(wrapper.instance()._renderProps()).toMatchObject({ hasComments: true })
     })
   })
 

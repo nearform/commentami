@@ -18,17 +18,15 @@ describe('CommentableBlock', () => {
     jest.restoreAllMocks()
   })
 
-  test('.renderProps should declare no comments by default', () => {
+  test('should warn if included without a reference', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation()
     const CommentableBlock = createComponent({})
 
     const wrapper = mount(<CommentableBlock />)
-    expect(wrapper.instance().renderProps).toEqual({ hasComments: false })
-  })
 
-  test('.renderProps should declare comments if they are present', () => {
-    const CommentableBlock = createComponent({ commentsState: { comments: [{ reference: 'REFERENCE' }] } })
+    wrapper.setProps({ a: 1 })
 
-    const wrapper = mount(<CommentableBlock reference="REFERENCE" />)
-    expect(wrapper.instance().renderProps).toEqual({ hasComments: true, reference: 'REFERENCE' })
+    expect(errorSpy).toHaveBeenCalledWith('Warning: The CommentableBlock component should have a reference prop')
+    expect(errorSpy).toHaveBeenCalledTimes(2)
   })
 })

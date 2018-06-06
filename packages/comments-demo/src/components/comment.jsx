@@ -1,5 +1,5 @@
-import React from 'react'
 import { rem } from 'csx'
+import React from 'react'
 import { style } from 'typestyle'
 import { Icon } from './icon'
 
@@ -10,7 +10,7 @@ const commentClassName = style({
   padding: rem(1),
   $nest: {
     p: {
-      marginBottom: rem(0)
+      marginBottom: 0
     }
   }
 })
@@ -43,7 +43,7 @@ export class Comment extends React.Component {
     return (
       <article className={commentClassName}>
         <header className={commentHeaderClassName}>
-          <h5>{this.props.comment.author}</h5>
+          <h5>{this.props.comment.author} said</h5>
           <a href="#" onClick={this.boundHandleRemove}>
             <Icon name="trash" className={removeIconClassName} />
           </a>

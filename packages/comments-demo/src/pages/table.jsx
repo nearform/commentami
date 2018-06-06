@@ -1,13 +1,13 @@
-import { CommentableBlock, CommentableProvider, CommentsFetchService } from '@nearform/comments-react-components'
+import { CommentableProvider, CommentsFetchService } from '@nearform/comments-react-components'
+import { CommentableController } from '@nearform/comments-react-components/dist/ui'
 import { em, percent, rem } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
+import { Block } from '../components/block'
+import { Sidebar } from '../components/sidebar'
 import data from '../fixtures/data'
 import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
-import { CommentableSidebar, CommentableSidebarsContainer } from '@nearform/comments-react-components/dist/ui'
-import { Block } from '../components/block'
-import { Sidebar } from '../components/sidebar'
 
 const service = CommentsFetchService('http://localhost:8080/')
 
@@ -105,9 +105,9 @@ function Cell({ rowIndex, cellIndex, label, value }) {
 
   return (
     <Tag className={className}>
-      <CommentableBlock component={Block} reference={reference} markerComponent={CommentMarker}>
+      <Block component={Block} reference={reference} markerComponent={CommentMarker}>
         <span>{value}</span>
-      </CommentableBlock>
+      </Block>
     </Tag>
   )
 }
@@ -145,17 +145,17 @@ export function TablePage() {
         The tables below are generated out of some data structure. <br />Each cell is commentable.
       </h2>
 
-      <CommentableSidebarsContainer>
+      <CommentableController>
         <CommentableProvider resource="foo" service={service}>
           <Table data={data} />
-          <CommentableSidebar component={Sidebar} title="First" />
+          <Sidebar title="First" />
         </CommentableProvider>
 
         <CommentableProvider resource="bar" service={service}>
           <Table data={data} />
-          <CommentableSidebar component={Sidebar} title="Second" />
+          <Sidebar title="Second" />
         </CommentableProvider>
-      </CommentableSidebarsContainer>
+      </CommentableController>
     </div>
   )
 }

@@ -1,58 +1,25 @@
-import { CommentableBlock, CommentableProvider } from '@nearform/comments-react-components'
-import { CommentableSidebar, CommentableSidebarsContainer } from '@nearform/comments-react-components/dist/ui'
-import { rem } from 'csx'
+import { CommentableProvider } from '@nearform/comments-react-components'
+import { CommentableBlock, CommentableController, CommentableSidebar } from '@nearform/comments-react-components/dist/ui'
 import React from 'react'
-import { style } from 'typestyle'
-import { Block } from '../components/block'
-import { Sidebar } from '../components/sidebar'
 import { localStorageService } from '../services/localStorage'
-import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
-
-export const CommentableBlockClassName = style(debugClassName('CommentableBlock'), {
-  $nest: {
-    '&:hover': {
-      backgroundColor: '#FFF9C4',
-      color: 'black'
-    }
-  }
-})
-
-export const highlightedCommentableBlockClassName = style(debugClassName('CommentableBlock'), {
-  backgroundColor: '#FDD835',
-  color: 'black'
-})
-
-export const markerClassName = style(debugClassName('CommentableBlock'), {
-  position: 'absolute',
-  top: 0,
-  left: rem(-7.3), // 48px is the size of the icon, 2.5rem=25px is to put "outside" the page
-  cursor: 'pointer',
-  $nest: {
-    svg: {
-      width: rem(4.8),
-      height: rem(4.8),
-      fill: 'yellow'
-    }
-  }
-})
 
 const service = localStorageService()
 
 export function PlainPage() {
   return (
     <div className={pageClassName}>
-      <CommentableSidebarsContainer>
+      <CommentableController>
         <CommentableProvider resource="foo" service={service}>
-          <CommentableBlock component={Block} reference="header">
+          <CommentableBlock reference="header">
             <h1>Welcome!</h1>
           </CommentableBlock>
 
-          <CommentableBlock component={Block} reference="title">
+          <CommentableBlock reference="title">
             <h2>Each text in this page is commentable. Just double click on it.</h2>
           </CommentableBlock>
 
-          <CommentableBlock component={Block} reference="p1">
+          <CommentableBlock reference="p1">
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dapibus eu lorem sit amet commodo. Morbi egestas pulvinar lectus, at porttitor
               elit sodales a. Sed nec augue luctus, elementum eros quis, euismod ante. Maecenas vitae tempus mauris. Curabitur vel laoreet diam. Morbi varius
@@ -61,7 +28,7 @@ export function PlainPage() {
               odio eget, iaculis erat.
             </p>
           </CommentableBlock>
-          <CommentableBlock component={Block} reference="p2">
+          <CommentableBlock reference="p2">
             <p>
               Proin et dolor metus. Ut leo est, pretium sed interdum ut, imperdiet nec est. Aenean porta elit non elit finibus finibus. Proin malesuada, lorem
               sit amet placerat congue, lectus ligula porta sem, at pellentesque ante urna eget turpis. Quisque volutpat neque eget rutrum volutpat. Cras
@@ -70,7 +37,7 @@ export function PlainPage() {
               dolor. Nulla accumsan pretium nulla, sit amet tempus nunc aliquet non. Nunc imperdiet imperdiet rhoncus.
             </p>
           </CommentableBlock>
-          <CommentableBlock component={Block} reference="p3">
+          <CommentableBlock reference="p3">
             <p>
               Vestibulum at ipsum tempus, laoreet erat ac, congue lectus. Nulla non cursus augue. Cras mollis vel ipsum eu posuere. Vestibulum ante ipsum primis
               in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris vestibulum, elit quis auctor mollis, dui est tincidunt augue, in aliquet eros
@@ -78,18 +45,18 @@ export function PlainPage() {
             </p>
           </CommentableBlock>
 
-          <CommentableSidebar component={Sidebar} />
+          <CommentableSidebar />
         </CommentableProvider>
 
         <CommentableProvider resource="another" service={service}>
-          <CommentableBlock component={Block} reference="header">
+          <CommentableBlock reference="header">
             <h1>This is now another provider!</h1>
           </CommentableBlock>
 
-          <CommentableBlock component={Block} reference="title">
+          <CommentableBlock reference="title">
             <h2>One sidebar will be shown at a time.</h2>
           </CommentableBlock>
-          <CommentableBlock component={Block} reference="p1">
+          <CommentableBlock reference="p1">
             <p>
               Pellentesque luctus diam a justo fringilla porta. Praesent facilisis ante at risus vehicula molestie. Morbi laoreet orci et ligula euismod, at
               posuere risus laoreet. Nunc blandit eros in arcu laoreet commodo. Duis vitae lacus a risus ornare finibus at at tortor. Suspendisse libero mi,
@@ -97,7 +64,7 @@ export function PlainPage() {
               purus ut, iaculis interdum elit. Cras et orci tempor, elementum massa ac, molestie augue. Vivamus iaculis dui et lorem porta vehicula.
             </p>
           </CommentableBlock>
-          <CommentableBlock component={Block} reference="p2">
+          <CommentableBlock reference="p2">
             <p>
               Aliquam id dolor placerat, consectetur est in, convallis purus. Nam arcu nulla, porta non risus ut, ultricies condimentum lorem. Ut nec purus eu
               est elementum tincidunt. Ut id nulla nec nibh ornare pretium. Vestibulum porttitor vehicula iaculis. Etiam at dignissim orci, sed imperdiet nulla.
@@ -106,9 +73,10 @@ export function PlainPage() {
               sed nulla vestibulum ornare.
             </p>
           </CommentableBlock>
-          <CommentableSidebar component={Sidebar} />
+
+          <CommentableSidebar />
         </CommentableProvider>
-      </CommentableSidebarsContainer>
+      </CommentableController>
     </div>
   )
 }

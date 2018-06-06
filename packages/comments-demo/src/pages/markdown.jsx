@@ -1,16 +1,15 @@
-import { CommentableBlock, CommentableProvider, CommentsFetchService } from '@nearform/comments-react-components'
-import { CommentableSidebar, CommentableSidebarsContainer } from '@nearform/comments-react-components/dist/ui'
-
+import { CommentableProvider, CommentsFetchService } from '@nearform/comments-react-components'
+import { CommentableController } from '@nearform/comments-react-components/dist/ui'
 import { rem } from 'csx'
 import React from 'react'
 import remark from 'remark'
 import reactRenderer from 'remark-react'
 import { style } from 'typestyle'
+import { Block } from '../components/block'
+import { Sidebar } from '../components/sidebar'
 import data from '../fixtures/markdown.md'
 import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
-import { Block } from '../components/block'
-import { Sidebar } from '../components/sidebar'
 
 const documentWrapperClassName = style(debugClassName('document-wrapper'), {
   marginTop: rem(5),
@@ -24,9 +23,9 @@ export function createCommentableElement(Tag) {
 
   return function CommentableElement({ children }) {
     return (
-      <CommentableBlock component={Block} reference={`${Tag}-${id++}`}>
+      <Block component={Block} reference={`${Tag}-${id++}`}>
         <Tag>{children}</Tag>
-      </CommentableBlock>
+      </Block>
     )
   }
 }
@@ -53,13 +52,13 @@ export function MarkdownPage() {
 
       <h2>The content in the box below is dynamically generated out of a Markdown file. Each non inline section is commentable.</h2>
 
-      <CommentableSidebarsContainer>
+      <CommentableController>
         <CommentableProvider resource="foo" service={CommentsFetchService('http://localhost:8080/')}>
           <div className={documentWrapperClassName}>{parsed}</div>
 
-          <CommentableSidebar component={Sidebar} />
+          <Sidebar />
         </CommentableProvider>
-      </CommentableSidebarsContainer>
+      </CommentableController>
     </div>
   )
 }

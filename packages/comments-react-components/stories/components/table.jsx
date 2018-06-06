@@ -1,8 +1,7 @@
 import { px } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
-import { CommentableBlock } from '../../src/components/core/CommentableBlock'
-import { Block } from './block'
+import { CommentableBlock } from '../../src/components/ui/CommentableBlock'
 
 const tableClassName = style({
   borderSpacing: 1
@@ -23,7 +22,7 @@ const cellClassName = style({
   position: 'relative'
 })
 
-const commentLabelClassName = style({
+const commentsMarkerClassName = style({
   height: px(10),
   width: px(10),
   position: 'absolute',
@@ -32,42 +31,46 @@ const commentLabelClassName = style({
   backgroundColor: '#F3704C'
 })
 
-export const Table = ({ data, columns }) => (
+export const Table = ({ data, columns, blockComponent }) => (
   <table className={tableClassName}>
     <tbody>
-      <Header columns={columns} />
-      {data.map(row => <Row key={row._id} data={row} columns={columns} />)}
+      <Header columns={columns} blockComponent={blockComponent} />
+      {data.map(row => <Row key={row._id} data={row} columns={columns} blockComponent={blockComponent} />)}
     </tbody>
   </table>
 )
 
-export const CommentLabel = ({ onClick }) => {
-  return <div className={commentLabelClassName} onClick={onClick} />
-}
-
-export const Cell = ({ id, data }) => (
-  <td className={cellClassName}>
-    <CommentableBlock reference={id} render={props => <Block {...props} markerComponent={CommentLabel} />}>
-      {data}
-    </CommentableBlock>
-  </td>
+export const Header = ({ columns, blockComponent }) => (
+  <tr>
+    {columns.map(key => {
+      return <HeadCell key={key} data={key} blockComponent={blockComponent} />
+    })}
+  </tr>
 )
 
-export const HeadCell = ({ data }) => <th className={headerClassName}>{data}</th>
-
-export const Row = ({ data, columns }) => (
+export const Row = ({ data, columns, blockComponent }) => (
   <tr>
     {Object.entries(data)
       .filter(([key]) => columns.includes(key))
       .sort(([keyA], [keyB]) => columns.findIndex(key => key === keyA) - columns.findIndex(key => key === keyB))
-      .map(([key, value]) => <Cell key={key} id={`${data._id}-${key}`} data={value} />)}
+      .map(([key, value]) => <Cell key={key} id={`${data._id}-${key}`} data={value} blockComponent={blockComponent} />)}
   </tr>
 )
 
-export const Header = ({ columns }) => (
-  <tr>
-    {columns.map(key => {
-      return <HeadCell key={key} data={key} />
-    })}
-  </tr>
-)
+export const CommentsMarker = ({ onClick }) => {
+  return <div className={commentsMarkerClassName} onClick={onClick} />
+}
+
+export function Cell({ id, data, blockComponent: Block }) {
+  if (!Block) Block = CommentableBlock
+
+  return (
+    <td className={cellClassName}>
+      <Block reference={id} markerComponent={CommentsMarker}>
+        {data}
+      </Block>
+    </td>
+  )
+}
+
+export const HeadCell = ({ data }) => <th className={headerClassName}>{data}</th>

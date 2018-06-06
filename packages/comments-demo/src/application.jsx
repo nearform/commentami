@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <Switch>
           <Route exact path="/plain" component={PlainPage} />
-          <Route exact path="/table" component={TablePage} />
           <Route exact path="/markdown" component={MarkdownPage} />
+          <Route exact path="/table" component={TablePage} />
           <Route component={IndexPage} />
         </Switch>
       </div>
