@@ -29,6 +29,31 @@ options.pg = {
 
 Any parameter in this object will override whatever comes from `@nearform/comments-backend-core` `config.pg`.
 
+### `options.routes` \[optional\]
+
+Through the `routes` option you can configure `@nearform/comments-backend-hapi-plugin` to have it's routes protected behind an authentication strategy.
+
+```
+options.routes = {
+  auth: 'myauth'
+}
+```
+
+If you want `@nearform/comments-backend-hapi-plugin` to populate the `author` field when adding a comment, you can provide the following function:
+
+```
+options.routes = {
+  auth: 'myauth',
+  getUser: async (request, payload) => {
+    // ...
+    return user
+  }
+}
+```
+
+The `getUser` function will need to return a promise that will yield either `null` or an object with the property `id` (ie : `{ id: 1, ... }`). Beware that **`author` will be stored as a string**.
+
+
 ### `options.hooks` \[optional\]
 
 It should contain the hooks to decorate a single comment or a list of comments with data.
@@ -67,6 +92,21 @@ multines: {
 ```
 
 **Note**: if you pass `options.multines = {}` the websockets will be active but the pub/sub system will work only for the single server and not between multiple servers (ie: through resid pub/sub).
+
+### `options.nes` [optional]
+
+If you want to customize the `nes` plugin you can pass [its options](https://github.com/hapijs/nes/blob/master/lib/index.js#L17-L42) through `options.nes`.
+
+An example of what you may want to do is settig up nes to use an authentication strategy that you have already add to you server
+
+```
+nes: {
+  auth: {
+    type: 'token',
+    route: 'myauth'
+  }
+}
+```
 
 ## Events
 
@@ -107,6 +147,19 @@ const main = async function() {
       type: 'redis',
       host: '127.0.0.1',
       port: 6379
+    },
+    nes: {
+      auth: {
+        type: 'token',
+        route: 'myauth'
+      }
+    },
+    routes: {
+      auth: 'myauth',
+      getUser: async (request, payload) => {
+        // ...
+        return user
+      }
     }
   }
 

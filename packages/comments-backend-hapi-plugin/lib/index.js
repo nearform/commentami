@@ -33,13 +33,19 @@ const commentsHapiPlugin = {
     server.decorate('request', 'commentsService', commentsService)
 
     if (options.multines) {
-      await server.register([Nes, {
-        plugin: {
-          name: 'multines',
-          register: Multines.register
+      await server.register([
+        {
+          plugin: Nes,
+          options: options.nes
         },
-        options: options.multines
-      }])
+        {
+          plugin: {
+            name: 'multines',
+            register: Multines.register
+          },
+          options: options.multines
+        }
+      ])
 
       server.subscriptionFar('/resources/{resource*}')
       server.subscriptionFar('/resources-reference/{reference}/{resource*}')

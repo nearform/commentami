@@ -38,7 +38,7 @@ describe('Comments REST API', () => {
     test('it should return 401 when not providing an authorization header', async () => {
       const response = await server.inject({
         method: 'GET',
-        url: `/comments-references/${this.resource}`
+        url: `/comments-references/abc`
       })
 
       expect(response.statusCode).to.equal(401)
