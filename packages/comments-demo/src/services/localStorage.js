@@ -2,13 +2,16 @@
 
 export function localStorageService() {
   return {
-    addComment(comment) {
-      const key = `comments:${comment.resource}`
+    addComment(resource, comment) {
+      const key = `comments:${resource}`
       const raw = localStorage.getItem(key) || '[]'
       const existing = JSON.parse(raw)
 
-      existing.push({ id: new Date().getTime(), resource: comment.resource, reference: comment.reference, content: comment.content, author: 'someauthor' })
+      const created = { id: new Date().getTime(), resource: resource, reference: comment.reference.id, content: comment.content, author: 'someauthor' }
+      existing.push(created)
       localStorage.setItem(key, JSON.stringify(existing))
+
+      return created
     },
 
     removeComment(comment) {

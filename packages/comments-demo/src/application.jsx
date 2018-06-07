@@ -7,6 +7,7 @@ import { IndexPage } from './pages/index'
 import { MarkdownPage } from './pages/markdown'
 import { PlainPage } from './pages/plain'
 import { TablePage } from './pages/table'
+import { MultiplePage } from './pages/multiple'
 import { mainClassName } from './styling/environment'
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <Route exact path="/plain" component={PlainPage} />
           <Route exact path="/markdown" component={MarkdownPage} />
           <Route exact path="/table" component={TablePage} />
+          <Route exact path="/multiple" component={MultiplePage} />
           <Route component={IndexPage} />
         </Switch>
       </div>

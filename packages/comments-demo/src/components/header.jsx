@@ -68,6 +68,9 @@ export function Header() {
         <NavLink to="/table" className={headerLinkClassName}>
           Table
         </NavLink>
+        <NavLink to="/multiple" className={headerLinkClassName}>
+          Multiple
+        </NavLink>
       </nav>
     </header>
   )

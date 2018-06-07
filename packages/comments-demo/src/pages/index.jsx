@@ -30,6 +30,9 @@ export function IndexPage() {
         <li>
           <Link to="/table">Table</Link>: Dynamic table page with remote HTTP backend.
         </li>
+        <li>
+          <Link to="/multiple">Multiple</Link>: Page with three tables, each using a different storage backend.
+        </li>
       </ul>
     </div>
   )
