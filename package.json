@@ -44,6 +44,7 @@
     "@cowtech/eslint-config": "^4.19.4",
     "depcheck": "^0.6.9",
     "docsify-cli": "^4.2.1",
+    "eslint": "^4.19.1",
     "husky": "^1.0.0-rc.2",
     "lerna": "^2.11.0",
     "remark-cli": "^5.0.0",

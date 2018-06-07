@@ -2,9 +2,10 @@ import { viewHeight } from 'csx'
 import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { getStyles, style } from 'typestyle'
-import { mainClassName, debugClassName } from './styling/environment'
-import './styling/reset'
 import { Spinner } from './components/spinner'
+import { debugClassName, mainClassName } from './styling/environment'
+import './styling/reset'
+import './styling/rules'
 
 const rootClassName = style(debugClassName('root'), {
   display: 'flex',

@@ -17,8 +17,8 @@ describe('CommentsFetchService', () => {
     // assert on the response
     const result = await commentsFetchService.getComments('some-resource')
 
-    expect(fetch.mock.calls.length).toBe(1)
-    expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments?resource=some-resource')
+    expect(fetch.mock.calls.length).toEqual(1)
+    expect(fetch.mock.calls[0][0]).toEqual('http://localhost/comments?resource=some-resource')
     expect(fetch.mock.calls[0][1]).toEqual({
       method: 'GET',
       headers: {
@@ -27,7 +27,7 @@ describe('CommentsFetchService', () => {
       }
     })
 
-    expect(result.length).toBe(3)
+    expect(result.length).toEqual(3)
     expect(result[0]).toEqual(commentsGETvalid.comments[0])
     expect(result[1]).toEqual(commentsGETvalid.comments[1])
     expect(result[2]).toEqual(commentsGETvalid.comments[2])
@@ -38,8 +38,8 @@ describe('CommentsFetchService', () => {
 
     await commentsFetchService.removeComment({ id: 'comm-1' })
 
-    expect(fetch.mock.calls.length).toBe(1)
-    expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments/comm-1')
+    expect(fetch.mock.calls.length).toEqual(1)
+    expect(fetch.mock.calls[0][0]).toEqual('http://localhost/comments/comm-1')
     expect(fetch.mock.calls[0][1]).toEqual({
       method: 'DELETE',
       headers: {
@@ -66,8 +66,8 @@ describe('CommentsFetchService', () => {
 
     const result = await commentsFetchService.addComment(resource, { reference, content })
 
-    expect(fetch.mock.calls.length).toBe(1)
-    expect(fetch.mock.calls[0][0]).toBe('http://localhost/comments')
+    expect(fetch.mock.calls.length).toEqual(1)
+    expect(fetch.mock.calls[0][0]).toEqual('http://localhost/comments')
     expect(fetch.mock.calls[0][1]).toEqual({
       method: 'POST',
       headers: {

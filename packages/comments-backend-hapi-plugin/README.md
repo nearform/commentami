@@ -1,6 +1,6 @@
 # @nearform/comments-backend-hapi-plugin
 
-Comments is a comments management system. [...tbd...]
+Comments is a comments management system. \[...tbd...\]
 
 `@nearform/comments-backend-hapi-plugin` is a plugin to add the comments REST API and (if specified) Websockets to a [Hapi][hapi] server.
 
@@ -16,8 +16,7 @@ npm install @nearform/comments-backend-hapi-plugin
 
 `@nearform/comments-backend-hapi-plugin` has some options you can specifiy to customize it
 
-
-### `options.pg` [optional]
+### `options.pg` \[optional\]
 
 It should contain an object with the postgres connection parameters.
 
@@ -30,7 +29,7 @@ options.pg = {
 
 Any parameter in this object will override whatever comes from `@nearform/comments-backend-core` `config.pg`.
 
-### `options.hooks` [optional]
+### `options.hooks` \[optional\]
 
 It should contain the hooks to decorate a single comment or a list of comments with data.
 
@@ -51,7 +50,7 @@ options.hooks = {
 }
 ```
 
-### `options.multines` [optional]
+### `options.multines` \[optional\]
 
 By default the server will start with only the http endpoints available. If you also want to interact through websocket you should provide a `multines` option.
 
@@ -69,24 +68,38 @@ multines: {
 
 **Note**: if you pass `options.multines = {}` the websockets will be active but the pub/sub system will work only for the single server and not between multiple servers (ie: through resid pub/sub).
 
-An example on how to install the plugin with all the options:
+## Events
+
+Under the hood `@nearform/comments-backend-hapi-plugin` add a `commentsService` object to both `server` and `request`.
+
+If you need to be notified when a comment is added, deleted or updated you can use this object to add your listeners.
+
+```
+server.commentsService.on('add', (comment) => { /*...*/ })
+server.commentsService.on('update', (comment) => { /*...*/ })
+server.commentsService.on('delete', (comment) => { /*...*/ })
+```
+
+## All together
+
+An example on how to install the plugin with all the options and events listeners:
 
 ```javascript
 const main = async function() {
   const server = require('hapi').Server({ host: 'localhost', port: 80 })
 
   const options = {
-    hooks : {
-      fetchedComment: async (comment) => {
+    hooks: {
+      fetchedComment: async comment => {
         // ...
         return augmentedComment
       },
-      fetchedComments: async (comments) => {
+      fetchedComments: async comments => {
         //...
         return augmentedComments
       }
     },
-    pg : {
+    pg: {
       host: '127.0.0.1',
       port: 5432
     },
@@ -103,14 +116,25 @@ const main = async function() {
     }
   ])
 
+  server.commentsService.on('add', comment => {
+    /* send sms */
+  })
+  server.commentsService.on('add', comment => {
+    /* send email */
+  })
+  server.commentsService.on('delete', comment => {
+    /* store deleted comments somewhere else */
+  })
+  server.commentsService.on('update', comment => {
+    /* log the updated comment somewhere */
+  })
+
   await server.start()
   logMessage(`Server running at: ${server.info.uri}`)
 }
 
 main().catch(console.error)
 ```
-
-Comments route will be then accessible on the `/comments` path.
 
 ## HTTP APIs
 
@@ -259,7 +283,6 @@ The `event` object will have the following format
 ```
 
 The `action` property can have one of the following values: `add`, `delete` or `update`.
-
 
 ## Development
 

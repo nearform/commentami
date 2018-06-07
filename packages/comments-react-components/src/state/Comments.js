@@ -1,4 +1,4 @@
-import { getDefaultState, setCommentToState, removeCommentFromState } from './helpers'
+import { getDefaultState, removeCommentFromState, setCommentToState } from './helpers'
 
 export const STATE_FIELD_NAME = 'commentsState'
 
@@ -26,9 +26,7 @@ export class CommentsState {
    */
   get state() {
     const providerCommentsState = this.getProviderState()[STATE_FIELD_NAME]
-    return (providerCommentsState && providerCommentsState.id === this.resource)
-      ? providerCommentsState
-      : this.defaultState
+    return providerCommentsState && providerCommentsState.id === this.resource ? providerCommentsState : this.defaultState
   }
 
   /**
@@ -54,7 +52,7 @@ export class CommentsState {
    * @returns {Promise<void>}
    */
   async unsubscribe() {
-    this.unsubscribeFromResourceChange && await this.unsubscribeFromResourceChange()
+    this.unsubscribeFromResourceChange && (await this.unsubscribeFromResourceChange())
   }
 
   /**
@@ -75,16 +73,6 @@ export class CommentsState {
   /**
    *
    * @param {Comment} comment
-   * @returns {Promise<void>}
-   */
-  async removeComment(comment) {
-    await this.service.removeComment(comment)
-    this.updateState(removeCommentFromState(this.state, comment.reference, comment))
-  }
-
-  /**
-   *
-   * @param {Comment} comment
    * @returns {Promise<*|void>}
    */
   async addComment(comment) {
@@ -92,6 +80,16 @@ export class CommentsState {
 
     this.updateState(setCommentToState(this.state, comment.reference, result))
     return result
+  }
+
+  /**
+   *
+   * @param {Comment} comment
+   * @returns {Promise<void>}
+   */
+  async removeComment(comment) {
+    await this.service.removeComment(comment)
+    this.updateState(removeCommentFromState(this.state, comment.reference, comment))
   }
 
   /**

@@ -1,4 +1,4 @@
-import { px, em, rem } from 'csx'
+import { em, px, rem } from 'csx'
 import { cssRaw, cssRule as global, fontFace } from 'typestyle'
 
 export const fontSize = '12pt'
