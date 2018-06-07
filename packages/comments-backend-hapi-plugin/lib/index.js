@@ -46,7 +46,7 @@ const commentsHapiPlugin = {
       server.method('notifyComment', notifyComment.bind(server))
     }
 
-    await server.register(require('./routes'))
+    await server.register({ plugin: require('./routes'), options: options.routes })
 
     server.ext('onPostStop', async () => {
       commentsService.removeAllListeners('add')
