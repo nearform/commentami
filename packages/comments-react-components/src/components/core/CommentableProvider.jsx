@@ -1,5 +1,6 @@
 import React from 'react'
 import { CommentsState } from '../../state/Comments'
+import { createComment } from '../../state/helpers'
 
 // The context for the Provider
 export const CommentableContext = React.createContext('commentable')
@@ -13,7 +14,7 @@ export class CommentableProvider extends React.Component {
       service: this.props.service,
       getProviderState: this.getProviderState.bind(this),
       onCommentsStateUpdate: this.onCommentsStateUpdate.bind(this),
-      resource: this.getCurrentResource(),
+      resource: this.currentResource,
       logger: this.logger
     })
 
@@ -72,10 +73,12 @@ export class CommentableProvider extends React.Component {
    */
   async addComment(reference, content) {
     try {
+      const comment = createComment({ reference, content })
+
       await this.commentsState.addComment({
         resource: this.currentResource,
-        reference,
-        content
+        reference: comment.reference,
+        content: comment.content
       })
     } catch (e) {
       this.logger.error(e)
@@ -96,30 +99,30 @@ export class CommentableProvider extends React.Component {
   }
 
   componentDidMount() {
-    this.commentsState.subscribe(this.getCurrentResource())
-    this.setState({ lastRefreshedResource: this.getCurrentResource() })
+    this.commentsState.subscribe(this.currentResource)
+    this.setState({ lastRefreshedResource: this.currentResource })
   }
 
   componentWillUnmount() {
-    this.commentsState.unsubscribe(this.getCurrentResource())
+    this.commentsState.unsubscribe(this.currentResource)
   }
 
   componentDidUpdate() {
-    if (this.getCurrentResource() !== this.state.lastRefreshedResource) {
+    if (this.currentResource !== this.state.lastRefreshedResource) {
       this.commentsState.unsubscribe(this.state.lastRefreshedResource)
       this.commentsState = new CommentsState({
         service: this.props.service,
         getProviderState: this.getProviderState.bind(this),
         onCommentsStateUpdate: this.onCommentsStateUpdate.bind(this),
-        resource: this.getCurrentResource(),
+        resource: this.currentResource,
         logger: this.logger
       })
-      this.commentsState.subscribe(this.getCurrentResource())
+      this.commentsState.subscribe(this.currentResource)
 
       // FIXME setState should not called in componentDidUpdate, this value can be set directly in the compoent instance
       // but is used in Sidebar and Block that can take the value from the CommentsState. Once refactored that part
       // this value can be replaced with a `this.lastRefreshedResource` assignement
-      this.setState({ lastRefreshedResource: this.getCurrentResource() }) // eslint-disable-line
+      this.setState({ lastRefreshedResource: this.currentResource }) // eslint-disable-line
     }
   }
 

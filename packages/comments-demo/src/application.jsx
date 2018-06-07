@@ -2,11 +2,11 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Route, Switch } from 'react-router'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { Header } from './components/header'
 import { IndexPage } from './pages/index'
+import { MarkdownPage } from './pages/markdown'
 import { PlainPage } from './pages/plain'
 import { TablePage } from './pages/table'
-import { MarkdownPage } from './pages/markdown'
-import { Header } from './components/header'
 import { mainClassName } from './styling/environment'
 
 document.addEventListener('DOMContentLoaded', function() {

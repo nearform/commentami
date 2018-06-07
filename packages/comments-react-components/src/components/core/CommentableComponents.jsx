@@ -1,6 +1,6 @@
 import React from 'react'
 import warning from 'warning'
-import { selectCommentsByReference } from '../../state/selectors'
+import { commentsCount } from '../../state/selectors'
 import { CommentableContext } from './CommentableProvider'
 
 export function flexibleRender({ render, component: Component, children }, renderProps, defaultComponent) {
@@ -24,7 +24,7 @@ export function commentable(Component) {
     }
 
     get hasComments() {
-      return this.hasCommentable && !!selectCommentsByReference(this.commentable, this.props.reference).length
+      return this.hasCommentable && this.props.reference && !!commentsCount(this.commentable, this.props.reference)
     }
 
     _checkProps() {

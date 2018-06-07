@@ -3,7 +3,7 @@ export function CommentsFetchService(baseUrl) {
     const options = {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -17,11 +17,11 @@ export function CommentsFetchService(baseUrl) {
     return response.json()
   }
 
-  const removeComment = async (comment) => {
+  const removeComment = async comment => {
     const options = {
       method: 'DELETE',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       }
     }
@@ -29,11 +29,11 @@ export function CommentsFetchService(baseUrl) {
     await fetch(`${baseUrl}comments/${comment.id}`, options)
   }
 
-  const getComments = async (resource) => {
+  const getComments = async resource => {
     const options = {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       }
     }
