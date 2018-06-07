@@ -2,6 +2,7 @@
 
 const { expect } = require('code')
 const Lab = require('lab')
+const sinon = require('sinon')
 
 module.exports.lab = Lab.script()
 const { describe, it: test, before, after } = module.exports.lab
@@ -12,9 +13,11 @@ const buildServer = require('../lib/server')
 
 describe('Server', () => {
   let server = null
+  let logMessage = sinon.spy()
+
   before(async () => {
     await resetDb()
-    server = await buildServer(config, () => {})
+    server = await buildServer(config, logMessage)
   })
 
   after(async () => {
@@ -44,6 +47,28 @@ describe('Server', () => {
         delete created.createdAt
 
         expect(result).to.equal(created)
+      })
+
+      test('it should log operations', async () => {
+        logMessage.resetHistory()
+
+        const created = await server.commentsService.add({
+          resource: 'URL',
+          reference: 'OLD-UUID',
+          content: 'OLD-MESSAGE',
+          author: 'OLD-AUTHOR'
+        })
+
+        await server.commentsService.update(created.id, {
+          resource: 'URL',
+          reference: 'OLD-UUID',
+          content: 'OLD-MESSAGE',
+          author: 'OLD-AUTHOR'
+        })
+
+        await server.commentsService.delete(created.id)
+
+        expect(logMessage.callCount).to.equal(3)
       })
     })
   })

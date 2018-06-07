@@ -1,12 +1,15 @@
-import { CommentableBlock, CommentableProvider, CommentsFetchService } from '@nearform/comments-react-components'
+import { CommentableProvider, CommentsFetchService } from '@nearform/comments-react-components'
+import { CommentableController } from '@nearform/comments-react-components/dist/ui'
 import { em, percent, rem } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
+import { Block } from '../components/block'
+import { Sidebar } from '../components/sidebar'
 import data from '../fixtures/data'
 import { debugClassName } from '../styling/environment'
-import { sidebarClassName } from '../styling/sidebar'
 import { pageClassName } from './index'
-import { blockClassName, highlightedBlockClassName } from './plain'
+
+const service = CommentsFetchService('http://localhost:8080/')
 
 const commentMarkerClassName = style(debugClassName('table'), {
   position: 'absolute',
@@ -83,17 +86,8 @@ function humanize(str) {
   )
 }
 
-function CommentMarker({ rootRef, referenceId, events, handleToggleComment }) {
-  const boundHandleClick = events.onClick.bind(null, { id: referenceId, ref: rootRef, scope: 'marker' })
-
-  return (
-    <div
-      className={commentMarkerClassName}
-      ref={rootRef}
-      onDoubleClick={handleToggleComment}
-      onClick={boundHandleClick} // eslint-disable-line react/jsx-no-bind
-    />
-  )
+function CommentMarker({ onClick }) {
+  return <div className={commentMarkerClassName} onClick={onClick} />
 }
 
 function Cell({ rowIndex, cellIndex, label, value }) {
@@ -107,13 +101,13 @@ function Cell({ rowIndex, cellIndex, label, value }) {
     className = tableHeaderCellClassName
   }
 
-  const referenceId = `${label}:${rowIndex}:${cellIndex}`
+  const reference = `${label}:${rowIndex}:${cellIndex}`
 
   return (
     <Tag className={className}>
-      <CommentableBlock referenceId={referenceId} className={blockClassName} highlightedClassName={highlightedBlockClassName} markerComponent={CommentMarker}>
+      <Block component={Block} reference={reference} markerComponent={CommentMarker}>
         <span>{value}</span>
-      </CommentableBlock>
+      </Block>
     </Tag>
   )
 }
@@ -151,13 +145,17 @@ export function TablePage() {
         The tables below are generated out of some data structure. <br />Each cell is commentable.
       </h2>
 
-      <CommentableProvider resource="foo" service={CommentsFetchService('http://localhost:8080/')} sidebarClassName={sidebarClassName}>
-        <Table data={data} />
-      </CommentableProvider>
+      <CommentableController>
+        <CommentableProvider resource="foo" service={service}>
+          <Table data={data} />
+          <Sidebar title="First" />
+        </CommentableProvider>
 
-      <CommentableProvider resource="bar" service={CommentsFetchService('http://localhost:8080/')} sidebarClassName={sidebarClassName}>
-        <Table data={data} />
-      </CommentableProvider>
+        <CommentableProvider resource="bar" service={service}>
+          <Table data={data} />
+          <Sidebar title="Second" />
+        </CommentableProvider>
+      </CommentableController>
     </div>
   )
 }

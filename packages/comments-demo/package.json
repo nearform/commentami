@@ -36,6 +36,7 @@
     "watch": "webpack-dev-server"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "@nearform/comments-react-components": "^0.1.0",
     "csx": "^8.5.0",
     "history": "^4.7.2",
@@ -44,6 +45,7 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-timeago": "^4.1.9",
+    "remark": "^9.0.0",
     "remark-react": "^4.0.3",
     "typestyle": "^1.7.2"
   },

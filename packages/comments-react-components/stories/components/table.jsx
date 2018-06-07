@@ -1,91 +1,76 @@
+import { px } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
-
-import { CommentableBlock } from '../../src/components/CommentableBlock'
+import { CommentableBlock } from '../../src/components/ui/CommentableBlock'
 
 const tableClassName = style({
   borderSpacing: 1
 })
 
 const headerClassName = style({
-  height: '30px',
+  height: px(30),
   textAlign: 'left',
   textTransform: 'capitalize',
-  backgroundColor: '#ddd',
-  border: '1px solid #aaa'
+  backgroundColor: '#DDD',
+  border: `${px(1)} solid #AAA`
 })
 
 const cellClassName = style({
   textAlign: 'left',
-  height: '30px',
-  border: '1px solid #aaa'
+  height: px(30),
+  border: `${px(1)} solid #AAA`,
+  position: 'relative'
 })
 
-const cellContentsClassName = style({
-  backgroundColor: '#f3f3f3',
-  padding: '8px'
+const commentsMarkerClassName = style({
+  height: px(10),
+  width: px(10),
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  backgroundColor: '#F3704C'
 })
 
-const highlightCellContentsClassName = style({
-  backgroundColor: '#e3ead4',
-  padding: '8px'
-})
-
-const commentLabelClassName = style({
-  height: '10px',
-  width: '10px',
-  position: 'relative',
-  float: 'right',
-  top: '-8px',
-  right: '-8px',
-  backgroundColor: '#f3704c'
-})
-
-export const Table = ({ data, columns }) => (
+export const Table = ({ data, columns, blockComponent }) => (
   <table className={tableClassName}>
     <tbody>
-      <Header columns={columns} />
-      {data.map(row => <Row key={row._id} data={row} columns={columns} />)}
+      <Header columns={columns} blockComponent={blockComponent} />
+      {data.map(row => <Row key={row._id} data={row} columns={columns} blockComponent={blockComponent} />)}
     </tbody>
   </table>
 )
 
-export const CommentLabel = ({ rootRef, referenceId, events, handleToggleComment }) => {
-  const boundHandleClick = events.onClick.bind(null, { id: referenceId, ref: rootRef, scope: 'marker' })
-
-  return (
-    <div
-      className={commentLabelClassName}
-      ref={rootRef}
-      onDoubleClick={handleToggleComment}
-      onClick={boundHandleClick} // eslint-disable-line react/jsx-no-bind
-    />
-  )
-}
-
-export const Cell = ({ id, data }) => (
-  <td className={cellClassName}>
-    <CommentableBlock referenceId={id} markerComponent={CommentLabel} className={cellContentsClassName} highlightedClassName={highlightCellContentsClassName}>
-      {data}
-    </CommentableBlock>
-  </td>
+export const Header = ({ columns, blockComponent }) => (
+  <tr>
+    {columns.map(key => {
+      return <HeadCell key={key} data={key} blockComponent={blockComponent} />
+    })}
+  </tr>
 )
 
-export const HeadCell = ({ data }) => <th className={headerClassName}>{data}</th>
-
-export const Row = ({ data, columns }) => (
+export const Row = ({ data, columns, blockComponent }) => (
   <tr>
     {Object.entries(data)
       .filter(([key]) => columns.includes(key))
       .sort(([keyA], [keyB]) => columns.findIndex(key => key === keyA) - columns.findIndex(key => key === keyB))
-      .map(([key, value]) => <Cell key={key} id={`${data._id}-${key}`} data={value} />)}
+      .map(([key, value]) => <Cell key={key} id={`${data._id}-${key}`} data={value} blockComponent={blockComponent} />)}
   </tr>
 )
 
-export const Header = ({ columns }) => (
-  <tr>
-    {columns.map(key => {
-      return <HeadCell key={key} data={key} />
-    })}
-  </tr>
-)
+export const CommentsMarker = ({ onClick }) => {
+  return <div className={commentsMarkerClassName} onClick={onClick} />
+}
+
+export function Cell({ id, data, blockComponent: Block }) {
+  if (!Block) Block = CommentableBlock
+
+  return (
+    <td className={cellClassName}>
+      <Block reference={id} markerComponent={CommentsMarker}>
+        {data}
+      </Block>
+    </td>
+  )
+}
+
+export const HeadCell = ({ data }) => <th className={headerClassName}>{data}</th>

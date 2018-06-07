@@ -26,11 +26,11 @@
     "dist"
   ],
   "scripts": {
-    "depcheck": "../../node_modules/depcheck/bin/depcheck --ignores=webpack",
+    "depcheck": "../../node_modules/depcheck/bin/depcheck --ignores=webpack,enzyme-context-patch",
     "build": "babel -d dist src",
     "storybook": "start-storybook -p 6006 -c .storybook",
     "test": "node test/start.js",
-    "test:watch": "WATCH=truenode test/start.js"
+    "test:watch": "WATCH=true node test/start.js"
   },
   "dependencies": {
     "nes": "^8.1.0",
@@ -43,18 +43,18 @@
     "@babel/core": "^7.0.0-beta.48",
     "@babel/preset-env": "^7.0.0-beta.48",
     "@babel/preset-react": "^7.0.0-beta.48",
-    "@storybook/addon-actions": "^3.4.6",
     "@storybook/react": "^3.3.15",
+    "@storybook/addon-actions": "^3.4.6",
     "babel-core": "^7.0.0-bridge.0",
     "chart.js": "^1.1.1",
+    "csx": "^9.0.0",
     "deep-freeze": "0.0.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-context-patch": "0.0.7",
     "jest": "^23.0.0",
     "jest-fetch-mock": "^1.6.2",
-    "lodash": "^4.17.10",
     "react-chartjs": "^1.2.0",
-    "sleep-promise": "^6.0.0",
     "typestyle": "^2.0.1",
     "webpack": "^3.12.0"
   }

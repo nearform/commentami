@@ -25,10 +25,13 @@ export function IndexPage() {
           <Link to="/plain">Plain</Link>: Simple plain text page with localStorage backend.
         </li>
         <li>
+          <Link to="/markdown">Markdown</Link>: Dynamic commentable Markdown document with remote HTTP backend.
+        </li>
+        <li>
           <Link to="/table">Table</Link>: Dynamic table page with remote HTTP backend.
         </li>
         <li>
-          <Link to="/markdown">Markdown</Link>: Dynamic commentable Markdown document with remote HTTP backend.
+          <Link to="/multiple">Multiple</Link>: Page with three tables, each using a different storage backend.
         </li>
       </ul>
     </div>

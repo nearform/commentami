@@ -1,10 +1,9 @@
-import { commentsCount, selectCommentsByReference } from '../../src/state/selectors'
 import { CommentsState, STATE_FIELD_NAME } from '../../src/state/Comments'
-
+import { getDefaultState } from '../../src/state/helpers'
+import { commentsCount, selectCommentsByReference } from '../../src/state/selectors'
 import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
 import { CommentsMockService } from '../helpers/CommentsMockService'
 import { CommentsMockServiceWithStream } from '../helpers/CommentsMockServiceWithStream'
-import { getDefaultState } from '../../src/state/helpers'
 
 describe('state/Comments', () => {
   let state
@@ -332,6 +331,12 @@ describe('state/Comments', () => {
       await comments.unsubscribe()
 
       expect(unsubscribeMock).toHaveBeenCalledWith()
+    })
+  })
+
+  describe('Selectors', () => {
+    test('should always return something', () => {
+      expect(selectCommentsByReference({})).toEqual([])
     })
   })
 })

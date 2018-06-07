@@ -2,8 +2,14 @@ import React from 'react'
 import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'
 
-import { sidebarClassName, sidebarClassNameWrapper } from './components/styling'
-import { CommentableSidebarComponent } from '../src/components/CommentableSidebar'
+import { CommentableContext } from '../src/components/core/CommentableProvider'
+import { CommentableControllerContext } from '../src/components/ui/CommentableController'
+import { CommentableSidebar } from '../src/components/ui/CommentableSidebar'
+
+const controller = {
+  isActive: () => true,
+  reference: 'foo'
+}
 
 const commentable = {
   addComment: action('Add a comment'),
@@ -17,7 +23,11 @@ const commentable = {
 }
 
 storiesOf('Commentable/SideBar', module).add('Default', () => (
-  <div className={sidebarClassNameWrapper}>
-    <CommentableSidebarComponent commentable={commentable} className={sidebarClassName} />
+  <div>
+    <CommentableControllerContext.Provider value={controller}>
+      <CommentableContext.Provider value={commentable}>
+        <CommentableSidebar />
+      </CommentableContext.Provider>
+    </CommentableControllerContext.Provider>
   </div>
 ))

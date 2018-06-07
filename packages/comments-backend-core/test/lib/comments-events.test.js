@@ -3,11 +3,10 @@
 const { expect } = require('code')
 const Lab = require('lab')
 module.exports.lab = Lab.script()
-const { describe, it: test, beforeEach, before, after } = module.exports.lab
+const { describe, it: test, before, after } = module.exports.lab
 
 const { resetDb } = require('../utils')
 const config = require('../../config')
-const { random, lorem, name, internet } = require('faker')
 
 const { buildPool, buildCommentsService } = require('../../lib')
 
@@ -25,32 +24,31 @@ describe('Comments', () => {
 
   describe('adding', () => {
     test('should correctly create a comment', async () => {
-      let done, error
+      let done
       const comment = {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....'
       }
 
-      const p = new Promise((resolve, reject) => {
+      const p = new Promise(resolve => {
         done = resolve
-        error = reject
       })
 
-      this.commentsService.on('add', (c) => {
+      this.commentsService.on('add', c => {
         expect(c.id).to.be.number()
         expect(c).to.include(comment)
 
         done()
       })
 
-      const result = await this.commentsService.add(comment)
+      await this.commentsService.add(comment)
       await p
     })
   })
 
   describe('updating', () => {
-    let done, error
+    let done
     test('should correctly update one comment', async () => {
       const comment = {
         resource: 'http://example.com/example',
@@ -70,24 +68,23 @@ describe('Comments', () => {
 
       const p = new Promise((resolve, reject) => {
         done = resolve
-        error = reject
       })
 
-      this.commentsService.on('update', (c) => {
+      this.commentsService.on('update', c => {
         expect(c).to.include(expected)
 
         done()
       })
 
       const created = await this.commentsService.add(comment)
-      const result = await this.commentsService.update(created.id, commentUpdate)
+      await this.commentsService.update(created.id, commentUpdate)
       await p
     })
   })
 
   describe('deleting', () => {
     test('should correctly delete one comment', async () => {
-      let done, error
+      let done
       const comment = {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
@@ -97,17 +94,16 @@ describe('Comments', () => {
 
       const p = new Promise((resolve, reject) => {
         done = resolve
-        error = reject
       })
 
-      this.commentsService.on('delete', (c) => {
+      this.commentsService.on('delete', c => {
         expect(c).to.include(comment)
 
         done()
       })
 
       const created = await this.commentsService.add(comment)
-      const result = await this.commentsService.delete(created.id)
+      await this.commentsService.delete(created.id)
       await p
     })
   })
