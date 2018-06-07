@@ -19,7 +19,12 @@ describe('Comments REST API', () => {
       auth: true,
       pluginOptions : {
         routes: {
-          auth: 'myauth'
+          auth: 'myauth',
+          getUser: async (request, payload) => {
+            const user = request.auth.credentials
+
+            return user
+          }
         }
       }
     })
@@ -51,6 +56,34 @@ describe('Comments REST API', () => {
       expect(response.statusCode).to.equal(200)
       const result = JSON.parse(response.payload)
       expect(result).to.equal({ resource: 'abc', references: [] })
+    })
+  })
+
+  describe('POST /comments', () => {
+    test('it should create a comment', async () => {
+      const response = await server.inject({
+        method: 'POST',
+        url: '/comments',
+        payload: {
+          resource: 'URL',
+          reference: 'UUID',
+          content: 'MESSAGE'
+        },
+        headers: {
+          'authorization': 'somthing that will make the test pass'
+        }
+      })
+
+      expect(response.statusCode).to.equal(200)
+      const result = JSON.parse(response.payload)
+
+      expect(result).to.include({
+        resource: 'URL',
+        reference: 'UUID',
+        content: 'MESSAGE',
+        author: '1',
+        createdAt: result.createdAt
+      })
     })
   })
 })

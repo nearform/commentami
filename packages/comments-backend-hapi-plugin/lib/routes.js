@@ -56,7 +56,10 @@ module.exports = {
       method: 'POST',
       path: '/comments',
       handler: async function(request, h) {
-        const comment = await request.commentsService.add(request.payload)
+        const user = options.getUser ? await options.getUser(request, request.payload) : { id: null }
+        const payload = Object.assign({}, request.payload, user.id ? { author: '' + user.id } : null)
+
+        const comment = await request.commentsService.add(payload)
         server.methods.notifyComment && server.methods.notifyComment(comment, { action: 'add' })
 
         return comment
