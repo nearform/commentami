@@ -1,6 +1,6 @@
 # @nearform/comments-backend-core
 
-Comments is a comments management system. [...tbd...]
+Comments is a comments management system. \[...tbd...\]
 
 `@nearform/comments-backend-core` is the low level library used by `@nearform/comments-backend-hapi-plugin`. This library manages the CRUD actions for comments.
 
@@ -88,9 +88,7 @@ const commentService = buildCommentsService(myDbClient)
 commentService.on('add', (comment) => { // do something })
 commentService.on('update', (comment) => { // do something })
 commentService.on('delete', (comment) => { // do something })
-
 ```
-
 
 ## `commentService` interface
 
@@ -118,7 +116,6 @@ async function myFn () => {
   //   offset: 15 <== defaults to 0
   // }
 }
-
 ```
 
 ### `commentService.listOnlyReferences`
@@ -139,7 +136,6 @@ async function myFn () => {
   //   references: ['ref1', 'ref2', ...]
   // }
 }
-
 ```
 
 ### `commentService.add`
@@ -157,7 +153,6 @@ async function myFn () => {
 
   // ...
 }
-
 ```
 
 ### `commentService.get`
@@ -168,7 +163,6 @@ async function myFn () => {
   const comment = await commentsService.get(id)
   // ...
 }
-
 ```
 
 ### `commentService.update`
@@ -183,7 +177,6 @@ async function myFn () => {
   })
   // ...
 }
-
 ```
 
 ### `commentService.delete`
@@ -196,7 +189,6 @@ async function myFn () => {
   const deletedComment = await commentsService.delete(id)
   // ...
 }
-
 ```
 
 ## Hooks

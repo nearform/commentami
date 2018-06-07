@@ -5,16 +5,9 @@ const { isObject } = require('lodash')
 const SQL = require('@nearform/sql')
 
 module.exports = function buildCommentsService(db, hooks = {}) {
-  const {
-    fetchedComment,
-    fetchedComments
-  } = hooks
+  const { fetchedComment, fetchedComments } = hooks
 
   class CommentsService extends EventEmitter {
-    constructor() {
-      super()
-    }
-
     mapCommentFromDb(raw) {
       if (!raw) return null
 
