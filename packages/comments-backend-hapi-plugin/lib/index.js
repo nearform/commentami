@@ -33,20 +33,26 @@ const commentsHapiPlugin = {
     server.decorate('request', 'commentsService', commentsService)
 
     if (options.multines) {
-      await server.register([Nes, {
-        plugin: {
-          name: 'multines',
-          register: Multines.register
+      await server.register([
+        {
+          plugin: Nes,
+          options: options.nes
         },
-        options: options.multines
-      }])
+        {
+          plugin: {
+            name: 'multines',
+            register: Multines.register
+          },
+          options: options.multines
+        }
+      ])
 
       server.subscriptionFar('/resources/{resource*}')
       server.subscriptionFar('/resources-reference/{reference}/{resource*}')
       server.method('notifyComment', notifyComment.bind(server))
     }
 
-    await server.register(require('./routes'))
+    await server.register({ plugin: require('./routes'), options: options.routes })
 
     server.ext('onPostStop', async () => {
       commentsService.removeAllListeners('add')
