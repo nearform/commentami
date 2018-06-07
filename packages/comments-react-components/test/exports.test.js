@@ -11,7 +11,10 @@ describe('exports', () => {
         'CommentsNesService',
         'commentable',
         'commentableBlock',
-        'flexibleRender'
+        'commentsCount',
+        'flexibleRender',
+        'referencesCount',
+        'selectCommentsByReference'
       ])
     })
   })

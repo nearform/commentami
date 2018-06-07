@@ -39,7 +39,6 @@ export class CommentsState {
   }
 
   /**
-   * @param {Resource} resource
    * @returns {Promise<void>}
    */
   async subscribe() {
@@ -50,7 +49,6 @@ export class CommentsState {
   }
 
   /**
-   * @param {Resource} resource
    * @returns {Promise<void>}
    */
   async unsubscribe() {
