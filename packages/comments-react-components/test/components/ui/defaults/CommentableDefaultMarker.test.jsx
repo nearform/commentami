@@ -1,6 +1,5 @@
-import React from 'react'
 import { mount } from 'enzyme'
-
+import React from 'react'
 import { CommentableDefaultMarker } from '../../../../src/components/ui/defaults/CommentableDefaultMarker'
 
 describe('CommentableDefaultMarker', () => {

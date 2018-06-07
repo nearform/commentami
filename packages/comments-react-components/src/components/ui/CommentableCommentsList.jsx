@@ -1,7 +1,7 @@
 import React from 'react'
+import { selectCommentsByReference } from '../../state/selectors'
 import { commentable } from '../core/CommentableComponents'
 import { CommentableDefaultComment } from './defaults/CommentableDefaultComment'
-import { selectCommentsByReference } from '../../state/selectors'
 
 export function CommentableCommentsListBase({ commentable, reference, title, className, commentComponent: Component }) {
   const comments = selectCommentsByReference(commentable, reference)

@@ -9,20 +9,14 @@ export class CommentableController extends React.Component {
     this.state = {
       resource: null,
       reference: null,
-      isActive: (resource, reference) => {
-        return this.state.resource === resource && (!reference || this.state.reference === reference)
-      },
-      updateActive: (resource, reference) => {
-        this.setState(() => ({ resource, reference }))
-      },
+
+      // Methods / Callback
+      isActive: this.isActive.bind(this),
+      updateActive: this.updateActive.bind(this),
+      toggleActive: this.toggleActive.bind(this),
       handleClick: this.handleClick.bind(this),
       handleDoubleClick: this.handleDoubleClick.bind(this)
     }
-  }
-
-  toggleActive(payload) {
-    const { resource, reference } = payload
-    this.state.isActive(resource, reference) ? this.state.updateActive() : this.state.updateActive(resource, reference)
   }
 
   handleClick(payload, event) {
@@ -34,6 +28,20 @@ export class CommentableController extends React.Component {
         this.state.updateActive()
         break
     }
+  }
+
+  isActive(resource, reference) {
+    return this.state.resource === resource && (!reference || this.state.reference === reference)
+  }
+
+  updateActive(resource, reference) {
+    this.setState(() => ({ resource, reference }))
+  }
+
+  toggleActive(payload) {
+    const { resource, reference } = payload
+
+    this.isActive(resource, reference) ? this.updateActive() : this.updateActive(resource, reference)
   }
 
   handleDoubleClick(payload, event) {

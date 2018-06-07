@@ -1,6 +1,5 @@
-import React from 'react'
 import { shallow } from 'enzyme'
-
+import React from 'react'
 import { CommentableProvider } from '../../../src/components/core/CommentableProvider'
 import { CommentsMockService } from '../../helpers/CommentsMockService'
 

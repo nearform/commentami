@@ -7,7 +7,7 @@ export class CommentableDefaultMarker extends React.Component {
 
     let { controller, rootRef: ref, resource, reference } = this.props
 
-    this.boundHandleClick = controller.handleClick.bind(null, { resource, reference, ref, scope: 'marker' })
+    if (typeof controller.handleClick === 'function') this.boundHandleClick = controller.handleClick.bind(null, { resource, reference, ref, scope: 'marker' })
   }
 
   // Icon from https://www.brandeps.com/icon/

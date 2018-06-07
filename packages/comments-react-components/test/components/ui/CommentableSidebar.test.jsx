@@ -1,12 +1,10 @@
-import React from 'react'
 import { mount } from 'enzyme'
-
-import { CommentableContext } from '../../../src/components/core/CommentableProvider'
-import { CommentableControllerContext } from '../../../src/components/ui/CommentableController'
+import React from 'react'
 import { CommentableSidebar } from '../../../src/components/ui/CommentableSidebar'
+import { withCommentableContext, withCommentableControllerContext } from '../../helpers/context'
 
 function Children({ commentable, resource }) {
-  return <span>1</span>
+  return <p>children</p>
 }
 
 describe('CommentableSidebar', () => {
@@ -18,15 +16,7 @@ describe('CommentableSidebar', () => {
   test('should use the default sidebar by default', async () => {
     const controller = { isActive: () => true }
 
-    const wrapper = mount(
-      <div>
-        <CommentableContext.Provider value={{}}>
-          <CommentableControllerContext.Provider value={controller}>
-            <CommentableSidebar />
-          </CommentableControllerContext.Provider>
-        </CommentableContext.Provider>
-      </div>
-    )
+    const wrapper = mount(withCommentableControllerContext(withCommentableContext(<CommentableSidebar />), controller))
 
     expect(wrapper.find('h1.nf-comments-sidebar__title').text()).toEqual('Comments')
   })
@@ -34,32 +24,22 @@ describe('CommentableSidebar', () => {
   test('should use the provided component', async () => {
     const controller = { isActive: () => true }
 
-    const wrapper = mount(
-      <div>
-        <CommentableContext.Provider value={{}}>
-          <CommentableControllerContext.Provider value={controller}>
-            <CommentableSidebar component={Children} />
-          </CommentableControllerContext.Provider>
-        </CommentableContext.Provider>
-      </div>
-    )
+    const wrapper = mount(withCommentableControllerContext(withCommentableContext(<CommentableSidebar component={Children} />), controller))
 
-    expect(wrapper.find('span').text()).toEqual('1')
+    expect(wrapper.find('p').text()).toEqual('children')
   })
 
   test('renders correctly but return false for isActive', async () => {
     const controller = { isActive: () => false }
 
-    const wrapper = mount(
-      <div>
-        <CommentableContext.Provider value={{}}>
-          <CommentableControllerContext.Provider value={controller}>
-            <CommentableSidebar />
-          </CommentableControllerContext.Provider>
-        </CommentableContext.Provider>
-      </div>
-    )
+    const wrapper = mount(withCommentableControllerContext(withCommentableContext(<CommentableSidebar />), controller))
 
-    expect(wrapper.html()).toEqual('<div></div>')
+    expect(
+      wrapper
+        .find('#provider')
+        .children()
+        .first()
+        .html()
+    ).toBeNull()
   })
 })

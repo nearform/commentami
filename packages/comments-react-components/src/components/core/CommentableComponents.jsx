@@ -1,6 +1,5 @@
 import React from 'react'
 import warning from 'warning'
-
 import { selectCommentsByReference } from '../../state/selectors'
 import { CommentableContext } from './CommentableProvider'
 

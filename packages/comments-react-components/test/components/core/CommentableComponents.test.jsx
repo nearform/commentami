@@ -1,7 +1,7 @@
 import { mount } from 'enzyme'
 import React from 'react'
+import { commentable, commentableBlock, flexibleRender } from '../../../src/components/core/CommentableComponents'
 import { CommentableContext } from '../../../src/components/core/CommentableProvider'
-import { flexibleRender, commentable, commentableBlock } from '../../../src/components/core/CommentableComponents'
 
 function PropsChildren({ resource, reference }) {
   return (
@@ -64,11 +64,9 @@ describe('commentable', () => {
       const CommentableComponent = commentable(PropsChildren)
 
       const wrapper = mount(
-        <div>
-          <CommentableContext.Provider value={context}>
-            <CommentableComponent />
-          </CommentableContext.Provider>
-        </div>
+        <CommentableContext.Provider value={context}>
+          <CommentableComponent />
+        </CommentableContext.Provider>
       )
 
       expect(wrapper.contains(<span>RESOURCE--</span>)).toBeTruthy()
@@ -78,11 +76,9 @@ describe('commentable', () => {
       const CommentableComponent = commentable(Children)
 
       const wrapper = mount(
-        <div>
-          <CommentableContext.Provider>
-            <CommentableComponent reference="REFERENCE" />
-          </CommentableContext.Provider>
-        </div>
+        <CommentableContext.Provider>
+          <CommentableComponent reference="REFERENCE" />
+        </CommentableContext.Provider>
       )
 
       expect(
@@ -98,11 +94,9 @@ describe('commentable', () => {
       const CommentableComponent = commentable(Children)
 
       const wrapper = mount(
-        <div>
-          <CommentableContext.Provider value={context}>
-            <CommentableComponent reference="REFERENCE" />
-          </CommentableContext.Provider>
-        </div>
+        <CommentableContext.Provider value={context}>
+          <CommentableComponent reference="REFERENCE" />
+        </CommentableContext.Provider>
       )
 
       expect(

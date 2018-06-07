@@ -1,6 +1,6 @@
+import * as defaults from '../src/defaults'
 import * as core from '../src/index'
 import * as ui from '../src/ui'
-import * as defaults from '../src/defaults'
 
 describe('exports', () => {
   describe('core', () => {

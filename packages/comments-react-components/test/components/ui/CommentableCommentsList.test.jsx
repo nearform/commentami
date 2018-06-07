@@ -1,7 +1,7 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { CommentableContext } from '../../../src/components/core/CommentableProvider'
 import { CommentableCommentsList } from '../../../src/components/ui/CommentableCommentsList'
+import { withCommentableContext } from '../../helpers/context'
 
 function CustomComment({ comment: { content } }) {
   return <p>{content}</p>
@@ -10,15 +10,7 @@ function CustomComment({ comment: { content } }) {
 describe('CommentableCommentsList', () => {
   describe('.render', () => {
     test('should render no comments by default', () => {
-      const context = {}
-
-      const wrapper = mount(
-        <div>
-          <CommentableContext.Provider value={context}>
-            <CommentableCommentsList title="FOO" className="CLS" />
-          </CommentableContext.Provider>
-        </div>
-      )
+      const wrapper = mount(withCommentableContext(<CommentableCommentsList title="FOO" className="CLS" />))
 
       expect(wrapper.find('section').hasClass('CLS')).toBeTruthy()
       expect(wrapper.contains(<h2 className="nf-comments-list__title">FOO</h2>)).toBeTruthy()
@@ -31,13 +23,7 @@ describe('CommentableCommentsList', () => {
         }
       }
 
-      const wrapper = mount(
-        <div>
-          <CommentableContext.Provider value={context}>
-            <CommentableCommentsList reference="REFERENCE" />
-          </CommentableContext.Provider>
-        </div>
-      )
+      const wrapper = mount(withCommentableContext(<CommentableCommentsList reference="REFERENCE" />, context))
       expect(wrapper.find('section').hasClass('nf-comments-list')).toBeTruthy()
       expect(wrapper.contains(<p className="nf-comments-comment__content">content</p>)).toBeTruthy()
     })
@@ -53,13 +39,7 @@ describe('CommentableCommentsList', () => {
         }
       }
 
-      const wrapper = mount(
-        <div>
-          <CommentableContext.Provider value={context}>
-            <CommentableCommentsList reference="REFERENCE" commentComponent={CustomComment} />
-          </CommentableContext.Provider>
-        </div>
-      )
+      const wrapper = mount(withCommentableContext(<CommentableCommentsList reference="REFERENCE" commentComponent={CustomComment} />, context))
 
       expect(wrapper.find('section').hasClass('nf-comments-list')).toBeTruthy()
       expect(wrapper.contains(<p>AAA</p>)).toBeTruthy()
