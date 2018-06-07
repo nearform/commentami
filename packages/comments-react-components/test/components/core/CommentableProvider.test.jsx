@@ -16,6 +16,7 @@ describe('CommentableProvider', () => {
   describe('lifecycle', () => {
     test('when the component is mounted it should refresh the comment list', async () => {
       expect(service.getComments).toHaveBeenCalledWith('page-1')
+      wrapper.unmount()
     })
 
     test('when the component is updated it should refresh the comment list', async () => {
@@ -31,39 +32,14 @@ describe('CommentableProvider', () => {
     })
   })
 
-  describe('.refreshCommentList', () => {
-    test('should call the API', async () => {
-      const instance = wrapper.instance()
-      const apiSpy = jest.spyOn(instance.commentsState, 'refresh').mockResolvedValue(true)
-
-      await instance.refreshCommentList()
-      expect(apiSpy).toHaveBeenCalled()
-
-      apiSpy.mockRestore()
-    })
-
-    test('should log API exceptions', async () => {
-      const error = new Error('FAILED')
-      const instance = wrapper.instance()
-      const apiSpy = jest.spyOn(instance.commentsState, 'refresh').mockRejectedValue(error)
-      const logSpy = jest.spyOn(instance.logger, 'error').mockImplementation(() => null)
-
-      await instance.refreshCommentList()
-      expect(logSpy).toHaveBeenCalledWith(error)
-
-      logSpy.mockRestore()
-      apiSpy.mockRestore()
-    })
-  })
-
   describe('.addComment', () => {
     test('should call the API', async () => {
       service.getComments.mockClear()
       wrapper.instance().addComment('block-1', 'somecontent')
-      expect(service.addComment).toHaveBeenCalledWith({
-        content: 'somecontent',
-        reference: 'block-1',
-        resource: 'page-1'
+      expect(service.addComment).toHaveBeenCalledWith('page-1', {
+        resource: 'page-1',
+        reference: { id: 'block-1' },
+        content: 'somecontent'
       })
     })
 

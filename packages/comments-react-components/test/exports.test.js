@@ -5,7 +5,14 @@ import * as ui from '../src/ui'
 describe('exports', () => {
   describe('core', () => {
     test('should export right modules', () => {
-      expect(Object.keys(core).sort()).toEqual(['CommentableProvider', 'CommentsFetchService', 'commentable', 'commentableBlock', 'flexibleRender'])
+      expect(Object.keys(core).sort()).toEqual([
+        'CommentableProvider',
+        'CommentsFetchService',
+        'CommentsNesService',
+        'commentable',
+        'commentableBlock',
+        'flexibleRender'
+      ])
     })
   })
 
@@ -16,8 +23,8 @@ describe('exports', () => {
         'CommentableBlockBase',
         'CommentableCommentsList',
         'CommentableCommentsListBase',
-        'CommentableControllerContext',
         'CommentableController',
+        'CommentableControllerContext',
         'commentableWithController',
         'CommentableIcon',
         'CommentableNewForm',
@@ -29,7 +36,7 @@ describe('exports', () => {
   })
 
   describe('defaults', () => {
-    test.only('should export right modules', () => {
+    test('should export right modules', () => {
       expect(Object.keys(defaults)).toEqual(['CommentableDefaultComment', 'CommentableDefaultMarker', 'CommentableDefaultSidebar'])
     })
   })

@@ -19,23 +19,30 @@ describe('CommentableCommentsList', () => {
     test('should render comments with the standard component', () => {
       const context = {
         commentsState: {
-          comments: [{ reference: 'REFERENCE', id: 1, author: 'author', content: 'content' }]
+          references: {
+            REFERENCE: {
+              comments: [{ reference: { id: 'REFERENCE' }, id: 1, content: 'AAA' }]
+            }
+          }
         }
       }
 
       const wrapper = mount(withCommentableContext(<CommentableCommentsList reference="REFERENCE" />, context))
       expect(wrapper.find('section').hasClass('nf-comments-list')).toBeTruthy()
-      expect(wrapper.contains(<p className="nf-comments-comment__content">content</p>)).toBeTruthy()
+      expect(wrapper.contains(<p className="nf-comments-comment__content">AAA</p>)).toBeTruthy()
     })
 
     test('should render comments with the custom component', () => {
       const context = {
         commentsState: {
-          comments: [
-            { reference: 'REFERENCE', id: 1, content: 'AAA' },
-            { reference: 'REFERENCE', id: 2, content: 'BBB' },
-            { reference: 'ANOTHER-REFERENCE', content: 'CCC' }
-          ]
+          references: {
+            REFERENCE: {
+              comments: [{ reference: { id: 'REFERENCE' }, id: 1, content: 'AAA' }, { reference: { id: 'REFERENCE' }, id: 2, content: 'BBB' }]
+            },
+            'ANOTHER-REFERENCE': {
+              comments: [{ reference: { id: 'ANOTHER-REFERENCE' }, id: 3, content: 'CCC' }]
+            }
+          }
         }
       }
 

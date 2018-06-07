@@ -58,10 +58,18 @@ describe('state/helpers', () => {
         createdAt: null
       })
 
+      expect(createComment({ content: 'some content', reference: { id: 'ref-1' } })).toEqual({
+        id: null,
+        content: 'some content',
+        reference: { id: 'ref-1' },
+        author: null,
+        createdAt: null
+      })
+
       expect(createComment({ content: 'some content', reference: 'ref-1' })).toEqual({
         id: null,
         content: 'some content',
-        reference: 'ref-1',
+        reference: { id: 'ref-1' },
         author: null,
         createdAt: null
       })

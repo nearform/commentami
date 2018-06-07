@@ -68,6 +68,8 @@ export const createComment = ({ id = null, reference = null, content = null, aut
  * @returns {Reference}
  */
 export const getReference = (state, reference) => {
+  if (typeof reference === 'undefined' || reference === null) reference = ''
+
   const id = typeof reference === 'string' ? reference : reference.id
 
   return state.references[id] || createReference({ id })

@@ -90,7 +90,7 @@ describe('commentable', () => {
     })
 
     test('should declare comments if they are present', () => {
-      const context = { commentsState: { comments: [{ reference: 'REFERENCE' }] } }
+      const context = { commentsState: { references: { REFERENCE: { comments: [{ reference: { id: 'REFERENCE' } }] } } } }
       const CommentableComponent = commentable(Children)
 
       const wrapper = mount(
@@ -119,8 +119,8 @@ describe('commentable', () => {
         </CommentableContext.Provider>
       ).instance()
 
-      await instance.addComment('COMMENT', 'REFERENCE')
-      expect(commentableContext.addComment).toHaveBeenCalledWith('COMMENT', 'REFERENCE')
+      await instance.addComment('REFERENCE', 'COMMENT')
+      expect(commentableContext.addComment).toHaveBeenCalledWith('REFERENCE', 'COMMENT')
     })
   })
 
