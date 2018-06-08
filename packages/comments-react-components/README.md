@@ -1,10 +1,11 @@
 # @nearform/comments-react-components
 
-comments-react-components is a ready to use set of React components to add commenting functionality on existing React applications.
+`@nearform/comments-react-components` is a ready to use set of React components to add commenting functionality on existing React applications.
 
 It uses the [@nearform/comments-backend-\*][comments] packages as backend.
 
 The POC is just an architectural design attemp made to have a starting discussion point.
+
 The Components created use the new React Context API (> 16).
 
 ## Quick start
@@ -43,6 +44,7 @@ The steps we need to make this page commentable are the following:
 * Assign a component to show/add the comments related to a reference
 
 ##### Define the commentable area and assign a `resource` identifier
+
 This step is done wrapping the interested area in a `Resource` component and assigning the `resource`
 
 ```
@@ -65,7 +67,8 @@ class SamplePage extends React.Component {
 ```
 
 ##### Identify the single references in the text
-Every part we woul'd like to reference should be wrapped around a `Reference`. This operation can be easily automated.
+
+Every part we would like to comment should be wrapped around a `Reference`. This operation can be easily automated.
 
 ```
 import { Resource, Reference } from '@nearform/comments-react-components'
@@ -93,8 +96,8 @@ class SamplePage extends React.Component {
 ```
 
 ##### Assign a service for the backend integration
-Now that the component is correctly wrapped, we need to configure the service that allows the backend integration.
 
+Now that the component is correctly wrapped, we need to configure the service that allows the backend integration.
 
 ```
 import {
@@ -128,8 +131,8 @@ class SamplePage extends React.Component {
 ```
 
 ##### Assign a component to show/add the comments related to a reference
-To provide this feature we need to wrap everithing inside a SidebarsController and add the component that acts as a interface for the user to show the comments and add new ones and remove the existents
 
+To provide this feature we need to wrap everithing inside a SidebarsController and add the component that acts as a interface for the user to show the comments, add new ones or remove them.
 
 ```
 import {
@@ -171,12 +174,10 @@ class SamplePage extends React.Component {
 
 check the [stories](./stories) folder for further examples
 
-
-
 ### Components
 
-* `<Resource/>`: To make an area commentable it should be wrapped around a `<Resource>` component. This component manage the state.
-* `<Reference/>`: Every commentable part should be wrapped around a `<Reference>` component. This is currently the smallest part commentable, all the comments related to his children will be connected to the parent element.
+* `<Resource/>`: To make an area commentable, wrap it in a `<Resource>` component. This component manages the state of the comments for that area.
+* `<Reference/>`: Every commentable section should be wrapped around a `<Reference>` component. This wraps the block that will be commentable and selected. It can contain simple text or multiple tags.
 
 #### A page sample
 
@@ -184,7 +185,7 @@ check the [stories](./stories) folder for further examples
 <Resource
   resource="main"
   service={buildService()} // This is a service you must provide
-  eventsManagerComponent={EventsManager} // This prop is optional and must be a descendant of CommentsEventManager
+  eventsManagerComponent={EventsManager} // This prop is optional, it has to extend CommentsEventManager
 >
     <div style={{ marginLeft: '30px' }}>
       <Reference reference="comm-1">
@@ -197,63 +198,42 @@ check the [stories](./stories) folder for further examples
 </Resource>
 ```
 
+<<<<<<< Updated upstream
 ## Resource
-The provider is the `commentable` root component.
-It wraps the other commentable elements and provides them with what they need to handle comments.
-Under the hood it uses [React 16 context api](#) and it manages a local state and the creation/update/deletion of comments.
 
-#### addComment(reference: Reference, content: string)
-Add a comment to the current reference
+The `Resource` is the root component of a commentable area. It needs a `resource` and a `service` to be initialized.
 
-```
-class CommentNewElement extends React.Component {
-  handleAddComment(content) {
-    this.props.commentable.addComment(this.props.reference, content)
-  }
-}
+The `resource` is a string that identifies a section or the entire page. The `service` is a component that will handle the communications between the client and the server.
 
-export const CommentNew = commentableHOC(CommentNewElement)
-```
+A `Resource` instance wraps the other commentable elements and provides them with what they need to handle comments. Under the hood it uses [React 16 context api](#) and it manages a local state and the creation/update/deletion of comments.
 
-#### removeComment(comment: Comment)
-Removes a comment
+`Resource` will provide the following funcation to handle comments:
 
-```
-class CommentDetailsElement extends React.Component {
-  handleRemoveComment() {
-    this.props.commentable.removeComment(this.props.comment)
-  }
-}
-
-export const CommentDetails = commentableHOC(CommentDetailsElement)
-```
+- `addComment(reference: Reference, content: string)`
+- `removeComment(comment: Comment)`
 
 ## The Comments State
-Every `provider` manage his own state using the `CommentState`.
-The CommentState is initialized at the component mounting and a new one is created when the `resource` reference in the provider changes.
 
-Even if the common use case will have a single provider per page, the library allow to use multiple providers; each with is own `reference` and `service`.
-The state is not then shared between providers and each one manage is own.
+You can have multiple provider on the same page. Every provider manages his own state using the `CommentState` component.
 
-`new CommentsState(options: CommentsStateOptions): CommentsState`
+The `CommentState` is initialized at the component mounting and a new one is created when the `resource` reference in the provider changes.
 
-***This operation is not required, is done by the current Resource***
-
+```
+new CommentsState(options: CommentsStateOptions): CommentsState
+```
 
 #### CommentsStateOptions
-* resource: string - The resource related to the state
-* service: Service - An object handling the connection with the backend ([doc](####services))
-* getProviderState: func - A function that returns the current provider state
-* onCommentsStateUpdate: func - A function that updates the current provider state
-* logger: Logger - The logger, if is not passed `console` is used
 
+The CommentState will handle changes to the `Resource` state. This is why it needs `getProvidedState` and `onCommentsStateUpdate`. The state is available in the `Resource` instance in the field 'commentsState'.
 
-***note:***
-The CommentState doesn't store locally the state but uses the provider state, this is why the getProvidedState and the onCommentsStateUpdate are required.
+* resource: String - the `resourse` related to the `Resource` instance
+* service: Object - what will handle communications with the server ([doc](####services))
+* getProviderState: Function - function that will return the provider state
+* onCommentsStateUpdate: Function - function that updates the state when something happens
+* logger: Object - either a logger or by default it's the `console` object
 
-The state is available in the provider in the field 'commentsState'
+*Provider state structure*
 
-*The provider state example*
 ```
 {
   // State strictly related to the provider
@@ -284,9 +264,11 @@ The state is available in the provider in the field 'commentsState'
 ```
 
 ### The state structure
+
 The state structure is composed by the following properties
 
 #### Resource (Root object)
+
 * id: string - The resource identifier
 * references: <string, Reference> - An object containing all the references with at least a comment in the current `resource`
 
@@ -301,7 +283,8 @@ The state structure is composed by the following properties
 * author: string - The author of the comment, this will became a more complex structure in the future implementation
 * createdAt: Timestamp - The timestamp of the comment
 
-***Structure example***
+***Example structure***
+
 ```
 {
   id: 'res-1',
@@ -340,18 +323,20 @@ The state structure is composed by the following properties
 ```
 
 ### Selectors
-The comments state is accessed using the provided selectors.
-the `state` required by the selector is available in every component as a props `commentable`
+
+The comments state is accessed using the provided selectors. The `state` required by the selector is available in every component as the `commentable` prop.
 
 #### referencesCount(state) => Number
-The number of references presents in the current resource
+
+Returns the number of references presents in the current resource
 
 #### commentsCount(state, reference) => Number
-The number of comments related to a specific reference
+
+Returns the number of comments related to a specific reference
 
 #### selectCommentsByReference(state, reference) => Comments[]
-The comment list related to a specific reference
 
+Returns the comment list related to a specific reference
 
 ***Selector example***
 
@@ -362,15 +347,14 @@ const CustomComponent = (props) => {
   const comments = selectCommentsByReference(props.commentable, 'ref-1')
   return comments.map(comment => <SomeCommentDetailComponent comment={comment} />)
 }
-
-// TODO Add here the HOC export
-
 ```
 
 ### Services
+
 The service provides the functionality to connect the Component with the server.
 
 With the project are provided 2 services:
+
 * CommentsFetchService - To connect to the REST api
 * CommentsNesService - To connect to the server with a websocket
 
@@ -388,14 +372,16 @@ render() {
 }
 ```
 
+A service should expose the following functions
 
 #### addComment(resource: string, comment: Comment) => async Comment
-Add a comment to the current resource.
-the Comment object should be provided with the following information:
+
+Add a comment to the current resource. The Comment object should be provided with the following information:
+
 * content: string - The content of the comment (eg. 'some content')
 * reference: Reference - The reference with an identifier (eg {id: 'ref-1'})
 
-returns the added `comment` with all the data added by the server.
+returns the added `comment` with all the data returned by the server.
 
 ```
 const newComment = await service.addCommment('res-1', {reference: {id: 'ref-1'}, content: 'some content'})
@@ -414,8 +400,9 @@ newComment =>
 ```
 
 #### removeComment(comment: Comment)
-Remove a comment
-the Comment object should be provided with the following information:
+
+Remove a comment. The Comment object should be provided with the following information:
+
 * id: string - The identifier of the comment that should be removed
 
 ```
@@ -423,6 +410,7 @@ await service.removeCommment{id: 'comm-1'}})
 ```
 
 #### getComments(resource: string) => async Comment[]
+
 Get the list of the comments related to a resource
 
 ```
@@ -446,9 +434,8 @@ comments =>[
 ```
 
 #### onResourceChange(resource: string, handler: func) => async func
-Subscribe to a resource change on the server
 
-returns the unsubscribe callback
+Subscribe to a resource change on the server. Returns the unsubscribe callback.
 
 ```
 function handler({action, comment}) {
@@ -466,8 +453,6 @@ const unsubscribe = await service.onResourceChange('res-1', handler)
 // to unsubscribe
 unsubscribe()
 ```
-
-
 
 ## License
 

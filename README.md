@@ -16,7 +16,7 @@ Comments requires [Node.js][node] 8.9.0+.
 
 The [Hapi][hapi] plugin and server packages require Hapi 17+.
 
-### Database support
+### Dependencies
 
 Comments requires an instance of Postgres (version 9.5+) and redis to function correctly. For simplicity, a preconfigured `docker-compose` file has been provided. To run it:
 
@@ -27,6 +27,16 @@ docker-compose up postgres redis
 * **Note:** Ensure you are using the latest version of Docker for (Linux/OSX/Windows)
 * **Note:** Comments needs PostgreSQL >= 9.5
 
+### Install
+
+To install all the dependecies you can run
+
+```
+npm install
+```
+
+in the root of the project.
+
 #### Populate the database
 
 The initial tables can be created by executing:
@@ -35,21 +45,21 @@ The initial tables can be created by executing:
 npm run pg:init
 ```
 
-### pgAdmin database access
-
-As the Postgresql docker container has its 5432 port forwarded on the local machine the database can be accessed with pgAdmin.
-
-To access the database using the pgAdmin you have to fill in also the container IP beside the database names and access credentials. The container IP can be seen with `docker ps`. Use IP 127.0.0.1 and use postgres as username/password to connect to database server.
+This command will also migrate the tables to their most recent structure.
 
 ### Migrations
 
 We use [`postgrator`][postgrator] for database migrations. You can find the sql files in the [`packages/comments-backend-core/database/migrations`](https://github.com/nearform/comments/tree/master/packages/comments-backend-core/database/migrations) folder. To run the migrations manually:
 
 ```
-node packages/comments-backend-core/database/migrate.js <version>`
+npm run pg:migrate // either in the root folder or in the `comments-backend-core` folder
 ```
 
-**Note:** Running the tests or init commands will automaticaly bring the db to the latest version.
+### pgAdmin database access
+
+As the Postgresql docker container has its 5432 port forwarded on the local machine the database can be accessed with pgAdmin.
+
+To access the database using the pgAdmin you have to fill in also the container IP beside the database names and access credentials. The container IP can be seen with `docker ps`. Use IP 127.0.0.1 and use postgres as username/password to connect to database server.
 
 ## Testing
 
@@ -123,7 +133,7 @@ docker exec comments_app_1 npm test
 Once you have a database running and all the tables set up, you can try to run `curl` for the list endpoint
 
 ```
-curl http://localhost:8080/comments\?reference\=\test
+curl http://localhost:8080/comments\?resource\=\test
 ```
 
 the output should be something like

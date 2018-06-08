@@ -75,7 +75,7 @@ export function WebsocketService(baseUrl) {
     const response = await client.request(`/comments?resource=${resource}`)
     const { payload } = response
 
-    // TODO The pagination is not currently supported, the service loads all the comments related to this resource.
+    // TODO The pagination is not currently supported, the service loads the first 100 comments related to this resource.
     return payload.comments
   }
 
