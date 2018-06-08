@@ -32,8 +32,8 @@
   ],
   "scripts": {
     "prebuild": "rm -rf dist/*; mkdir -p dist/;",
-    "build": "./node_modules/.bin/webpack",
-    "watch": "./node_modules/.bin/webpack-dev-server"
+    "build": "webpack",
+    "watch": "webpack-dev-server"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free-solid": "^5.0.13",

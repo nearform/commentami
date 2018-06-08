@@ -27,8 +27,8 @@
   ],
   "scripts": {
     "depcheck": "../../node_modules/depcheck/bin/depcheck --ignores=webpack,enzyme-context-patch",
-    "build": "./node_modules/.bin/babel -d dist src",
-    "storybook": "./node_modules/.bin/start-storybook -p 6006 -c .storybook",
+    "build": "babel -d dist src",
+    "storybook": "start-storybook -p 6006 -c .storybook",
     "test": "node test/start.js",
     "test:watch": "WATCH=true node test/start.js"
   },

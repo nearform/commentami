@@ -23,11 +23,11 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "coverage": "NODE_ENV=test ./node_modules/.bin/lab -c --coverage-exclude config -r lcov test",
+    "coverage": "NODE_ENV=test lab -c --coverage-exclude config -r lcov test",
     "pg:test:init": "NODE_ENV=test node ../comments-backend-core/database/init.js && NODE_ENV=test node ../comments-backend-core/database/migrate.js max",
     "depcheck": "../../node_modules/depcheck/bin/depcheck",
     "start": "node start.js",
-    "test": "NODE_ENV=test ./node_modules/.bin/lab -c --coverage-exclude config test"
+    "test": "NODE_ENV=test lab -c --coverage-exclude config test"
   },
   "dependencies": {
     "@nearform/comments-backend-hapi-plugin": "^0.1.0",

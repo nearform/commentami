@@ -27,10 +27,10 @@
   },
   "scripts": {
     "depcheck": "lerna run depcheck",
-    "doc:lint": "./node_modules/.bin/remark .",
+    "doc:lint": "remark .",
     "coverage": "lerna run coverage",
-    "format": "./node_modules/.bin/prettier --write --ignore-path .gitignore **/*.js **/*.jsx",
-    "lint": "./node_modules/.bin/eslint --ignore-path .gitignore **/*.js **/*.jsx",
+    "format": "prettier --write --ignore-path .gitignore **/*.js **/*.jsx",
+    "lint": "eslint --ignore-path .gitignore **/*.js **/*.jsx",
     "outdated:all": "npm outdated || echo 'Outdated packages found.'; lerna exec \"npm outdated || echo 'Outdated packages found.'\"",
     "pg:init": "cd packages/comments-backend-core && npm run pg:init",
     "pg:test:init": "cd packages/comments-backend-core && npm run pg:test:init",
