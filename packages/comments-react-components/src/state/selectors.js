@@ -15,6 +15,9 @@ const _ = state => {
  *
  * @param {Resource} state
  * @param {Reference} reference
+ * @param {string} [sortBy=createdAt]
+ * @param {number} [order=1] A positive number sort ASC, a negative DESC
+ *
  * @returns {Comment[]}
  */
 export const selectCommentsByReference = (state, reference, sortBy = 'createdAt', order = 1) =>
