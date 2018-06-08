@@ -1,6 +1,6 @@
 import React from 'react'
-import { commentable } from '../core/CommentableComponents'
-import { commentableWithController } from './SidebarsController'
+import { withComments } from '../core/HOC'
+import { withSidebars } from './SidebarsController'
 import { DefaultMarker } from './defaults/DefaultMarker'
 
 export class ReferenceBase extends React.Component {
@@ -75,4 +75,4 @@ export class ReferenceBase extends React.Component {
   }
 }
 
-export const Reference = commentableWithController(commentable(ReferenceBase))
+export const Reference = withSidebars(withComments(ReferenceBase))

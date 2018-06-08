@@ -2,7 +2,7 @@ import React from 'react'
 import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'
 
-import { CommentableContext } from '../src/components/core/Resource'
+import { ResourceContext } from '../src/components/core/Resource'
 import { SidebarsControllerContext } from '../src/components/ui/SidebarsController'
 import { Sidebar } from '../src/components/ui/Sidebar'
 
@@ -40,9 +40,9 @@ const commentable = {
 storiesOf('Commentable/SideBar', module).add('Default', () => (
   <div>
     <SidebarsControllerContext.Provider value={controller}>
-      <CommentableContext.Provider value={commentable}>
+      <ResourceContext.Provider value={commentable}>
         <Sidebar />
-      </CommentableContext.Provider>
+      </ResourceContext.Provider>
     </SidebarsControllerContext.Provider>
   </div>
 ))

@@ -56,7 +56,7 @@ export class SidebarsController extends React.Component {
   }
 }
 
-export function commentableWithController(Component) {
+export function withSidebars(Component) {
   return function(props) {
     return (
       <SidebarsControllerContext.Consumer>

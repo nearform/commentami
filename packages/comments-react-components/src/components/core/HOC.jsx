@@ -1,7 +1,7 @@
 import React from 'react'
 import warning from 'warning'
 import { commentsCount } from '../../state/selectors'
-import { CommentableContext } from './Resource'
+import { ResourceContext } from './Resource'
 
 export function flexibleRender({ render, component: Component, children }, renderProps, defaultComponent) {
   if (!Component) Component = defaultComponent
@@ -16,7 +16,7 @@ export function flexibleRender({ render, component: Component, children }, rende
   }
 }
 
-export function commentable(Component) {
+export function withComments(Component) {
   return class extends React.Component {
     get hasCommentable() {
       // This check works since the consumer will provide the context default value, which is 'commentable'
@@ -68,13 +68,13 @@ export function commentable(Component) {
     }
 
     render() {
-      return <CommentableContext.Consumer>{commentable => this._renderInner(commentable)}</CommentableContext.Consumer>
+      return <ResourceContext.Consumer>{commentable => this._renderInner(commentable)}</ResourceContext.Consumer>
     }
   }
 }
 
-export function commentableBlock(Component) {
-  return commentable(
+export function withReference(Component) {
+  return withComments(
     class extends React.Component {
       // TODO@PI: Make sure the reference is unique within the provider
       _checkProps() {

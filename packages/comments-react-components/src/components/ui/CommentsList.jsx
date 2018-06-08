@@ -1,6 +1,6 @@
 import React from 'react'
 import { selectCommentsByReference } from '../../state/selectors'
-import { commentable } from '../core/CommentableComponents'
+import { withComments } from '../core/HOC'
 import { DefaultComment } from './defaults/DefaultComment'
 
 export function CommentsListBase({ commentable, reference, title, className, commentComponent: Component }) {
@@ -19,4 +19,4 @@ export function CommentsListBase({ commentable, reference, title, className, com
   )
 }
 
-export const CommentsList = commentable(CommentsListBase)
+export const CommentsList = withComments(CommentsListBase)

@@ -1,8 +1,8 @@
 import commentsGETvalid from './__mocks__/commentsGETvalid'
 
-describe('CommentsNesService', () => {
+describe('WebsocketService', () => {
   let mockNesClient
-  let commentsNesService
+  let service
   let mockConnect
   let mockRequest
   let mockSubscribe
@@ -27,8 +27,8 @@ describe('CommentsNesService', () => {
         Client: mockNesClient
       }))
 
-      const CommentsNesService = require('../../src/services/CommentsNesService').CommentsNesService
-      commentsNesService = CommentsNesService('ws://localhost/')
+      const WebsocketService = require('../../src/services/WebsocketService').WebsocketService
+      service = WebsocketService('ws://localhost/')
       firstTest = true
     } else {
       mockConnect.mockReset()
@@ -42,7 +42,7 @@ describe('CommentsNesService', () => {
     mockRequest.mockReturnValue({ payload: commentsGETvalid })
 
     // assert on the response
-    const result = await commentsNesService.getComments('some-resource')
+    const result = await service.getComments('some-resource')
 
     expect(mockRequest.mock.calls.length).toBe(1)
     expect(mockRequest.mock.calls[0][0]).toEqual('/comments?resource=some-resource')
@@ -54,7 +54,7 @@ describe('CommentsNesService', () => {
   })
 
   test('Call the DELETE comments endpoint returns a valid structure', async () => {
-    await commentsNesService.removeComment({ id: 'comm-1' })
+    await service.removeComment({ id: 'comm-1' })
 
     expect(mockRequest.mock.calls.length).toBe(1)
     expect(mockRequest.mock.calls[0][0]).toEqual({ method: 'DELETE', path: '/comments/comm-1' })
@@ -75,7 +75,7 @@ describe('CommentsNesService', () => {
     }
     mockRequest.mockReturnValue({ payload: response })
 
-    const result = await commentsNesService.addComment(resource, { reference, content })
+    const result = await service.addComment(resource, { reference, content })
 
     expect(mockRequest.mock.calls.length).toBe(1)
     expect(mockRequest.mock.calls[0][0]).toEqual({
@@ -91,7 +91,7 @@ describe('CommentsNesService', () => {
     const resource = 'res-1'
 
     const handler = jest.fn()
-    const unsubscribe = await commentsNesService.onResourceChange(resource, handler)
+    const unsubscribe = await service.onResourceChange(resource, handler)
 
     expect(mockSubscribe.mock.calls.length).toBe(1)
     expect(mockSubscribe.mock.calls[0][0]).toEqual('/resources/res-1')

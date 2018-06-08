@@ -1,5 +1,5 @@
-import { commentableBlock } from '@nearform/comments-react-components'
-import { commentableWithController } from '@nearform/comments-react-components/dist/ui'
+import { withReference } from '@nearform/comments-react-components'
+import { withSidebars } from '@nearform/comments-react-components/dist/ui'
 import { rem } from 'csx'
 import React from 'react'
 import { classes, style } from 'typestyle'
@@ -34,8 +34,8 @@ function CommentsMarker({ onClick }) {
   )
 }
 
-export const Block = commentableWithController(
-  commentableBlock(
+export const Block = withSidebars(
+  withReference(
     class extends React.Component {
       constructor(props) {
         super(props)

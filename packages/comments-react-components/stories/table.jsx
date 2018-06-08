@@ -1,21 +1,21 @@
 import { storiesOf } from '@storybook/react'
 import React from 'react'
-import { commentableBlock } from '../src/components/core/CommentableComponents'
+import { withReference } from '../src/components/core/HOC'
 import { Resource } from '../src/components/core/Resource'
 import { Sidebar } from '../src/components/ui/Sidebar'
-import { commentableWithController, SidebarsController } from '../src/components/ui/SidebarsController'
-import { CommentsFetchService } from '../src/services/CommentsFetchService'
-import { CommentsNesService } from '../src/services/CommentsNesService'
+import { withSidebars, SidebarsController } from '../src/components/ui/SidebarsController'
+import { HttpService } from '../src/services/HttpService'
+import { WebsocketService } from '../src/services/WebsocketService'
 import { CommentsInMemoryService } from '../test/helpers/CommentsInMemoryService'
 import { CommentsMarker, Table } from './components/table'
 import sampleData from './data/sample'
 
 const commentsInMemoryService = CommentsInMemoryService()
-const commentsFetchService = CommentsFetchService('http://localhost:8080/')
-const commentsNesService = CommentsNesService('ws://localhost:8080/')
+const commentsFetchService = HttpService('http://localhost:8080/')
+const commentsNesService = WebsocketService('ws://localhost:8080/')
 
-const CustomBlock = commentableWithController(
-  commentableBlock(
+const CustomBlock = withSidebars(
+  withReference(
     class extends React.Component {
       constructor(props) {
         super(props)

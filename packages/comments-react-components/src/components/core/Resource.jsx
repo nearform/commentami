@@ -3,7 +3,7 @@ import { CommentsState } from '../../state/Comments'
 import { createComment } from '../../state/helpers'
 
 // The context for the Provider
-export const CommentableContext = React.createContext('commentable')
+export const ResourceContext = React.createContext('commentable')
 
 export class Resource extends React.Component {
   constructor(props) {
@@ -127,6 +127,6 @@ export class Resource extends React.Component {
   }
 
   render() {
-    return <CommentableContext.Provider value={this.state} children={this.props.children} />
+    return <ResourceContext.Provider value={this.state} children={this.props.children} />
   }
 }

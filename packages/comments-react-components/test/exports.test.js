@@ -6,41 +6,41 @@ describe('exports', () => {
   describe('core', () => {
     test('should export right modules', () => {
       expect(Object.keys(core).sort()).toEqual([
-        'CommentsFetchService',
-        'CommentsNesService',
+        'HttpService',
         'Resource',
-        'commentable',
-        'commentableBlock',
+        'WebsocketService',
         'commentsCount',
         'flexibleRender',
         'referencesCount',
-        'selectCommentsByReference'
+        'selectCommentsByReference',
+        'withComments',
+        'withReference'
       ])
     })
   })
 
   describe('ui', () => {
     test('should export right modules', () => {
-      expect(Object.keys(ui)).toEqual([
-        'Reference',
-        'ReferenceBase',
+      expect(Object.keys(ui).sort()).toEqual([
         'CommentsList',
         'CommentsListBase',
-        'SidebarsController',
-        'SidebarsControllerContext',
-        'commentableWithController',
         'Icon',
         'NewCommentForm',
         'NewCommentFormBase',
+        'Reference',
+        'ReferenceBase',
         'Sidebar',
-        'SidebarBase'
+        'SidebarBase',
+        'SidebarsController',
+        'SidebarsControllerContext',
+        'withSidebars'
       ])
     })
   })
 
   describe('defaults', () => {
     test('should export right modules', () => {
-      expect(Object.keys(defaults)).toEqual(['DefaultComment', 'DefaultMarker', 'DefaultSidebar'])
+      expect(Object.keys(defaults).sort()).toEqual(['DefaultComment', 'DefaultMarker', 'DefaultSidebar'])
     })
   })
 })

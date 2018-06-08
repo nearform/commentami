@@ -1,4 +1,4 @@
-import { Resource, CommentsFetchService, CommentsNesService } from '@nearform/comments-react-components'
+import { Resource, HttpService, WebsocketService } from '@nearform/comments-react-components'
 import { SidebarsController } from '@nearform/comments-react-components/dist/ui'
 import { em, percent, rem } from 'csx'
 import React from 'react'
@@ -11,8 +11,8 @@ import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
 
 const localStorageService = localStorageServiceBuilder()
-const socketService = CommentsNesService('ws://localhost:8080/')
-const httpService = CommentsFetchService('http://localhost:8080/')
+const socketService = WebsocketService('ws://localhost:8080/')
+const httpService = HttpService('http://localhost:8080/')
 
 const sectionClassName = style(debugClassName('table'), {
   marginTop: rem(3)

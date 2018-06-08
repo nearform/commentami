@@ -1,6 +1,6 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { SidebarsController, commentableWithController } from '../../../src/components/ui/SidebarsController'
+import { SidebarsController, withSidebars } from '../../../src/components/ui/SidebarsController'
 
 function Children({ controller }) {
   const keys = Object.keys(controller)
@@ -12,7 +12,7 @@ function Children({ controller }) {
 
 describe('SidebarsController', () => {
   test('should render with good defaults', () => {
-    const ControlledChildren = commentableWithController(Children)
+    const ControlledChildren = withSidebars(Children)
     const wrapper = mount(
       <SidebarsController>
         <ControlledChildren />

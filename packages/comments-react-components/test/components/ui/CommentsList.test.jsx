@@ -1,7 +1,7 @@
 import { mount } from 'enzyme'
 import React from 'react'
 import { CommentsList } from '../../../src/components/ui/CommentsList'
-import { withCommentableContext } from '../../helpers/context'
+import { withResourceContext } from '../../helpers/context'
 
 function CustomComment({ comment: { content } }) {
   return <p>{content}</p>
@@ -10,7 +10,7 @@ function CustomComment({ comment: { content } }) {
 describe('CommentsList', () => {
   describe('.render', () => {
     test('should render no comments by default', () => {
-      const wrapper = mount(withCommentableContext(<CommentsList title="FOO" className="CLS" />))
+      const wrapper = mount(withResourceContext(<CommentsList title="FOO" className="CLS" />))
 
       expect(wrapper.find('section').hasClass('CLS')).toBeTruthy()
       expect(wrapper.contains(<h2 className="nf-comments-list__title">FOO</h2>)).toBeTruthy()
@@ -27,7 +27,7 @@ describe('CommentsList', () => {
         }
       }
 
-      const wrapper = mount(withCommentableContext(<CommentsList reference="REFERENCE" />, context))
+      const wrapper = mount(withResourceContext(<CommentsList reference="REFERENCE" />, context))
       expect(wrapper.find('section').hasClass('nf-comments-list')).toBeTruthy()
       expect(wrapper.contains(<p className="nf-comments-comment__content">AAA</p>)).toBeTruthy()
     })
@@ -56,7 +56,7 @@ describe('CommentsList', () => {
       }
 
       const wrapper = mount(
-        withCommentableContext(<CommentsList reference="REFERENCE" commentComponent={CustomComment} />, context)
+        withResourceContext(<CommentsList reference="REFERENCE" commentComponent={CustomComment} />, context)
       )
 
       expect(wrapper.find('section').hasClass('nf-comments-list')).toBeTruthy()

@@ -1,9 +1,9 @@
 import { mount } from 'enzyme'
 import React from 'react'
 import { Reference } from '../../../src/components/ui/Reference'
-import { withCommentableContext, withSidebarsControllerContext } from '../../helpers/context'
+import { withResourceContext, withSidebarsControllerContext } from '../../helpers/context'
 
-function Children({ commentable, resource }) {
+function Children({ withComments, resource }) {
   return <span>1</span>
 }
 
@@ -16,7 +16,7 @@ describe('Reference', () => {
   test('should render without the active class and without a marker by default', () => {
     const controller = { isActive: () => false }
 
-    const wrapper = mount(withSidebarsControllerContext(withCommentableContext(<Reference />), controller))
+    const wrapper = mount(withSidebarsControllerContext(withResourceContext(<Reference />), controller))
 
     expect(wrapper.find('.nf-comments-block').length).toEqual(1)
     expect(wrapper.find('.nf-comments-block--active').length).toEqual(0)
@@ -26,7 +26,7 @@ describe('Reference', () => {
   test('should render with the active class and with a marker', () => {
     const controller = { isActive: () => true }
 
-    const wrapper = mount(withSidebarsControllerContext(withCommentableContext(<Reference hasComments />), controller))
+    const wrapper = mount(withSidebarsControllerContext(withResourceContext(<Reference hasComments />), controller))
 
     expect(wrapper.find('.nf-comments-block').length).toEqual(1)
     expect(wrapper.find('.nf-comments-block--active').length).toEqual(1)
@@ -38,7 +38,7 @@ describe('Reference', () => {
 
     const wrapper = mount(
       withSidebarsControllerContext(
-        withCommentableContext(<Reference hasComments activeClassName="foo" markerComponent={Children} />),
+        withResourceContext(<Reference hasComments activeClassName="foo" markerComponent={Children} />),
         controller
       )
     )
@@ -61,7 +61,7 @@ describe('Reference', () => {
 
     const wrapper = mount(
       withSidebarsControllerContext(
-        withCommentableContext(<Reference hasComments activeClassName="foo" markerComponent={Children} />),
+        withResourceContext(<Reference hasComments activeClassName="foo" markerComponent={Children} />),
         controller
       )
     )

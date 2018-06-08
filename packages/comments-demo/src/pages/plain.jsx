@@ -16,7 +16,7 @@ export function PlainPage() {
           </Reference>
 
           <Reference reference="title">
-            <h2>Each text in this page is commentable. Just double click on it.</h2>
+            <h2>Each text in this page is withComments. Just double click on it.</h2>
           </Reference>
 
           <Reference reference="p1">

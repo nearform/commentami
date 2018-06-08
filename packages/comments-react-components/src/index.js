@@ -1,5 +1,5 @@
-export { commentable, commentableBlock, flexibleRender } from './components/core/CommentableComponents'
+export { withComments, withReference, flexibleRender } from './components/core/HOC'
 export { Resource } from './components/core/Resource'
-export { CommentsFetchService } from './services/CommentsFetchService'
-export { CommentsNesService } from './services/CommentsNesService'
+export { HttpService } from './services/HttpService'
+export { WebsocketService } from '././services/WebsocketService'
 export { selectCommentsByReference, commentsCount, referencesCount } from './state/selectors'

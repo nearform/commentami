@@ -1,5 +1,5 @@
-import { commentable } from '@nearform/comments-react-components'
-import { CommentsList, NewCommentForm, commentableWithController } from '@nearform/comments-react-components/dist/ui'
+import { withComments } from '@nearform/comments-react-components'
+import { CommentsList, NewCommentForm, withSidebars } from '@nearform/comments-react-components/dist/ui'
 import { rem, viewHeight, viewWidth } from 'csx'
 import React from 'react'
 import { createPortal } from 'react-dom'
@@ -27,8 +27,8 @@ const sidebarHeaderClassName = style({
   justifyContent: 'space-between'
 })
 
-export const Sidebar = commentableWithController(
-  commentable(
+export const Sidebar = withSidebars(
+  withComments(
     class extends React.Component {
       constructor(props) {
         super(props)

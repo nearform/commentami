@@ -1,4 +1,4 @@
-import { Resource, CommentsFetchService } from '@nearform/comments-react-components'
+import { Resource, HttpService } from '@nearform/comments-react-components'
 import { SidebarsController } from '@nearform/comments-react-components/dist/ui'
 import { rem } from 'csx'
 import React from 'react'
@@ -56,7 +56,7 @@ export function MarkdownPage() {
       </h2>
 
       <SidebarsController>
-        <Resource resource="foo" service={CommentsFetchService('http://localhost:8080/')}>
+        <Resource resource="foo" service={HttpService('http://localhost:8080/')}>
           <div className={documentWrapperClassName}>{parsed}</div>
 
           <Sidebar />

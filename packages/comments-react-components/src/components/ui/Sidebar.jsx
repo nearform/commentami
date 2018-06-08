@@ -1,7 +1,7 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
-import { commentable, flexibleRender } from '../core/CommentableComponents'
-import { commentableWithController } from './SidebarsController'
+import { withComments, flexibleRender } from '../core/HOC'
+import { withSidebars } from './SidebarsController'
 import { DefaultSidebar } from './defaults/DefaultSidebar'
 
 export function SidebarBase(props) {
@@ -17,4 +17,4 @@ export function SidebarBase(props) {
   )
 }
 
-export const Sidebar = commentableWithController(commentable(SidebarBase))
+export const Sidebar = withSidebars(withComments(SidebarBase))
