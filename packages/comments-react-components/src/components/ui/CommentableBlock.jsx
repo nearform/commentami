@@ -18,7 +18,15 @@ export class CommentableBlockBase extends React.Component {
   }
 
   render() {
-    let { children, hasComments, activeClassName, markerComponent: Marker, controller, resource, reference } = this.props
+    let {
+      children,
+      hasComments,
+      activeClassName,
+      markerComponent: Marker,
+      controller,
+      resource,
+      reference
+    } = this.props
 
     if (!activeClassName) activeClassName = 'nf-comments-block--active'
     if (!Marker) Marker = CommentableDefaultMarker
@@ -34,7 +42,14 @@ export class CommentableBlockBase extends React.Component {
         onMouseLeave={this.boundHandleMouseLeave}
         onSelect={this.boundHandleSelect}
       >
-        {hasComments && <Marker controller={controller} resource={resource} reference={reference} onClick={this.boundHandleDoubleClick} />}
+        {hasComments && (
+          <Marker
+            controller={controller}
+            resource={resource}
+            reference={reference}
+            onClick={this.boundHandleDoubleClick}
+          />
+        )}
         {children}
       </div>
     )
@@ -42,14 +57,21 @@ export class CommentableBlockBase extends React.Component {
 
   _updateEvents() {
     const controller = this.props.controller
-    const payload = { resource: this.props.resource, reference: this.props.reference, ref: this.rootRef, scope: 'block' }
+    const payload = {
+      resource: this.props.resource,
+      reference: this.props.reference,
+      ref: this.rootRef,
+      scope: 'block'
+    }
 
-    this.boundHandleClick = typeof controller.handleClick === 'function' ? controller.handleClick.bind(controller, payload) : null
-    this.boundHandleContextMenu = typeof controller.handleContextMenu === 'function' ? controller.handleContextMenu.bind(controller, payload) : null
-    this.boundHandleDoubleClick = typeof controller.handleDoubleClick === 'function' ? controller.handleDoubleClick.bind(controller, payload) : null
-    this.boundHandleMouseEnter = typeof controller.handleMouseEnter === 'function' ? controller.handleMouseEnter.bind(controller, payload) : null
-    this.boundHandleMouseLeave = typeof controller.handleMouseLeave === 'function' ? controller.handleMouseLeave.bind(controller, payload) : null
-    this.boundHandleSelect = typeof controller.handleSelect === 'function' ? controller.handleSelect.bind(controller, payload) : null
+    const bindEvent = handler => (typeof handler === 'function' ? handler.bind(controller, payload) : null)
+
+    this.boundHandleClick = bindEvent(controller.handleClick)
+    this.boundHandleContextMenu = bindEvent(controller.handleContextMenu)
+    this.boundHandleDoubleClick = bindEvent(controller.handleDoubleClick)
+    this.boundHandleMouseEnter = bindEvent(controller.handleMouseEnter)
+    this.boundHandleMouseLeave = bindEvent(controller.handleMouseLeave)
+    this.boundHandleSelect = bindEvent(controller.handleSelect)
   }
 }
 
