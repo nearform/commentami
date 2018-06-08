@@ -4,14 +4,21 @@ A demo app showing the usage of the [@nearform/comments-backend-\*][comments] pa
 
 ## Quick start
 
-To explore components, use storybook:
+Before running the app you need to build the components:
+
+```
+cd packages/comments-react-components
+npm run build
+```
+
+Then, you can see the demo of the comments componentes running:
 
 ```
 npm install
 npm run watch
 ```
 
-and then open the browser at: [http://localhost:4200/](http://localhost:4200/)
+and opening the browser at [http://localhost:4200/](http://localhost:4200/)
 
 ## License
 
