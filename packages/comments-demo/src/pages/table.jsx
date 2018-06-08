@@ -142,7 +142,7 @@ export function TablePage() {
       <h1>Welcome!</h1>
 
       <h2>
-        The tables below are generated out of some data structure. <br />Each cell is withComments.
+        The tables below are generated out of some data structure. <br />Each cell is commentable.
       </h2>
 
       <SidebarsController>

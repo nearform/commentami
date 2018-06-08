@@ -53,7 +53,6 @@ options.routes = {
 
 The `getUser` function will need to return a promise that will yield either `null` or an object with the property `id` (ie : `{ id: 1, ... }`). Beware that **`author` will be stored as a string**.
 
-
 ### `options.hooks` \[optional\]
 
 It should contain the hooks to decorate a single comment or a list of comments with data.
@@ -93,7 +92,7 @@ multines: {
 
 **Note**: if you pass `options.multines = {}` the websockets will be active but the pub/sub system will work only for the single server and not between multiple servers (ie: through resid pub/sub).
 
-### `options.nes` [optional]
+### `options.nes` \[optional\]
 
 If you want to customize the `nes` plugin you can pass [its options](https://github.com/hapijs/nes/blob/master/lib/index.js#L17-L42) through `options.nes`.
 
