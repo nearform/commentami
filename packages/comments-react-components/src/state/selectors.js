@@ -17,7 +17,16 @@ const _ = state => {
  * @param {Reference} reference
  * @returns {Comment[]}
  */
-export const selectCommentsByReference = (state, reference) => Object.values(getReference(_(state), reference).comments)
+export const selectCommentsByReference = (state, reference, sortBy = 'createdAt', order = 1) =>
+  Object.values(getReference(_(state), reference).comments).sort((a, b) => {
+    if (a[sortBy] < b[sortBy]) {
+      return -order
+    }
+    if (a[sortBy] > b[sortBy]) {
+      return order
+    }
+    return 0
+  })
 
 /**
  * Returns the number of reference for a specified resource
