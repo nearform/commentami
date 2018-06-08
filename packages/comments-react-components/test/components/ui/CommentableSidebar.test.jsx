@@ -24,7 +24,9 @@ describe('CommentableSidebar', () => {
   test('should use the provided component', async () => {
     const controller = { isActive: () => true }
 
-    const wrapper = mount(withCommentableControllerContext(withCommentableContext(<CommentableSidebar component={Children} />), controller))
+    const wrapper = mount(
+      withCommentableControllerContext(withCommentableContext(<CommentableSidebar component={Children} />), controller)
+    )
 
     expect(wrapper.find('p').text()).toEqual('children')
   })

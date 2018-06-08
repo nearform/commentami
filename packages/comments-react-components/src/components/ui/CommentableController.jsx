@@ -58,6 +58,10 @@ export class CommentableController extends React.Component {
 
 export function commentableWithController(Component) {
   return function(props) {
-    return <CommentableControllerContext.Consumer>{controller => <Component {...props} controller={controller} />}</CommentableControllerContext.Consumer>
+    return (
+      <CommentableControllerContext.Consumer>
+        {controller => <Component {...props} controller={controller} />}
+      </CommentableControllerContext.Consumer>
+    )
   }
 }

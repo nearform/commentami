@@ -12,7 +12,9 @@ export function CommentableCommentsListBase({ commentable, reference, title, cla
     <section className={className || 'nf-comments-list'}>
       {title && <h2 className="nf-comments-list__title">{title}</h2>}
 
-      {comments.map(comment => <Component key={comment.id} comment={comment} removeComment={commentable.removeComment} />)}
+      {comments.map(comment => (
+        <Component key={comment.id} comment={comment} removeComment={commentable.removeComment} />
+      ))}
     </section>
   )
 }

@@ -16,9 +16,24 @@ const commentable = {
   removeComment: action('Remove a comment'),
   toggledReference: { id: 'ref-1' },
   getReferenceComments: () => [
-    { id: 1, content: 'This is a comment', author: 'Davide', reference: { id: 'ref-1' } },
-    { id: 2, content: 'This is a comment', author: 'Paolo', reference: { id: 'ref-1' } },
-    { id: 3, content: 'This is a comment', author: 'Filippo', reference: { id: 'ref-1' } }
+    {
+      id: 1,
+      content: 'This is a comment',
+      author: 'Davide',
+      reference: { id: 'ref-1' }
+    },
+    {
+      id: 2,
+      content: 'This is a comment',
+      author: 'Paolo',
+      reference: { id: 'ref-1' }
+    },
+    {
+      id: 3,
+      content: 'This is a comment',
+      author: 'Filippo',
+      reference: { id: 'ref-1' }
+    }
   ]
 }
 

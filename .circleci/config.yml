@@ -51,7 +51,4 @@ jobs:
             - packages/comments-react-components/node_modules
 
       - run:
-          command: npm run pg:test:init
-
-      - run:
           command: npm run sanity

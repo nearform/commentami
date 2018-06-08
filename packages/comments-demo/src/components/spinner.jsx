@@ -10,8 +10,14 @@ export function Spinner(props) {
   /* Adapted from here: https://tech.scrunch.com/blog/creating-an-animated-svg-spinner/ */
   const animation = keyframes({
     [percent(0)]: { strokeDashoffset: size * 0.66, transform: 'rotate(0deg)' },
-    [percent(50)]: { strokeDashoffset: size * 3.14, transform: 'rotate(720deg)' },
-    [percent(100)]: { strokeDashoffset: size * 0.66, transform: 'rotate(1080deg)' }
+    [percent(50)]: {
+      strokeDashoffset: size * 3.14,
+      transform: 'rotate(720deg)'
+    },
+    [percent(100)]: {
+      strokeDashoffset: size * 0.66,
+      transform: 'rotate(1080deg)'
+    }
   })
 
   const className = style(debugClassName('spinner'), {

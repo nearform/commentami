@@ -50,7 +50,10 @@ export function MarkdownPage() {
     <div className={pageClassName}>
       <h1>Welcome!</h1>
 
-      <h2>The content in the box below is dynamically generated out of a Markdown file. Each non inline section is commentable.</h2>
+      <h2>
+        The content in the box below is dynamically generated out of a Markdown file. Each non inline section is
+        commentable.
+      </h2>
 
       <CommentableController>
         <CommentableProvider resource="foo" service={CommentsFetchService('http://localhost:8080/')}>

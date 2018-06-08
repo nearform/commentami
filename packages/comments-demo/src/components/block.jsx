@@ -42,7 +42,12 @@ export const Block = commentableWithController(
 
         this.rootRef = React.createRef()
 
-        const payload = { resource: this.props.commentable.resource, reference: this.props.reference, ref: this.rootRef, scope: 'block' }
+        const payload = {
+          resource: this.props.commentable.resource,
+          reference: this.props.reference,
+          ref: this.rootRef,
+          scope: 'block'
+        }
         this.boundHandleShowComments = this.handleShowComments.bind(this, payload)
       }
 
@@ -51,7 +56,9 @@ export const Block = commentableWithController(
 
         const { resource, reference } = this.props
 
-        this.props.controller.isActive(resource, reference) ? this.props.controller.updateActive() : this.props.controller.updateActive(resource, reference)
+        this.props.controller.isActive(resource, reference)
+          ? this.props.controller.updateActive()
+          : this.props.controller.updateActive(resource, reference)
 
         const sel = window.getSelection()
         sel.removeAllRanges()
@@ -65,7 +72,11 @@ export const Block = commentableWithController(
         if (!Marker) Marker = CommentsMarker
 
         return (
-          <div ref={this.rootRef} onDoubleClick={this.boundHandleShowComments} className={classes(blockClassName, isActive ? activeBlockClassName : '')}>
+          <div
+            ref={this.rootRef}
+            onDoubleClick={this.boundHandleShowComments}
+            className={classes(blockClassName, isActive ? activeBlockClassName : '')}
+          >
             {hasComments && <Marker onClick={this.boundHandleShowComments} />}
             {children}
           </div>

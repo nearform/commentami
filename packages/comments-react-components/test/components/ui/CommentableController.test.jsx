@@ -19,7 +19,9 @@ describe('CommentableController', () => {
       </CommentableController>
     )
 
-    expect(wrapper.contains(<p>handleClick--handleDoubleClick--isActive--reference--resource--toggleActive--updateActive</p>)).toBeTruthy()
+    expect(
+      wrapper.contains(<p>handleClick--handleDoubleClick--isActive--reference--resource--toggleActive--updateActive</p>)
+    ).toBeTruthy()
   })
 
   test('should maintain the right active resource and reference', () => {
@@ -52,9 +54,17 @@ describe('CommentableController', () => {
     let state = wrapper.state()
 
     expect(state.isActive('RESOURCE', 'REFERENCE')).toBeFalsy()
-    wrapper.instance().handleClick({ resource: 'RESOURCE', reference: 'REFERENCE', scope: 'marker' })
+    wrapper.instance().handleClick({
+      resource: 'RESOURCE',
+      reference: 'REFERENCE',
+      scope: 'marker'
+    })
     expect(state.isActive('RESOURCE', 'REFERENCE')).toBeTruthy()
-    wrapper.instance().handleClick({ resource: 'RESOURCE', reference: 'REFERENCE', scope: 'marker' })
+    wrapper.instance().handleClick({
+      resource: 'RESOURCE',
+      reference: 'REFERENCE',
+      scope: 'marker'
+    })
     expect(state.isActive('RESOURCE', 'REFERENCE')).toBeFalsy()
   })
 
@@ -64,7 +74,11 @@ describe('CommentableController', () => {
 
     state.updateActive('RESOURCE', 'REFERENCE')
     expect(state.isActive('RESOURCE', 'REFERENCE')).toBeTruthy()
-    wrapper.instance().handleClick({ resource: 'RESOURCE', reference: 'REFERENCE', scope: 'sidebar-close' })
+    wrapper.instance().handleClick({
+      resource: 'RESOURCE',
+      reference: 'REFERENCE',
+      scope: 'sidebar-close'
+    })
     expect(state.isActive('RESOURCE', 'REFERENCE')).toBeFalsy()
   })
 

@@ -1,5 +1,9 @@
 import { commentable } from '@nearform/comments-react-components'
-import { CommentableCommentsList, CommentableNewForm, commentableWithController } from '@nearform/comments-react-components/dist/ui'
+import {
+  CommentableCommentsList,
+  CommentableNewForm,
+  commentableWithController
+} from '@nearform/comments-react-components/dist/ui'
 import { rem, viewHeight, viewWidth } from 'csx'
 import React from 'react'
 import { createPortal } from 'react-dom'

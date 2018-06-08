@@ -26,7 +26,9 @@ describe('CommentableBlock', () => {
   test('should render with the active class and with a marker', () => {
     const controller = { isActive: () => true }
 
-    const wrapper = mount(withCommentableControllerContext(withCommentableContext(<CommentableBlock hasComments />), controller))
+    const wrapper = mount(
+      withCommentableControllerContext(withCommentableContext(<CommentableBlock hasComments />), controller)
+    )
 
     expect(wrapper.find('.nf-comments-block').length).toEqual(1)
     expect(wrapper.find('.nf-comments-block--active').length).toEqual(1)
@@ -37,7 +39,10 @@ describe('CommentableBlock', () => {
     const controller = { isActive: () => true }
 
     const wrapper = mount(
-      withCommentableControllerContext(withCommentableContext(<CommentableBlock hasComments activeClassName="foo" markerComponent={Children} />), controller)
+      withCommentableControllerContext(
+        withCommentableContext(<CommentableBlock hasComments activeClassName="foo" markerComponent={Children} />),
+        controller
+      )
     )
 
     expect(wrapper.find('.foo').length).toEqual(1)
@@ -57,7 +62,10 @@ describe('CommentableBlock', () => {
     }
 
     const wrapper = mount(
-      withCommentableControllerContext(withCommentableContext(<CommentableBlock hasComments activeClassName="foo" markerComponent={Children} />), controller)
+      withCommentableControllerContext(
+        withCommentableContext(<CommentableBlock hasComments activeClassName="foo" markerComponent={Children} />),
+        controller
+      )
     )
 
     const instance = wrapper.find(CommentableBlock).first()

@@ -37,16 +37,30 @@ describe('CommentableCommentsList', () => {
         commentsState: {
           references: {
             REFERENCE: {
-              comments: [{ reference: { id: 'REFERENCE' }, id: 1, content: 'AAA' }, { reference: { id: 'REFERENCE' }, id: 2, content: 'BBB' }]
+              comments: [
+                { reference: { id: 'REFERENCE' }, id: 1, content: 'AAA' },
+                { reference: { id: 'REFERENCE' }, id: 2, content: 'BBB' }
+              ]
             },
             'ANOTHER-REFERENCE': {
-              comments: [{ reference: { id: 'ANOTHER-REFERENCE' }, id: 3, content: 'CCC' }]
+              comments: [
+                {
+                  reference: { id: 'ANOTHER-REFERENCE' },
+                  id: 3,
+                  content: 'CCC'
+                }
+              ]
             }
           }
         }
       }
 
-      const wrapper = mount(withCommentableContext(<CommentableCommentsList reference="REFERENCE" commentComponent={CustomComment} />, context))
+      const wrapper = mount(
+        withCommentableContext(
+          <CommentableCommentsList reference="REFERENCE" commentComponent={CustomComment} />,
+          context
+        )
+      )
 
       expect(wrapper.find('section').hasClass('nf-comments-list')).toBeTruthy()
       expect(wrapper.contains(<p>AAA</p>)).toBeTruthy()
