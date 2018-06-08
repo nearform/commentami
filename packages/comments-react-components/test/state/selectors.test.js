@@ -1,8 +1,18 @@
 import { CommentsState, STATE_FIELD_NAME } from '../../src/state/Comments'
-import { getDefaultState, setCommentToState, createComment } from '../../src/state/helpers'
 
-import { referencesCount, commentsCount, selectCommentsByReference } from '../../src/state/selectors'
+import {
+  referencesCount,
+  commentsCount,
+  selectCommentsByReference,
+  isUpdating,
+  isFetching,
+  isInit
+} from '../../src/state/selectors'
+
 import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
+import { getDefaultState } from '../../src/state/reducers'
+import { setCommentToResource } from '../../src/state/reducers/resource'
+import { createComment } from '../../src/state/reducers/comment'
 
 describe('state/selectors', () => {
   describe('With no state', () => {
@@ -51,7 +61,7 @@ describe('state/selectors', () => {
 
     beforeEach(() => {
       state = getDefaultState()
-      state = setCommentToState(state, { id: 'ref-1' }, { id: 'comm-1' })
+      state = setCommentToResource(state, { id: 'ref-1' }, { id: 'comm-1' })
 
       state = { [STATE_FIELD_NAME]: state }
     })
@@ -116,6 +126,33 @@ describe('state/selectors', () => {
       expect(selectCommentsByReference(state, { id: 'ref-1' }, 'id')[0].id).toEqual('comm-1')
       expect(selectCommentsByReference(state, { id: 'ref-1' }, 'id')[1].id).toEqual('comm-2')
       expect(selectCommentsByReference(state, { id: 'ref-1' }, 'id')[2].id).toEqual('comm-3')
+    })
+  })
+
+  describe('isFetching', () => {
+    test('should return true if the state isFetching is true', () => {
+      expect(isFetching({ commentsState: { id: 'res-1', isFetching: true } })).toBeTruthy()
+    })
+    test('should return false if the state isFetching is true', () => {
+      expect(isFetching({ commentsState: { id: 'res-1', isFetching: false } })).toBeFalsy()
+    })
+  })
+
+  describe('isInit', () => {
+    test('should return true if the state isInit is true', () => {
+      expect(isInit({ commentsState: { id: 'res-1', isInit: true } })).toBeTruthy()
+    })
+    test('should return false if the state isInit is true', () => {
+      expect(isInit({ commentsState: { id: 'res-1', isInit: false } })).toBeFalsy()
+    })
+  })
+
+  describe('isUpdating', () => {
+    test('should return true if the state isUpdating is true', () => {
+      expect(isUpdating({ commentsState: { id: 'res-1', isUpdating: true } })).toBeTruthy()
+    })
+    test('should return false if the state isUpdating is true', () => {
+      expect(isUpdating({ commentsState: { id: 'res-1', isUpdating: false } })).toBeFalsy()
     })
   })
 })
