@@ -5,7 +5,7 @@ import { createComment } from '../../state/helpers'
 // The context for the Provider
 export const CommentableContext = React.createContext('commentable')
 
-export class CommentableProvider extends React.Component {
+export class Resource extends React.Component {
   constructor(props) {
     super(props)
     this.logger = this.props.logger || console

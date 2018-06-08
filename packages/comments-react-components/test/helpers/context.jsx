@@ -1,6 +1,6 @@
 import React from 'react'
-import { CommentableContext } from '../../src/components/core/CommentableProvider'
-import { CommentableControllerContext } from '../../src/components/ui/CommentableController'
+import { CommentableContext } from '../../src/components/core/Resource'
+import { SidebarsControllerContext } from '../../src/components/ui/SidebarsController'
 
 export function withCommentableContext(children, context = {}) {
   return (
@@ -10,10 +10,10 @@ export function withCommentableContext(children, context = {}) {
   )
 }
 
-export function withCommentableControllerContext(children, context = {}) {
+export function withSidebarsControllerContext(children, context = {}) {
   return (
     <main id="controller">
-      <CommentableControllerContext.Provider value={context} children={children} />
+      <SidebarsControllerContext.Provider value={context} children={children} />
     </main>
   )
 }

@@ -6,9 +6,9 @@ describe('exports', () => {
   describe('core', () => {
     test('should export right modules', () => {
       expect(Object.keys(core).sort()).toEqual([
-        'CommentableProvider',
         'CommentsFetchService',
         'CommentsNesService',
+        'Resource',
         'commentable',
         'commentableBlock',
         'commentsCount',
@@ -22,25 +22,25 @@ describe('exports', () => {
   describe('ui', () => {
     test('should export right modules', () => {
       expect(Object.keys(ui)).toEqual([
-        'CommentableBlock',
-        'CommentableBlockBase',
-        'CommentableCommentsList',
-        'CommentableCommentsListBase',
-        'CommentableController',
-        'CommentableControllerContext',
+        'Reference',
+        'ReferenceBase',
+        'CommentsList',
+        'CommentsListBase',
+        'SidebarsController',
+        'SidebarsControllerContext',
         'commentableWithController',
-        'CommentableIcon',
-        'CommentableNewForm',
-        'CommentableNewFormBase',
-        'CommentableSidebar',
-        'CommentableSidebarBase'
+        'Icon',
+        'NewCommentForm',
+        'NewCommentFormBase',
+        'Sidebar',
+        'SidebarBase'
       ])
     })
   })
 
   describe('defaults', () => {
     test('should export right modules', () => {
-      expect(Object.keys(defaults)).toEqual(['CommentableDefaultComment', 'CommentableDefaultMarker', 'CommentableDefaultSidebar'])
+      expect(Object.keys(defaults)).toEqual(['DefaultComment', 'DefaultMarker', 'DefaultSidebar'])
     })
   })
 })

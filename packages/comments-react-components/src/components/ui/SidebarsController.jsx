@@ -1,8 +1,8 @@
 import React from 'react'
 
-export const CommentableControllerContext = React.createContext('controller')
+export const SidebarsControllerContext = React.createContext('controller')
 
-export class CommentableController extends React.Component {
+export class SidebarsController extends React.Component {
   constructor(props) {
     super(props)
 
@@ -52,16 +52,16 @@ export class CommentableController extends React.Component {
   }
 
   render() {
-    return <CommentableControllerContext.Provider value={this.state} children={this.props.children} />
+    return <SidebarsControllerContext.Provider value={this.state} children={this.props.children} />
   }
 }
 
 export function commentableWithController(Component) {
   return function(props) {
     return (
-      <CommentableControllerContext.Consumer>
+      <SidebarsControllerContext.Consumer>
         {controller => <Component {...props} controller={controller} />}
-      </CommentableControllerContext.Consumer>
+      </SidebarsControllerContext.Consumer>
     )
   }
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 import { commentable } from '../core/CommentableComponents'
-import { commentableWithController } from './CommentableController'
-import { CommentableDefaultMarker } from './defaults/CommentableDefaultMarker'
+import { commentableWithController } from './SidebarsController'
+import { DefaultMarker } from './defaults/DefaultMarker'
 
-export class CommentableBlockBase extends React.Component {
+export class ReferenceBase extends React.Component {
   constructor(props) {
     super(props)
 
@@ -29,7 +29,7 @@ export class CommentableBlockBase extends React.Component {
     } = this.props
 
     if (!activeClassName) activeClassName = 'nf-comments-block--active'
-    if (!Marker) Marker = CommentableDefaultMarker
+    if (!Marker) Marker = DefaultMarker
 
     return (
       <div
@@ -75,4 +75,4 @@ export class CommentableBlockBase extends React.Component {
   }
 }
 
-export const CommentableBlock = commentableWithController(commentable(CommentableBlockBase))
+export const Reference = commentableWithController(commentable(ReferenceBase))

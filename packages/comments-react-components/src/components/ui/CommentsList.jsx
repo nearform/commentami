@@ -1,12 +1,12 @@
 import React from 'react'
 import { selectCommentsByReference } from '../../state/selectors'
 import { commentable } from '../core/CommentableComponents'
-import { CommentableDefaultComment } from './defaults/CommentableDefaultComment'
+import { DefaultComment } from './defaults/DefaultComment'
 
-export function CommentableCommentsListBase({ commentable, reference, title, className, commentComponent: Component }) {
+export function CommentsListBase({ commentable, reference, title, className, commentComponent: Component }) {
   const comments = selectCommentsByReference(commentable, reference)
 
-  if (!Component) Component = CommentableDefaultComment
+  if (!Component) Component = DefaultComment
 
   return (
     <section className={className || 'nf-comments-list'}>
@@ -19,4 +19,4 @@ export function CommentableCommentsListBase({ commentable, reference, title, cla
   )
 }
 
-export const CommentableCommentsList = commentable(CommentableCommentsListBase)
+export const CommentsList = commentable(CommentsListBase)

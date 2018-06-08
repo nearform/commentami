@@ -1,9 +1,5 @@
-import { CommentableProvider } from '@nearform/comments-react-components'
-import {
-  CommentableBlock,
-  CommentableController,
-  CommentableSidebar
-} from '@nearform/comments-react-components/dist/ui'
+import { Resource } from '@nearform/comments-react-components'
+import { Reference, SidebarsController, Sidebar } from '@nearform/comments-react-components/dist/ui'
 import React from 'react'
 import { localStorageService } from '../services/localStorage'
 import { pageClassName } from './index'
@@ -13,17 +9,17 @@ const service = localStorageService()
 export function PlainPage() {
   return (
     <div className={pageClassName}>
-      <CommentableController>
-        <CommentableProvider resource="foo" service={service}>
-          <CommentableBlock reference="header">
+      <SidebarsController>
+        <Resource resource="foo" service={service}>
+          <Reference reference="header">
             <h1>Welcome!</h1>
-          </CommentableBlock>
+          </Reference>
 
-          <CommentableBlock reference="title">
+          <Reference reference="title">
             <h2>Each text in this page is commentable. Just double click on it.</h2>
-          </CommentableBlock>
+          </Reference>
 
-          <CommentableBlock reference="p1">
+          <Reference reference="p1">
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dapibus eu lorem sit amet commodo. Morbi
               egestas pulvinar lectus, at porttitor elit sodales a. Sed nec augue luctus, elementum eros quis, euismod
@@ -32,8 +28,8 @@ export function PlainPage() {
               eget sollicitudin volutpat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nunc malesuada
               cursus nisi eu vehicula. Proin vel libero euismod, lacinia odio eget, iaculis erat.
             </p>
-          </CommentableBlock>
-          <CommentableBlock reference="p2">
+          </Reference>
+          <Reference reference="p2">
             <p>
               Proin et dolor metus. Ut leo est, pretium sed interdum ut, imperdiet nec est. Aenean porta elit non elit
               finibus finibus. Proin malesuada, lorem sit amet placerat congue, lectus ligula porta sem, at pellentesque
@@ -43,8 +39,8 @@ export function PlainPage() {
               tincidunt lectus at, volutpat sapien. Sed nec feugiat dolor. Nulla accumsan pretium nulla, sit amet tempus
               nunc aliquet non. Nunc imperdiet imperdiet rhoncus.
             </p>
-          </CommentableBlock>
-          <CommentableBlock reference="p3">
+          </Reference>
+          <Reference reference="p3">
             <p>
               Vestibulum at ipsum tempus, laoreet erat ac, congue lectus. Nulla non cursus augue. Cras mollis vel ipsum
               eu posuere. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris
@@ -52,20 +48,20 @@ export function PlainPage() {
               finibus turpis. Praesent maximus libero sed nibh ornare ornare. Vestibulum commodo sem id metus placerat
               hendrerit.
             </p>
-          </CommentableBlock>
+          </Reference>
 
-          <CommentableSidebar />
-        </CommentableProvider>
+          <Sidebar />
+        </Resource>
 
-        <CommentableProvider resource="another" service={service}>
-          <CommentableBlock reference="header">
+        <Resource resource="another" service={service}>
+          <Reference reference="header">
             <h1>This is now another provider!</h1>
-          </CommentableBlock>
+          </Reference>
 
-          <CommentableBlock reference="title">
+          <Reference reference="title">
             <h2>One sidebar will be shown at a time.</h2>
-          </CommentableBlock>
-          <CommentableBlock reference="p1">
+          </Reference>
+          <Reference reference="p1">
             <p>
               Pellentesque luctus diam a justo fringilla porta. Praesent facilisis ante at risus vehicula molestie.
               Morbi laoreet orci et ligula euismod, at posuere risus laoreet. Nunc blandit eros in arcu laoreet commodo.
@@ -74,8 +70,8 @@ export function PlainPage() {
               pharetra sit amet purus ut, iaculis interdum elit. Cras et orci tempor, elementum massa ac, molestie
               augue. Vivamus iaculis dui et lorem porta vehicula.
             </p>
-          </CommentableBlock>
-          <CommentableBlock reference="p2">
+          </Reference>
+          <Reference reference="p2">
             <p>
               Aliquam id dolor placerat, consectetur est in, convallis purus. Nam arcu nulla, porta non risus ut,
               ultricies condimentum lorem. Ut nec purus eu est elementum tincidunt. Ut id nulla nec nibh ornare pretium.
@@ -84,11 +80,11 @@ export function PlainPage() {
               dolor. Nunc ac risus venenatis, aliquam lectus id, lobortis tortor. Pellentesque purus metus, varius vel
               accumsan ac, malesuada rutrum nulla. Quisque a sapien sed nulla vestibulum ornare.
             </p>
-          </CommentableBlock>
+          </Reference>
 
-          <CommentableSidebar />
-        </CommentableProvider>
-      </CommentableController>
+          <Sidebar />
+        </Resource>
+      </SidebarsController>
     </div>
   )
 }

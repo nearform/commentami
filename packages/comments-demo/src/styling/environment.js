@@ -18,7 +18,7 @@ export const mainClassName = style(debugClassName('main'), {
   }
 })
 
-export const CommentableBlockClassName = style(debugClassName('CommentableBlock'), {
+export const ReferenceClassName = style(debugClassName('Reference'), {
   $nest: {
     '&:hover': {
       backgroundColor: '#FFF9C4',
@@ -27,12 +27,12 @@ export const CommentableBlockClassName = style(debugClassName('CommentableBlock'
   }
 })
 
-export const highlightedCommentableBlockClassName = style(debugClassName('CommentableBlock'), {
+export const highlightedReferenceClassName = style(debugClassName('Reference'), {
   backgroundColor: '#FDD835',
   color: 'black'
 })
 
-export const markerClassName = style(debugClassName('CommentableBlock'), {
+export const markerClassName = style(debugClassName('Reference'), {
   position: 'absolute',
   top: 0,
   left: rem(-7.3), // 48px is the size of the icon, 2.5rem=25px is to put "outside" the page

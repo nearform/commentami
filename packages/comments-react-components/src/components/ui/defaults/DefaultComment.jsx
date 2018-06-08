@@ -1,6 +1,6 @@
 import React from 'react'
 
-export class CommentableDefaultComment extends React.Component {
+export class DefaultComment extends React.Component {
   constructor(props) {
     super(props)
 

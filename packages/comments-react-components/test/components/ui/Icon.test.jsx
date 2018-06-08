@@ -1,10 +1,10 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import { CommentableIcon } from '../../../src/components/ui/CommentableIcon'
+import { Icon } from '../../../src/components/ui/Icon'
 
-describe('CommentableIcon', () => {
+describe('Icon', () => {
   test('should render with good defaults', () => {
-    const wrapper = shallow(<CommentableIcon />)
+    const wrapper = shallow(<Icon />)
 
     expect(
       wrapper.equals(
@@ -18,7 +18,7 @@ describe('CommentableIcon', () => {
   })
 
   test('should use all properties', () => {
-    const wrapper = shallow(<CommentableIcon path="PATH" viewBox="FOO" width={100} height={200} />)
+    const wrapper = shallow(<Icon path="PATH" viewBox="FOO" width={100} height={200} />)
 
     expect(
       wrapper.equals(
@@ -32,7 +32,7 @@ describe('CommentableIcon', () => {
   })
 
   test('should ignore width and height when class is passed', () => {
-    const wrapper = shallow(<CommentableIcon path="PATH" viewBox="FOO" className="CLS" />)
+    const wrapper = shallow(<Icon path="PATH" viewBox="FOO" className="CLS" />)
 
     expect(
       wrapper.equals(

@@ -1,13 +1,13 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { CommentableDefaultSidebar } from '../../../../src/components/ui/defaults/CommentableDefaultSidebar'
+import { DefaultSidebar } from '../../../../src/components/ui/defaults/DefaultSidebar'
 import { withCommentableContext } from '../../../helpers/context'
 
-describe('CommentableDefaultSidebar', () => {
+describe('DefaultSidebar', () => {
   test('renders correctly a sidebar and handle its close button even if nothing is provided', async () => {
     const controller = {}
 
-    const wrapper = mount(withCommentableContext(<CommentableDefaultSidebar controller={controller} />))
+    const wrapper = mount(withCommentableContext(<DefaultSidebar controller={controller} />))
 
     expect(wrapper.find('h1.nf-comments-sidebar__title').text()).toEqual('Comments')
     wrapper.find('.nf-comments-sidebar__close').simulate('click')
@@ -20,7 +20,7 @@ describe('CommentableDefaultSidebar', () => {
       handleClick: jest.fn()
     }
 
-    const wrapper = mount(withCommentableContext(<CommentableDefaultSidebar controller={controller} />))
+    const wrapper = mount(withCommentableContext(<DefaultSidebar controller={controller} />))
 
     wrapper.find('.nf-comments-sidebar__close').simulate('click')
 

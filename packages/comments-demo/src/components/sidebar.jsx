@@ -1,9 +1,5 @@
 import { commentable } from '@nearform/comments-react-components'
-import {
-  CommentableCommentsList,
-  CommentableNewForm,
-  commentableWithController
-} from '@nearform/comments-react-components/dist/ui'
+import { CommentsList, NewCommentForm, commentableWithController } from '@nearform/comments-react-components/dist/ui'
 import { rem, viewHeight, viewWidth } from 'csx'
 import React from 'react'
 import { createPortal } from 'react-dom'
@@ -61,8 +57,8 @@ export const Sidebar = commentableWithController(
                 <Icon name="close" />
               </a>
             </header>
-            <CommentableNewForm reference={reference} />
-            <CommentableCommentsList reference={reference} commentComponent={Comment} />
+            <NewCommentForm reference={reference} />
+            <CommentsList reference={reference} commentComponent={Comment} />
           </aside>,
           document.body
         )

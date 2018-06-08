@@ -1,6 +1,10 @@
-export { CommentableBlock, CommentableBlockBase } from './components/ui/CommentableBlock'
-export { CommentableCommentsList, CommentableCommentsListBase } from './components/ui/CommentableCommentsList'
-export { CommentableController, CommentableControllerContext, commentableWithController } from './components/ui/CommentableController'
-export { CommentableIcon } from './components/ui/CommentableIcon'
-export { CommentableNewForm, CommentableNewFormBase } from './components/ui/CommentableNewForm'
-export { CommentableSidebar, CommentableSidebarBase } from './components/ui/CommentableSidebar'
+export { Reference, ReferenceBase } from './components/ui/Reference'
+export { CommentsList, CommentsListBase } from './components/ui/CommentsList'
+export {
+  SidebarsController,
+  SidebarsControllerContext,
+  commentableWithController
+} from './components/ui/SidebarsController'
+export { Icon } from './components/ui/Icon'
+export { NewCommentForm, NewCommentFormBase } from './components/ui/NewCommentForm'
+export { Sidebar, SidebarBase } from './components/ui/Sidebar'

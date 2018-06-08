@@ -1,5 +1,5 @@
 export { commentable, commentableBlock, flexibleRender } from './components/core/CommentableComponents'
-export { CommentableProvider } from './components/core/CommentableProvider'
+export { Resource } from './components/core/Resource'
 export { CommentsFetchService } from './services/CommentsFetchService'
 export { CommentsNesService } from './services/CommentsNesService'
 export { selectCommentsByReference, commentsCount, referencesCount } from './state/selectors'

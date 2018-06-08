@@ -1,7 +1,7 @@
 import React from 'react'
 import warning from 'warning'
 import { commentsCount } from '../../state/selectors'
-import { CommentableContext } from './CommentableProvider'
+import { CommentableContext } from './Resource'
 
 export function flexibleRender({ render, component: Component, children }, renderProps, defaultComponent) {
   if (!Component) Component = defaultComponent
@@ -28,7 +28,7 @@ export function commentable(Component) {
     }
 
     _checkProps() {
-      warning(this.hasCommentable, `The commentable component should be inside a CommentableProvider`)
+      warning(this.hasCommentable, `The commentable component should be inside a Resource`)
     }
 
     _renderInner(commentable) {

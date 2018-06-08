@@ -1,7 +1,7 @@
 import { mount } from 'enzyme'
 import React from 'react'
 import { commentable, commentableBlock, flexibleRender } from '../../../src/components/core/CommentableComponents'
-import { CommentableContext } from '../../../src/components/core/CommentableProvider'
+import { CommentableContext } from '../../../src/components/core/Resource'
 
 function PropsChildren({ resource, reference }) {
   return (
@@ -61,7 +61,7 @@ describe('commentable', () => {
 
     wrapper.setProps({ a: 1 })
 
-    expect(errorSpy).toHaveBeenCalledWith('Warning: The commentable component should be inside a CommentableProvider')
+    expect(errorSpy).toHaveBeenCalledWith('Warning: The commentable component should be inside a Resource')
     expect(errorSpy).toHaveBeenCalledTimes(2)
   })
 
@@ -169,7 +169,7 @@ describe('commentableBlock', () => {
 
     wrapper.setProps({ a: 1 })
 
-    expect(errorSpy).toHaveBeenCalledWith('Warning: The commentable component should be inside a CommentableProvider')
+    expect(errorSpy).toHaveBeenCalledWith('Warning: The commentable component should be inside a Resource')
     expect(errorSpy).toHaveBeenCalledWith('Warning: The commentable block component should have a reference prop')
   })
 })
