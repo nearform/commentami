@@ -26,6 +26,7 @@
     "comments-backend-hapi-server": "start.js"
   },
   "scripts": {
+    "clean": "lerna clean --yes && lerna run clean",
     "depcheck": "lerna run depcheck",
     "doc:lint": "remark .",
     "coverage": "lerna run coverage",
@@ -39,8 +40,7 @@
     "sanity:environment": "npm run doc:lint && npm run lint && npm run depcheck",
     "sanity": "npm run sanity:environment && npm run test",
     "start": "cd packages/comments-backend-hapi-server && npm run start",
-    "test": "npm run pg:test:init && lerna run test",
-    "clean": "lerna clean --yes && lerna run clean"
+    "test": "npm run pg:test:init && lerna run test"
   },
   "devDependencies": {
     "depcheck": "^0.6.9",
@@ -76,12 +76,12 @@
   "husky": {
     "hooks": {
       "pre-push": "npm run sanity",
-      "pre-commit": "npx lint-staged"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
     "*.{js,jsx}": [
-      "prettier --write",
+      "npm run format",
       "git add"
     ]
   },
