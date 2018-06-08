@@ -25,7 +25,7 @@ async function getClient(baseUrl) {
  * @returns {{addComment: function(*=, *): *, removeComment: removeComment, getComments: function(*): *, onResourceChange: function(*, *=): *}}
  * @constructor
  */
-export function CommentsNesService(baseUrl) {
+export function WebsocketService(baseUrl) {
   /**
    * Add a comment
    * @param {String} resource

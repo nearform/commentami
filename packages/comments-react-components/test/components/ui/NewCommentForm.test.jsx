@@ -1,12 +1,12 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { CommentableNewForm } from '../../../src/components/ui/CommentableNewForm'
-import { withCommentableContext } from '../../helpers/context'
+import { NewCommentForm } from '../../../src/components/ui/NewCommentForm'
+import { withResourceContext } from '../../helpers/context'
 
-describe('CommentableNewForm', () => {
+describe('NewCommentForm', () => {
   describe('.render', () => {
     test('should render the core elements', () => {
-      const wrapper = mount(withCommentableContext(<CommentableNewForm reference="REFERENCE" />))
+      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" />))
 
       expect(wrapper.find('form').hasClass('nf-comments-new-form')).toBeTruthy()
       expect(wrapper.find('textarea.nf-comments-new-form__textarea').prop('placeholder')).toEqual('Enter some text ...')
@@ -16,8 +16,8 @@ describe('CommentableNewForm', () => {
 
     test('should allow class, title and labels overriding', () => {
       const wrapper = mount(
-        withCommentableContext(
-          <CommentableNewForm
+        withResourceContext(
+          <NewCommentForm
             className="CLS"
             title="TITLE"
             placeholder="PLACEHOLDER"
@@ -39,9 +39,7 @@ describe('CommentableNewForm', () => {
     test('should submit when clicking on the button', () => {
       const addComment = jest.fn()
 
-      const wrapper = mount(
-        withCommentableContext(<CommentableNewForm reference="REFERENCE" addComment={addComment} />)
-      )
+      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" addComment={addComment} />))
 
       wrapper.find('textarea').instance().value = 'VALUE'
       wrapper.find('button.nf-comments-new-form__button--primary').simulate('click')
@@ -52,9 +50,7 @@ describe('CommentableNewForm', () => {
     test('should submit when typing enter', async () => {
       const addComment = jest.fn()
 
-      const wrapper = mount(
-        withCommentableContext(<CommentableNewForm reference="REFERENCE" addComment={addComment} />)
-      )
+      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" addComment={addComment} />))
 
       wrapper.find('textarea').instance().value = 'VALUE'
       wrapper.find('textarea').simulate('keyPress', { key: 'enter' })
@@ -66,9 +62,7 @@ describe('CommentableNewForm', () => {
     test('should NOT submit when there is no value', () => {
       const addComment = jest.fn()
 
-      const wrapper = mount(
-        withCommentableContext(<CommentableNewForm reference="REFERENCE" addComment={addComment} />)
-      )
+      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" addComment={addComment} />))
 
       wrapper.find('button.nf-comments-new-form__button--primary').simulate('click')
 
@@ -78,9 +72,7 @@ describe('CommentableNewForm', () => {
     test('should submit when typing shift+enter', async () => {
       const addComment = jest.fn()
 
-      const wrapper = mount(
-        withCommentableContext(<CommentableNewForm reference="REFERENCE" addComment={addComment} />)
-      )
+      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" addComment={addComment} />))
 
       wrapper.find('textarea').instance().value = 'VALUE'
       wrapper.find('textarea').simulate('keyPress', { key: 'enter', shiftKey: true })
@@ -92,7 +84,7 @@ describe('CommentableNewForm', () => {
 
   describe('resetting', () => {
     test('should clear input when clicking on the button', () => {
-      const wrapper = mount(withCommentableContext(<CommentableNewForm reference="REFERENCE" />))
+      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" />))
 
       const element = wrapper.find('textarea').instance()
 

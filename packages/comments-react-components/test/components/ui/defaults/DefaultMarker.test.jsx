@@ -1,13 +1,13 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { CommentableDefaultMarker } from '../../../../src/components/ui/defaults/CommentableDefaultMarker'
+import { DefaultMarker } from '../../../../src/components/ui/defaults/DefaultMarker'
 
-describe('CommentableDefaultMarker', () => {
+describe('DefaultMarker', () => {
   test('renders correctly a marker and handles click events', async () => {
     const ref = React.createRef()
     const controller = { handleClick: jest.fn() }
     const wrapper = mount(
-      <CommentableDefaultMarker controller={controller} rootRef={ref} reference="REFERENCE" resource="RESOURCE" />
+      <DefaultMarker controller={controller} rootRef={ref} reference="REFERENCE" resource="RESOURCE" />
     )
 
     expect(wrapper.find('svg').prop('viewBox')).toEqual('0 0 96 96')

@@ -1,16 +1,16 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import { CommentableProvider } from '../../../src/components/core/CommentableProvider'
+import { Resource } from '../../../src/components/core/Resource'
 import { CommentsMockService } from '../../helpers/CommentsMockService'
 
-describe('CommentableProvider', () => {
+describe('Resource', () => {
   let wrapper
   let service
 
   beforeEach(() => {
     service = new CommentsMockService()
     service.getComments.mockReturnValue([])
-    wrapper = shallow(<CommentableProvider resource="page-1" service={service} />)
+    wrapper = shallow(<Resource resource="page-1" service={service} />)
   })
 
   describe('lifecycle', () => {

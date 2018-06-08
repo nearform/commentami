@@ -1,14 +1,14 @@
-import { CommentsFetchService } from '../../src/services/CommentsFetchService'
+import { HttpService } from '../../src/services/HttpService'
 import commentsGETvalid from './__mocks__/commentsGETvalid'
 
 global.fetch = require('jest-fetch-mock')
 
-describe('CommentsFetchService', () => {
+describe('HttpService', () => {
   let commentsFetchService
   beforeEach(() => {
     fetch.resetMocks()
 
-    commentsFetchService = CommentsFetchService('http://localhost/')
+    commentsFetchService = HttpService('http://localhost/')
   })
 
   test('Call the GET comments endpoint returns a valid structure', async () => {

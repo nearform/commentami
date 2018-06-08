@@ -1,5 +1,5 @@
 import React from 'react'
-import { commentable } from '../core/CommentableComponents'
+import { withComments } from '../core/HOC'
 
 const defaultLabels = {
   title: 'Add new comment',
@@ -8,7 +8,7 @@ const defaultLabels = {
   submitLabel: 'Add'
 }
 
-export class CommentableNewFormBase extends React.Component {
+export class NewCommentFormBase extends React.Component {
   constructor(props) {
     super(props)
 
@@ -67,4 +67,4 @@ export class CommentableNewFormBase extends React.Component {
   }
 }
 
-export const CommentableNewForm = commentable(CommentableNewFormBase)
+export const NewCommentForm = withComments(NewCommentFormBase)

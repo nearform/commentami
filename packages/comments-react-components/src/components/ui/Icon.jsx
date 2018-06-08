@@ -4,8 +4,8 @@ export function isValidSize(size) {
   return typeof size === 'number' && !isNaN(size) && size > 0
 }
 
-export function CommentableIcon({ path, width, height, viewBox, className }) {
-  width = isValidSize(width) ? width : CommentableIcon.defaultSize
+export function Icon({ path, width, height, viewBox, className }) {
+  width = isValidSize(width) ? width : Icon.defaultSize
   height = isValidSize(height) ? height : width
 
   return (
@@ -23,4 +23,4 @@ export function CommentableIcon({ path, width, height, viewBox, className }) {
   )
 }
 
-CommentableIcon.defaultSize = 24
+Icon.defaultSize = 24

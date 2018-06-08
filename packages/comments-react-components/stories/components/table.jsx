@@ -1,7 +1,7 @@
 import { px } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
-import { CommentableBlock } from '../../src/components/ui/CommentableBlock'
+import { Reference } from '../../src/components/ui/Reference'
 
 const tableClassName = style({
   borderSpacing: 1
@@ -62,7 +62,7 @@ export const CommentsMarker = ({ onClick }) => {
 }
 
 export function Cell({ id, data, blockComponent: Block }) {
-  if (!Block) Block = CommentableBlock
+  if (!Block) Block = Reference
 
   return (
     <td className={cellClassName}>

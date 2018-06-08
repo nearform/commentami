@@ -1,5 +1,5 @@
-import { CommentableProvider, CommentsFetchService } from '@nearform/comments-react-components'
-import { CommentableController } from '@nearform/comments-react-components/dist/ui'
+import { Resource, HttpService } from '@nearform/comments-react-components'
+import { SidebarsController } from '@nearform/comments-react-components/dist/ui'
 import { em, percent, rem } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
@@ -9,7 +9,7 @@ import data from '../fixtures/data'
 import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
 
-const service = CommentsFetchService('http://localhost:8080/')
+const service = HttpService('http://localhost:8080/')
 
 const commentMarkerClassName = style(debugClassName('table'), {
   position: 'absolute',
@@ -145,17 +145,17 @@ export function TablePage() {
         The tables below are generated out of some data structure. <br />Each cell is commentable.
       </h2>
 
-      <CommentableController>
-        <CommentableProvider resource="foo" service={service}>
+      <SidebarsController>
+        <Resource resource="foo" service={service}>
           <Table data={data} />
           <Sidebar title="First" />
-        </CommentableProvider>
+        </Resource>
 
-        <CommentableProvider resource="bar" service={service}>
+        <Resource resource="bar" service={service}>
           <Table data={data} />
           <Sidebar title="Second" />
-        </CommentableProvider>
-      </CommentableController>
+        </Resource>
+      </SidebarsController>
     </div>
   )
 }

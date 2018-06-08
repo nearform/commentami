@@ -1,4 +1,4 @@
-import { CommentableIcon } from '@nearform/comments-react-components/dist/ui'
+import { Icon as IconBase } from '@nearform/comments-react-components/dist/ui'
 import React from 'react'
 
 const icons = {
@@ -11,6 +11,6 @@ export class Icon extends React.Component {
   render() {
     const [vbWidth, vbHeight, , , path] = icons[this.props.name]
 
-    return <CommentableIcon {...this.props} path={path} viewBox={`0 0 ${vbWidth} ${vbHeight}`} />
+    return <IconBase {...this.props} path={path} viewBox={`0 0 ${vbWidth} ${vbHeight}`} />
   }
 }

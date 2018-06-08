@@ -1,14 +1,14 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { CommentableDefaultComment } from '../../../../src/components/ui/defaults/CommentableDefaultComment'
+import { DefaultComment } from '../../../../src/components/ui/defaults/DefaultComment'
 
-describe('CommentableDefaultComment', () => {
+describe('DefaultComment', () => {
   test('renders correctly a comment', async () => {
     const comment = {
       author: 'my author',
       content: 'my content'
     }
-    const wrapper = mount(<CommentableDefaultComment removeComment={() => {}} comment={comment} />)
+    const wrapper = mount(<DefaultComment removeComment={() => {}} comment={comment} />)
 
     expect(wrapper.find('article').length).toEqual(1)
     expect(wrapper.find('h4').length).toEqual(1)
@@ -16,7 +16,7 @@ describe('CommentableDefaultComment', () => {
   })
 
   test('renders null if there is no comment to render', async () => {
-    const wrapper = mount(<CommentableDefaultComment removeComment={() => {}} />)
+    const wrapper = mount(<DefaultComment removeComment={() => {}} />)
 
     expect(wrapper.find('article').length).toEqual(0)
   })
@@ -27,7 +27,7 @@ describe('CommentableDefaultComment', () => {
       content: 'my content'
     }
     const onButtonClick = jest.fn()
-    const wrapper = mount(<CommentableDefaultComment removeComment={onButtonClick} comment={comment} />)
+    const wrapper = mount(<DefaultComment removeComment={onButtonClick} comment={comment} />)
 
     expect(wrapper.find('article').length).toEqual(1)
     expect(wrapper.find('h4').length).toEqual(1)

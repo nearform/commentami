@@ -1,5 +1,5 @@
-import { CommentableProvider, CommentsFetchService } from '@nearform/comments-react-components'
-import { CommentableController } from '@nearform/comments-react-components/dist/ui'
+import { Resource, HttpService } from '@nearform/comments-react-components'
+import { SidebarsController } from '@nearform/comments-react-components/dist/ui'
 import { rem } from 'csx'
 import React from 'react'
 import remark from 'remark'
@@ -55,13 +55,13 @@ export function MarkdownPage() {
         commentable.
       </h2>
 
-      <CommentableController>
-        <CommentableProvider resource="foo" service={CommentsFetchService('http://localhost:8080/')}>
+      <SidebarsController>
+        <Resource resource="foo" service={HttpService('http://localhost:8080/')}>
           <div className={documentWrapperClassName}>{parsed}</div>
 
           <Sidebar />
-        </CommentableProvider>
-      </CommentableController>
+        </Resource>
+      </SidebarsController>
     </div>
   )
 }

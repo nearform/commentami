@@ -1,13 +1,13 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { CommentableBlock } from '../../../src/components/ui/CommentableBlock'
-import { withCommentableContext, withCommentableControllerContext } from '../../helpers/context'
+import { Reference } from '../../../src/components/ui/Reference'
+import { withResourceContext, withSidebarsControllerContext } from '../../helpers/context'
 
-function Children({ commentable, resource }) {
+function Children({ withComments, resource }) {
   return <span>1</span>
 }
 
-describe('CommentableBlock', () => {
+describe('Reference', () => {
   afterEach(() => {
     jest.resetModules()
     jest.restoreAllMocks()
@@ -16,7 +16,7 @@ describe('CommentableBlock', () => {
   test('should render without the active class and without a marker by default', () => {
     const controller = { isActive: () => false }
 
-    const wrapper = mount(withCommentableControllerContext(withCommentableContext(<CommentableBlock />), controller))
+    const wrapper = mount(withSidebarsControllerContext(withResourceContext(<Reference />), controller))
 
     expect(wrapper.find('.nf-comments-block').length).toEqual(1)
     expect(wrapper.find('.nf-comments-block--active').length).toEqual(0)
@@ -26,9 +26,7 @@ describe('CommentableBlock', () => {
   test('should render with the active class and with a marker', () => {
     const controller = { isActive: () => true }
 
-    const wrapper = mount(
-      withCommentableControllerContext(withCommentableContext(<CommentableBlock hasComments />), controller)
-    )
+    const wrapper = mount(withSidebarsControllerContext(withResourceContext(<Reference hasComments />), controller))
 
     expect(wrapper.find('.nf-comments-block').length).toEqual(1)
     expect(wrapper.find('.nf-comments-block--active').length).toEqual(1)
@@ -39,8 +37,8 @@ describe('CommentableBlock', () => {
     const controller = { isActive: () => true }
 
     const wrapper = mount(
-      withCommentableControllerContext(
-        withCommentableContext(<CommentableBlock hasComments activeClassName="foo" markerComponent={Children} />),
+      withSidebarsControllerContext(
+        withResourceContext(<Reference hasComments activeClassName="foo" markerComponent={Children} />),
         controller
       )
     )
@@ -62,13 +60,13 @@ describe('CommentableBlock', () => {
     }
 
     const wrapper = mount(
-      withCommentableControllerContext(
-        withCommentableContext(<CommentableBlock hasComments activeClassName="foo" markerComponent={Children} />),
+      withSidebarsControllerContext(
+        withResourceContext(<Reference hasComments activeClassName="foo" markerComponent={Children} />),
         controller
       )
     )
 
-    const instance = wrapper.find(CommentableBlock).first()
+    const instance = wrapper.find(Reference).first()
 
     instance.simulate('click')
     instance.simulate('contextMenu')

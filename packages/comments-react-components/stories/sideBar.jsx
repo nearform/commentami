@@ -2,9 +2,9 @@ import React from 'react'
 import { action } from '@storybook/addon-actions'
 import { storiesOf } from '@storybook/react'
 
-import { CommentableContext } from '../src/components/core/CommentableProvider'
-import { CommentableControllerContext } from '../src/components/ui/CommentableController'
-import { CommentableSidebar } from '../src/components/ui/CommentableSidebar'
+import { ResourceContext } from '../src/components/core/Resource'
+import { SidebarsControllerContext } from '../src/components/ui/SidebarsController'
+import { Sidebar } from '../src/components/ui/Sidebar'
 
 const controller = {
   isActive: () => true,
@@ -39,10 +39,10 @@ const commentable = {
 
 storiesOf('Commentable/SideBar', module).add('Default', () => (
   <div>
-    <CommentableControllerContext.Provider value={controller}>
-      <CommentableContext.Provider value={commentable}>
-        <CommentableSidebar />
-      </CommentableContext.Provider>
-    </CommentableControllerContext.Provider>
+    <SidebarsControllerContext.Provider value={controller}>
+      <ResourceContext.Provider value={commentable}>
+        <Sidebar />
+      </ResourceContext.Provider>
+    </SidebarsControllerContext.Provider>
   </div>
 ))

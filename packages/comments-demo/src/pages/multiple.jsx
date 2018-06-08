@@ -1,5 +1,5 @@
-import { CommentableProvider, CommentsFetchService, CommentsNesService } from '@nearform/comments-react-components'
-import { CommentableController } from '@nearform/comments-react-components/dist/ui'
+import { Resource, HttpService, WebsocketService } from '@nearform/comments-react-components'
+import { SidebarsController } from '@nearform/comments-react-components/dist/ui'
 import { em, percent, rem } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
@@ -11,8 +11,8 @@ import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
 
 const localStorageService = localStorageServiceBuilder()
-const socketService = CommentsNesService('ws://localhost:8080/')
-const httpService = CommentsFetchService('http://localhost:8080/')
+const socketService = WebsocketService('ws://localhost:8080/')
+const httpService = HttpService('http://localhost:8080/')
 
 const sectionClassName = style(debugClassName('table'), {
   marginTop: rem(3)
@@ -149,31 +149,31 @@ export function MultiplePage() {
       <h4>Each table below uses a different storage engine</h4>
       <h4>The page was rendered on Unix Time {new Date().getTime()}</h4>
 
-      <CommentableController>
+      <SidebarsController>
         <section className={sectionClassName}>
           <h1>LocalStorage</h1>
-          <CommentableProvider resource="first" service={localStorageService}>
+          <Resource resource="first" service={localStorageService}>
             <Table data={data} />
             <Sidebar title="First" />
-          </CommentableProvider>
+          </Resource>
         </section>
 
         <section className={sectionClassName}>
           <h1>Websockets</h1>
-          <CommentableProvider resource="second" service={socketService}>
+          <Resource resource="second" service={socketService}>
             <Table data={data} />
             <Sidebar title="Second" />
-          </CommentableProvider>
+          </Resource>
         </section>
 
         <section className={sectionClassName}>
           <h1>HTTP</h1>
-          <CommentableProvider resource="third" service={httpService}>
+          <Resource resource="third" service={httpService}>
             <Table data={data} />
             <Sidebar title="Second" />
-          </CommentableProvider>
+          </Resource>
         </section>
-      </CommentableController>
+      </SidebarsController>
     </div>
   )
 }

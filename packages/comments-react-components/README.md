@@ -43,21 +43,21 @@ The steps we need to make this page commentable are the following:
 * Assign a component to show/add the comments related to a reference
 
 ##### Define the commentable area and assign a `resource` identifier
-This step is done wrapping the interested area in a `CommentableProvider` component and assigning the `resource`
+This step is done wrapping the interested area in a `Resource` component and assigning the `resource`
 
 ```
-import { CommentableProvider } from '@nearform/comments-react-components'
+import { Resource } from '@nearform/comments-react-components'
 
 class SamplePage extends React.Component {
   render() {
     return (
-      <CommentableProvider resource="my-resource">
+      <Resource resource="my-resource">
         <h1>Text Title 1</h1>
         <p>Paragraphs are separated by a blank line.</p>
         <p>
           2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
         </p>
-      </CommentableProvider>
+      </Resource>
     )
   }
 }
@@ -65,27 +65,27 @@ class SamplePage extends React.Component {
 ```
 
 ##### Identify the single references in the text
-Every part we woul'd like to reference should be wrapped around a `CommentableBlock`. This operation can be easily automated.
+Every part we woul'd like to reference should be wrapped around a `Reference`. This operation can be easily automated.
 
 ```
-import { CommentableProvider, CommentableBlock } from '@nearform/comments-react-components'
+import { Resource, Reference } from '@nearform/comments-react-components'
 
 class SamplePage extends React.Component {
   render() {
     return (
-      <CommentableProvider resource="my-resource">
-        <CommentableBlock reference="reference-1">
+      <Resource resource="my-resource">
+        <Reference reference="reference-1">
           <h1>Text Title 1</h1>
-        </CommentableBlock>
-        <CommentableBlock reference="reference-2">
+        </Reference>
+        <Reference reference="reference-2">
           <p>Paragraphs are separated by a blank line.</p>
-        </CommentableBlock>
-        <CommentableBlock reference="reference-3">
+        </Reference>
+        <Reference reference="reference-3">
           <p>
             2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
           </p>
-        </CommentableBlock>
-      </CommentableProvider>
+        </Reference>
+      </Resource>
     )
   }
 }
@@ -98,8 +98,8 @@ Now that the component is correctly wrapped, we need to configure the service th
 
 ```
 import {
-  CommentableProvider,
-  CommentableBlock,
+  Resource,
+  Reference,
   CommentsFetchService
 } from '@nearform/comments-react-components'
 
@@ -108,19 +108,19 @@ const commentsFetchService = CommentsFetchService('http://localhost:8080/')
 class SamplePage extends React.Component {
   render() {
     return (
-      <CommentableProvider resource="my-resource" service={commentsFetchService}>
-        <CommentableBlock reference="reference-1">
+      <Resource resource="my-resource" service={commentsFetchService}>
+        <Reference reference="reference-1">
           <h1>Text Title 1</h1>
-        </CommentableBlock>
-        <CommentableBlock reference="reference-2">
+        </Reference>
+        <Reference reference="reference-2">
           <p>Paragraphs are separated by a blank line.</p>
-        </CommentableBlock>
-        <CommentableBlock reference="reference-3">
+        </Reference>
+        <Reference reference="reference-3">
           <p>
             2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
           </p>
-        </CommentableBlock>
-      </CommentableProvider>
+        </Reference>
+      </Resource>
     )
   }
 }
@@ -128,16 +128,16 @@ class SamplePage extends React.Component {
 ```
 
 ##### Assign a component to show/add the comments related to a reference
-To provide this feature we need to wrap everithing inside a CommentableController and add the component that acts as a interface for the user to show the comments and add new ones and remove the existents
+To provide this feature we need to wrap everithing inside a SidebarsController and add the component that acts as a interface for the user to show the comments and add new ones and remove the existents
 
 
 ```
 import {
-  CommentableProvider,
-  CommentableBlock,
+  Resource,
+  Reference,
   CommentsFetchService,
-  CommentableController,
-  CommentableSidebar
+  SidebarsController,
+  Sidebar
 } from '@nearform/comments-react-components'
 
 const commentsFetchService = CommentsFetchService('http://localhost:8080/')
@@ -145,22 +145,22 @@ const commentsFetchService = CommentsFetchService('http://localhost:8080/')
 class SamplePage extends React.Component {
   render() {
     return (
-      <CommentableController>
-        <CommentableProvider resource="my-resource" service={commentsFetchService}>
-          <CommentableBlock reference="reference-1">
+      <SidebarsController>
+        <Resource resource="my-resource" service={commentsFetchService}>
+          <Reference reference="reference-1">
             <h1>Text Title 1</h1>
-          </CommentableBlock>
-          <CommentableBlock reference="reference-2">
+          </Reference>
+          <Reference reference="reference-2">
             <p>Paragraphs are separated by a blank line.</p>
-          </CommentableBlock>
-          <CommentableBlock reference="reference-3">
+          </Reference>
+          <Reference reference="reference-3">
             <p>
               2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
             </p>
-          </CommentableBlock>
-          <CommentableSidebar />
-        </CommentableProvider>
-      </CommentableController>
+          </Reference>
+          <Sidebar />
+        </Resource>
+      </SidebarsController>
     )
   }
 }
@@ -175,29 +175,29 @@ check the [stories](./stories) folder for further examples
 
 ### Components
 
-* `<CommentableProvider/>`: To make an area commentable it should be wrapped around a `<CommentableProvider>` component. This component manage the state.
-* `<CommentableBlock/>`: Every commentable part should be wrapped around a `<CommentableBlock>` component. This is currently the smallest part commentable, all the comments related to his children will be connected to the parent element.
+* `<Resource/>`: To make an area commentable it should be wrapped around a `<Resource>` component. This component manage the state.
+* `<Reference/>`: Every commentable part should be wrapped around a `<Reference>` component. This is currently the smallest part commentable, all the comments related to his children will be connected to the parent element.
 
 #### A page sample
 
 ```
-<CommentableProvider
+<Resource
   resource="main"
   service={buildService()} // This is a service you must provide
   eventsManagerComponent={EventsManager} // This prop is optional and must be a descendant of CommentsEventManager
 >
     <div style={{ marginLeft: '30px' }}>
-      <CommentableBlock reference="comm-1">
+      <Reference reference="comm-1">
         <h1>Text Title 1</h1>
-      </CommentableBlock>
-      <CommentableBlock reference="comm-2">
+      </Reference>
+      <Reference reference="comm-2">
         <p>Paragraphs are separated by a blank line.</p>
-      </CommentableBlock>
+      </Reference>
     </div>
-</CommentableProvider>
+</Resource>
 ```
 
-## CommentableProvider
+## Resource
 The provider is the `commentable` root component.
 It wraps the other commentable elements and provides them with what they need to handle comments.
 Under the hood it uses [React 16 context api](#) and it manages a local state and the creation/update/deletion of comments.
@@ -237,7 +237,7 @@ The state is not then shared between providers and each one manage is own.
 
 `new CommentsState(options: CommentsStateOptions): CommentsState`
 
-***This operation is not required, is done by the current CommentableProvider***
+***This operation is not required, is done by the current Resource***
 
 
 #### CommentsStateOptions
@@ -382,9 +382,9 @@ import { CommentsNesService } from '@nearform/comments-react-components'
 const commentsNesService = CommentsNesService('ws://localhost:8080/')
 
 render() {
-  <CommentableProvider resource="res-1" service={commentsNesService}>
+  <Resource resource="res-1" service={commentsNesService}>
     ...
-  </CommentableProvider>
+  </Resource>
 }
 ```
 

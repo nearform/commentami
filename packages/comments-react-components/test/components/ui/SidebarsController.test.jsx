@@ -1,6 +1,6 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { CommentableController, commentableWithController } from '../../../src/components/ui/CommentableController'
+import { SidebarsController, withSidebars } from '../../../src/components/ui/SidebarsController'
 
 function Children({ controller }) {
   const keys = Object.keys(controller)
@@ -10,13 +10,13 @@ function Children({ controller }) {
   return <p>{keys}</p>
 }
 
-describe('CommentableController', () => {
+describe('SidebarsController', () => {
   test('should render with good defaults', () => {
-    const ControlledChildren = commentableWithController(Children)
+    const ControlledChildren = withSidebars(Children)
     const wrapper = mount(
-      <CommentableController>
+      <SidebarsController>
         <ControlledChildren />
-      </CommentableController>
+      </SidebarsController>
     )
 
     expect(
@@ -25,7 +25,7 @@ describe('CommentableController', () => {
   })
 
   test('should maintain the right active resource and reference', () => {
-    const wrapper = mount(<CommentableController />)
+    const wrapper = mount(<SidebarsController />)
     let state = wrapper.state()
 
     expect(state.isActive('RESOURCE')).toBeFalsy()
@@ -50,7 +50,7 @@ describe('CommentableController', () => {
   })
 
   test('should correctly handle marker click events', () => {
-    const wrapper = mount(<CommentableController />)
+    const wrapper = mount(<SidebarsController />)
     let state = wrapper.state()
 
     expect(state.isActive('RESOURCE', 'REFERENCE')).toBeFalsy()
@@ -69,7 +69,7 @@ describe('CommentableController', () => {
   })
 
   test('should correctly handle sidebar closing events', () => {
-    const wrapper = mount(<CommentableController />)
+    const wrapper = mount(<SidebarsController />)
     let state = wrapper.state()
 
     state.updateActive('RESOURCE', 'REFERENCE')
@@ -85,7 +85,7 @@ describe('CommentableController', () => {
   test('should correctly handle double click events', () => {
     window.getSelection = jest.fn().mockReturnValue({ removeAllRanges: jest.fn() })
 
-    const wrapper = mount(<CommentableController />)
+    const wrapper = mount(<SidebarsController />)
     let state = wrapper.state()
 
     expect(state.isActive('RESOURCE', 'REFERENCE')).toBeFalsy()
