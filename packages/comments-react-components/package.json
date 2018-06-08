@@ -30,7 +30,9 @@
     "build": "babel -d dist src",
     "storybook": "start-storybook -p 6006 -c .storybook",
     "test": "node test/start.js",
-    "test:watch": "WATCH=true node test/start.js"
+    "test:watch": "WATCH=true node test/start.js",
+    "postinstall": "npm run build",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "nes": "^8.1.0",
