@@ -14,14 +14,23 @@ describe('CommentableDefaultSidebar', () => {
   })
 
   test('renders correctly a sidebar and handle its close button when a controller handle is present', async () => {
-    const controller = { resource: 'RESOURCE', reference: 'REFERENCE', handleClick: jest.fn() }
+    const controller = {
+      resource: 'RESOURCE',
+      reference: 'REFERENCE',
+      handleClick: jest.fn()
+    }
 
     const wrapper = mount(withCommentableContext(<CommentableDefaultSidebar controller={controller} />))
 
     wrapper.find('.nf-comments-sidebar__close').simulate('click')
 
     expect(controller.handleClick).toHaveBeenCalledWith(
-      { resource: 'RESOURCE', reference: 'REFERENCE', ref: expect.anything(), scope: 'sidebar-close' },
+      {
+        resource: 'RESOURCE',
+        reference: 'REFERENCE',
+        ref: expect.anything(),
+        scope: 'sidebar-close'
+      },
       expect.anything()
     )
   })

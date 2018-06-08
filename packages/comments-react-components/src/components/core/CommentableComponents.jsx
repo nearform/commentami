@@ -38,7 +38,11 @@ export function commentable(Component) {
     }
 
     _renderProps() {
-      const additionalProps = { commentable: this.commentable, resource: (this.commentable || {}).resource, hasComments: this.hasComments }
+      const additionalProps = {
+        commentable: this.commentable,
+        resource: (this.commentable || {}).resource,
+        hasComments: this.hasComments
+      }
       const callbacks = {
         addComment: this.addComment.bind(this),
         removeComment: this.removeComment.bind(this)

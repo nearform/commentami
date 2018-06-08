@@ -25,7 +25,7 @@ describe('CommentableProvider', () => {
       expect(service.getComments).toHaveBeenCalledWith('page-2')
     })
 
-    test("when the component is updated but the resource doesn't change it should not refresh the comment list", async () => {
+    test('when the component is updated without resource change it should not refresh the comment list', async () => {
       service.getComments.mockClear()
       wrapper.setProps({ anotherprop: 'some prop' })
       expect(service.getComments).not.toHaveBeenCalled()

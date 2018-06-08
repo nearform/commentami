@@ -1,7 +1,12 @@
 import React from 'react'
 import { commentable } from '../core/CommentableComponents'
 
-const defaultLabels = { title: 'Add new comment', placeholder: 'Enter some text ...', cancelLabel: 'Cancel', submitLabel: 'Add' }
+const defaultLabels = {
+  title: 'Add new comment',
+  placeholder: 'Enter some text ...',
+  cancelLabel: 'Cancel',
+  submitLabel: 'Add'
+}
 
 export class CommentableNewFormBase extends React.Component {
   constructor(props) {
@@ -37,11 +42,24 @@ export class CommentableNewFormBase extends React.Component {
     return (
       <form action="#" className={className || 'nf-comments-new-form'}>
         {title && <h2 className="nf-comments-new-form__title">{title}</h2>}
-        <textarea ref={this.textareaRef} className="nf-comments-new-form__textarea" placeholder={placeholder} onKeyPress={this.boundHandleKeyPress} />
-        <button type="reset" className="nf-comments-new-form__button nf-comments-new-form__button--secondary" onClick={this.boundHandleReset}>
+        <textarea
+          ref={this.textareaRef}
+          className="nf-comments-new-form__textarea"
+          placeholder={placeholder}
+          onKeyPress={this.boundHandleKeyPress}
+        />
+        <button
+          type="reset"
+          className="nf-comments-new-form__button nf-comments-new-form__button--secondary"
+          onClick={this.boundHandleReset}
+        >
           {cancelLabel}
         </button>
-        <button type="submit" className="nf-comments-new-form__button nf-comments-new-form__button--primary" onClick={this.boundHandleSubmit}>
+        <button
+          type="submit"
+          className="nf-comments-new-form__button nf-comments-new-form__button--primary"
+          onClick={this.boundHandleSubmit}
+        >
           {submitLabel}
         </button>
       </form>

@@ -38,7 +38,10 @@ export function CommentsFetchService(baseUrl) {
       }
     }
 
-    const response = await fetch(`${baseUrl}comments?resource=${resource}`, options)
+    const response = await fetch(
+      `${baseUrl}comments?resource=${resource}`,
+      options
+    )
     return (await response.json()).comments
   }
 
