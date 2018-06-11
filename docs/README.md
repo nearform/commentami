@@ -1,12 +1,12 @@
-# Comments - open source commenting system
+# Commentami - open source commenting system
 
-Comments is a commenting system designed to add comments like the ones you can add in Google Docs.
+Commentami is a commenting system designed to add comments like the ones you can add in Google Docs.
 
 The fronted is based on [Reactjs >= 16](https://reactjs.org).
 
-Comments backend can be used as a standalone node.js module ([comments-backend-core](https://github.com/nearform/comments/tree/master/packages/comments-backend-core)), as a Hapi plugin that provides a REST API and websockets ([comments-backend-hapi-plugin](https://github.com/nearform/comments/tree/master/packages/comments-backend-hapi-plugin)), and as a stand alone server ([comments-backend-server](https://github.com/nearform/comments/tree/master/packages/comments-backend-hapi-server)).
+Commentami backend can be used as a standalone node.js module ([commentami-backend-core](https://github.com/nearform/comments/tree/master/packages/commentami-backend-core)), as a Hapi plugin that provides a REST API and websockets ([commentami-backend-hapi-plugin](https://github.com/nearform/comments/tree/master/packages/commentami-backend-hapi-plugin)), and as a stand alone server ([commentami-backend-hapi-server](https://github.com/nearform/comments/tree/master/packages/commentami-backend-hapi-server)).
 
-Comments frontend components are built to have logic and presentation separetated. This should give as much freedom as possible in integrating these components in your UI.
+Commentami frontend components are built to have logic and presentation separetated. This should give as much freedom as possible in integrating these components in your UI.
 
 ## Background
 
@@ -14,7 +14,7 @@ Collaboration in modern applications is a killer feature. Commenting a webpage "
 
 ## CORE CONCEPTS
 
-In Comments a comment is an obejct with the following properties
+In Commentami a comment is an obejct with the following properties
 
 ```
 Comment {
@@ -31,7 +31,7 @@ The main idea is that a comment belongs to a `resource` (ie: a web page) and to 
 
 The `resource` and the `reference` are loosly defined to accomodate different interpretations, but a comment needs both to exists.
 
-The provided react components are used to interact with the Comments server (list, add and delete comments). They also provide a way to mark elements on the page as commentable and deal with the wiring of commentable elements and their comments.
+The provided react components are used to interact with the Commentami server (list, add and delete comments). They also provide a way to mark elements on the page as commentable and deal with the wiring of commentable elements and their comments.
 
 ## REST API
 
@@ -47,7 +47,7 @@ The provided react components are used to interact with the Comments server (lis
 
 ## WEBSOCKETS
 
-Comments ocmes with a ready made socket server that you can intercat with using [`nes`](https://github.com/hapijs/nes).
+Commentami comes with a ready made socket server that you can intercat with using [`nes`](https://github.com/hapijs/nes).
 Other then mapping all REST API endpoints, connecting through a socket will allow your client to subscribe to events such as addition, update and deletion of comments, based on `resource` and optionally `reference`.
 
 ## REACT COMPONENTS
@@ -60,4 +60,4 @@ The interface of each web application is different. To accomodate that, we struc
 
 ## NEXT STEPS
 
-To get up and running with Comments, see the installation steps in the [README](https://github.com/nearform/comments).
+To get up and running with Commentami, see the installation steps in the [README](https://github.com/nearform/comments).
