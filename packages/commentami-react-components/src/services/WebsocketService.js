@@ -22,7 +22,12 @@ async function getClient(baseUrl) {
 /**
  *
  * @param baseUrl
- * @returns {{addComment: function(*=, *): *, removeComment: removeComment, getComments: function(*): *, onResourceChange: function(*, *=): *}}
+ * @returns {{
+ *      addComment: function(*=, *): *,
+ *      removeComment: removeComment,
+ *      getComments: function(*): *,
+ *      onResourceChange: function(*, *=): *
+ *    }}
  * @constructor
  */
 export function WebsocketService(baseUrl) {
@@ -75,7 +80,7 @@ export function WebsocketService(baseUrl) {
     const response = await client.request(`/comments?resource=${resource}`)
     const { payload } = response
 
-    // TODO The pagination is not currently supported, the service loads the first 100 comments related to this resource.
+    // TODO The pagination is not supported yet, the service loads the first 100 comments related to this resource.
     return payload.comments
   }
 

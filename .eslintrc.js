@@ -1,14 +1,8 @@
 module.exports = {
-  extends: [
-    'standard',
-    'standard-jsx',
-    'standard-react',
-    'prettier/react',
-    'prettier/standard'
-  ],
+  extends: ['standard', 'standard-jsx', 'standard-react', 'prettier/react', 'prettier/standard'],
   rules: {
     'no-console': [1],
-    'max-len': [1, { code: 120, comments: 120 }],
+    'max-len': [1, { code: 120, comments: 120, ignoreTrailingComments: true }],
     // This is inserted to make this compatible with prettier.
     curly: 0,
     /*

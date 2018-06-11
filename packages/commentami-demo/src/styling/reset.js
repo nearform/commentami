@@ -5,6 +5,7 @@ export const fontSize = '12pt'
 export const linkColor = '#DA3338'
 export const linkHighlightColor = '#CC0000'
 
+/* eslint-disable max-len */
 export const systemFontsStack = `
   -apple-system, BlinkMacSystemFont, "Segoe UI",
   Roboto, Helvetica, Arial, sans-serif,
