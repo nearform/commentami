@@ -5,7 +5,9 @@ import { withResourceContext } from '../../../helpers/context'
 
 describe('DefaultSidebar', () => {
   test('renders correctly a sidebar and handle its close button even if nothing is provided', async () => {
-    const controller = {}
+    const controller = {
+      reference: 'ref-1'
+    }
 
     const wrapper = mount(withResourceContext(<DefaultSidebar controller={controller} />))
 

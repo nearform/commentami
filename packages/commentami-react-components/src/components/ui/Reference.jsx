@@ -30,9 +30,6 @@ export class ReferenceBase extends React.Component {
       reference
     } = this.props
 
-    if (!activeClassName) activeClassName = 'nf-comments-block--active'
-    if (!Marker) Marker = DefaultMarker
-
     return (
       <div
         ref={this.rootRef}
@@ -78,6 +75,10 @@ export class ReferenceBase extends React.Component {
 }
 
 ReferenceBase.displayName = 'ReferenceBase'
+ReferenceBase.defaultProps = {
+  activeClassName: 'nf-comments-block--active',
+  markerComponent: DefaultMarker
+}
 
 ReferenceBase.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,

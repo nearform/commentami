@@ -32,7 +32,7 @@ SidebarBase.propTypes = {
 
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 
-  resource: PropTypes.string.isRequired,
+  resource: PropTypes.string,
 
   render: PropTypes.func,
 

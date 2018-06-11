@@ -40,7 +40,7 @@ DefaultMarker.defaultProps = {
 DefaultMarker.propTypes = {
   className: PropTypes.string,
 
-  rootRef: PropTypes.node,
+  rootRef: PropTypes.object,
 
   resource: PropTypes.string.isRequired,
 

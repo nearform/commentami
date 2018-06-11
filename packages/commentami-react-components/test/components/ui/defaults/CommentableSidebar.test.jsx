@@ -3,9 +3,11 @@ import React from 'react'
 import { DefaultSidebar } from '../../../../src/components/ui/defaults/DefaultSidebar'
 import { withResourceContext } from '../../../helpers/context'
 
-describe('DefaultSidebar', () => {
+describe('CommentableSidebar', () => {
   test('renders correctly a sidebar and handle its close button even if nothing is provided', async () => {
-    const controller = {}
+    const controller = {
+      reference: 'ref-1'
+    }
 
     const wrapper = mount(withResourceContext(<DefaultSidebar controller={controller} />))
 

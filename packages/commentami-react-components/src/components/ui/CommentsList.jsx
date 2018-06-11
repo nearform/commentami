@@ -37,7 +37,7 @@ CommentsListBase.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired
     })
-  ]).isRequired,
+  ]),
 
   title: PropTypes.string,
   className: PropTypes.string,

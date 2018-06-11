@@ -18,10 +18,11 @@ describe('CommentsList', () => {
 
     test('should render comments with the standard component', () => {
       const context = {
+        removeComment: jest.fn(),
         commentsState: {
           references: {
             REFERENCE: {
-              comments: [{ reference: { id: 'REFERENCE' }, id: 1, content: 'AAA' }]
+              comments: [{ reference: { id: 'REFERENCE' }, id: 'comm-1', content: 'AAA' }]
             }
           }
         }
@@ -34,19 +35,20 @@ describe('CommentsList', () => {
 
     test('should render comments with the custom component', () => {
       const context = {
+        removeComment: jest.fn(),
         commentsState: {
           references: {
             REFERENCE: {
               comments: [
-                { reference: { id: 'REFERENCE' }, id: 1, content: 'AAA' },
-                { reference: { id: 'REFERENCE' }, id: 2, content: 'BBB' }
+                { reference: { id: 'REFERENCE' }, id: 'comm-1', content: 'AAA' },
+                { reference: { id: 'REFERENCE' }, id: 'comm-2', content: 'BBB' }
               ]
             },
             'ANOTHER-REFERENCE': {
               comments: [
                 {
                   reference: { id: 'ANOTHER-REFERENCE' },
-                  id: 3,
+                  id: 'comm-3',
                   content: 'CCC'
                 }
               ]

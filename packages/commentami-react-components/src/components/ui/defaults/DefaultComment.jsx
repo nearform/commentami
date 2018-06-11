@@ -44,5 +44,5 @@ DefaultComment.propTypes = {
     id: PropTypes.string.isRequired,
     author: PropTypes.string,
     content: PropTypes.string
-  }).isRequired
+  })
 }

@@ -23,6 +23,7 @@ describe('NewCommentForm', () => {
             placeholder="PLACEHOLDER"
             cancelLabel="CANCEL"
             submitLabel="SUBMIT"
+            reference="REFERENCE"
           />
         )
       )
