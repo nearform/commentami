@@ -25,7 +25,11 @@ describe('SidebarsController', () => {
   })
 
   test('should maintain the right active resource and reference', () => {
-    const wrapper = mount(<SidebarsController />)
+    const wrapper = mount(
+      <SidebarsController>
+        <div />
+      </SidebarsController>
+    )
     let state = wrapper.state()
 
     expect(state.isActive('RESOURCE')).toBeFalsy()
@@ -50,7 +54,11 @@ describe('SidebarsController', () => {
   })
 
   test('should correctly handle marker click events', () => {
-    const wrapper = mount(<SidebarsController />)
+    const wrapper = mount(
+      <SidebarsController>
+        <div />
+      </SidebarsController>
+    )
     let state = wrapper.state()
 
     expect(state.isActive('RESOURCE', 'REFERENCE')).toBeFalsy()
@@ -69,7 +77,11 @@ describe('SidebarsController', () => {
   })
 
   test('should correctly handle sidebar closing events', () => {
-    const wrapper = mount(<SidebarsController />)
+    const wrapper = mount(
+      <SidebarsController>
+        <div />
+      </SidebarsController>
+    )
     let state = wrapper.state()
 
     state.updateActive('RESOURCE', 'REFERENCE')
@@ -85,7 +97,11 @@ describe('SidebarsController', () => {
   test('should correctly handle double click events', () => {
     window.getSelection = jest.fn().mockReturnValue({ removeAllRanges: jest.fn() })
 
-    const wrapper = mount(<SidebarsController />)
+    const wrapper = mount(
+      <SidebarsController>
+        <div />
+      </SidebarsController>
+    )
     let state = wrapper.state()
 
     expect(state.isActive('RESOURCE', 'REFERENCE')).toBeFalsy()

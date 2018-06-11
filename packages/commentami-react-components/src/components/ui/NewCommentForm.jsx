@@ -1,12 +1,7 @@
 import React from 'react'
-import { withComments } from '../core/HOC'
+import PropTypes from 'prop-types'
 
-const defaultLabels = {
-  title: 'Add new comment',
-  placeholder: 'Enter some text ...',
-  cancelLabel: 'Cancel',
-  submitLabel: 'Add'
-}
+import { withComments } from '../core/HOC'
 
 export class NewCommentFormBase extends React.Component {
   constructor(props) {
@@ -37,10 +32,10 @@ export class NewCommentFormBase extends React.Component {
   }
 
   render() {
-    const { title, placeholder, cancelLabel, submitLabel, className } = Object.assign(defaultLabels, this.props)
+    const { title, placeholder, cancelLabel, submitLabel, className } = this.props
 
     return (
-      <form action="#" className={className || 'nf-comments-new-form'}>
+      <form action="#" className={className}>
         {title && <h2 className="nf-comments-new-form__title">{title}</h2>}
         <textarea
           ref={this.textareaRef}
@@ -67,4 +62,33 @@ export class NewCommentFormBase extends React.Component {
   }
 }
 
+NewCommentFormBase.displayName = 'NewCommentFormBase'
+
+NewCommentFormBase.defaultProps = {
+  className: 'nf-comments-new-form',
+  title: 'Add new comment',
+  placeholder: 'Enter some text ...',
+  cancelLabel: 'Cancel',
+  submitLabel: 'Add'
+}
+
+NewCommentFormBase.propTypes = {
+  title: PropTypes.string,
+  placeholder: PropTypes.string,
+  cancelLabel: PropTypes.string,
+  submitLabel: PropTypes.string,
+  className: PropTypes.string,
+
+  addComment: PropTypes.func.isRequired,
+
+  reference: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      id: PropTypes.string.isRequired
+    })
+  ]).isRequired
+}
+
 export const NewCommentForm = withComments(NewCommentFormBase)
+
+NewCommentForm.displayName = 'NewCommentForm'

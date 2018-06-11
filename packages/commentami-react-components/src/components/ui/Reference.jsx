@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import { withComments } from '../core/HOC'
 import { withSidebars } from './SidebarsController'
 import { DefaultMarker } from './defaults/DefaultMarker'
@@ -27,9 +29,6 @@ export class ReferenceBase extends React.Component {
       resource,
       reference
     } = this.props
-
-    if (!activeClassName) activeClassName = 'nf-comments-block--active'
-    if (!Marker) Marker = DefaultMarker
 
     return (
       <div
@@ -75,4 +74,40 @@ export class ReferenceBase extends React.Component {
   }
 }
 
+ReferenceBase.displayName = 'ReferenceBase'
+ReferenceBase.defaultProps = {
+  activeClassName: 'nf-comments-block--active',
+  markerComponent: DefaultMarker
+}
+
+ReferenceBase.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
+
+  activeClassName: PropTypes.string,
+
+  markerComponent: PropTypes.func,
+
+  hasComments: PropTypes.bool,
+
+  resource: PropTypes.string.isRequired,
+
+  reference: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      id: PropTypes.string.isRequired
+    })
+  ]).isRequired,
+
+  controller: PropTypes.shape({
+    handleClick: PropTypes.func,
+    handleContextMenu: PropTypes.func,
+    handleDoubleClick: PropTypes.func,
+    handleMouseEnter: PropTypes.func,
+    handleMouseLeave: PropTypes.func,
+    handleSelect: PropTypes.func
+  })
+}
+
 export const Reference = withSidebars(withComments(ReferenceBase))
+
+Reference.displayName = 'Reference'

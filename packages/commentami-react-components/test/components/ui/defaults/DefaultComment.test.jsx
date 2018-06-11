@@ -5,6 +5,7 @@ import { DefaultComment } from '../../../../src/components/ui/defaults/DefaultCo
 describe('DefaultComment', () => {
   test('renders correctly a comment', async () => {
     const comment = {
+      id: 'comm-1',
       author: 'my author',
       content: 'my content'
     }
@@ -23,6 +24,7 @@ describe('DefaultComment', () => {
 
   test('clicking on the remove button will invoce the removeComment function', async () => {
     const comment = {
+      id: 'comm-1',
       author: 'my author',
       content: 'my content'
     }

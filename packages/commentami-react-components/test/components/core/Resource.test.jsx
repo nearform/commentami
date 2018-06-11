@@ -10,7 +10,11 @@ describe('Resource', () => {
   beforeEach(() => {
     service = new CommentsMockService()
     service.getComments.mockReturnValue([])
-    wrapper = shallow(<Resource resource="page-1" service={service} />)
+    wrapper = shallow(
+      <Resource resource="page-1" service={service}>
+        <div />
+      </Resource>
+    )
   })
 
   describe('lifecycle', () => {

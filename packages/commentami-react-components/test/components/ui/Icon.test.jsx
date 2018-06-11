@@ -1,16 +1,16 @@
-import { shallow } from 'enzyme'
 import React from 'react'
+import { shallow } from 'enzyme'
 import { Icon } from '../../../src/components/ui/Icon'
 
 describe('Icon', () => {
   test('should render with good defaults', () => {
-    const wrapper = shallow(<Icon />)
+    const wrapper = shallow(<Icon path="PATH" />)
 
     expect(
       wrapper.equals(
         <svg version="1.1" viewBox="0 0 24 24" className="nf-comments-icon" width={24} height={24}>
           <g>
-            <path />
+            <path d="PATH" />
           </g>
         </svg>
       )

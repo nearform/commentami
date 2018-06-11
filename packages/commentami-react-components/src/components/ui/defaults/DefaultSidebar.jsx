@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import { CommentsList } from '../CommentsList'
 import { Icon } from '../Icon'
 import { NewCommentForm } from '../NewCommentForm'
@@ -32,7 +34,7 @@ export class DefaultSidebar extends React.Component {
     return (
       <div ref={this.rootRef} className="nf-comments-sidebar">
         <header className="nf-comments-sidebar__header">
-          <h1 className="nf-comments-sidebar__title">{this.props.title || 'Comments'}</h1>
+          <h1 className="nf-comments-sidebar__title">{this.props.title}</h1>
           <a className="nf-comments-sidebar__close" href="#" onClick={this.boundHandleClose}>
             <Icon
               viewBox="0 0 96 96"
@@ -45,4 +47,24 @@ export class DefaultSidebar extends React.Component {
       </div>
     )
   }
+}
+
+DefaultSidebar.displayName = 'DefaultSidebar'
+
+DefaultSidebar.defaultProps = {
+  title: 'Comments'
+}
+
+DefaultSidebar.propTypes = {
+  title: PropTypes.string,
+
+  controller: PropTypes.shape({
+    handleClick: PropTypes.func,
+    reference: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        id: PropTypes.string.isRequired
+      })
+    ])
+  })
 }

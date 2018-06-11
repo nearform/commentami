@@ -14,7 +14,7 @@ describe('Sidebar', () => {
   })
 
   test('should use the default sidebar by default', async () => {
-    const controller = { isActive: () => true }
+    const controller = { isActive: () => true, reference: 'ref-1' }
 
     const wrapper = mount(withSidebarsControllerContext(withResourceContext(<Sidebar />), controller))
 
@@ -22,7 +22,7 @@ describe('Sidebar', () => {
   })
 
   test('should use the provided component', async () => {
-    const controller = { isActive: () => true }
+    const controller = { isActive: () => true, reference: 'ref-1' }
 
     const wrapper = mount(
       withSidebarsControllerContext(withResourceContext(<Sidebar component={Children} />), controller)

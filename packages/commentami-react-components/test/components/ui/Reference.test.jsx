@@ -1,5 +1,6 @@
 import { mount } from 'enzyme'
 import React from 'react'
+
 import { Reference } from '../../../src/components/ui/Reference'
 import { withResourceContext, withSidebarsControllerContext } from '../../helpers/context'
 
@@ -16,7 +17,16 @@ describe('Reference', () => {
   test('should render without the active class and without a marker by default', () => {
     const controller = { isActive: () => false }
 
-    const wrapper = mount(withSidebarsControllerContext(withResourceContext(<Reference />), controller))
+    const wrapper = mount(
+      withSidebarsControllerContext(
+        withResourceContext(
+          <Reference reference="ref-1" resource="res-1">
+            <div />
+          </Reference>
+        ),
+        controller
+      )
+    )
 
     expect(wrapper.find('.nf-comments-block').length).toEqual(1)
     expect(wrapper.find('.nf-comments-block--active').length).toEqual(0)
@@ -26,11 +36,20 @@ describe('Reference', () => {
   test('should render with the active class and with a marker', () => {
     const controller = { isActive: () => true }
 
-    const wrapper = mount(withSidebarsControllerContext(withResourceContext(<Reference hasComments />), controller))
+    const wrapper = mount(
+      withSidebarsControllerContext(
+        withResourceContext(
+          <Reference reference="ref-1" resource="res-1" hasComments>
+            <div />
+          </Reference>
+        ),
+        controller
+      )
+    )
 
     expect(wrapper.find('.nf-comments-block').length).toEqual(1)
     expect(wrapper.find('.nf-comments-block--active').length).toEqual(1)
-    expect(wrapper.find('.nf-comments-marker').length).toEqual(1)
+    expect(wrapper.find('span.nf-comments-marker').length).toEqual(1)
   })
 
   test('should use a custom marker', () => {
@@ -38,7 +57,11 @@ describe('Reference', () => {
 
     const wrapper = mount(
       withSidebarsControllerContext(
-        withResourceContext(<Reference hasComments activeClassName="foo" markerComponent={Children} />),
+        withResourceContext(
+          <Reference reference="ref-1" resource="res-1" hasComments activeClassName="foo" markerComponent={Children}>
+            <div />
+          </Reference>
+        ),
         controller
       )
     )
@@ -61,7 +84,11 @@ describe('Reference', () => {
 
     const wrapper = mount(
       withSidebarsControllerContext(
-        withResourceContext(<Reference hasComments activeClassName="foo" markerComponent={Children} />),
+        withResourceContext(
+          <Reference reference="ref-1" resource="res-1" hasComments activeClassName="foo" markerComponent={Children}>
+            <div />
+          </Reference>
+        ),
         controller
       )
     )
