@@ -1,7 +1,6 @@
 import { STATE_FIELD_NAME } from './Comments'
 
-import { getDefaultState } from './reducers'
-import { getReference } from './reducers/resource'
+import { getDefaultState, getReference } from './helpers/getters'
 
 /**
  * Extract the CommentsState from the generic state

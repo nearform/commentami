@@ -1,19 +1,5 @@
-import { createReference, removeComment, setComment } from './reference'
-
-/**
- *
- * @param {Resource} state
- * @param {Reference} referenceOptions The reference options object
- * @param {string} referenceOptions.id The reference identifier
- * @returns {Reference}
- */
-export const getReference = (state, reference) => {
-  if (typeof reference === 'undefined' || reference === null) reference = ''
-
-  const id = typeof reference === 'string' ? reference : reference.id
-
-  return state.references[id] || createReference({ id })
-}
+import { removeComment, setComment } from './reference'
+import { getReference } from '../helpers/getters'
 
 /**
  * @param {Resource} state

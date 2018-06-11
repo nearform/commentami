@@ -3,32 +3,18 @@
  * @typedef {Object} Resource
  * @property {string} id - The resource identifier
  * @property {Object.<string, Reference>} references - The references stored in the resource
+ * @property {boolean} isInit - Identify if the state is initialized
+ * @property {null|Object} initError - The initialization error
+ * @property {boolean} isFetching - Identify if the state is fetching data
+ * @property {null|Object} fetchError - The fetching error
+ * @property {boolean} isUpdating - Identify if the state is updating
+ * @property {null|Object} updateError - The updating error
  */
 
 /**
  * A timestamp.
  * @typedef {(number)} Timestamp
  */
-
-import { createReference, removeComment, setComment } from './reference'
-
-/**
- * Generate the default state
- * @returns {Resource}
- */
-export const getDefaultState = idResource => ({
-  id: idResource,
-  references: {},
-
-  isInit: false,
-  initError: null,
-
-  isFetching: false,
-  fetchError: null,
-
-  isUpdating: false,
-  updateError: null
-})
 
 export const initialize = state => Object.assign({}, state, { isInit: false, initError: null })
 export const initializeSuccess = state => Object.assign({}, state, { isInit: true })

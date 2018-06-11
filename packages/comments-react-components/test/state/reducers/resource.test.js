@@ -1,23 +1,15 @@
-import { getDefaultState } from '../../../src/state/reducers'
-
 import {
-  getReference,
   removeCommentFromResource,
   removeReference,
   setCommentToResource,
   setReference
 } from '../../../src/state/reducers/resource'
 
-import { createComment } from '../../../src/state/reducers/comment'
-
-import { createReference } from '../../../src/state/reducers/reference'
+import { getDefaultState } from '../../../src/state/helpers/getters'
+import { createComment } from '../../../src/state/helpers/creators'
 
 describe('state/reducers/Resource', () => {
   describe('References', () => {
-    test('Create a reference', () => {
-      expect(createReference({ id: 20 })).toEqual({ id: 20, comments: {} })
-    })
-
     test('Add a reference to the state', () => {
       let state = getDefaultState('res-1')
 
@@ -31,16 +23,6 @@ describe('state/reducers/Resource', () => {
         references: { '10': { comments: {}, id: 10 } },
         updateError: null
       })
-    })
-
-    test('Get a reference', () => {
-      let state = getDefaultState('res-1')
-      state = setReference(state, { id: 'ref-1' })
-      state = setReference(state, { id: 'ref-2' })
-      state = setReference(state, { id: 'ref-3' })
-
-      expect(getReference(state, { id: 'ref-1' })).toEqual({ comments: {}, id: 'ref-1' })
-      expect(getReference(state, 'ref-1')).toEqual({ comments: {}, id: 'ref-1' })
     })
 
     test('Remove a reference', () => {

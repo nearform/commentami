@@ -1,28 +1,4 @@
-import { createComment } from './comment'
-
-/**
- * The reference object
- * @typedef {Object} Reference
- * @property {string} id - The Reference identifier
- * @property {Object.<string, Comment>} comments - The comments related to the reference
- */
-
-/**
- * Create a new Reference
- * @param {Reference|Object} referenceOptions The reference object
- * @param {string} referenceOptions.id The reference identifier
- * @returns {Reference}
- */
-export const createReference = ({ id }) => ({ id, comments: {} })
-
-/**
- *
- * @param {Reference} reference
- * @param {Comment} commentOptions The comment options object
- * @param {string} commentOptions.id The comment identifier
- * @returns {Comment}
- */
-export const getComment = (reference, { id }) => reference.comments[id] || createComment({ id })
+import { getComment } from '../helpers/getters'
 
 /**
  * @param {Reference} reference

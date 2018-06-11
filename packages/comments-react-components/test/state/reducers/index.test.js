@@ -2,7 +2,6 @@ import {
   fetching,
   fetchingFail,
   fetchingSuccess,
-  getDefaultState,
   initialize,
   initializeFail,
   initializeSuccess,
@@ -10,6 +9,7 @@ import {
   updatingFail,
   updatingSuccess
 } from '../../../src/state/reducers'
+import { getDefaultState } from '../../../src/state/helpers/getters'
 
 describe('state/reducers', () => {
   test('Init the state', () => {

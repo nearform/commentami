@@ -1,4 +1,4 @@
-import { CommentsState, STATE_FIELD_NAME } from '../../src/state/Comments'
+import { STATE_FIELD_NAME } from '../../src/state/Comments'
 
 import {
   referencesCount,
@@ -9,10 +9,9 @@ import {
   isInit
 } from '../../src/state/selectors'
 
-import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
-import { getDefaultState } from '../../src/state/reducers'
+import { getDefaultState } from '../../src/state/helpers/getters'
+import { createComment } from '../../src/state/helpers/creators'
 import { setCommentToResource } from '../../src/state/reducers/resource'
-import { createComment } from '../../src/state/reducers/comment'
 
 describe('state/selectors', () => {
   describe('With no state', () => {

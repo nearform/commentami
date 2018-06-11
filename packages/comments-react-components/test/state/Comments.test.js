@@ -3,7 +3,8 @@ import { commentsCount, selectCommentsByReference } from '../../src/state/select
 import { CommentsInMemoryService } from '../helpers/CommentsInMemoryService'
 import { CommentsMockService } from '../helpers/CommentsMockService'
 import { CommentsMockServiceWithStream } from '../helpers/CommentsMockServiceWithStream'
-import { getDefaultState, initializeSuccess, updating } from '../../src/state/reducers'
+import { initializeSuccess, updating } from '../../src/state/reducers'
+import { getDefaultState } from '../../src/state/helpers/getters'
 import { UPDATE_IN_PROGRESS_ERROR } from '../../src/state/errors'
 
 describe('state/Comments', () => {

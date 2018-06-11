@@ -1,5 +1,5 @@
-import { createComment } from '../../../src/state/reducers/comment'
-import { createReference, removeComment, setComment } from '../../../src/state/reducers/reference'
+import { createComment, createReference } from '../../../src/state/helpers/creators'
+import { removeComment, setComment } from '../../../src/state/reducers/reference'
 
 describe('state/reducers/Reference', () => {
   test('Add a comment to a reference', () => {
