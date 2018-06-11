@@ -1,4 +1,3 @@
-import { isInit, isFetching, isUpdating } from './selectors'
 import { CommentsStateError, UPDATE_IN_PROGRESS_ERROR } from './errors'
 import {
   initialize,
@@ -14,7 +13,6 @@ import {
 import { removeCommentFromResource, setCommentToResource } from './reducers/resource'
 import { getDefaultState } from './helpers/getters'
 
-console.log(12345)
 export const STATE_FIELD_NAME = 'commentsState'
 
 export class CommentsState {
