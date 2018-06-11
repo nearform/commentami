@@ -25,7 +25,7 @@ const body = renderToStaticMarkup(
 const index = renderToStaticMarkup(
   <html lang="en">
     <head>
-      <title>Comments Demo Application</title>
+      <title>Commentami - Demo Application</title>
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta charSet="utf8" />
       <meta name="description" content="Comments Demo Application" />

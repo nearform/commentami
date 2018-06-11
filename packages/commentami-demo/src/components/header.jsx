@@ -56,7 +56,7 @@ export function Header() {
     <header className={headerClassName}>
       <nav className={headerNavClassName}>
         <NavLink to="/" className={headerTitleClassName}>
-          Comments Demo
+          Commentami Demo
         </NavLink>
 
         <NavLink to="/plain" className={headerLinkClassName}>
