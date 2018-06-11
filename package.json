@@ -23,7 +23,7 @@
   },
   "main": "lib/index.js",
   "bin": {
-    "comments-backend-hapi-server": "start.js"
+    "commentami-backend-hapi-server": "start.js"
   },
   "scripts": {
     "clean": "lerna clean --yes && lerna run clean",
@@ -33,13 +33,13 @@
     "format": "prettier --write --ignore-path .gitignore **/*.js **/*.jsx",
     "lint": "eslint --ignore-path .gitignore packages/**/*.js packages/**/*.jsx packages/**/*.test.js packages/**/*.test.jsx",
     "outdated:all": "npm outdated || echo 'Outdated packages found.'; lerna exec \"npm outdated || echo 'Outdated packages found.'\"",
-    "pg:init": "cd packages/comments-backend-core && npm run pg:init",
-    "pg:test:init": "cd packages/comments-backend-core && npm run pg:test:init",
-    "pg:migrate": "cd packages/comments-backend-core && npm run pg:migrate",
+    "pg:init": "cd packages/commentami-backend-core && npm run pg:init",
+    "pg:test:init": "cd packages/commentami-backend-core && npm run pg:test:init",
+    "pg:migrate": "cd packages/commentami-backend-core && npm run pg:migrate",
     "postinstall": "lerna bootstrap",
     "sanity:environment": "npm run doc:lint && npm run lint && npm run depcheck",
     "sanity": "npm run sanity:environment && npm run test",
-    "start": "cd packages/comments-backend-hapi-server && npm run start",
+    "start": "cd packages/commentami-backend-hapi-server && npm run start",
     "test": "npm run pg:test:init && lerna run test"
   },
   "devDependencies": {

@@ -18,13 +18,13 @@ jobs:
       - restore_cache:
           key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
       - restore_cache:
-          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-core/package-lock.json" }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/commentami-backend-core/package-lock.json" }}
       - restore_cache:
-          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-plugin/package-lock.json" }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/commentami-backend-hapi-plugin/package-lock.json" }}
       - restore_cache:
-          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-server/package-lock.json" }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/commentami-backend-hapi-server/package-lock.json" }}
       - restore_cache:
-          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-react-components/package-lock.json" }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/commentami-react-components/package-lock.json" }}
 
       - run:
           command: npm install
@@ -34,21 +34,21 @@ jobs:
           paths:
             - node_modules
       - save_cache:
-          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-core/package-lock.json" }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/commentami-backend-core/package-lock.json" }}
           paths:
-            - packages/comments-backend-core/node_modules
+            - packages/commentami-backend-core/node_modules
       - save_cache:
-          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-plugin/package-lock.json" }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/commentami-backend-hapi-plugin/package-lock.json" }}
           paths:
-            - packages/comments-backend-hapi-plugin/node_modules
+            - packages/commentami-backend-hapi-plugin/node_modules
       - save_cache:
-          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-backend-hapi-server/package-lock.json" }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/commentami-backend-hapi-server/package-lock.json" }}
           paths:
-            - packages/comments-backend-hapi-server/node_modules
+            - packages/commentami-backend-hapi-server/node_modules
       - save_cache:
-          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/comments-react-components/package-lock.json" }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "packages/commentami-react-components/package-lock.json" }}
           paths:
-            - packages/comments-react-components/node_modules
+            - packages/commentami-react-components/node_modules
 
       - run:
           command: npm run sanity

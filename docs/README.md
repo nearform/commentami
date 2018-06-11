@@ -4,7 +4,7 @@ Comments is a commenting system designed to add comments like the ones you can a
 
 The fronted is based on [Reactjs >= 16](https://reactjs.org).
 
-Comments backend can be used as a standalone node.js module ([comments-backend-core](https://github.com/nearform/comments/tree/master/packages/comments-backend-core)), as a Hapi plugin that provides a REST API and websockets ([comments-backend-hapi-plugin](https://github.com/nearform/comments/tree/master/packages/comments-backend-hapi-plugin)), and as a stand alone server ([comments-backend-server](https://github.com/nearform/comments/tree/master/packages/comments-backend-hapi-server)).
+Comments backend can be used as a standalone node.js module ([commentami-backend-core](https://github.com/nearform/comments/tree/master/packages/commentami-backend-core)), as a Hapi plugin that provides a REST API and websockets ([commentami-backend-hapi-plugin](https://github.com/nearform/comments/tree/master/packages/commentami-backend-hapi-plugin)), and as a stand alone server ([commentami-backend-hapi-server](https://github.com/nearform/comments/tree/master/packages/commentami-backend-hapi-server)).
 
 Comments frontend components are built to have logic and presentation separetated. This should give as much freedom as possible in integrating these components in your UI.
 

@@ -6,9 +6,9 @@ React Comments system
 
 | Module                                                                 | Package                                                                            |
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| [@nearform/comments-backend-core][comments-backend-core]               | [./packages/comments-backend-core](./packages/comments-backend-core)               |
-| [@nearform/comments-backend-hapi-plugin][comments-backend-hapi-plugin] | [./packages/comments-backend-hapi-plugin](./packages/comments-backend-hapi-plugin) |
-| [@nearform/comments-backend-hapi-server][comments-backend-hapi-server] | [./packages/comments-backend-hapi-server](./packages/comments-backend-hapi-server) |
+| [@nearform/commentami-backend-core][commentami-backend-core]               | [./packages/commentami-backend-core](./packages/commentami-backend-core)               |
+| [@nearform/commentami-backend-hapi-plugin][commentami-backend-hapi-plugin] | [./packages/commentami-backend-hapi-plugin](./packages/commentami-backend-hapi-plugin) |
+| [@nearform/commentami-backend-hapi-server][commentami-backend-hapi-server] | [./packages/commentami-backend-hapi-server](./packages/commentami-backend-hapi-server) |
 
 ### Node.js support
 
@@ -49,10 +49,10 @@ This command will also migrate the tables to their most recent structure.
 
 ### Migrations
 
-We use [`postgrator`][postgrator] for database migrations. You can find the sql files in the [`packages/comments-backend-core/database/migrations`](https://github.com/nearform/comments/tree/master/packages/comments-backend-core/database/migrations) folder. To run the migrations manually:
+We use [`postgrator`][postgrator] for database migrations. You can find the sql files in the [`packages/commentami-backend-core/database/migrations`](https://github.com/nearform/comments/tree/master/packages/commentami-backend-core/database/migrations) folder. To run the migrations manually:
 
 ```
-npm run pg:migrate // either in the root folder or in the `comments-backend-core` folder
+npm run pg:migrate // either in the root folder or in the `commentami-backend-core` folder
 ```
 
 ### pgAdmin database access
@@ -146,9 +146,9 @@ the output should be something like
 
 Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].
 
-[comments-backend-core]: https://www.npmjs.com/package/@nearform/comments-backend-core
-[comments-backend-hapi-plugin]: https://www.npmjs.com/package/@nearform/comments-backend-hapi-plugin
-[comments-backend-hapi-server]: https://www.npmjs.com/package/@nearform/comments-backend-hapi-server
+[commentami-backend-core]: https://www.npmjs.com/package/@nearform/commentami-backend-core
+[commentami-backend-hapi-plugin]: https://www.npmjs.com/package/@nearform/commentami-backend-hapi-plugin
+[commentami-backend-hapi-server]: https://www.npmjs.com/package/@nearform/commentami-backend-hapi-server
 [node]: https://nodejs.org/it/
 [hapi]: https://hapijs.com/
 [postgrator]: https://github.com/rickbergfalk/postgrator

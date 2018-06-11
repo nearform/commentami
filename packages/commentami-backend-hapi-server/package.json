@@ -1,0 +1,42 @@
+{
+  "name": "@nearform/commentami-backend-hapi-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Comments",
+  "license": "Apache-2.0",
+  "author": "nearForm Ltd",
+  "contributors": [
+    "Filippo De Santis (https://github.com/p16)",
+    "Davide Fiorello (https://github.com/codeflyer)",
+    "Paolo Insogna (https://github.com/ShogunPanda)"
+  ],
+  "homepage": "https://github.com/nearform/comments#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nearform/comments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nearform/comments/issues"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "coverage": "NODE_ENV=test lab -c --coverage-exclude config -r lcov test",
+    "pg:test:init": "NODE_ENV=test node ../commentami-backend-core/database/init.js && NODE_ENV=test node ../commentami-backend-core/database/migrate.js max",
+    "depcheck": "../../node_modules/depcheck/bin/depcheck",
+    "start": "node start.js",
+    "test": "NODE_ENV=test lab -c --coverage-exclude config test"
+  },
+  "dependencies": {
+    "@nearform/commentami-backend-hapi-plugin": "^0.1.0",
+    "hapi": "^17.5.0",
+    "hapi-pino": "^4.0.4"
+  },
+  "devDependencies": {
+    "code": "^5.2.0",
+    "lab": "^15.4.5",
+    "sinon": "^5.0.10"
+  }
+}
