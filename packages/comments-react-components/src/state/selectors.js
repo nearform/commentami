@@ -1,5 +1,6 @@
 import { STATE_FIELD_NAME } from './Comments'
-import { getDefaultState, getReference } from './helpers'
+
+import { getDefaultState, getReference } from './helpers/getters'
 
 /**
  * Extract the CommentsState from the generic state
@@ -48,3 +49,9 @@ export const referencesCount = state => Object.keys(_(state).references).length
  * @returns {number} The number of comments
  */
 export const commentsCount = (state, reference) => Object.keys(getReference(_(state), reference).comments).length
+
+export const isUpdating = state => _(state).isUpdating
+
+export const isFetching = state => _(state).isFetching
+
+export const isInit = state => _(state).isInit

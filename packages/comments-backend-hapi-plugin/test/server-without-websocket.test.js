@@ -23,6 +23,7 @@ describe('Comments REST API', () => {
     return server.stop()
   })
 
+  /* eslint-disable max-len */
   describe('Websocket - if the plugin option disableWebsocket is true, we should not be able to connect through websockets', () => {
     test('it should list all resource refereces', async () => {
       try {

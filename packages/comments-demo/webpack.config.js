@@ -8,7 +8,12 @@ module.exports = function(environment) {
 
   const plugins = [
     new EnvironmentPlugin({ NODE_ENV: environment }),
-    new HtmlWebpackPlugin({ template: './src/index.html.jsx', minify: { collapseWhitespace: true }, inject: false, excludeAssets: [/\.js$/] })
+    new HtmlWebpackPlugin({
+      template: './src/index.html.jsx',
+      minify: { collapseWhitespace: true },
+      inject: false,
+      excludeAssets: [/\.js$/]
+    })
   ]
 
   // Customize output

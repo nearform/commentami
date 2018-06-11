@@ -1,5 +1,20 @@
-import { getDefaultState, removeCommentFromState, setCommentToState } from './helpers'
+import { isInit, isFetching, isUpdating } from './selectors'
+import { CommentsStateError, UPDATE_IN_PROGRESS_ERROR } from './errors'
+import {
+  initialize,
+  initializeFail,
+  initializeSuccess,
+  updatingSuccess,
+  updatingFail,
+  updating,
+  fetchingSuccess,
+  fetchingFail,
+  fetching
+} from './reducers'
+import { removeCommentFromResource, setCommentToResource } from './reducers/resource'
+import { getDefaultState } from './helpers/getters'
 
+console.log(12345)
 export const STATE_FIELD_NAME = 'commentsState'
 
 export class CommentsState {
@@ -26,7 +41,9 @@ export class CommentsState {
    */
   get state() {
     const providerCommentsState = this.getProviderState()[STATE_FIELD_NAME]
-    return providerCommentsState && providerCommentsState.id === this.resource ? providerCommentsState : this.defaultState
+    return providerCommentsState && providerCommentsState.id === this.resource
+      ? providerCommentsState
+      : this.defaultState
   }
 
   /**
@@ -42,10 +59,16 @@ export class CommentsState {
    * @returns {Promise<void>}
    */
   async subscribe() {
-    await this.refresh()
-    // FIXME if the time between the refresh and the subscribe an event occurs, is lost.
-    // (Eg. Fix adding a timestamp for the subscription and returns all the comments since the timestamp)
-    await this.subscribeToResourceChange()
+    this.updateState(initialize(this.state))
+    try {
+      await this.refresh(true)
+      // FIXME if the time between the refresh and the subscribe an event occurs, is lost.
+      // (Eg. Fix adding a timestamp for the subscription and returns all the comments since the timestamp)
+      await this.subscribeToResourceChange()
+      this.updateState(initializeSuccess(this.state))
+    } catch (e) {
+      this.updateState(initializeFail(this.state, e))
+    }
   }
 
   /**
@@ -59,15 +82,21 @@ export class CommentsState {
    *
    * @returns {Promise<void>}
    */
-  async refresh() {
-    const result = await this.service.getComments(this.resource)
-    let state = this.state
-    result.forEach(comment => {
-      // FIXME The service returns the reference as a string, the structure requires an object in the format {id: ...}
-      state = setCommentToState(state, { id: comment.reference }, comment)
-    })
+  async refresh(isSubscribing) {
+    this.updateState(fetching(this.state))
+    try {
+      const result = await this.service.getComments(this.resource)
+      let state = this.state
+      result.forEach(comment => {
+        // FIXME The service returns the reference as a string, the structure requires an object in the format {id: ...}
+        state = setCommentToResource(state, { id: comment.reference }, comment)
+      })
 
-    this.updateState(state)
+      this.updateState(fetchingSuccess(state))
+    } catch (e) {
+      this.updateState(fetchingFail(this.state, e))
+      if (isSubscribing) throw e
+    }
   }
 
   /**
@@ -76,10 +105,19 @@ export class CommentsState {
    * @returns {Promise<*|void>}
    */
   async addComment(comment) {
-    const result = await this.service.addComment(this.resource, comment)
+    if (this.state.isUpdating)
+      throw new CommentsStateError('Tried to add a comment while the state is still updating', UPDATE_IN_PROGRESS_ERROR)
 
-    this.updateState(setCommentToState(this.state, comment.reference, result))
-    return result
+    this.updateState(updating(this.state))
+    try {
+      const result = await this.service.addComment(this.resource, comment)
+
+      const state = setCommentToResource(this.state, comment.reference, result)
+      this.updateState(updatingSuccess(state))
+      return result
+    } catch (e) {
+      this.updateState(updatingFail(this.state, e))
+    }
   }
 
   /**
@@ -88,8 +126,20 @@ export class CommentsState {
    * @returns {Promise<void>}
    */
   async removeComment(comment) {
-    await this.service.removeComment(comment)
-    this.updateState(removeCommentFromState(this.state, comment.reference, comment))
+    if (this.state.isUpdating)
+      throw new CommentsStateError(
+        'Tried to remove a comment while the state is still updating',
+        UPDATE_IN_PROGRESS_ERROR
+      )
+
+    this.updateState(updating(this.state))
+    try {
+      await this.service.removeComment(comment)
+      const state = removeCommentFromResource(this.state, comment.reference, comment)
+      this.updateState(updatingSuccess(state))
+    } catch (e) {
+      this.updateState(updatingFail(this.state, e))
+    }
   }
 
   /**
@@ -102,10 +152,10 @@ export class CommentsState {
     this.unsubscribeFromResourceChange = await this.service.onResourceChange(this.resource, event => {
       switch (event.action) {
         case 'add':
-          this.updateState(setCommentToState(this.state, { id: event.comment.reference }, event.comment))
+          this.updateState(setCommentToResource(this.state, { id: event.comment.reference }, event.comment))
           break
         case 'delete':
-          this.updateState(removeCommentFromState(this.state, { id: event.comment.reference }, event.comment))
+          this.updateState(removeCommentFromResource(this.state, { id: event.comment.reference }, event.comment))
           break
         default:
           this.logger.warn('Event note expected', event.action)

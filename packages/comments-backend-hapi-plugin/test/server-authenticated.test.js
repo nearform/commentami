@@ -2,7 +2,6 @@
 
 const { expect } = require('code')
 const Lab = require('lab')
-const { random, lorem, name, internet } = require('faker')
 
 module.exports.lab = Lab.script()
 const { describe, it: test, before, after } = module.exports.lab
@@ -17,7 +16,7 @@ describe('Comments REST API', () => {
     await resetDb()
     server = await buildServer({
       auth: true,
-      pluginOptions : {
+      pluginOptions: {
         routes: {
           auth: 'myauth',
           getUser: async (request, payload) => {
@@ -49,7 +48,7 @@ describe('Comments REST API', () => {
         method: 'GET',
         url: `/comments-references/abc`,
         headers: {
-          'authorization': 'somthing that will make the test pass'
+          authorization: 'somthing that will make the test pass'
         }
       })
 
@@ -70,7 +69,7 @@ describe('Comments REST API', () => {
           content: 'MESSAGE'
         },
         headers: {
-          'authorization': 'somthing that will make the test pass'
+          authorization: 'somthing that will make the test pass'
         }
       })
 
