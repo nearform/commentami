@@ -1,7 +1,9 @@
 import React from 'react'
 import warning from 'warning'
+
 import { commentsCount } from '../../state/selectors'
 import { ResourceContext } from './Resource'
+import PropTypes from 'prop-types'
 
 export function flexibleRender({ render, component: Component, children }, renderProps, defaultComponent) {
   if (!Component) Component = defaultComponent
@@ -17,7 +19,7 @@ export function flexibleRender({ render, component: Component, children }, rende
 }
 
 export function withComments(Component) {
-  return class extends React.Component {
+  class WithComments extends React.Component {
     get hasCommentable() {
       // This check works since the consumer will provide the context default value, which is 'commentable'
       return this.commentable && this.commentable !== 'commentable'
@@ -71,27 +73,50 @@ export function withComments(Component) {
       return <ResourceContext.Consumer>{commentable => this._renderInner(commentable)}</ResourceContext.Consumer>
     }
   }
+
+  WithComments.displayName = `WithComments(${Component.displayName || Component.name})`
+  WithComments.propTypes = {
+    reference: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        id: PropTypes.string.isRequired
+      })
+    ])
+  }
+
+  return WithComments
 }
 
 export function withReference(Component) {
-  return withComments(
-    class extends React.Component {
-      // TODO@PI: Make sure the reference is unique within the provider
-      _checkProps() {
-        warning(this.props.reference, `The commentable block component should have a reference prop`)
-      }
-
-      componentDidMount() {
-        this._checkProps()
-      }
-
-      componentDidUpdate() {
-        this._checkProps()
-      }
-
-      render() {
-        return <Component {...this.props} />
-      }
+  class WithReference extends React.Component {
+    // TODO@PI: Make sure the reference is unique within the provider
+    _checkProps() {
+      warning(this.props.reference, `The commentable block component should have a reference prop`)
     }
-  )
+
+    componentDidMount() {
+      this._checkProps()
+    }
+
+    componentDidUpdate() {
+      this._checkProps()
+    }
+
+    render() {
+      return <Component {...this.props} />
+    }
+  }
+
+  WithReference.displayName = `WithReference(${Component.displayName || Component.name})`
+
+  WithReference.propTypes = {
+    reference: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        id: PropTypes.string.isRequired
+      })
+    ]).isRequired
+  }
+
+  return withComments(WithReference)
 }

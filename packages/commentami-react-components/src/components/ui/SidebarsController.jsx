@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export const SidebarsControllerContext = React.createContext('controller')
 
@@ -56,12 +57,22 @@ export class SidebarsController extends React.Component {
   }
 }
 
+SidebarsController.displayName = 'SidebarsController'
+
+SidebarsController.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired
+}
+
 export function withSidebars(Component) {
-  return function(props) {
+  const WithSidebars = function(props) {
     return (
       <SidebarsControllerContext.Consumer>
         {controller => <Component {...props} controller={controller} />}
       </SidebarsControllerContext.Consumer>
     )
   }
+
+  WithSidebars.displayName = `WithSidebars(${Component.displayName || Component.name})`
+
+  return WithSidebars
 }

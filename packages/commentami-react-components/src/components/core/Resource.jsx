@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import { CommentsState } from '../../state/Comments'
 import { createComment } from '../../state/helpers/creators'
 
@@ -8,7 +10,7 @@ export const ResourceContext = React.createContext('commentable')
 export class Resource extends React.Component {
   constructor(props) {
     super(props)
-    this.logger = this.props.logger || console
+    this.logger = this.props.logger
 
     this.commentsState = new CommentsState({
       service: this.props.service,
@@ -129,4 +131,30 @@ export class Resource extends React.Component {
   render() {
     return <ResourceContext.Provider value={this.state} children={this.props.children} />
   }
+}
+
+Resource.displayName = 'Resource'
+
+Resource.defaultProps = {
+  logger: console
+}
+
+Resource.propTypes = {
+  resource: PropTypes.string.isRequired,
+
+  service: PropTypes.shape({
+    addComment: PropTypes.func.isRequired,
+    removeComment: PropTypes.func.isRequired,
+    getComments: PropTypes.func.isRequired,
+    onResourceChange: PropTypes.func
+  }).isRequired,
+
+  logger: PropTypes.shape({
+    error: PropTypes.func.isRequired,
+    debug: PropTypes.func.isRequired,
+    info: PropTypes.func.isRequired,
+    warn: PropTypes.func.isRequired
+  }),
+
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired
 }
