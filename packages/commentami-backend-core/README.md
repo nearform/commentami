@@ -1,7 +1,5 @@
 # @nearform/commentami-backend-core
 
-Comments is a comments management system. \[...tbd...\]
-
 `@nearform/commentami-backend-core` is the low level library used by `@nearform/commentami-backend-hapi-plugin`. This library manages the CRUD actions for comments.
 
 ## Install

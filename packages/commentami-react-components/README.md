@@ -2,9 +2,7 @@
 
 `@nearform/commentami-react-components` is a ready to use set of React components to add commenting functionality on existing React applications.
 
-It uses the [@nearform/commentami-backend-\*][comments] packages as backend.
-
-The POC is just an architectural design attemp made to have a starting discussion point.
+It uses the [@nearform/commentami-backend-\*][commentami] packages as backend.
 
 The Components created use the new React Context API (> 16).
 

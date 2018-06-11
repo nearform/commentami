@@ -1,6 +1,6 @@
 # @nearform/commentami-demo
 
-A demo app showing the usage of the [@nearform/comments-backend-\*][comments] packages on both client and server.
+A demo app showing the usage of the [@nearform/comments-backend-\*][commentami] packages on both client and server.
 
 ## Quick start
 

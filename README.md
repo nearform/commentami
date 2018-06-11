@@ -1,8 +1,8 @@
-# @nearform/comments
+# @nearform/commentami
 
 [![CircleCI](https://circleci.com/gh/nearform/comments/tree/master.svg?style=svg&circle-token=560be71ca1b0f5855e1e3462a69221bc34da3aac)](https://circleci.com/gh/nearform/comments/tree/master)
 
-React Comments system
+Commentami - React Comments system (Google doc like)
 
 | Module                                                                 | Package                                                                            |
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
@@ -12,20 +12,20 @@ React Comments system
 
 ### Node.js support
 
-Comments requires [Node.js][node] 8.9.0+.
+Commentami requires [Node.js][node] 8.9.0+.
 
 The [Hapi][hapi] plugin and server packages require Hapi 17+.
 
 ### Dependencies
 
-Comments requires an instance of Postgres (version 9.5+) and redis to function correctly. For simplicity, a preconfigured `docker-compose` file has been provided. To run it:
+Commentami requires an instance of Postgres (version 9.5+) and redis to function correctly. For simplicity, a preconfigured `docker-compose` file has been provided. To run it:
 
 ```
 docker-compose up postgres redis
 ```
 
 * **Note:** Ensure you are using the latest version of Docker for (Linux/OSX/Windows)
-* **Note:** Comments needs PostgreSQL >= 9.5
+* **Note:** Commentami needs PostgreSQL >= 9.5
 
 ### Install
 
