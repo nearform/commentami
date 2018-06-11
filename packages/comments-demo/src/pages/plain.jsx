@@ -1,10 +1,11 @@
-import { Resource } from '@nearform/comments-react-components'
-import { Reference, SidebarsController, Sidebar } from '@nearform/comments-react-components/dist/ui'
 import React from 'react'
-import { localStorageService } from '../services/localStorage'
+import { Resource, WebsocketService } from '@nearform/comments-react-components'
+import { Reference, SidebarsController, Sidebar } from '@nearform/comments-react-components/dist/ui'
+// import { localStorageService } from '../services/localStorage'
 import { pageClassName } from './index'
 
-const service = localStorageService()
+const service = WebsocketService('ws://localhost:8080/')
+// const service = localStorageService()
 
 export function PlainPage() {
   return (
