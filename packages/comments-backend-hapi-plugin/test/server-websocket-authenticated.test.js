@@ -3,7 +3,6 @@
 const Nes = require('nes')
 const { expect } = require('code')
 const Lab = require('lab')
-const { random, lorem, name, internet } = require('faker')
 
 module.exports.lab = Lab.script()
 const { describe, it: test, before, after } = module.exports.lab
@@ -20,7 +19,7 @@ describe('Comments REST API', () => {
       port: 8281,
       host: '127.0.0.1',
       auth: true,
-      pluginOptions : {
+      pluginOptions: {
         nes: {
           auth: {
             type: 'token',

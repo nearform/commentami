@@ -31,7 +31,7 @@
     "doc:lint": "remark .",
     "coverage": "lerna run coverage",
     "format": "prettier --write --ignore-path .gitignore **/*.js **/*.jsx",
-    "lint": "eslint --ignore-path .gitignore **/*.js **/*.jsx",
+    "lint": "eslint --ignore-path .gitignore packages/**/*.js packages/**/*.jsx packages/**/*.test.js packages/**/*.test.jsx",
     "outdated:all": "npm outdated || echo 'Outdated packages found.'; lerna exec \"npm outdated || echo 'Outdated packages found.'\"",
     "pg:init": "cd packages/comments-backend-core && npm run pg:init",
     "pg:test:init": "cd packages/comments-backend-core && npm run pg:test:init",
