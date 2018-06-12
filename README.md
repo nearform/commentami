@@ -8,13 +8,51 @@ Commentami - React Comments system (Google doc like)
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | [@nearform/commentami-backend-core][commentami-backend-core]               | [./packages/commentami-backend-core](./packages/commentami-backend-core)               |
 | [@nearform/commentami-backend-hapi-plugin][commentami-backend-hapi-plugin] | [./packages/commentami-backend-hapi-plugin](./packages/commentami-backend-hapi-plugin) |
-| [@nearform/commentami-backend-hapi-server][commentami-backend-hapi-server] | [./packages/commentami-backend-hapi-server](./packages/commentami-backend-hapi-server) |
+| [@nearform/commentami-react-components][commentami-react-components] | [./packages/commentami-react-components](./packages/commentami-react-components) |
+
+## Frontend
+
+Commentami React components requires [React][node] 16.3+.
+
+### Build the components
+
+To build the frontend you can run the following command
+
+```
+cd packages/commentami-react-components
+
+npm run build
+```
+
+This will place in the `dist` folder the compiled components.
+
+If you want to see them in action you can start the demo from `packages/commentami-demo`
+
+```
+cd packages/commentami-demo
+
+npm run watch
+```
+
+To save comments on the server and have an example of sockets and HTTP REST apis you will need to start the server as described below.
+
+## Backend
 
 ### Node.js support
 
 Commentami requires [Node.js][node] 8.9.0+.
 
 The [Hapi][hapi] plugin and server packages require Hapi 17+.
+
+### Install
+
+To install all the dependecies you can run
+
+```
+npm install
+```
+
+in the root of the project.
 
 ### Dependencies
 
@@ -26,16 +64,6 @@ docker-compose up postgres redis
 
 * **Note:** Ensure you are using the latest version of Docker for (Linux/OSX/Windows)
 * **Note:** Commentami needs PostgreSQL >= 9.5
-
-### Install
-
-To install all the dependecies you can run
-
-```
-npm install
-```
-
-in the root of the project.
 
 #### Populate the database
 
@@ -75,7 +103,9 @@ npm run lint
 
 ## Runnig the server on docker
 
-If you don't want to run things locally you can use docker.
+**The following configuration is just for local development/demo, it is not for production environments**
+
+If you don't want to run all services and the server on your machine, you can use docker.
 
 To setup the images/containers you should have docker installed locally and then run:
 
@@ -83,7 +113,7 @@ To setup the images/containers you should have docker installed locally and then
 docker-compose build
 ```
 
-This should produce something as the following output
+This should produce something like the following output
 
 ```
 # docker-compose build
@@ -114,18 +144,18 @@ docker-compose up
 
 ### Initializing the db
 
-you can run
+You can run
 
 ```
-docker exec comments_app_1 npm run pg:init
+docker exec app_1 npm run pg:init
 ```
 
 ### Run tests
 
-to run the tests use
+To run the tests use
 
 ```
-docker exec comments_app_1 npm test
+docker exec app_1 npm test
 ```
 
 ### Pinging the app from curl
@@ -148,7 +178,7 @@ Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].
 
 [commentami-backend-core]: https://www.npmjs.com/package/@nearform/commentami-backend-core
 [commentami-backend-hapi-plugin]: https://www.npmjs.com/package/@nearform/commentami-backend-hapi-plugin
-[commentami-backend-hapi-server]: https://www.npmjs.com/package/@nearform/commentami-backend-hapi-server
+[commentami-react-components]: https://www.npmjs.com/package/@nearform/commentami-react-components
 [node]: https://nodejs.org/it/
 [hapi]: https://hapijs.com/
 [postgrator]: https://github.com/rickbergfalk/postgrator
