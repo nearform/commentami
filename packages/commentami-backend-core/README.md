@@ -12,16 +12,16 @@ npm install @nearform/commentami-backend-core
 
 ## Model
 
-In `@nearform/commentami-backend-core` a comment is an obejct with the following property
+In `@nearform/commentami-backend-core` a comment is an obejct with the following properties
 
 ```
 Comment {
-  id,
-  resource,
-  reference,
-  content,
-  author,
-  createdAt
+  id, // int
+  resource, // long string
+  reference, // string
+  content, // text
+  author, // optional, string
+  createdAt // date
 }
 ```
 
@@ -220,27 +220,21 @@ To initialize the db you can run:
 npm run pg:test:init
 ```
 
-This will drop the `comments` databse if it exists. Re-create it and migrate it to the latest schema.
+This will drop the `comments_test` database if it exists. Re-create it and migrate it to the latest schema.
 
 For local development there should be sensible defaults in [`config/index.js`](./config/index.js).
 
 #### Postgres and Redis on Docker?
 
-If you want to run postgres/redis on docker, install [docker](https://docs.docker.com/install/) and run the following command
+If you want to run postgres on docker, install [docker](https://docs.docker.com/install/) and run the following command
 
 ```
-docker-compose up postgres redis
+docker-compose up postgres
 ```
 
 ### Run tests
 
-Once the db is up, you need to initialize the database
-
-```
-npm run pg:test:init
-```
-
-and the run
+Once the db is up and initialized, run
 
 ```
 npm test
