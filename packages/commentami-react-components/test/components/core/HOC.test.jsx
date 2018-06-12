@@ -1,6 +1,6 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { withComments, withReference, flexibleRender } from '../../../src/components/core/HOC'
+import { withResource, withReference, flexibleRender } from '../../../src/components/core/HOC'
 import { ResourceContext } from '../../../src/components/core/Resource'
 
 function PropsChildren({ resource, reference }) {
@@ -11,7 +11,7 @@ function PropsChildren({ resource, reference }) {
   )
 }
 
-function Children({ withComments, resource }) {
+function Children({ withResource, resource }) {
   return <span>1</span>
 }
 
@@ -51,7 +51,7 @@ describe('flexibleRender', () => {
 describe('commentable', () => {
   test('should warn if included outside of a context', () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation()
-    const CommentableComponent = withComments(Children)
+    const CommentableComponent = withResource(Children)
 
     const wrapper = mount(
       <ResourceContext.Provider>
@@ -68,7 +68,7 @@ describe('commentable', () => {
   describe('.render', () => {
     test('should render the providen component with the right properties', () => {
       const context = { reference: 'REFERENCE', resource: 'RESOURCE' }
-      const CommentableComponent = withComments(PropsChildren)
+      const CommentableComponent = withResource(PropsChildren)
 
       const wrapper = mount(
         <ResourceContext.Provider value={context}>
@@ -80,7 +80,7 @@ describe('commentable', () => {
     })
 
     test('should declare no comments by default', () => {
-      const CommentableComponent = withComments(Children)
+      const CommentableComponent = withResource(Children)
 
       const wrapper = mount(
         <ResourceContext.Provider>
@@ -104,7 +104,7 @@ describe('commentable', () => {
           }
         }
       }
-      const CommentableComponent = withComments(Children)
+      const CommentableComponent = withResource(Children)
 
       const wrapper = mount(
         <ResourceContext.Provider value={context}>
@@ -127,7 +127,7 @@ describe('commentable', () => {
         addComment: jest.fn(),
         removeComment: jest.fn()
       }
-      const CommentableComponent = withComments(Children)
+      const CommentableComponent = withResource(Children)
 
       const instance = mount(
         <ResourceContext.Provider value={commentableContext}>
@@ -146,7 +146,7 @@ describe('commentable', () => {
         addComment: jest.fn(),
         removeComment: jest.fn()
       }
-      const CommentableComponent = withComments(Children)
+      const CommentableComponent = withResource(Children)
 
       const instance = mount(
         <ResourceContext.Provider value={commentableContext}>

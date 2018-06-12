@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { createPortal } from 'react-dom'
-import { withComments, flexibleRender } from '../core/HOC'
+import { withResource, flexibleRender } from '../core/HOC'
 import { withSidebars } from './SidebarsController'
 import { DefaultSidebar } from './defaults/DefaultSidebar'
 
@@ -41,5 +41,5 @@ SidebarBase.propTypes = {
   className: PropTypes.string
 }
 
-export const Sidebar = withSidebars(withComments(SidebarBase))
+export const Sidebar = withSidebars(withResource(SidebarBase))
 Sidebar.displayName = 'Sidebar'

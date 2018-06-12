@@ -1,17 +1,17 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import warning from 'warning'
-
 import {
   commentsCount,
-  isInit,
-  isFetching,
-  isUpdating,
-  initError,
   fetchError,
+  initError,
+  isFetching,
+  isInit,
+  isUpdating,
+  selectCommentsByReference,
   updateError
 } from '../../state/selectors'
 import { ResourceContext } from './Resource'
-import PropTypes from 'prop-types'
 
 export function flexibleRender({ render, component: Component, children }, renderProps, defaultComponent) {
   if (!Component) Component = defaultComponent
@@ -26,8 +26,8 @@ export function flexibleRender({ render, component: Component, children }, rende
   }
 }
 
-export function withComments(Component) {
-  class WithComments extends React.Component {
+export function withResource(Component) {
+  class withResource extends React.Component {
     get hasCommentable() {
       // This check works since the consumer will provide the context default value, which is 'commentable'
       return this.commentable && this.commentable !== 'commentable'
@@ -99,6 +99,10 @@ export function withComments(Component) {
       return this.commentable.removeComment(comment)
     }
 
+    listReferenceComments() {
+      return selectCommentsByReference(this.commentable, this.props.reference)
+    }
+
     componentDidMount() {
       this._checkProps()
     }
@@ -112,8 +116,8 @@ export function withComments(Component) {
     }
   }
 
-  WithComments.displayName = `WithComments(${Component.displayName || Component.name})`
-  WithComments.propTypes = {
+  withResource.displayName = `withResource(${Component.displayName || Component.name})`
+  withResource.propTypes = {
     reference: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.shape({
@@ -122,7 +126,7 @@ export function withComments(Component) {
     ])
   }
 
-  return WithComments
+  return withResource
 }
 
 export function withReference(Component) {
@@ -156,5 +160,5 @@ export function withReference(Component) {
     ]).isRequired
   }
 
-  return withComments(WithReference)
+  return withResource(WithReference)
 }

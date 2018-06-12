@@ -13,8 +13,8 @@ describe('exports', () => {
         'flexibleRender',
         'referencesCount',
         'selectCommentsByReference',
-        'withComments',
-        'withReference'
+        'withReference',
+        'withResource'
       ])
     })
   })

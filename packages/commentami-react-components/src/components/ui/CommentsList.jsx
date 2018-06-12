@@ -1,12 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { selectCommentsByReference } from '../../state/selectors'
-import { withComments } from '../core/HOC'
+import { withResource } from '../core/HOC'
 import { DefaultComment } from './defaults/DefaultComment'
 
 export function CommentsListBase({ commentable, reference, title, className, commentComponent: Component }) {
-  const comments = selectCommentsByReference(commentable, reference)
+  const comments = commentable.listReferenceComments()
 
   if (!Component) Component = DefaultComment
 
@@ -29,8 +28,9 @@ CommentsListBase.defaultProps = {
 
 CommentsListBase.propTypes = {
   commentable: PropTypes.shape({
-    removeComment: PropTypes.func
-  }),
+    removeComment: PropTypes.func,
+    listReferenceComments: PropTypes.func.isRequired
+  }).isRequired,
 
   reference: PropTypes.oneOfType([
     PropTypes.string,
@@ -44,5 +44,5 @@ CommentsListBase.propTypes = {
   commentComponent: PropTypes.func
 }
 
-export const CommentsList = withComments(CommentsListBase)
+export const CommentsList = withResource(CommentsListBase)
 CommentsList.displayName = 'Comments'

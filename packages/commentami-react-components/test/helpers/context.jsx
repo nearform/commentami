@@ -2,7 +2,7 @@ import React from 'react'
 import { ResourceContext } from '../../src/components/core/Resource'
 import { SidebarsControllerContext } from '../../src/components/ui/SidebarsController'
 
-export function withResourceContext(children, context = {}) {
+export function withResourceContext(children, context = 'commentable') {
   return (
     <main id="provider">
       <ResourceContext.Provider value={context} children={children} />
@@ -10,7 +10,7 @@ export function withResourceContext(children, context = {}) {
   )
 }
 
-export function withSidebarsControllerContext(children, context = {}) {
+export function withSidebarsControllerContext(children, context = 'sidebars') {
   return (
     <main id="controller">
       <SidebarsControllerContext.Provider value={context} children={children} />

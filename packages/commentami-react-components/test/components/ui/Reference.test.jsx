@@ -4,7 +4,7 @@ import React from 'react'
 import { Reference } from '../../../src/components/ui/Reference'
 import { withResourceContext, withSidebarsControllerContext } from '../../helpers/context'
 
-function Children({ withComments, resource }) {
+function Children({ withResource, resource }) {
   return <span>1</span>
 }
 
@@ -22,7 +22,8 @@ describe('Reference', () => {
         withResourceContext(
           <Reference reference="ref-1" resource="res-1">
             <div />
-          </Reference>
+          </Reference>,
+          {}
         ),
         controller
       )
@@ -41,7 +42,8 @@ describe('Reference', () => {
         withResourceContext(
           <Reference reference="ref-1" resource="res-1" hasComments>
             <div />
-          </Reference>
+          </Reference>,
+          {}
         ),
         controller
       )
@@ -60,7 +62,8 @@ describe('Reference', () => {
         withResourceContext(
           <Reference reference="ref-1" resource="res-1" hasComments activeClassName="foo" markerComponent={Children}>
             <div />
-          </Reference>
+          </Reference>,
+          {}
         ),
         controller
       )
@@ -87,7 +90,8 @@ describe('Reference', () => {
         withResourceContext(
           <Reference reference="ref-1" resource="res-1" hasComments activeClassName="foo" markerComponent={Children}>
             <div />
-          </Reference>
+          </Reference>,
+          {}
         ),
         controller
       )

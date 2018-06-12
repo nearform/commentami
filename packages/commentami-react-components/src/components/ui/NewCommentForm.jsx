@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { withComments } from '../core/HOC'
+import { withResource } from '../core/HOC'
 
 export class NewCommentFormBase extends React.Component {
   constructor(props) {
@@ -89,6 +89,6 @@ NewCommentFormBase.propTypes = {
   ]).isRequired
 }
 
-export const NewCommentForm = withComments(NewCommentFormBase)
+export const NewCommentForm = withResource(NewCommentFormBase)
 
 NewCommentForm.displayName = 'NewCommentForm'

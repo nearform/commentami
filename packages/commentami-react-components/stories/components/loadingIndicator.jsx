@@ -2,7 +2,7 @@ import { percent, px, viewWidth } from 'csx'
 import { style } from 'typestyle'
 import React from 'react'
 import { Spinner } from './spinner'
-import { withComments } from '../../src/components/core/HOC'
+import { withResource } from '../../src/components/core/HOC'
 
 const loadingIndicatorClassName = style({
   position: 'absolute',
@@ -27,7 +27,7 @@ const loadingSpinnerClassName = style({
   }
 })
 
-export const LoadingIndicator = withComments(function LoadingIndicatorBase({ isInit, isFetching }) {
+export const LoadingIndicator = withResource(function LoadingIndicatorBase({ isInit, isFetching }) {
   if (isInit && !isFetching) return false
 
   return (

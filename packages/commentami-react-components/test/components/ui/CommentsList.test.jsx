@@ -8,9 +8,11 @@ function CustomComment({ comment: { content } }) {
 }
 
 describe('CommentsList', () => {
+  const defaultContext = { listReferenceComments: jest.fn().mockReturnValue([]) }
+
   describe('.render', () => {
     test('should render no comments by default', () => {
-      const wrapper = mount(withResourceContext(<CommentsList title="FOO" className="CLS" />))
+      const wrapper = mount(withResourceContext(<CommentsList title="FOO" className="CLS" />, defaultContext))
 
       expect(wrapper.find('section').hasClass('CLS')).toBeTruthy()
       expect(wrapper.contains(<h2 className="nf-comments-list__title">FOO</h2>)).toBeTruthy()
@@ -19,13 +21,9 @@ describe('CommentsList', () => {
     test('should render comments with the standard component', () => {
       const context = {
         removeComment: jest.fn(),
-        commentsState: {
-          references: {
-            REFERENCE: {
-              comments: [{ reference: { id: 'REFERENCE' }, id: 'comm-1', content: 'AAA' }]
-            }
-          }
-        }
+        listReferenceComments: jest
+          .fn()
+          .mockReturnValue([{ reference: { id: 'REFERENCE' }, id: 'comm-1', content: 'AAA' }])
       }
 
       const wrapper = mount(withResourceContext(<CommentsList reference="REFERENCE" />, context))
@@ -36,25 +34,12 @@ describe('CommentsList', () => {
     test('should render comments with the custom component', () => {
       const context = {
         removeComment: jest.fn(),
-        commentsState: {
-          references: {
-            REFERENCE: {
-              comments: [
-                { reference: { id: 'REFERENCE' }, id: 'comm-1', content: 'AAA' },
-                { reference: { id: 'REFERENCE' }, id: 'comm-2', content: 'BBB' }
-              ]
-            },
-            'ANOTHER-REFERENCE': {
-              comments: [
-                {
-                  reference: { id: 'ANOTHER-REFERENCE' },
-                  id: 'comm-3',
-                  content: 'CCC'
-                }
-              ]
-            }
-          }
-        }
+        listReferenceComments: jest
+          .fn()
+          .mockReturnValue([
+            { reference: { id: 'REFERENCE' }, id: 'comm-1', content: 'AAA' },
+            { reference: { id: 'REFERENCE' }, id: 'comm-2', content: 'BBB' }
+          ])
       }
 
       const wrapper = mount(
