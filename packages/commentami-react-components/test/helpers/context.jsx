@@ -17,3 +17,12 @@ export function withSidebarsControllerContext(children, context = 'sidebars') {
     </main>
   )
 }
+
+export function getDefaultResourceContext(overrides = {}) {
+  return {
+    listReferenceComments: jest.fn().mockReturnValue([]),
+    addComment: jest.fn(),
+    removeComment: jest.fn(),
+    ...overrides
+  }
+}

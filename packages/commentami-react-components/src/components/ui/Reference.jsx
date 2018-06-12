@@ -1,9 +1,8 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
-import { withResource } from '../core/HOC'
-import { withSidebars } from './SidebarsController'
+import React from 'react'
+import { withReference } from '../core/HOC'
 import { DefaultMarker } from './defaults/DefaultMarker'
+import { withSidebars } from './SidebarsController'
 
 export class ReferenceBase extends React.Component {
   constructor(props) {
@@ -108,6 +107,6 @@ ReferenceBase.propTypes = {
   })
 }
 
-export const Reference = withSidebars(withResource(ReferenceBase))
+export const Reference = withSidebars(withReference(ReferenceBase))
 
 Reference.displayName = 'Reference'

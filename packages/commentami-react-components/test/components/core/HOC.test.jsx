@@ -48,7 +48,7 @@ describe('flexibleRender', () => {
   })
 })
 
-describe('commentable', () => {
+describe('withResource', () => {
   test('should warn if included outside of a context', () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation()
     const CommentableComponent = withResource(Children)
@@ -78,9 +78,25 @@ describe('commentable', () => {
 
       expect(wrapper.contains(<span>RESOURCE--</span>)).toBeTruthy()
     })
+  })
+})
+
+describe('withReference', () => {
+  describe('.render', () => {
+    test('should warn if included outside of a context and without a context', () => {
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation()
+      const CommentableComponent = withReference(Children)
+
+      const wrapper = mount(<CommentableComponent />)
+
+      wrapper.setProps({ a: 1 })
+
+      expect(errorSpy).toHaveBeenCalledWith('Warning: The commentable component should be inside a Resource')
+      expect(errorSpy).toHaveBeenCalledWith('Warning: The commentable block component should have a reference prop')
+    })
 
     test('should declare no comments by default', () => {
-      const CommentableComponent = withResource(Children)
+      const CommentableComponent = withReference(Children)
 
       const wrapper = mount(
         <ResourceContext.Provider>
@@ -104,7 +120,7 @@ describe('commentable', () => {
           }
         }
       }
-      const CommentableComponent = withResource(Children)
+      const CommentableComponent = withReference(Children)
 
       const wrapper = mount(
         <ResourceContext.Provider value={context}>
@@ -127,13 +143,18 @@ describe('commentable', () => {
         addComment: jest.fn(),
         removeComment: jest.fn()
       }
-      const CommentableComponent = withResource(Children)
+      const CommentableComponent = withReference(Children)
 
       const instance = mount(
         <ResourceContext.Provider value={commentableContext}>
           <CommentableComponent component={Children} />
         </ResourceContext.Provider>
-      ).instance()
+      )
+        .find(CommentableComponent)
+        .first()
+        .children()
+        .first()
+        .instance()
 
       await instance.addComment('REFERENCE', 'COMMENT')
       expect(commentableContext.addComment).toHaveBeenCalledWith('REFERENCE', 'COMMENT')
@@ -146,30 +167,21 @@ describe('commentable', () => {
         addComment: jest.fn(),
         removeComment: jest.fn()
       }
-      const CommentableComponent = withResource(Children)
+      const CommentableComponent = withReference(Children)
 
       const instance = mount(
         <ResourceContext.Provider value={commentableContext}>
           <CommentableComponent component={Children} />
         </ResourceContext.Provider>
-      ).instance()
+      )
+        .find(CommentableComponent)
+        .first()
+        .children()
+        .first()
+        .instance()
 
       await instance.removeComment('COMMENT')
       expect(commentableContext.removeComment).toHaveBeenCalledWith('COMMENT')
     })
-  })
-})
-
-describe('commentableBlock', () => {
-  test('should warn if included outside of a context and without a context', () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation()
-    const CommentableComponent = withReference(Children)
-
-    const wrapper = mount(<CommentableComponent />)
-
-    wrapper.setProps({ a: 1 })
-
-    expect(errorSpy).toHaveBeenCalledWith('Warning: The commentable component should be inside a Resource')
-    expect(errorSpy).toHaveBeenCalledWith('Warning: The commentable block component should have a reference prop')
   })
 })

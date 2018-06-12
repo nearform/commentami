@@ -1,10 +1,9 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
+import React from 'react'
 import { createPortal } from 'react-dom'
-import { withResource, flexibleRender } from '../core/HOC'
-import { withSidebars } from './SidebarsController'
+import { flexibleRender, withResource } from '../core/HOC'
 import { DefaultSidebar } from './defaults/DefaultSidebar'
+import { withSidebars } from './SidebarsController'
 
 export function SidebarBase(props) {
   const { controller, resource, render, component, children, className } = props

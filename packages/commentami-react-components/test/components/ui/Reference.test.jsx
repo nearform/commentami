@@ -1,8 +1,7 @@
 import { mount } from 'enzyme'
 import React from 'react'
-
 import { Reference } from '../../../src/components/ui/Reference'
-import { withResourceContext, withSidebarsControllerContext } from '../../helpers/context'
+import { getDefaultResourceContext, withResourceContext, withSidebarsControllerContext } from '../../helpers/context'
 
 function Children({ withResource, resource }) {
   return <span>1</span>
@@ -23,7 +22,7 @@ describe('Reference', () => {
           <Reference reference="ref-1" resource="res-1">
             <div />
           </Reference>,
-          {}
+          getDefaultResourceContext()
         ),
         controller
       )
@@ -43,7 +42,7 @@ describe('Reference', () => {
           <Reference reference="ref-1" resource="res-1" hasComments>
             <div />
           </Reference>,
-          {}
+          getDefaultResourceContext()
         ),
         controller
       )
@@ -63,7 +62,7 @@ describe('Reference', () => {
           <Reference reference="ref-1" resource="res-1" hasComments activeClassName="foo" markerComponent={Children}>
             <div />
           </Reference>,
-          {}
+          getDefaultResourceContext()
         ),
         controller
       )
@@ -91,7 +90,7 @@ describe('Reference', () => {
           <Reference reference="ref-1" resource="res-1" hasComments activeClassName="foo" markerComponent={Children}>
             <div />
           </Reference>,
-          {}
+          getDefaultResourceContext()
         ),
         controller
       )

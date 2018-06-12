@@ -1,11 +1,11 @@
 import { mount } from 'enzyme'
 import React from 'react'
 import { DefaultSidebar } from '../../../../src/components/ui/defaults/DefaultSidebar'
-import { withResourceContext } from '../../../helpers/context'
+import { getDefaultResourceContext, withResourceContext } from '../../../helpers/context'
 
 describe('DefaultSidebar', () => {
   test('renders correctly a sidebar and handle its close button even if nothing is provided', async () => {
-    const context = { listReferenceComments: jest.fn().mockReturnValue([]) }
+    const context = getDefaultResourceContext({ listReferenceComments: jest.fn().mockReturnValue([]) })
     const controller = {
       reference: 'ref-1'
     }
@@ -17,7 +17,7 @@ describe('DefaultSidebar', () => {
   })
 
   test('renders correctly a sidebar and handle its close button when a controller handle is present', async () => {
-    const context = { listReferenceComments: jest.fn().mockReturnValue([]) }
+    const context = getDefaultResourceContext({ listReferenceComments: jest.fn().mockReturnValue([]) })
     const controller = {
       resource: 'RESOURCE',
       reference: 'REFERENCE',

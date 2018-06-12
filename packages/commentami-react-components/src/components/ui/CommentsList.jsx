@@ -1,7 +1,6 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
-import { withResource } from '../core/HOC'
+import React from 'react'
+import { withReference } from '../core/HOC'
 import { DefaultComment } from './defaults/DefaultComment'
 
 export function CommentsListBase({ commentable, reference, title, className, commentComponent: Component }) {
@@ -44,5 +43,5 @@ CommentsListBase.propTypes = {
   commentComponent: PropTypes.func
 }
 
-export const CommentsList = withResource(CommentsListBase)
+export const CommentsList = withReference(CommentsListBase)
 CommentsList.displayName = 'Comments'
