@@ -27,8 +27,7 @@ export class Resource extends React.Component {
      *  toggledReference: null|Reference,
      *  lastRefreshedResource: null|string,
      *  addComment: any,
-     *  removeComment: any,
-     *  toggleComments: any,
+     *  removeComment: any
      * }}
      */
     this.state = {

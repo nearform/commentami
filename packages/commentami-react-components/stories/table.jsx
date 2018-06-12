@@ -3,11 +3,12 @@ import React from 'react'
 import { withReference } from '../src/components/core/HOC'
 import { Resource } from '../src/components/core/Resource'
 import { Sidebar } from '../src/components/ui/Sidebar'
-import { withSidebars, SidebarsController } from '../src/components/ui/SidebarsController'
+import { SidebarsController, withSidebars } from '../src/components/ui/SidebarsController'
 import { HttpService } from '../src/services/HttpService'
 import { WebsocketService } from '../src/services/WebsocketService'
 import { CommentsInMemoryService } from '../test/helpers/CommentsInMemoryService'
 import { CommentsMarker, Table } from './components/table'
+import { LoadingIndicator } from './components/loadingIndicator'
 import sampleData from './data/sample'
 
 const commentsInMemoryService = CommentsInMemoryService()
@@ -54,6 +55,8 @@ storiesOf('Commentable/Table', module)
   .add('InMemory Sample', () => (
     <SidebarsController>
       <Resource resource="sample-table-section" service={commentsInMemoryService}>
+        <LoadingIndicator />
+
         <div style={{ margin: '30px' }}>
           <Table data={sampleData} columns={['name', 'gender', 'email', 'balance']} />
         </div>
@@ -64,6 +67,8 @@ storiesOf('Commentable/Table', module)
   .add('Fetch Sample', () => (
     <SidebarsController>
       <Resource resource="sample-table-section" service={commentsFetchService}>
+        <LoadingIndicator />
+
         <div style={{ margin: '30px' }}>
           <Table data={sampleData} columns={['name', 'gender', 'email', 'balance']} blockComponent={CustomBlock} />
         </div>
@@ -74,6 +79,8 @@ storiesOf('Commentable/Table', module)
   .add('Nes Sample', () => (
     <SidebarsController>
       <Resource resource="sample-table-socket" service={commentsNesService}>
+        <LoadingIndicator />
+
         <div style={{ margin: '30px' }}>
           <Table data={sampleData} columns={['name', 'gender', 'email', 'balance']} blockComponent={CustomBlock} />
         </div>
