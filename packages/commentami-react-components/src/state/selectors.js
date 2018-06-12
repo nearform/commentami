@@ -50,8 +50,14 @@ export const referencesCount = state => Object.keys(_(state).references).length
  */
 export const commentsCount = (state, reference) => Object.keys(getReference(_(state), reference).comments).length
 
-export const isUpdating = state => _(state).isUpdating
+export const isInit = state => _(state).isInit
 
 export const isFetching = state => _(state).isFetching
 
-export const isInit = state => _(state).isInit
+export const isUpdating = state => _(state).isUpdating
+
+export const initError = state => _(state).initError
+
+export const fetchError = state => _(state).fetchError
+
+export const updateError = state => _(state).updateError

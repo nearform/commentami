@@ -1,7 +1,15 @@
 import React from 'react'
 import warning from 'warning'
 
-import { commentsCount } from '../../state/selectors'
+import {
+  commentsCount,
+  isInit,
+  isFetching,
+  isUpdating,
+  initError,
+  fetchError,
+  updateError
+} from '../../state/selectors'
 import { ResourceContext } from './Resource'
 import PropTypes from 'prop-types'
 
@@ -29,6 +37,30 @@ export function withComments(Component) {
       return this.hasCommentable && this.props.reference && !!commentsCount(this.commentable, this.props.reference)
     }
 
+    get isInit() {
+      return this.hasCommentable && isInit(this.commentable)
+    }
+
+    get isFetching() {
+      return this.hasCommentable && isFetching(this.commentable)
+    }
+
+    get isUpdating() {
+      return this.hasCommentable && isUpdating(this.commentable)
+    }
+
+    get initError() {
+      return this.hasCommentable && initError(this.commentable)
+    }
+
+    get fetchError() {
+      return this.hasCommentable && fetchError(this.commentable)
+    }
+
+    get updateError() {
+      return this.hasCommentable && updateError(this.commentable)
+    }
+
     _checkProps() {
       warning(this.hasCommentable, `The commentable component should be inside a Resource`)
     }
@@ -43,7 +75,13 @@ export function withComments(Component) {
       const additionalProps = {
         commentable: this.commentable,
         resource: (this.commentable || {}).resource,
-        hasComments: this.hasComments
+        hasComments: this.hasComments,
+        isInit: this.isInit,
+        isFetching: this.isFetching,
+        isUpdating: this.isUpdating,
+        initError: this.initError,
+        fetchError: this.fetchError,
+        updateError: this.updateError
       }
       const callbacks = {
         addComment: this.addComment.bind(this),

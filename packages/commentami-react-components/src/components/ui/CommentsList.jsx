@@ -21,7 +21,7 @@ export function CommentsListBase({ commentable, reference, title, className, com
   )
 }
 
-CommentsListBase.displayName = 'SidebarsController'
+CommentsListBase.displayName = 'CommentsListBase'
 
 CommentsListBase.defaultProps = {
   className: 'nf-comments-list'
@@ -45,3 +45,4 @@ CommentsListBase.propTypes = {
 }
 
 export const CommentsList = withComments(CommentsListBase)
+CommentsList.displayName = 'Comments'
