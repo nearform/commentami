@@ -13,21 +13,17 @@ export class ReferenceBase extends React.Component {
   }
 
   get isActive() {
-    const { controller, resource, reference } = this.props
+    const {
+      controller,
+      commentami: { resource },
+      reference
+    } = this.props
 
     return controller.isActive(resource, reference)
   }
 
   render() {
-    let {
-      children,
-      commentami = {},
-      activeClassName,
-      markerComponent: Marker,
-      controller,
-      resource,
-      reference
-    } = this.props
+    let { children, commentami, activeClassName, markerComponent: Marker, controller, reference } = this.props
 
     return (
       <div
@@ -43,7 +39,7 @@ export class ReferenceBase extends React.Component {
         {commentami.hasComments && (
           <Marker
             controller={controller}
-            resource={resource}
+            resource={commentami.resource}
             reference={reference}
             onClick={this.boundHandleDoubleClick}
           />
@@ -56,7 +52,7 @@ export class ReferenceBase extends React.Component {
   _updateEvents() {
     const controller = this.props.controller
     const payload = {
-      resource: this.props.resource,
+      resource: this.props.commentami.resource,
       reference: this.props.reference,
       ref: this.rootRef,
       scope: 'block'
@@ -87,10 +83,9 @@ ReferenceBase.propTypes = {
   markerComponent: PropTypes.func,
 
   commentami: PropTypes.shape({
-    hasComments: PropTypes.bool
+    hasComments: PropTypes.bool,
+    resource: PropTypes.string.isRequired
   }).isRequired,
-
-  resource: PropTypes.string.isRequired,
 
   reference: PropTypes.oneOfType([
     PropTypes.string,

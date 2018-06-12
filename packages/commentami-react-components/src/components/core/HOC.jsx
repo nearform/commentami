@@ -168,7 +168,7 @@ export function withReference(Component) {
   WithReference.displayName = `WithReference(${Component.displayName || Component.name})`
 
   WithReference.propTypes = {
-    commenti: PropTypes.shape({
+    commentami: PropTypes.shape({
       commentable: PropTypes.shape({
         addComment: PropTypes.func.isRequired,
         removeComment: PropTypes.func.isRequired

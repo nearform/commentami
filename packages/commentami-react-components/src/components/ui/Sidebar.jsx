@@ -6,7 +6,14 @@ import { DefaultSidebar } from './defaults/DefaultSidebar'
 import { withSidebars } from './SidebarsController'
 
 export function SidebarBase(props) {
-  const { controller, resource, render, component, children, className } = props
+  const {
+    controller,
+    commentami: { resource },
+    render,
+    component,
+    children,
+    className
+  } = props
 
   if (!controller.isActive(resource)) return false
 

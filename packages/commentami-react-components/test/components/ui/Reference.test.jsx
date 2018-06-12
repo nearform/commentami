@@ -2,6 +2,9 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { Reference } from '../../../src/components/ui/Reference'
 import { getDefaultResourceContext, withResourceContext, withSidebarsControllerContext } from '../../helpers/context'
+import { createComment } from '../../../src/state/helpers/creators'
+import { getDefaultState } from '../../../src/state/helpers/getters'
+import { setCommentToResource } from '../../../src/state/reducers/resource'
 
 function Children({ withResource, resource }) {
   return <span>1</span>
@@ -13,13 +16,13 @@ describe('Reference', () => {
     jest.restoreAllMocks()
   })
 
-  test.only('should render without the active class and without a marker by default', () => {
+  test('should render without the active class and without a marker by default', () => {
     const controller = { isActive: () => false }
 
     const wrapper = mount(
       withSidebarsControllerContext(
         withResourceContext(
-          <Reference reference="ref-1" resource="res-1">
+          <Reference reference="ref-1">
             <div />
           </Reference>,
           getDefaultResourceContext()
@@ -36,13 +39,25 @@ describe('Reference', () => {
   test('should render with the active class and with a marker', () => {
     const controller = { isActive: () => true }
 
+    const context = getDefaultResourceContext({
+      commentsState: setCommentToResource(
+        getDefaultState('RESOURCE'),
+        { id: 'REFERENCE' },
+        createComment({
+          reference: { id: 'REFERENCE' },
+          id: 'comm-1',
+          content: 'AAA'
+        })
+      )
+    })
+
     const wrapper = mount(
       withSidebarsControllerContext(
         withResourceContext(
-          <Reference reference="ref-1" resource="res-1" hasComments>
+          <Reference reference="REFERENCE">
             <div />
           </Reference>,
-          getDefaultResourceContext()
+          context
         ),
         controller
       )
@@ -56,13 +71,25 @@ describe('Reference', () => {
   test('should use a custom marker', () => {
     const controller = { isActive: () => true }
 
+    const context = getDefaultResourceContext({
+      commentsState: setCommentToResource(
+        getDefaultState('RESOURCE'),
+        { id: 'REFERENCE' },
+        createComment({
+          reference: { id: 'REFERENCE' },
+          id: 'comm-1',
+          content: 'AAA'
+        })
+      )
+    })
+
     const wrapper = mount(
       withSidebarsControllerContext(
         withResourceContext(
-          <Reference reference="ref-1" resource="res-1" hasComments activeClassName="foo" markerComponent={Children}>
+          <Reference reference="REFERENCE" activeClassName="foo" markerComponent={Children}>
             <div />
           </Reference>,
-          getDefaultResourceContext()
+          context
         ),
         controller
       )

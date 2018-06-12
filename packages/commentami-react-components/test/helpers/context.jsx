@@ -21,8 +21,10 @@ export function withSidebarsControllerContext(children, context = 'sidebars') {
 
 export function getDefaultResourceContext(overrides = {}) {
   return {
+    resource: 'RESOURCE',
     commentsState: getDefaultState(),
     addComment: jest.fn(),
+    removeComment: jest.fn(),
     ...overrides
   }
 }
