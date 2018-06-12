@@ -1,12 +1,10 @@
 # Commentami - open source commenting system
 
-Commentami is a commenting system designed to add comments like the ones you can add in Google Docs.
+Commentami is a "google doc like" commenting system.
 
-The fronted is based on [Reactjs >= 16](https://reactjs.org).
+The fronted is based on [Reactjs 16+](https://reactjs.org) and is separetated in `core` components and `ui` components so that you can build your own UI around the logic of handling comments.
 
 Commentami backend can be used as a standalone node.js module ([commentami-backend-core](https://github.com/nearform/comments/tree/master/packages/commentami-backend-core)), as a Hapi plugin that provides a REST API and websockets ([commentami-backend-hapi-plugin](https://github.com/nearform/comments/tree/master/packages/commentami-backend-hapi-plugin)), and as a stand alone server ([commentami-backend-hapi-server](https://github.com/nearform/comments/tree/master/packages/commentami-backend-hapi-server)).
-
-Commentami frontend components are built to have logic and presentation separetated. This should give as much freedom as possible in integrating these components in your UI.
 
 ## Background
 
@@ -47,7 +45,7 @@ The provided react components are used to interact with the Commentami server (l
 
 ## WEBSOCKETS
 
-Commentami comes with a ready made socket server that you can intercat with using [`nes`](https://github.com/hapijs/nes).
+Commentami comes with a ready made socket server that you can intercat with using [`nes` client](https://github.com/hapijs/nes#client).
 Other then mapping all REST API endpoints, connecting through a socket will allow your client to subscribe to events such as addition, update and deletion of comments, based on `resource` and optionally `reference`.
 
 ## REACT COMPONENTS
@@ -60,4 +58,4 @@ The interface of each web application is different. To accomodate that, we struc
 
 ## NEXT STEPS
 
-To get up and running with Commentami, see the installation steps in the [README](https://github.com/nearform/comments).
+To get up and running with Commentami, see the installation steps in the [README](https://github.com/nearform/commentami).
