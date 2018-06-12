@@ -69,14 +69,16 @@ export function withResource(Component) {
 
     _renderProps() {
       const additionalProps = {
-        commentable: this.commentable,
-        resource: (this.commentable || {}).resource,
-        isInit: this.isInit,
-        isFetching: this.isFetching,
-        isUpdating: this.isUpdating,
-        initError: this.initError,
-        fetchError: this.fetchError,
-        updateError: this.updateError
+        commentami: {
+          commentable: this.commentable,
+          resource: (this.commentable || {}).resource,
+          isInit: this.isInit,
+          isFetching: this.isFetching,
+          isUpdating: this.isUpdating,
+          initError: this.initError,
+          fetchError: this.fetchError,
+          updateError: this.updateError
+        }
       }
 
       return { ...additionalProps, ...this.props }
@@ -112,12 +114,14 @@ export function withReference(Component) {
   class WithReference extends React.Component {
     get hasCommentable() {
       // This check works since the consumer will provide the context default value, which is 'commentable'
-      return this.props.commentable && this.props.commentable !== 'commentable'
+      return this.props.commentami.commentable && this.props.commentami.commentable !== 'commentable'
     }
 
     get hasComments() {
       return (
-        this.hasCommentable && this.props.reference && !!commentsCount(this.props.commentable, this.props.reference)
+        this.hasCommentable &&
+        this.props.reference &&
+        !!commentsCount(this.props.commentami.commentable, this.props.reference)
       )
     }
 
@@ -134,36 +138,42 @@ export function withReference(Component) {
     }
 
     addComment(reference, content) {
-      return this.props.commentable.addComment(reference, content)
+      return this.props.commentami.commentable.addComment(reference, content)
     }
 
     removeComment(comment) {
-      return this.props.commentable.removeComment(comment)
+      return this.props.commentami.commentable.removeComment(comment)
     }
 
     listReferenceComments() {
-      return selectCommentsByReference(this.props.commentable, this.props.reference)
+      return selectCommentsByReference(this.props.commentami.commentable, this.props.reference)
     }
 
     render() {
-      const additionalProps = {
+      const props = { ...this.props }
+      const parentCommentami = props.commentami
+      delete props.commentami
+      const commentami = {
+        ...parentCommentami,
         hasComments: this.hasComments,
         addComment: this.addComment.bind(this),
         removeComment: this.removeComment.bind(this),
         listReferenceComments: this.listReferenceComments.bind(this)
       }
 
-      return <Component {...additionalProps} {...this.props} />
+      return <Component {...this.props} commentami={commentami} />
     }
   }
 
   WithReference.displayName = `WithReference(${Component.displayName || Component.name})`
 
   WithReference.propTypes = {
-    commentable: PropTypes.shape({
-      addComment: PropTypes.func.isRequired,
-      removeComment: PropTypes.func.isRequired
-    }).isRequired,
+    commenti: PropTypes.shape({
+      commentable: PropTypes.shape({
+        addComment: PropTypes.func.isRequired,
+        removeComment: PropTypes.func.isRequired
+      }).isRequired
+    }),
 
     reference: PropTypes.oneOfType([
       PropTypes.string,

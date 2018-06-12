@@ -21,7 +21,7 @@ export class ReferenceBase extends React.Component {
   render() {
     let {
       children,
-      hasComments,
+      commentami = {},
       activeClassName,
       markerComponent: Marker,
       controller,
@@ -40,7 +40,7 @@ export class ReferenceBase extends React.Component {
         onMouseLeave={this.boundHandleMouseLeave}
         onSelect={this.boundHandleSelect}
       >
-        {hasComments && (
+        {commentami.hasComments && (
           <Marker
             controller={controller}
             resource={resource}
@@ -86,7 +86,9 @@ ReferenceBase.propTypes = {
 
   markerComponent: PropTypes.func,
 
-  hasComments: PropTypes.bool,
+  commentami: PropTypes.shape({
+    hasComments: PropTypes.bool
+  }).isRequired,
 
   resource: PropTypes.string.isRequired,
 

@@ -13,7 +13,7 @@ describe('Reference', () => {
     jest.restoreAllMocks()
   })
 
-  test('should render without the active class and without a marker by default', () => {
+  test.only('should render without the active class and without a marker by default', () => {
     const controller = { isActive: () => false }
 
     const wrapper = mount(

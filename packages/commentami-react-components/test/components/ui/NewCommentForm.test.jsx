@@ -44,7 +44,9 @@ describe('NewCommentForm', () => {
       const wrapper = mount(
         withResourceContext(
           <NewCommentForm reference="REFERENCE" addComment={addComment} />,
-          getDefaultResourceContext()
+          getDefaultResourceContext({
+            addComment
+          })
         )
       )
 
@@ -60,7 +62,7 @@ describe('NewCommentForm', () => {
       const wrapper = mount(
         withResourceContext(
           <NewCommentForm reference="REFERENCE" addComment={addComment} />,
-          getDefaultResourceContext()
+          getDefaultResourceContext({ addComment })
         )
       )
 

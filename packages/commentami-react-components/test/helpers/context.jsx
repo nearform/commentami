@@ -1,6 +1,7 @@
 import React from 'react'
 import { ResourceContext } from '../../src/components/core/Resource'
 import { SidebarsControllerContext } from '../../src/components/ui/SidebarsController'
+import { getDefaultState } from '../../src/state/helpers/getters'
 
 export function withResourceContext(children, context = 'commentable') {
   return (
@@ -20,9 +21,8 @@ export function withSidebarsControllerContext(children, context = 'sidebars') {
 
 export function getDefaultResourceContext(overrides = {}) {
   return {
-    listReferenceComments: jest.fn().mockReturnValue([]),
+    commentsState: getDefaultState(),
     addComment: jest.fn(),
-    removeComment: jest.fn(),
     ...overrides
   }
 }

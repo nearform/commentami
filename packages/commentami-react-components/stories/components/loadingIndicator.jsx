@@ -27,7 +27,7 @@ const loadingSpinnerClassName = style({
   }
 })
 
-export const LoadingIndicator = withResource(function LoadingIndicatorBase({ isInit, isFetching }) {
+export const LoadingIndicator = withResource(function LoadingIndicatorBase({ commentami: { isInit, isFetching } }) {
   if (isInit && !isFetching) return false
 
   return (

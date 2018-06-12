@@ -2,6 +2,9 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { CommentsList } from '../../../src/components/ui/CommentsList'
 import { withResourceContext, getDefaultResourceContext } from '../../helpers/context'
+import { getDefaultState } from '../../../src/state/helpers/getters'
+import { createComment } from '../../../src/state/helpers/creators'
+import { setCommentToResource } from '../../../src/state/reducers/resource'
 
 function CustomComment({ comment: { content } }) {
   return <p>{content}</p>
@@ -21,9 +24,15 @@ describe('CommentsList', () => {
 
     test('should render comments with the standard component', () => {
       const context = getDefaultResourceContext({
-        listReferenceComments: jest
-          .fn()
-          .mockReturnValue([{ reference: { id: 'REFERENCE' }, id: 'comm-1', content: 'AAA' }])
+        commentsState: setCommentToResource(
+          getDefaultState('RESOURCE'),
+          { id: 'REFERENCE' },
+          createComment({
+            reference: { id: 'REFERENCE' },
+            id: 'comm-1',
+            content: 'AAA'
+          })
+        )
       })
 
       const wrapper = mount(withResourceContext(<CommentsList reference="REFERENCE" />, context))
@@ -32,13 +41,27 @@ describe('CommentsList', () => {
     })
 
     test('should render comments with the custom component', () => {
+      let state = setCommentToResource(
+        getDefaultState('RESOURCE'),
+        { id: 'REFERENCE' },
+        createComment({
+          reference: { id: 'REFERENCE' },
+          id: 'comm-1',
+          content: 'AAA'
+        })
+      )
+      state = setCommentToResource(
+        state,
+        { id: 'REFERENCE' },
+        createComment({
+          reference: { id: 'REFERENCE' },
+          id: 'comm-2',
+          content: 'BBB'
+        })
+      )
+
       const context = getDefaultResourceContext({
-        listReferenceComments: jest
-          .fn()
-          .mockReturnValue([
-            { reference: { id: 'REFERENCE' }, id: 'comm-1', content: 'AAA' },
-            { reference: { id: 'REFERENCE' }, id: 'comm-2', content: 'BBB' }
-          ])
+        commentsState: state
       })
 
       const wrapper = mount(

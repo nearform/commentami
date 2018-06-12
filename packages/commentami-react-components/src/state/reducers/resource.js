@@ -44,6 +44,7 @@ export const setReference = (state, reference) =>
  */
 export const setCommentToResource = (state, reference, comment) => {
   const localReference = getReference(state, reference)
+
   return setReference(state, setComment(localReference, comment))
 }
 

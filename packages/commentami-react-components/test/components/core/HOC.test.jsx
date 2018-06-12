@@ -2,8 +2,12 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { withResource, withReference, flexibleRender } from '../../../src/components/core/HOC'
 import { ResourceContext } from '../../../src/components/core/Resource'
+import { getDefaultResourceContext } from '../../helpers/context'
+import { createComment } from '../../../src/state/helpers/creators'
+import { getDefaultState } from '../../../src/state/helpers/getters'
+import { setCommentToResource } from '../../../src/state/reducers/resource'
 
-function PropsChildren({ resource, reference }) {
+function PropsChildren({ commentami: { resource, reference } }) {
   return (
     <span>
       {resource}--{reference}
@@ -29,14 +33,25 @@ describe('flexibleRender', () => {
 
   test('should render the provided component', () => {
     const wrapper = mount(
-      flexibleRender({ component: PropsChildren }, { reference: 'REFERENCE', resource: 'RESOURCE' })
+      flexibleRender({ component: PropsChildren }, { commentami: { reference: 'REFERENCE', resource: 'RESOURCE' } })
     )
 
     expect(wrapper.contains(<span>RESOURCE--REFERENCE</span>)).toBeTruthy()
   })
 
   test('should render using a default component', () => {
-    const wrapper = mount(flexibleRender({}, { reference: 'REFERENCE', resource: 'RESOURCE' }, PropsChildren))
+    const wrapper = mount(
+      flexibleRender(
+        {},
+        {
+          commentami: {
+            reference: 'REFERENCE',
+            resource: 'RESOURCE'
+          }
+        },
+        PropsChildren
+      )
+    )
 
     expect(wrapper.contains(<span>RESOURCE--REFERENCE</span>)).toBeTruthy()
   })
@@ -113,13 +128,18 @@ describe('withReference', () => {
     })
 
     test('should declare comments if they are present', () => {
-      const context = {
-        commentsState: {
-          references: {
-            REFERENCE: { comments: [{ reference: { id: 'REFERENCE' } }] }
-          }
-        }
-      }
+      const context = getDefaultResourceContext({
+        commentsState: setCommentToResource(
+          getDefaultState('RESOURCE'),
+          { id: 'REFERENCE' },
+          createComment({
+            reference: { id: 'REFERENCE' },
+            id: 'comm-1',
+            content: 'AAA'
+          })
+        )
+      })
+
       const CommentableComponent = withReference(Children)
 
       const wrapper = mount(
@@ -132,7 +152,7 @@ describe('withReference', () => {
         wrapper
           .find(Children)
           .first()
-          .prop('hasComments')
+          .prop('commentami').hasComments
       ).toBeTruthy()
     })
   })
