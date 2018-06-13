@@ -1,4 +1,4 @@
-import { Resource, HttpService } from '@nearform/commentami-react-components'
+import { HttpService, Resource } from '@nearform/commentami-react-components'
 import { SidebarsController } from '@nearform/commentami-react-components/dist/ui'
 import { rem } from 'csx'
 import React from 'react'
@@ -6,6 +6,7 @@ import remark from 'remark'
 import reactRenderer from 'remark-react'
 import { style } from 'typestyle'
 import { Block } from '../components/block'
+import { LoadingIndicator } from '../components/loadingIndicator'
 import { Sidebar } from '../components/sidebar'
 import data from '../fixtures/markdown.md'
 import { debugClassName } from '../styling/environment'
@@ -59,6 +60,7 @@ export function MarkdownPage() {
         <Resource resource="foo" service={HttpService('http://localhost:8080/')}>
           <div className={documentWrapperClassName}>{parsed}</div>
 
+          <LoadingIndicator />
           <Sidebar />
         </Resource>
       </SidebarsController>

@@ -9,13 +9,15 @@ import data from '../fixtures/data'
 import { localStorageService as localStorageServiceBuilder } from '../services/localStorage'
 import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
+import { LoadingIndicator } from '../components/loadingIndicator'
 
 const localStorageService = localStorageServiceBuilder()
 const socketService = WebsocketService('ws://localhost:8080/')
 const httpService = HttpService('http://localhost:8080/')
 
 const sectionClassName = style(debugClassName('table'), {
-  marginTop: rem(3)
+  marginTop: rem(3),
+  position: 'relative'
 })
 
 const commentMarkerClassName = style(debugClassName('table'), {
@@ -155,6 +157,7 @@ export function MultiplePage() {
           <Resource resource="first" service={localStorageService}>
             <Table data={data} />
             <Sidebar title="First" />
+            <LoadingIndicator />
           </Resource>
         </section>
 
@@ -163,6 +166,7 @@ export function MultiplePage() {
           <Resource resource="second" service={socketService}>
             <Table data={data} />
             <Sidebar title="Second" />
+            <LoadingIndicator />
           </Resource>
         </section>
 
@@ -171,6 +175,7 @@ export function MultiplePage() {
           <Resource resource="third" service={httpService}>
             <Table data={data} />
             <Sidebar title="Second" />
+            <LoadingIndicator />
           </Resource>
         </section>
       </SidebarsController>

@@ -1,9 +1,10 @@
-import { Resource, HttpService } from '@nearform/commentami-react-components'
+import { HttpService, Resource } from '@nearform/commentami-react-components'
 import { SidebarsController } from '@nearform/commentami-react-components/dist/ui'
 import { em, percent, rem } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
 import { Block } from '../components/block'
+import { LoadingIndicator } from '../components/loadingIndicator'
 import { Sidebar } from '../components/sidebar'
 import data from '../fixtures/data'
 import { debugClassName } from '../styling/environment'
@@ -149,11 +150,13 @@ export function TablePage() {
         <Resource resource="foo" service={service}>
           <Table data={data} />
           <Sidebar title="First" />
+          <LoadingIndicator />
         </Resource>
 
         <Resource resource="bar" service={service}>
           <Table data={data} />
           <Sidebar title="Second" />
+          <LoadingIndicator />
         </Resource>
       </SidebarsController>
     </div>

@@ -55,8 +55,7 @@ export const Block = withSidebars(
         event.preventDefault()
 
         const {
-          commentami: { resource },
-          reference
+          commentami: { resource, reference }
         } = this.props
 
         this.props.controller.isActive(resource, reference)
@@ -70,9 +69,9 @@ export const Block = withSidebars(
       render() {
         let {
           children,
-          markerComponent: Marker,
-          commentami: { resource, hasComments },
-          reference
+          commentami: { hasComments, resource },
+          reference,
+          markerComponent: Marker
         } = this.props
 
         const isActive = this.props.controller.isActive(resource, reference)

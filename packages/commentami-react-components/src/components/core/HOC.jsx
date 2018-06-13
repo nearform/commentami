@@ -155,6 +155,7 @@ export function withReference(Component) {
       delete props.commentami
       const commentami = {
         ...parentCommentami,
+        reference: this.props.reference,
         hasComments: this.hasComments,
         addComment: this.addComment.bind(this),
         removeComment: this.removeComment.bind(this),

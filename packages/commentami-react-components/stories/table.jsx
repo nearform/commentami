@@ -35,8 +35,7 @@ const CustomBlock = withSidebars(
           children,
           activeClassName,
           controller,
-          commentami: { hasComments, resource },
-          reference
+          commentami: { hasComments, resource, reference }
         } = this.props
         const isActive = controller.isActive(resource, reference)
 

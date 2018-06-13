@@ -1,6 +1,6 @@
 import { percent, rem } from 'csx'
 import React from 'react'
-import { keyframes, style, classes } from 'typestyle'
+import { classes, keyframes, style } from 'typestyle'
 
 export function Spinner({ className, size, stroke, color, text }) {
   if (!size) size = 66

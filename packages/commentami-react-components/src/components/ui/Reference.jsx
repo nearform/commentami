@@ -15,8 +15,7 @@ export class ReferenceBase extends React.Component {
   get isActive() {
     const {
       controller,
-      commentami: { resource },
-      reference
+      commentami: { resource, reference }
     } = this.props
 
     return controller.isActive(resource, reference)
