@@ -1,7 +1,8 @@
-import { shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import React from 'react'
 import { Resource } from '../../../src/components/core/Resource'
 import { CommentsMockService } from '../../helpers/CommentsMockService'
+import { delay } from '../../helpers/context'
 
 describe('Resource', () => {
   let wrapper
@@ -10,7 +11,7 @@ describe('Resource', () => {
   beforeEach(() => {
     service = new CommentsMockService()
     service.getComments.mockReturnValue([])
-    wrapper = shallow(
+    wrapper = mount(
       <Resource resource="page-1" service={service}>
         <div />
       </Resource>
@@ -19,6 +20,8 @@ describe('Resource', () => {
 
   describe('lifecycle', () => {
     test('when the component is mounted it should refresh the comment list', async () => {
+      await delay()
+
       expect(service.getComments).toHaveBeenCalledWith('page-1')
       wrapper.unmount()
     })
@@ -26,6 +29,8 @@ describe('Resource', () => {
     test('when the component is updated it should refresh the comment list', async () => {
       service.getComments.mockClear()
       wrapper.setProps({ resource: 'page-2' })
+      await delay()
+
       expect(service.getComments).toHaveBeenCalledWith('page-2')
     })
 
@@ -36,10 +41,24 @@ describe('Resource', () => {
     })
   })
 
+  describe('.onCommentsStateUpdate', () => {
+    test('should reject if state update failed', async () => {
+      const error = new Error('ERROR')
+      service.getComments.mockClear()
+
+      await delay()
+      jest.spyOn(wrapper.instance(), 'setState').mockImplementation(() => {
+        throw error
+      })
+
+      await expect(wrapper.instance().onCommentsStateUpdate('INVALID')).rejects.toEqual(error)
+    })
+  })
+
   describe('.addComment', () => {
     test('should call the API', async () => {
       service.getComments.mockClear()
-      wrapper.instance().addComment('block-1', 'somecontent')
+      await wrapper.instance().addComment('block-1', 'somecontent')
       expect(service.addComment).toHaveBeenCalledWith('page-1', {
         resource: 'page-1',
         reference: { id: 'block-1' },
@@ -64,7 +83,7 @@ describe('Resource', () => {
   describe('.removeComment', () => {
     test('should call the API', async () => {
       service.getComments.mockClear()
-      wrapper.instance().removeComment('comm-1')
+      await wrapper.instance().removeComment('comm-1')
       expect(service.removeComment).toHaveBeenCalledWith('comm-1')
     })
 

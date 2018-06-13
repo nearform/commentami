@@ -18,7 +18,7 @@
 
 export const initialize = state => Object.assign({}, state, { isInit: false, initError: null })
 export const initializeSuccess = state => Object.assign({}, state, { isInit: true })
-export const initializeFail = (state, error) => Object.assign({}, state, { isInit: false, initError: error })
+export const initializeFail = (state, error) => Object.assign({}, state, { isInit: true, initError: error })
 
 export const fetching = state => Object.assign({}, state, { isFetching: true, fetchError: null })
 export const fetchingSuccess = state => Object.assign({}, state, { isFetching: false })

@@ -1,10 +1,10 @@
 import { percent, px, viewWidth } from 'csx'
-import { style } from 'typestyle'
 import React from 'react'
-import { Spinner } from './spinner'
+import { style, classes } from 'typestyle'
 import { withResource } from '../../src/components/core/HOC'
+import { Spinner } from './spinner'
 
-const loadingIndicatorClassName = style({
+const indicatorClassName = style({
   position: 'absolute',
   top: px(20),
   left: `calc(${percent(50)} - ${viewWidth(20)})`,
@@ -12,6 +12,20 @@ const loadingIndicatorClassName = style({
   borderRadius: px(10),
   width: viewWidth(40),
   zIndex: 10
+})
+
+const loadingIndicatorClassName = style({
+  backgroundColor: '#FDD835'
+})
+
+const errorIndicatorClassName = style({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: px(10),
+  backgroundColor: '#EE4444',
+  color: 'white'
 })
 
 const loadingSpinnerClassName = style({
@@ -31,8 +45,17 @@ export const LoadingIndicator = withResource(function LoadingIndicatorBase({ com
   if (isInit && !isFetching) return false
 
   return (
-    <div className={loadingIndicatorClassName}>
+    <div className={classes(indicatorClassName, loadingIndicatorClassName)}>
       <Spinner className={loadingSpinnerClassName} text="Loading comments..." color="#444" size={16} stroke={2} />
     </div>
+  )
+})
+
+export const ErrorIndicator = withResource(function ErrorIndicatorBase({ commentami: { initError, fetchError } }) {
+  const error = [initError, fetchError].find(e => e)
+  if (!error) return false
+
+  return (
+    <div className={classes(indicatorClassName, errorIndicatorClassName)}>Cannot load comments: {error.message}</div>
   )
 })

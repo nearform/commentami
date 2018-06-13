@@ -3,6 +3,10 @@ import { ResourceContext } from '../../src/components/core/Resource'
 import { SidebarsControllerContext } from '../../src/components/ui/SidebarsController'
 import { getDefaultState } from '../../src/state/helpers/getters'
 
+export async function delay(timeout = 10) {
+  return new Promise(resolve => setTimeout(resolve, timeout))
+}
+
 export function withResourceContext(children, context = 'commentable') {
   return (
     <main id="provider">

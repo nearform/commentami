@@ -44,10 +44,10 @@ describe('WebsocketService', () => {
     // assert on the response
     const result = await service.getComments('some-resource')
 
-    expect(mockRequest.mock.calls.length).toBe(1)
+    expect(mockRequest.mock.calls.length).toEqual(1)
     expect(mockRequest.mock.calls[0][0]).toEqual('/comments?resource=some-resource')
 
-    expect(result.length).toBe(3)
+    expect(result.length).toEqual(3)
     expect(result[0]).toEqual(commentsGETvalid.comments[0])
     expect(result[1]).toEqual(commentsGETvalid.comments[1])
     expect(result[2]).toEqual(commentsGETvalid.comments[2])
@@ -56,7 +56,7 @@ describe('WebsocketService', () => {
   test('Call the DELETE comments endpoint returns a valid structure', async () => {
     await service.removeComment({ id: 'comm-1' })
 
-    expect(mockRequest.mock.calls.length).toBe(1)
+    expect(mockRequest.mock.calls.length).toEqual(1)
     expect(mockRequest.mock.calls[0][0]).toEqual({ method: 'DELETE', path: '/comments/comm-1' })
   })
 
@@ -77,7 +77,7 @@ describe('WebsocketService', () => {
 
     const result = await service.addComment(resource, { reference, content })
 
-    expect(mockRequest.mock.calls.length).toBe(1)
+    expect(mockRequest.mock.calls.length).toEqual(1)
     expect(mockRequest.mock.calls[0][0]).toEqual({
       method: 'POST',
       path: '/comments',
@@ -93,7 +93,7 @@ describe('WebsocketService', () => {
     const handler = jest.fn()
     const unsubscribe = await service.onResourceChange(resource, handler)
 
-    expect(mockSubscribe.mock.calls.length).toBe(1)
+    expect(mockSubscribe.mock.calls.length).toEqual(1)
     expect(mockSubscribe.mock.calls[0][0]).toEqual('/resources/res-1')
 
     await unsubscribe()

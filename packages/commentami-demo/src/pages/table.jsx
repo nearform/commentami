@@ -4,7 +4,7 @@ import { em, percent, rem } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
 import { Block } from '../components/block'
-import { LoadingIndicator } from '../components/loadingIndicator'
+import { ErrorIndicator, LoadingIndicator } from '../components/indicators'
 import { Sidebar } from '../components/sidebar'
 import data from '../fixtures/data'
 import { debugClassName } from '../styling/environment'
@@ -148,15 +148,19 @@ export function TablePage() {
 
       <SidebarsController>
         <Resource resource="foo" service={service}>
+          <LoadingIndicator />
+          <ErrorIndicator />
+
           <Table data={data} />
           <Sidebar title="First" />
-          <LoadingIndicator />
         </Resource>
 
         <Resource resource="bar" service={service}>
+          <LoadingIndicator />
+          <ErrorIndicator />
+
           <Table data={data} />
           <Sidebar title="Second" />
-          <LoadingIndicator />
         </Resource>
       </SidebarsController>
     </div>

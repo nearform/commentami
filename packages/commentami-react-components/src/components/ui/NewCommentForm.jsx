@@ -13,12 +13,12 @@ export class NewCommentFormBase extends React.Component {
     this.boundHandleKeyPress = this.handleKeyPress.bind(this)
   }
 
-  handleSubmit(ev) {
+  async handleSubmit(ev) {
     ev.preventDefault()
-    const value = (this.textareaRef.current.value || '').trim()
 
-    if (value) this.props.commentami.addComment(this.props.reference, value)
-    this.textareaRef.current.value = ''
+    const value = (this.textareaRef.current.value || '').trim()
+    const comment = value ? await this.props.commentami.addComment(this.props.reference, value) : null
+    if (comment) this.textareaRef.current.value = ''
   }
 
   handleReset(ev) {
@@ -32,7 +32,16 @@ export class NewCommentFormBase extends React.Component {
   }
 
   render() {
-    const { title, placeholder, cancelLabel, submitLabel, className } = this.props
+    const {
+      commentami: { isUpdating, updateError },
+      className,
+      title,
+      placeholder,
+      cancelLabel,
+      submitLabel,
+      savingLabel,
+      errorPrefixLabel
+    } = this.props
 
     return (
       <form action="#" className={className}>
@@ -54,9 +63,16 @@ export class NewCommentFormBase extends React.Component {
           type="submit"
           className="nf-comments-new-form__button nf-comments-new-form__button--primary"
           onClick={this.boundHandleSubmit}
+          disabled={isUpdating}
         >
-          {submitLabel}
+          {isUpdating ? savingLabel : submitLabel}
         </button>
+
+        {updateError && (
+          <span className="nf-comments-new-form__error">
+            {errorPrefixLabel} {updateError.message}
+          </span>
+        )}
       </form>
     )
   }
@@ -69,7 +85,9 @@ NewCommentFormBase.defaultProps = {
   title: 'Add new comment',
   placeholder: 'Enter some text ...',
   cancelLabel: 'Cancel',
-  submitLabel: 'Add'
+  submitLabel: 'Add',
+  savingLabel: 'Saving ...',
+  errorPrefixLabel: 'Cannot save the comment:'
 }
 
 NewCommentFormBase.propTypes = {
@@ -79,6 +97,8 @@ NewCommentFormBase.propTypes = {
   placeholder: PropTypes.string,
   cancelLabel: PropTypes.string,
   submitLabel: PropTypes.string,
+  savingLabel: PropTypes.string,
+  errorPrefixLabel: PropTypes.string,
   className: PropTypes.string
 }
 
