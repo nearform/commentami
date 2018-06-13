@@ -12,8 +12,8 @@ import { LoadingIndicator } from './components/loadingIndicator'
 import sampleData from './data/sample'
 
 const commentsInMemoryService = CommentsInMemoryService()
-const commentsFetchService = HttpService('http://localhost:8080/')
-const commentsNesService = WebsocketService('ws://localhost:8080/')
+const commentsHttpService = HttpService('http://localhost:8080/')
+const commentsWebsocketService = WebsocketService('ws://localhost:8080/')
 
 const CustomBlock = withSidebars(
   withReference(
@@ -71,7 +71,7 @@ storiesOf('Commentable/Table', module)
   ))
   .add('Fetch Sample', () => (
     <SidebarsController>
-      <Resource resource="sample-table-section" service={commentsFetchService}>
+      <Resource resource="sample-table-section" service={commentsHttpService}>
         <LoadingIndicator />
 
         <div style={{ margin: '30px' }}>
@@ -83,7 +83,7 @@ storiesOf('Commentable/Table', module)
   ))
   .add('Nes Sample', () => (
     <SidebarsController>
-      <Resource resource="sample-table-socket" service={commentsNesService}>
+      <Resource resource="sample-table-socket" service={commentsWebsocketService}>
         <LoadingIndicator />
 
         <div style={{ margin: '30px' }}>

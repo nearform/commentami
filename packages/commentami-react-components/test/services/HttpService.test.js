@@ -4,18 +4,18 @@ import commentsGETvalid from './__mocks__/commentsGETvalid'
 global.fetch = require('jest-fetch-mock')
 
 describe('HttpService', () => {
-  let commentsFetchService
+  let commentsHttpService
   beforeEach(() => {
     fetch.resetMocks()
 
-    commentsFetchService = HttpService('http://localhost/')
+    commentsHttpService = HttpService('http://localhost/')
   })
 
   test('Call the GET comments endpoint returns a valid structure', async () => {
     fetch.mockResponseOnce(JSON.stringify(commentsGETvalid))
 
     // assert on the response
-    const result = await commentsFetchService.getComments('some-resource')
+    const result = await commentsHttpService.getComments('some-resource')
 
     expect(fetch.mock.calls.length).toEqual(1)
     expect(fetch.mock.calls[0][0]).toEqual('http://localhost/comments?resource=some-resource')
@@ -36,7 +36,7 @@ describe('HttpService', () => {
   test('Call the DELETE comments endpoint returns a valid structure', async () => {
     fetch.mockResponseOnce(JSON.stringify({ success: true }))
 
-    await commentsFetchService.removeComment({ id: 'comm-1' })
+    await commentsHttpService.removeComment({ id: 'comm-1' })
 
     expect(fetch.mock.calls.length).toEqual(1)
     expect(fetch.mock.calls[0][0]).toEqual('http://localhost/comments/comm-1')
@@ -64,7 +64,7 @@ describe('HttpService', () => {
     }
     fetch.mockResponseOnce(JSON.stringify(response))
 
-    const result = await commentsFetchService.addComment(resource, { reference, content })
+    const result = await commentsHttpService.addComment(resource, { reference, content })
 
     expect(fetch.mock.calls.length).toEqual(1)
     expect(fetch.mock.calls[0][0]).toEqual('http://localhost/comments')

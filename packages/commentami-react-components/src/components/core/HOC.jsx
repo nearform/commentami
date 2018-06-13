@@ -99,9 +99,6 @@ export function withResource(Component) {
   }
 
   withResource.displayName = `withResource(${Component.displayName || Component.name})`
-  withResource.propTypes = {
-    reference: referencePropInterface
-  }
 
   return withResource
 }
