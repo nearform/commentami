@@ -6,7 +6,7 @@ import remark from 'remark'
 import reactRenderer from 'remark-react'
 import { style } from 'typestyle'
 import { Block } from '../components/block'
-import { LoadingIndicator } from '../components/loadingIndicator'
+import { ErrorIndicator, LoadingIndicator } from '../components/indicators'
 import { Sidebar } from '../components/sidebar'
 import data from '../fixtures/markdown.md'
 import { debugClassName } from '../styling/environment'
@@ -58,9 +58,11 @@ export function MarkdownPage() {
 
       <SidebarsController>
         <Resource resource="foo" service={HttpService('http://localhost:8080/')}>
+          <LoadingIndicator />
+          <ErrorIndicator />
+
           <div className={documentWrapperClassName}>{parsed}</div>
 
-          <LoadingIndicator />
           <Sidebar />
         </Resource>
       </SidebarsController>

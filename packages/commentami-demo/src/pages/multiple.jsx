@@ -1,15 +1,15 @@
-import { Resource, HttpService, WebsocketService } from '@nearform/commentami-react-components'
+import { HttpService, Resource, WebsocketService } from '@nearform/commentami-react-components'
 import { SidebarsController } from '@nearform/commentami-react-components/dist/ui'
 import { em, percent, rem } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
 import { Block } from '../components/block'
+import { ErrorIndicator, LoadingIndicator } from '../components/indicators'
 import { Sidebar } from '../components/sidebar'
 import data from '../fixtures/data'
 import { localStorageService as localStorageServiceBuilder } from '../services/localStorage'
 import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
-import { LoadingIndicator } from '../components/loadingIndicator'
 
 const localStorageService = localStorageServiceBuilder()
 const socketService = WebsocketService('ws://localhost:8080/')
@@ -155,27 +155,33 @@ export function MultiplePage() {
         <section className={sectionClassName}>
           <h1>LocalStorage</h1>
           <Resource resource="first" service={localStorageService}>
+            <LoadingIndicator />
+            <ErrorIndicator />
+
             <Table data={data} />
             <Sidebar title="First" />
-            <LoadingIndicator />
           </Resource>
         </section>
 
         <section className={sectionClassName}>
           <h1>Websockets</h1>
           <Resource resource="second" service={socketService}>
+            <LoadingIndicator />
+            <ErrorIndicator />
+
             <Table data={data} />
             <Sidebar title="Second" />
-            <LoadingIndicator />
           </Resource>
         </section>
 
         <section className={sectionClassName}>
           <h1>HTTP</h1>
           <Resource resource="third" service={httpService}>
+            <LoadingIndicator />
+            <ErrorIndicator />
+
             <Table data={data} />
             <Sidebar title="Second" />
-            <LoadingIndicator />
           </Resource>
         </section>
       </SidebarsController>

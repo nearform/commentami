@@ -1,7 +1,7 @@
 import { Resource, WebsocketService } from '@nearform/commentami-react-components'
 import { Reference, Sidebar, SidebarsController } from '@nearform/commentami-react-components/dist/ui'
 import React from 'react'
-import { LoadingIndicator } from '../components/loadingIndicator'
+import { ErrorIndicator, LoadingIndicator } from '../components/indicators'
 import { pageClassName } from './index'
 
 const service = WebsocketService('ws://localhost:8080/')
@@ -12,6 +12,7 @@ export function PlainPage() {
       <SidebarsController>
         <Resource resource="foo" service={service}>
           <LoadingIndicator />
+          <ErrorIndicator />
 
           <Reference reference="header">
             <h1>Welcome!</h1>
