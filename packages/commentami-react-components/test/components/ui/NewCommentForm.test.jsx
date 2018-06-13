@@ -2,7 +2,7 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { NewCommentForm } from '../../../src/components/ui/NewCommentForm'
 import { getDefaultState } from '../../../src/state/helpers/getters'
-import { getDefaultResourceContext, withResourceContext } from '../../helpers/context'
+import { getDefaultResourceContext, withResourceContext, delay } from '../../helpers/context'
 
 describe('NewCommentForm', () => {
   describe('.render', () => {
@@ -84,7 +84,7 @@ describe('NewCommentForm', () => {
       textarea.value = 'VALUE'
 
       wrapper.find('button.nf-comments-new-form__button--primary').simulate('click')
-      await new Promise(resolve => setTimeout(resolve, 10))
+      await delay()
 
       expect(addComment).toHaveBeenCalledWith('REFERENCE', 'VALUE')
       expect(textarea.value).toEqual('')
@@ -106,7 +106,7 @@ describe('NewCommentForm', () => {
       expect(textarea.value).toEqual('VALUE')
 
       wrapper.find('button.nf-comments-new-form__button--primary').simulate('click')
-      await new Promise(resolve => setTimeout(resolve, 10))
+      await delay()
 
       expect(textarea.value).toEqual('VALUE')
     })
@@ -125,7 +125,7 @@ describe('NewCommentForm', () => {
 
       textarea.value = 'VALUE'
       wrapper.find('textarea').simulate('keyPress', { key: 'enter' })
-      await new Promise(resolve => setTimeout(resolve, 10))
+      await delay()
 
       expect(addComment).toHaveBeenCalledWith('REFERENCE', 'VALUE')
       expect(textarea.value).toEqual('')
@@ -160,7 +160,7 @@ describe('NewCommentForm', () => {
 
       textarea.value = 'VALUE'
       wrapper.find('textarea').simulate('keyPress', { key: 'enter', shiftKey: true })
-      await new Promise(resolve => setTimeout(resolve, 10))
+      await delay()
 
       expect(addComment).not.toHaveBeenCalled()
     })

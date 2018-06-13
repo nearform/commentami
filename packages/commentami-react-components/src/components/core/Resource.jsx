@@ -74,10 +74,16 @@ export class Resource extends React.Component {
   /**
    * Update the state
    * @param {Object} newState
-   * @returns {*}
+   * @returns {Promise<*>}
    */
-  onCommentsStateUpdate(newState) {
-    return this.setState(newState)
+  async onCommentsStateUpdate(newState) {
+    return new Promise((resolve, reject) => {
+      try {
+        this.setState(() => newState, () => resolve(newState))
+      } catch (e) {
+        reject(e)
+      }
+    })
   }
 
   /**
