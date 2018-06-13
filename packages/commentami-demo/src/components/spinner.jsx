@@ -1,11 +1,10 @@
 import { percent, rem } from 'csx'
 import React from 'react'
-import { keyframes, style } from 'typestyle'
-import { debugClassName } from '../styling/environment'
+import { classes, keyframes, style } from 'typestyle'
 
-export function Spinner(props) {
-  const size = props.size || 66
-  const stroke = props.stroke || 6
+export function Spinner({ className, size, stroke, color, text }) {
+  if (!size) size = 66
+  if (!stroke) stroke = 6
 
   /* Adapted from here: https://tech.scrunch.com/blog/creating-an-animated-svg-spinner/ */
   const animation = keyframes({
@@ -20,7 +19,7 @@ export function Spinner(props) {
     }
   })
 
-  const className = style(debugClassName('spinner'), {
+  const baseClassName = style({
     alignSelf: 'center',
     justifySelf: 'center',
     $nest: {
@@ -32,7 +31,7 @@ export function Spinner(props) {
         width: rem(size / 10),
         height: rem(size / 10),
         fill: 'transparent',
-        stroke: props.color || '#808080',
+        stroke: color || '#808080',
         strokeWidth: stroke,
         strokeLinecap: 'round',
         strokeDasharray: [size * 3.14],
@@ -43,11 +42,11 @@ export function Spinner(props) {
   })
 
   return (
-    <main className={className}>
+    <div className={classes(baseClassName, className)}>
       <svg viewBox={`0 0 ${size} ${size}`}>
         <circle fill="none" strokeWidth="6" strokeLinecap="round" cx={size / 2} cy={size / 2} r={(size - stroke) / 2} />
       </svg>
-      {props.text && <h3>{props.text}</h3>}
-    </main>
+      {text && <h3>{text}</h3>}
+    </div>
   )
 }

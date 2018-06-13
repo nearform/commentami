@@ -1,9 +1,8 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
-import { withComments } from '../core/HOC'
-import { withSidebars } from './SidebarsController'
+import React from 'react'
+import { withReference } from '../core/HOC'
 import { DefaultMarker } from './defaults/DefaultMarker'
+import { withSidebars } from './SidebarsController'
 
 export class ReferenceBase extends React.Component {
   constructor(props) {
@@ -14,21 +13,16 @@ export class ReferenceBase extends React.Component {
   }
 
   get isActive() {
-    const { controller, resource, reference } = this.props
+    const {
+      controller,
+      commentami: { resource, reference }
+    } = this.props
 
     return controller.isActive(resource, reference)
   }
 
   render() {
-    let {
-      children,
-      hasComments,
-      activeClassName,
-      markerComponent: Marker,
-      controller,
-      resource,
-      reference
-    } = this.props
+    let { children, commentami, activeClassName, markerComponent: Marker, controller, reference } = this.props
 
     return (
       <div
@@ -41,10 +35,10 @@ export class ReferenceBase extends React.Component {
         onMouseLeave={this.boundHandleMouseLeave}
         onSelect={this.boundHandleSelect}
       >
-        {hasComments && (
+        {commentami.hasComments && (
           <Marker
             controller={controller}
-            resource={resource}
+            resource={commentami.resource}
             reference={reference}
             onClick={this.boundHandleDoubleClick}
           />
@@ -57,7 +51,7 @@ export class ReferenceBase extends React.Component {
   _updateEvents() {
     const controller = this.props.controller
     const payload = {
-      resource: this.props.resource,
+      resource: this.props.commentami.resource,
       reference: this.props.reference,
       ref: this.rootRef,
       scope: 'block'
@@ -87,9 +81,10 @@ ReferenceBase.propTypes = {
 
   markerComponent: PropTypes.func,
 
-  hasComments: PropTypes.bool,
-
-  resource: PropTypes.string.isRequired,
+  commentami: PropTypes.shape({
+    hasComments: PropTypes.bool,
+    resource: PropTypes.string.isRequired
+  }).isRequired,
 
   reference: PropTypes.oneOfType([
     PropTypes.string,
@@ -108,6 +103,6 @@ ReferenceBase.propTypes = {
   })
 }
 
-export const Reference = withSidebars(withComments(ReferenceBase))
+export const Reference = withSidebars(withReference(ReferenceBase))
 
 Reference.displayName = 'Reference'

@@ -1,12 +1,12 @@
 import { mount } from 'enzyme'
 import React from 'react'
 import { NewCommentForm } from '../../../src/components/ui/NewCommentForm'
-import { withResourceContext } from '../../helpers/context'
+import { getDefaultResourceContext, withResourceContext } from '../../helpers/context'
 
 describe('NewCommentForm', () => {
   describe('.render', () => {
     test('should render the core elements', () => {
-      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" />))
+      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" />, getDefaultResourceContext()))
 
       expect(wrapper.find('form').hasClass('nf-comments-new-form')).toBeTruthy()
       expect(wrapper.find('textarea.nf-comments-new-form__textarea').prop('placeholder')).toEqual('Enter some text ...')
@@ -24,7 +24,8 @@ describe('NewCommentForm', () => {
             cancelLabel="CANCEL"
             submitLabel="SUBMIT"
             reference="REFERENCE"
-          />
+          />,
+          getDefaultResourceContext()
         )
       )
 
@@ -40,7 +41,14 @@ describe('NewCommentForm', () => {
     test('should submit when clicking on the button', () => {
       const addComment = jest.fn()
 
-      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" addComment={addComment} />))
+      const wrapper = mount(
+        withResourceContext(
+          <NewCommentForm reference="REFERENCE" addComment={addComment} />,
+          getDefaultResourceContext({
+            addComment
+          })
+        )
+      )
 
       wrapper.find('textarea').instance().value = 'VALUE'
       wrapper.find('button.nf-comments-new-form__button--primary').simulate('click')
@@ -51,7 +59,12 @@ describe('NewCommentForm', () => {
     test('should submit when typing enter', async () => {
       const addComment = jest.fn()
 
-      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" addComment={addComment} />))
+      const wrapper = mount(
+        withResourceContext(
+          <NewCommentForm reference="REFERENCE" addComment={addComment} />,
+          getDefaultResourceContext({ addComment })
+        )
+      )
 
       wrapper.find('textarea').instance().value = 'VALUE'
       wrapper.find('textarea').simulate('keyPress', { key: 'enter' })
@@ -63,7 +76,12 @@ describe('NewCommentForm', () => {
     test('should NOT submit when there is no value', () => {
       const addComment = jest.fn()
 
-      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" addComment={addComment} />))
+      const wrapper = mount(
+        withResourceContext(
+          <NewCommentForm reference="REFERENCE" addComment={addComment} />,
+          getDefaultResourceContext()
+        )
+      )
 
       wrapper.find('button.nf-comments-new-form__button--primary').simulate('click')
 
@@ -73,7 +91,12 @@ describe('NewCommentForm', () => {
     test('should submit when typing shift+enter', async () => {
       const addComment = jest.fn()
 
-      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" addComment={addComment} />))
+      const wrapper = mount(
+        withResourceContext(
+          <NewCommentForm reference="REFERENCE" addComment={addComment} />,
+          getDefaultResourceContext()
+        )
+      )
 
       wrapper.find('textarea').instance().value = 'VALUE'
       wrapper.find('textarea').simulate('keyPress', { key: 'enter', shiftKey: true })
@@ -85,7 +108,7 @@ describe('NewCommentForm', () => {
 
   describe('resetting', () => {
     test('should clear input when clicking on the button', () => {
-      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" />))
+      const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" />, getDefaultResourceContext()))
 
       const element = wrapper.find('textarea').instance()
 

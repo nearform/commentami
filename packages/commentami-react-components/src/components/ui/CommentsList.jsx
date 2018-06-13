@@ -1,12 +1,10 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
-import { selectCommentsByReference } from '../../state/selectors'
-import { withComments } from '../core/HOC'
+import React from 'react'
+import { withReference } from '../core/HOC'
 import { DefaultComment } from './defaults/DefaultComment'
 
-export function CommentsListBase({ commentable, reference, title, className, commentComponent: Component }) {
-  const comments = selectCommentsByReference(commentable, reference)
+export function CommentsListBase({ commentami, reference, title, className, commentComponent: Component }) {
+  const comments = commentami.listReferenceComments()
 
   if (!Component) Component = DefaultComment
 
@@ -15,7 +13,7 @@ export function CommentsListBase({ commentable, reference, title, className, com
       {title && <h2 className="nf-comments-list__title">{title}</h2>}
 
       {comments.map(comment => (
-        <Component key={comment.id} comment={comment} removeComment={commentable.removeComment} />
+        <Component key={comment.id} comment={comment} removeComment={commentami.removeComment} />
       ))}
     </section>
   )
@@ -28,9 +26,10 @@ CommentsListBase.defaultProps = {
 }
 
 CommentsListBase.propTypes = {
-  commentable: PropTypes.shape({
-    removeComment: PropTypes.func
-  }),
+  commentami: PropTypes.shape({
+    removeComment: PropTypes.func,
+    listReferenceComments: PropTypes.func.isRequired
+  }).isRequired,
 
   reference: PropTypes.oneOfType([
     PropTypes.string,
@@ -44,5 +43,5 @@ CommentsListBase.propTypes = {
   commentComponent: PropTypes.func
 }
 
-export const CommentsList = withComments(CommentsListBase)
+export const CommentsList = withReference(CommentsListBase)
 CommentsList.displayName = 'Comments'

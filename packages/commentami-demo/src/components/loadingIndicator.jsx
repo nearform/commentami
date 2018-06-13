@@ -1,12 +1,12 @@
+import { withResource } from '@nearform/commentami-react-components'
 import { percent, px, viewWidth } from 'csx'
-import { style } from 'typestyle'
 import React from 'react'
+import { style } from 'typestyle'
 import { Spinner } from './spinner'
-import { withResource } from '../../src/components/core/HOC'
 
 const loadingIndicatorClassName = style({
   position: 'absolute',
-  top: px(20),
+  top: px(70),
   left: `calc(${percent(50)} - ${viewWidth(20)})`,
   backgroundColor: '#FDD835',
   borderRadius: px(10),
@@ -32,7 +32,7 @@ export const LoadingIndicator = withResource(function LoadingIndicatorBase({ com
 
   return (
     <div className={loadingIndicatorClassName}>
-      <Spinner className={loadingSpinnerClassName} text="Loading comments..." color="#444" size={16} stroke={2} />
+      <Spinner className={loadingSpinnerClassName} text="Loading ..." color="#444" size={16} stroke={2} />
     </div>
   )
 })

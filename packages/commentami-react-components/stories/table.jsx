@@ -23,7 +23,7 @@ const CustomBlock = withSidebars(
 
         this.rootRef = React.createRef()
         this.boundHandleClick = this.props.controller.handleClick.bind(null, {
-          resource: this.props.resource,
+          resource: this.props.commentami.resource,
           reference: this.props.reference,
           ref: this.rootRef,
           scope: 'marker'
@@ -31,7 +31,12 @@ const CustomBlock = withSidebars(
       }
 
       render() {
-        let { children, activeClassName, controller, hasComments, resource, reference } = this.props
+        let {
+          children,
+          activeClassName,
+          controller,
+          commentami: { hasComments, resource, reference }
+        } = this.props
         const isActive = controller.isActive(resource, reference)
 
         if (!activeClassName) activeClassName = 'nf-comments-block--active'

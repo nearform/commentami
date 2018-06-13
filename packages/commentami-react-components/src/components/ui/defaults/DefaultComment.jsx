@@ -41,7 +41,7 @@ DefaultComment.propTypes = {
   removeComment: PropTypes.func.isRequired,
 
   comment: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     author: PropTypes.string,
     content: PropTypes.string
   })

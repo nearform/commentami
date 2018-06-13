@@ -43,7 +43,7 @@ export const Block = withSidebars(
         this.rootRef = React.createRef()
 
         const payload = {
-          resource: this.props.commentable.resource,
+          resource: this.props.commentami.resource,
           reference: this.props.reference,
           ref: this.rootRef,
           scope: 'block'
@@ -54,7 +54,9 @@ export const Block = withSidebars(
       handleShowComments(payload, event) {
         event.preventDefault()
 
-        const { resource, reference } = this.props
+        const {
+          commentami: { resource, reference }
+        } = this.props
 
         this.props.controller.isActive(resource, reference)
           ? this.props.controller.updateActive()
@@ -65,7 +67,11 @@ export const Block = withSidebars(
       }
 
       render() {
-        let { children, hasComments, markerComponent: Marker, resource, reference } = this.props
+        let {
+          children,
+          commentami: { hasComments, resource, reference },
+          markerComponent: Marker
+        } = this.props
 
         const isActive = this.props.controller.isActive(resource, reference)
 

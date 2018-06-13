@@ -9,12 +9,9 @@ describe('exports', () => {
         'HttpService',
         'Resource',
         'WebsocketService',
-        'commentsCount',
         'flexibleRender',
-        'referencesCount',
-        'selectCommentsByReference',
-        'withComments',
-        'withReference'
+        'withReference',
+        'withResource'
       ])
     })
   })

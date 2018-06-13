@@ -141,8 +141,17 @@ describe('state/reducers/Resource', () => {
   })
 })
 
-describe.skip('state/helpers', () => {
+describe('state/helpers', () => {
   test('Init the state', () => {
-    expect(getDefaultState('res-1')).toEqual({ id: 'res-1', references: {} })
+    expect(getDefaultState('res-1')).toEqual({
+      fetchError: null,
+      id: 'res-1',
+      initError: null,
+      isFetching: false,
+      isInit: false,
+      isUpdating: false,
+      references: {},
+      updateError: null
+    })
   })
 })

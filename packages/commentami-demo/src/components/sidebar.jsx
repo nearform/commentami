@@ -1,4 +1,4 @@
-import { withComments } from '@nearform/commentami-react-components'
+import { withResource } from '@nearform/commentami-react-components'
 import { CommentsList, NewCommentForm, withSidebars } from '@nearform/commentami-react-components/dist/ui'
 import { rem, viewHeight, viewWidth } from 'csx'
 import React from 'react'
@@ -28,7 +28,7 @@ const sidebarHeaderClassName = style({
 })
 
 export const Sidebar = withSidebars(
-  withComments(
+  withResource(
     class extends React.Component {
       constructor(props) {
         super(props)
@@ -43,7 +43,10 @@ export const Sidebar = withSidebars(
       }
 
       render() {
-        const { controller, resource } = this.props
+        const {
+          controller,
+          commentami: { resource }
+        } = this.props
 
         if (!controller.isActive(resource)) return false
 

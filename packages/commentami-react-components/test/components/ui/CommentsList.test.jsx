@@ -1,7 +1,10 @@
 import { mount } from 'enzyme'
 import React from 'react'
 import { CommentsList } from '../../../src/components/ui/CommentsList'
-import { withResourceContext } from '../../helpers/context'
+import { withResourceContext, getDefaultResourceContext } from '../../helpers/context'
+import { getDefaultState } from '../../../src/state/helpers/getters'
+import { createComment } from '../../../src/state/helpers/creators'
+import { setCommentToResource } from '../../../src/state/reducers/resource'
 
 function CustomComment({ comment: { content } }) {
   return <p>{content}</p>
@@ -10,23 +13,27 @@ function CustomComment({ comment: { content } }) {
 describe('CommentsList', () => {
   describe('.render', () => {
     test('should render no comments by default', () => {
-      const wrapper = mount(withResourceContext(<CommentsList title="FOO" className="CLS" />))
+      const defaultContext = getDefaultResourceContext()
+      const wrapper = mount(
+        withResourceContext(<CommentsList reference="REFERENCE" title="FOO" className="CLS" />, defaultContext)
+      )
 
       expect(wrapper.find('section').hasClass('CLS')).toBeTruthy()
       expect(wrapper.contains(<h2 className="nf-comments-list__title">FOO</h2>)).toBeTruthy()
     })
 
     test('should render comments with the standard component', () => {
-      const context = {
-        removeComment: jest.fn(),
-        commentsState: {
-          references: {
-            REFERENCE: {
-              comments: [{ reference: { id: 'REFERENCE' }, id: 'comm-1', content: 'AAA' }]
-            }
-          }
-        }
-      }
+      const context = getDefaultResourceContext({
+        commentsState: setCommentToResource(
+          getDefaultState('RESOURCE'),
+          { id: 'REFERENCE' },
+          createComment({
+            reference: { id: 'REFERENCE' },
+            id: 'comm-1',
+            content: 'AAA'
+          })
+        )
+      })
 
       const wrapper = mount(withResourceContext(<CommentsList reference="REFERENCE" />, context))
       expect(wrapper.find('section').hasClass('nf-comments-list')).toBeTruthy()
@@ -34,28 +41,28 @@ describe('CommentsList', () => {
     })
 
     test('should render comments with the custom component', () => {
-      const context = {
-        removeComment: jest.fn(),
-        commentsState: {
-          references: {
-            REFERENCE: {
-              comments: [
-                { reference: { id: 'REFERENCE' }, id: 'comm-1', content: 'AAA' },
-                { reference: { id: 'REFERENCE' }, id: 'comm-2', content: 'BBB' }
-              ]
-            },
-            'ANOTHER-REFERENCE': {
-              comments: [
-                {
-                  reference: { id: 'ANOTHER-REFERENCE' },
-                  id: 'comm-3',
-                  content: 'CCC'
-                }
-              ]
-            }
-          }
-        }
-      }
+      let state = setCommentToResource(
+        getDefaultState('RESOURCE'),
+        { id: 'REFERENCE' },
+        createComment({
+          reference: { id: 'REFERENCE' },
+          id: 'comm-1',
+          content: 'AAA'
+        })
+      )
+      state = setCommentToResource(
+        state,
+        { id: 'REFERENCE' },
+        createComment({
+          reference: { id: 'REFERENCE' },
+          id: 'comm-2',
+          content: 'BBB'
+        })
+      )
+
+      const context = getDefaultResourceContext({
+        commentsState: state
+      })
 
       const wrapper = mount(
         withResourceContext(<CommentsList reference="REFERENCE" commentComponent={CustomComment} />, context)

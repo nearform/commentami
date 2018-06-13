@@ -1,7 +1,6 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
-import { withComments } from '../core/HOC'
+import React from 'react'
+import { withReference } from '../core/HOC'
 
 export class NewCommentFormBase extends React.Component {
   constructor(props) {
@@ -17,7 +16,7 @@ export class NewCommentFormBase extends React.Component {
     ev.preventDefault()
     const value = (this.textareaRef.current.value || '').trim()
 
-    if (value) this.props.addComment(this.props.reference, value)
+    if (value) this.props.commentami.addComment(this.props.reference, value)
     this.textareaRef.current.value = ''
   }
 
@@ -79,7 +78,9 @@ NewCommentFormBase.propTypes = {
   submitLabel: PropTypes.string,
   className: PropTypes.string,
 
-  addComment: PropTypes.func.isRequired,
+  commentami: PropTypes.shape({
+    addComment: PropTypes.func.isRequired
+  }).isRequired,
 
   reference: PropTypes.oneOfType([
     PropTypes.string,
@@ -89,6 +90,6 @@ NewCommentFormBase.propTypes = {
   ]).isRequired
 }
 
-export const NewCommentForm = withComments(NewCommentFormBase)
+export const NewCommentForm = withReference(NewCommentFormBase)
 
 NewCommentForm.displayName = 'NewCommentForm'

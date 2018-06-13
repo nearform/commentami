@@ -1,17 +1,18 @@
-import React from 'react'
 import { Resource, WebsocketService } from '@nearform/commentami-react-components'
-import { Reference, SidebarsController, Sidebar } from '@nearform/commentami-react-components/dist/ui'
-// import { localStorageService } from '../services/localStorage'
+import { Reference, Sidebar, SidebarsController } from '@nearform/commentami-react-components/dist/ui'
+import React from 'react'
+import { LoadingIndicator } from '../components/loadingIndicator'
 import { pageClassName } from './index'
 
 const service = WebsocketService('ws://localhost:8080/')
-// const service = localStorageService()
 
 export function PlainPage() {
   return (
     <div className={pageClassName}>
       <SidebarsController>
         <Resource resource="foo" service={service}>
+          <LoadingIndicator />
+
           <Reference reference="header">
             <h1>Welcome!</h1>
           </Reference>
@@ -55,6 +56,8 @@ export function PlainPage() {
         </Resource>
 
         <Resource resource="another" service={service}>
+          <LoadingIndicator />
+
           <Reference reference="header">
             <h1>This is now another provider!</h1>
           </Reference>
