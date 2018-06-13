@@ -69,8 +69,7 @@ export const Block = withSidebars(
       render() {
         let {
           children,
-          commentami: { hasComments, resource },
-          reference,
+          commentami: { hasComments, resource, reference },
           markerComponent: Marker
         } = this.props
 
