@@ -32,7 +32,15 @@ export class NewCommentFormBase extends React.Component {
   }
 
   render() {
-    const { title, placeholder, cancelLabel, submitLabel, className } = this.props
+    const {
+      commentami: { isUpdating },
+      className,
+      title,
+      placeholder,
+      cancelLabel,
+      submitLabel,
+      savingLabel
+    } = this.props
 
     return (
       <form action="#" className={className}>
@@ -54,8 +62,9 @@ export class NewCommentFormBase extends React.Component {
           type="submit"
           className="nf-comments-new-form__button nf-comments-new-form__button--primary"
           onClick={this.boundHandleSubmit}
+          disabled={isUpdating}
         >
-          {submitLabel}
+          {isUpdating ? savingLabel : submitLabel}
         </button>
       </form>
     )
@@ -69,7 +78,8 @@ NewCommentFormBase.defaultProps = {
   title: 'Add new comment',
   placeholder: 'Enter some text ...',
   cancelLabel: 'Cancel',
-  submitLabel: 'Add'
+  submitLabel: 'Add',
+  savingLabel: 'Saving ...'
 }
 
 NewCommentFormBase.propTypes = {
@@ -79,6 +89,7 @@ NewCommentFormBase.propTypes = {
   placeholder: PropTypes.string,
   cancelLabel: PropTypes.string,
   submitLabel: PropTypes.string,
+  savingLabel: PropTypes.string,
   className: PropTypes.string
 }
 
