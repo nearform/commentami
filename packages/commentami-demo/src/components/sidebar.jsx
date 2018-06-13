@@ -43,7 +43,10 @@ export const Sidebar = withSidebars(
       }
 
       render() {
-        const { controller, resource } = this.props
+        const {
+          controller,
+          commentami: { resource }
+        } = this.props
 
         if (!controller.isActive(resource)) return false
 
