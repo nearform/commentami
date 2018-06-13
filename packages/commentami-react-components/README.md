@@ -101,15 +101,15 @@ Now that the component is correctly wrapped, we need to configure the service th
 import {
   Resource,
   Reference,
-  CommentsFetchService
+  HttpService
 } from '@nearform/commentami-react-components'
 
-const commentsFetchService = CommentsFetchService('http://localhost:8080/')
+const commentsHttpService = HttpService('http://localhost:8080/')
 
 class SamplePage extends React.Component {
   render() {
     return (
-      <Resource resource="my-resource" service={commentsFetchService}>
+      <Resource resource="my-resource" service={commentsHttpService}>
         <Reference reference="reference-1">
           <h1>Text Title 1</h1>
         </Reference>
@@ -136,18 +136,18 @@ To provide this feature we need to wrap everithing inside a SidebarsController a
 import {
   Resource,
   Reference,
-  CommentsFetchService,
+  HttpService,
   SidebarsController,
   Sidebar
 } from '@nearform/commentami-react-components'
 
-const commentsFetchService = CommentsFetchService('http://localhost:8080/')
+const commentsHttpService = HttpService('http://localhost:8080/')
 
 class SamplePage extends React.Component {
   render() {
     return (
       <SidebarsController>
-        <Resource resource="my-resource" service={commentsFetchService}>
+        <Resource resource="my-resource" service={commentsHttpService}>
           <Reference reference="reference-1">
             <h1>Text Title 1</h1>
           </Reference>

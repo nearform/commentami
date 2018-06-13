@@ -4,18 +4,18 @@ The service provides the functionality to connect the Component with the server.
 
 With the project are provided 2 services:
 
-* CommentsFetchService - To connect to the REST api
-* CommentsNesService - To connect to the server with a websocket
+* HttpService - To connect to the REST api
+* WebsocketService - To connect to the server with a websocket
 
 *an additional `CommentsInMemoryService` is available and can be used in tests and storybook.*
 
 ```
-import { CommentsNesService } from '@nearform/commentami-react-components'
+import { WebsocketService } from '@nearform/commentami-react-components'
 
-const commentsNesService = CommentsNesService('ws://localhost:8080/')
+const commentsWebsocketService = WebsocketService('ws://localhost:8080/')
 
 render() {
-  <Resource resource="res-1" service={commentsNesService}>
+  <Resource resource="res-1" service={commentsWebsocketService}>
     ...
   </Resource>
 }
