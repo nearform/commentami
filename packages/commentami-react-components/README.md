@@ -456,5 +456,5 @@ unsubscribe()
 
 Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].
 
-[comments]: https://github.com/nearform/comments/tree/master/packages
+[commentami]: https://github.com/nearform/commentami/tree/master/packages
 [license]: ./LICENSE.md

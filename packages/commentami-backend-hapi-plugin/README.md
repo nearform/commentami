@@ -1,6 +1,6 @@
 # @nearform/commentami-backend-hapi-plugin
 
-`@nearform/commentami-backend-hapi-plugin` is a plugin to add the comments REST API and (if specified) Websockets to a [Hapi][hapi] server.
+`@nearform/commentami-backend-hapi-plugin` is a plugin to add the commentami REST API and (if specified) Websockets to a [Hapi][hapi] server.
 
 ## Install
 
@@ -25,7 +25,7 @@ options.pg = {
 }
 ```
 
-Any parameter in this object will override whatever comes from `@nearform/commentami-backend-core` `config.pg`.
+Any parameter in this object will override whatever comes from `@nearform/commentami-backend-core` [`config.pg`](https://github.com/nearform/commentami/blob/master/packages/commentami-backend-core/config/index.js).
 
 ### `options.routes` \[optional\]
 
@@ -53,7 +53,7 @@ The `getUser` function will need to return a promise that will yield either `nul
 
 ### `options.hooks` \[optional\]
 
-It should contain the hooks to decorate a single comment or a list of comments with data.
+It should contain the hooks to decorate a single comment or a list of comments with more data.
 
 An example could be adding users data to each comments based on it's author.
 
@@ -76,7 +76,7 @@ options.hooks = {
 
 By default the server will start with only the http endpoints available. If you also want to interact through websocket you should provide a `multines` option.
 
-The option whould be an object with the following format
+The option should be an object with the following format
 
 ```
 multines: {
@@ -88,13 +88,13 @@ multines: {
 }
 ```
 
-**Note**: if you pass `options.multines = {}` the websockets will be active but the pub/sub system will work only for the single server and not between multiple servers (ie: through resid pub/sub).
+**Note**: if you pass `options.multines = {}` the websockets will be active but the pub/sub system will work only for the single server and not between multiple servers (ie: through redis pub/sub).
 
 ### `options.nes` \[optional\]
 
 If you want to customize the `nes` plugin you can pass [its options](https://github.com/hapijs/nes/blob/master/lib/index.js#L17-L42) through `options.nes`.
 
-An example of what you may want to do is settig up nes to use an authentication strategy that you have already add to you server
+An example of what you may want to do is settig up nes to use an authentication strategy that you have already added to you server
 
 ```
 nes: {

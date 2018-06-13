@@ -31,10 +31,6 @@ describe('Comments REST API', () => {
           auth: 'myauth',
           getUser: async (request, payload) => {
             let user = request.auth.credentials
-            // Fix waiting for https://github.com/hapijs/nes/pull/230 to be merged
-            if (user.credentials) {
-              user = user.credentials
-            }
 
             return user
           }

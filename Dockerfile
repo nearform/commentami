@@ -4,4 +4,6 @@ WORKDIR /usr/app
 
 COPY . .
 
-RUN npm install --quiet
+RUN sed -i 's/lerna bootstrap/lerna bootstrap -- --unsafe-perm/g' package.json
+
+RUN npm install --unsafe-perm --quiet

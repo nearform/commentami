@@ -2,7 +2,7 @@
   "name": "@nearform/commentami-backend-hapi-plugin",
   "version": "0.1.0",
   "private": true,
-  "description": "Comments",
+  "description": "Commentami",
   "license": "Apache-2.0",
   "author": "nearForm Ltd",
   "contributors": [
@@ -10,13 +10,13 @@
     "Davide Fiorello (https://github.com/codeflyer)",
     "Paolo Insogna (https://github.com/ShogunPanda)"
   ],
-  "homepage": "https://github.com/nearform/comments#readme",
+  "homepage": "https://github.com/nearform/commentami#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nearform/comments.git"
+    "url": "git+https://github.com/nearform/commentami.git"
   },
   "bugs": {
-    "url": "https://github.com/nearform/comments/issues"
+    "url": "https://github.com/nearform/commentami/issues"
   },
   "engines": {
     "node": ">=8.9.0"
@@ -32,7 +32,7 @@
     "@nearform/commentami-backend-core": "^0.1.0",
     "joi": "^13.3.0",
     "multines": "^1.0.0",
-    "nes": "^8.1.0"
+    "nes": "^9.0.0"
   },
   "devDependencies": {
     "boom": "^7.2.0",
