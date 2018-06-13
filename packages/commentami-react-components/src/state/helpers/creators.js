@@ -2,20 +2,20 @@
  * The comment object
  * @typedef {Object} Comment
  * @property {string} id - The Comment identifier
- * @property {?Reference} reference
- * @property {?string} content
- * @property {?string} author
- * @property {?Timestamp} createdAt
+ * @property {?Reference} reference - The reference that contains the comment
+ * @property {?string} content - The text of the comment
+ * @property {?string} author - The author of the comment, this will became a more complex structure in the future implementation
+ * @property {?Timestamp} createdAt - The timestamp of the comment
  */
 
 /**
  * Create a new comment
  * @param {Comment|Object} commentOptions - The options required to generate the comment
- * @param {?string} commentOptions.id          The comment identifier
- * @param {?Reference} commentOptions.reference   The reference identifier
- * @param {?string} commentOptions.content     The content of the comment
- * @param {?string} commentOptions.author      The author of the comment
- * @param {?Timestamp} createdAt      The author of the comment
+ * @param {?string} commentOptions.id - The comment identifier
+ * @param {?Reference} commentOptions.reference - The reference identifier
+ * @param {?string} commentOptions.content - The content of the comment
+ * @param {?string} commentOptions.author - The author of the comment
+ * @param {?Timestamp} commentOptions.createdAt      The author of the comment
  *
  * @returns {Comment}
  */
@@ -36,7 +36,7 @@ export const createComment = ({ id = null, reference = null, content = null, aut
 
 /**
  * Create a new Reference
- * @param {Reference|Object} referenceOptions The reference object
+ * @param {Reference} referenceOptions The reference object
  * @param {string} referenceOptions.id The reference identifier
  * @returns {Reference}
  */

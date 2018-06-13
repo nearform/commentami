@@ -1,8 +1,8 @@
 import { createComment, createReference } from './creators'
 
 /**
- * Generate the default state
- * @returns {Resource}
+ * Get the default state
+ * @returns {State}
  */
 export const getDefaultState = idResource => ({
   id: idResource,
@@ -29,7 +29,7 @@ export const getComment = (reference, { id }) => reference.comments[id] || creat
 
 /**
  *
- * @param {Resource} state
+ * @param {State} state
  * @param {Reference} referenceOptions The reference options object
  * @param {string} referenceOptions.id The reference identifier
  * @returns {Reference}
