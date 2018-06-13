@@ -2,4 +2,3 @@ export { withResource, withReference, flexibleRender } from './components/core/H
 export { Resource } from './components/core/Resource'
 export { HttpService } from './services/HttpService'
 export { WebsocketService } from '././services/WebsocketService'
-export { selectCommentsByReference, commentsCount, referencesCount } from './state/selectors'
