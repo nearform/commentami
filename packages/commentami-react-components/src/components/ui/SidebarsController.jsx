@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { childrenPropInterface } from '../core/propInterfaces'
 
 export const SidebarsControllerContext = React.createContext('controller')
 
@@ -60,7 +60,7 @@ export class SidebarsController extends React.Component {
 SidebarsController.displayName = 'SidebarsController'
 
 SidebarsController.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired
+  children: childrenPropInterface
 }
 
 export function withSidebars(Component) {

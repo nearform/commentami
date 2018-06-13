@@ -1,5 +1,6 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
+import { commentPropInterface } from '../../core/propInterfaces'
 
 export class DefaultComment extends React.Component {
   constructor(props) {
@@ -36,13 +37,7 @@ DefaultComment.defaultProps = {
 }
 
 DefaultComment.propTypes = {
+  comment: PropTypes.shape(commentPropInterface),
   className: PropTypes.string,
-
-  removeComment: PropTypes.func.isRequired,
-
-  comment: PropTypes.shape({
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    author: PropTypes.string,
-    content: PropTypes.string
-  })
+  removeComment: PropTypes.func.isRequired
 }

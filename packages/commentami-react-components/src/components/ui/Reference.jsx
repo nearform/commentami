@@ -2,7 +2,13 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { withReference } from '../core/HOC'
 import { DefaultMarker } from './defaults/DefaultMarker'
-import { withSidebars } from './SidebarsController'
+import {
+  childrenPropInterface,
+  commentamiReferencePropInterface,
+  componentPropInterface,
+  referencePropInterface
+} from '../core/propInterfaces'
+import { sidebarsControllerPropInterface, withSidebars } from './SidebarsController'
 
 export class ReferenceBase extends React.Component {
   constructor(props) {
@@ -75,32 +81,12 @@ ReferenceBase.defaultProps = {
 }
 
 ReferenceBase.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
-
+  commentami: PropTypes.shape(commentamiReferencePropInterface).isRequired,
+  controller: PropTypes.shape(sidebarsControllerPropInterface).isRequired,
+  reference: referencePropInterface.isRequired,
   activeClassName: PropTypes.string,
-
-  markerComponent: PropTypes.func,
-
-  commentami: PropTypes.shape({
-    hasComments: PropTypes.bool,
-    resource: PropTypes.string.isRequired
-  }).isRequired,
-
-  reference: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      id: PropTypes.string.isRequired
-    })
-  ]).isRequired,
-
-  controller: PropTypes.shape({
-    handleClick: PropTypes.func,
-    handleContextMenu: PropTypes.func,
-    handleDoubleClick: PropTypes.func,
-    handleMouseEnter: PropTypes.func,
-    handleMouseLeave: PropTypes.func,
-    handleSelect: PropTypes.func
-  })
+  children: childrenPropInterface,
+  markerComponent: componentPropInterface
 }
 
 export const Reference = withSidebars(withReference(ReferenceBase))

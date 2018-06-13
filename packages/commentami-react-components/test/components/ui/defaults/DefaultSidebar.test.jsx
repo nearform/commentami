@@ -7,7 +7,9 @@ describe('DefaultSidebar', () => {
   test('renders correctly a sidebar and handle its close button even if nothing is provided', async () => {
     const context = getDefaultResourceContext({ listReferenceComments: jest.fn().mockReturnValue([]) })
     const controller = {
-      reference: 'ref-1'
+      reference: 'ref-1',
+      isActive: jest.fn(),
+      updateActive: jest.fn()
     }
 
     const wrapper = mount(withResourceContext(<DefaultSidebar controller={controller} />, context))
@@ -21,6 +23,8 @@ describe('DefaultSidebar', () => {
     const controller = {
       resource: 'RESOURCE',
       reference: 'REFERENCE',
+      isActive: jest.fn(),
+      updateActive: jest.fn(),
       handleClick: jest.fn()
     }
 

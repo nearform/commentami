@@ -9,7 +9,7 @@ describe('DefaultComment', () => {
       author: 'my author',
       content: 'my content'
     }
-    const wrapper = mount(<DefaultComment removeComment={() => {}} comment={comment} />)
+    const wrapper = mount(<DefaultComment removeComment={jest.fn()} comment={comment} />)
 
     expect(wrapper.find('article').length).toEqual(1)
     expect(wrapper.find('h4').length).toEqual(1)

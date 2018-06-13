@@ -1,9 +1,9 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
+import React from 'react'
 import { CommentsList } from '../CommentsList'
 import { Icon } from '../Icon'
 import { NewCommentForm } from '../NewCommentForm'
+import { sidebarsControllerPropInterface } from '../../core/propInterfaces'
 
 export class DefaultSidebar extends React.Component {
   constructor(props) {
@@ -56,15 +56,6 @@ DefaultSidebar.defaultProps = {
 }
 
 DefaultSidebar.propTypes = {
-  title: PropTypes.string,
-
-  controller: PropTypes.shape({
-    handleClick: PropTypes.func,
-    reference: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.shape({
-        id: PropTypes.string.isRequired
-      })
-    ])
-  })
+  controller: PropTypes.shape(sidebarsControllerPropInterface).isRequired,
+  title: PropTypes.string
 }

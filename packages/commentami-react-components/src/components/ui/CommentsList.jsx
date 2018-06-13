@@ -2,6 +2,11 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { withReference } from '../core/HOC'
 import { DefaultComment } from './defaults/DefaultComment'
+import {
+  commentamiReferencePropInterface,
+  componentPropInterface,
+  referencePropInterface
+} from '../core/propInterfaces'
 
 export function CommentsListBase({ commentami, reference, title, className, commentComponent: Component }) {
   const comments = commentami.listReferenceComments()
@@ -26,21 +31,11 @@ CommentsListBase.defaultProps = {
 }
 
 CommentsListBase.propTypes = {
-  commentami: PropTypes.shape({
-    removeComment: PropTypes.func,
-    listReferenceComments: PropTypes.func.isRequired
-  }).isRequired,
-
-  reference: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      id: PropTypes.string.isRequired
-    })
-  ]),
-
+  commentami: PropTypes.shape(commentamiReferencePropInterface).isRequired,
+  reference: referencePropInterface.isRequired,
   title: PropTypes.string,
   className: PropTypes.string,
-  commentComponent: PropTypes.func
+  commentComponent: componentPropInterface
 }
 
 export const CommentsList = withReference(CommentsListBase)

@@ -17,7 +17,7 @@ describe('Reference', () => {
   })
 
   test('should render without the active class and without a marker by default', () => {
-    const controller = { isActive: () => false }
+    const controller = { isActive: () => false, updateActive: () => null }
 
     const wrapper = mount(
       withSidebarsControllerContext(
@@ -37,7 +37,7 @@ describe('Reference', () => {
   })
 
   test('should render with the active class and with a marker', () => {
-    const controller = { isActive: () => true }
+    const controller = { isActive: () => true, updateActive: () => null }
 
     const context = getDefaultResourceContext({
       commentsState: setCommentToResource(
@@ -69,7 +69,7 @@ describe('Reference', () => {
   })
 
   test('should use a custom marker', () => {
-    const controller = { isActive: () => true }
+    const controller = { isActive: () => true, updateActive: () => null }
 
     const context = getDefaultResourceContext({
       commentsState: setCommentToResource(
@@ -103,6 +103,7 @@ describe('Reference', () => {
     const handler = jest.fn()
     const controller = {
       isActive: () => true,
+      updateActive: () => null,
       handleClick: handler,
       handleContextMenu: handler,
       handleDoubleClick: handler,
