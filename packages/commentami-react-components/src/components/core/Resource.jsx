@@ -84,13 +84,13 @@ export class Resource extends React.Component {
    * Add a comment to a reference
    * @param {Reference} reference
    * @param {string} content
-   * @returns {Promise<void>}
+   * @returns {Promise<*|void|boolean>}
    */
   async addComment(reference, content) {
     try {
       const comment = createComment({ reference, content })
 
-      await this.commentsState.addComment({
+      return await this.commentsState.addComment({
         resource: this.currentResource,
         reference: comment.reference,
         content: comment.content
@@ -103,11 +103,11 @@ export class Resource extends React.Component {
   /**
    * Remove a comment from the state
    * @param {Comment} comment
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>}
    */
   async removeComment(comment) {
     try {
-      await this.commentsState.removeComment(comment)
+      return await this.commentsState.removeComment(comment)
     } catch (e) {
       this.logger.error(e)
     }

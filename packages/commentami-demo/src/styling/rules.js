@@ -86,6 +86,7 @@ cssRule('.nf-comments-new-form', {
   "title  title     title" min-content
   "text   text      text" min-content
   "null   secondary primary" min-content
+  "error  error     error" min-content
   / 2fr 1fr 1fr
   `,
   gridGap: px(10),
@@ -133,4 +134,9 @@ cssRule('.nf-comments-new-form__button', {
       }
     }
   }
+})
+
+cssRule('.nf-comments-new-form__error', {
+  gridArea: 'error',
+  color: '#CC0000'
 })

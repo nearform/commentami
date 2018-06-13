@@ -13,12 +13,12 @@ export class NewCommentFormBase extends React.Component {
     this.boundHandleKeyPress = this.handleKeyPress.bind(this)
   }
 
-  handleSubmit(ev) {
+  async handleSubmit(ev) {
     ev.preventDefault()
-    const value = (this.textareaRef.current.value || '').trim()
 
-    if (value) this.props.commentami.addComment(this.props.reference, value)
-    this.textareaRef.current.value = ''
+    const value = (this.textareaRef.current.value || '').trim()
+    const comment = value ? await this.props.commentami.addComment(this.props.reference, value) : null
+    if (comment) this.textareaRef.current.value = ''
   }
 
   handleReset(ev) {
@@ -33,13 +33,14 @@ export class NewCommentFormBase extends React.Component {
 
   render() {
     const {
-      commentami: { isUpdating },
+      commentami: { isUpdating, updateError },
       className,
       title,
       placeholder,
       cancelLabel,
       submitLabel,
-      savingLabel
+      savingLabel,
+      errorPrefixLabel
     } = this.props
 
     return (
@@ -66,6 +67,12 @@ export class NewCommentFormBase extends React.Component {
         >
           {isUpdating ? savingLabel : submitLabel}
         </button>
+
+        {updateError && (
+          <span className="nf-comments-new-form__error">
+            {errorPrefixLabel} {updateError.message}
+          </span>
+        )}
       </form>
     )
   }
@@ -79,7 +86,8 @@ NewCommentFormBase.defaultProps = {
   placeholder: 'Enter some text ...',
   cancelLabel: 'Cancel',
   submitLabel: 'Add',
-  savingLabel: 'Saving ...'
+  savingLabel: 'Saving ...',
+  errorPrefixLabel: 'Cannot save the comment:'
 }
 
 NewCommentFormBase.propTypes = {
@@ -90,6 +98,7 @@ NewCommentFormBase.propTypes = {
   cancelLabel: PropTypes.string,
   submitLabel: PropTypes.string,
   savingLabel: PropTypes.string,
+  errorPrefixLabel: PropTypes.string,
   className: PropTypes.string
 }
 
