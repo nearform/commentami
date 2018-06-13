@@ -1,6 +1,7 @@
 import { mount } from 'enzyme'
 import React from 'react'
 import { NewCommentForm } from '../../../src/components/ui/NewCommentForm'
+import { getDefaultState } from '../../../src/state/helpers/getters'
 import { getDefaultResourceContext, withResourceContext } from '../../helpers/context'
 
 describe('NewCommentForm', () => {
@@ -34,6 +35,18 @@ describe('NewCommentForm', () => {
       expect(wrapper.find('textarea.nf-comments-new-form__textarea').prop('placeholder')).toEqual('PLACEHOLDER')
       expect(wrapper.find('button.nf-comments-new-form__button--secondary').text()).toEqual('CANCEL')
       expect(wrapper.find('button.nf-comments-new-form__button--primary').text()).toEqual('SUBMIT')
+    })
+
+    test('should show saving state', () => {
+      const wrapper = mount(
+        withResourceContext(
+          <NewCommentForm savingLabel="SAVING" reference="REFERENCE" />,
+          getDefaultResourceContext({ commentsState: { ...getDefaultState(), isUpdating: true } })
+        )
+      )
+
+      expect(wrapper.find('button.nf-comments-new-form__button--primary').text()).toEqual('SAVING')
+      expect(wrapper.find('button.nf-comments-new-form__button--primary[disabled]').length).toEqual(1)
     })
   })
 

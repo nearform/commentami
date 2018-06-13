@@ -53,10 +53,8 @@ export const LoadingIndicator = withResource(function LoadingIndicatorBase({ com
   )
 })
 
-export const ErrorIndicator = withResource(function ErrorIndicatorBase({
-  commentami: { initError, fetchError, updateError }
-}) {
-  const error = [initError, fetchError, updateError].find(e => e)
+export const ErrorIndicator = withResource(function ErrorIndicatorBase({ commentami: { initError, fetchError } }) {
+  const error = [initError, fetchError].find(e => e)
   if (!error) return false
 
   return (
