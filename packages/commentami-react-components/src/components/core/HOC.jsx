@@ -11,6 +11,7 @@ import {
   selectCommentsByReference,
   updateError
 } from '../../state/selectors'
+import { commentamiResourcePropInterface, referencePropInterface } from './propInterfaces'
 import { ResourceContext } from './Resource'
 
 export function flexibleRender({ render, component: Component, children }, renderProps, defaultComponent) {
@@ -99,12 +100,7 @@ export function withResource(Component) {
 
   withResource.displayName = `withResource(${Component.displayName || Component.name})`
   withResource.propTypes = {
-    reference: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.shape({
-        id: PropTypes.string.isRequired
-      })
-    ])
+    reference: referencePropInterface
   }
 
   return withResource
@@ -153,6 +149,7 @@ export function withReference(Component) {
       const props = { ...this.props }
       const parentCommentami = props.commentami
       delete props.commentami
+
       const commentami = {
         ...parentCommentami,
         reference: this.props.reference,
@@ -169,19 +166,8 @@ export function withReference(Component) {
   WithReference.displayName = `WithReference(${Component.displayName || Component.name})`
 
   WithReference.propTypes = {
-    commentami: PropTypes.shape({
-      commentable: PropTypes.shape({
-        addComment: PropTypes.func.isRequired,
-        removeComment: PropTypes.func.isRequired
-      }).isRequired
-    }),
-
-    reference: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.shape({
-        id: PropTypes.string.isRequired
-      })
-    ]).isRequired
+    commentami: PropTypes.shape(commentamiResourcePropInterface).isRequired,
+    reference: referencePropInterface.isRequired
   }
 
   return withResource(WithReference)

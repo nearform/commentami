@@ -3,6 +3,7 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import { flexibleRender, withResource } from '../core/HOC'
 import { DefaultSidebar } from './defaults/DefaultSidebar'
+import { flexibleRenderPropInterface, sidebarsControllerPropInterface } from '../core/propInterfaces'
 import { withSidebars } from './SidebarsController'
 
 export function SidebarBase(props) {
@@ -32,18 +33,8 @@ SidebarBase.defaultProps = {
 }
 
 SidebarBase.propTypes = {
-  controller: PropTypes.shape({
-    isActive: PropTypes.func.isRequired
-  }),
-
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-
-  resource: PropTypes.string,
-
-  render: PropTypes.func,
-
-  component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-
+  ...flexibleRenderPropInterface,
+  controller: PropTypes.shape(sidebarsControllerPropInterface).isRequired,
   className: PropTypes.string
 }
 

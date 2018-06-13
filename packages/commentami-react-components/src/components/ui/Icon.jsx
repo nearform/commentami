@@ -34,7 +34,7 @@ Icon.propTypes = {
   path: PropTypes.string.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
-  size: PropTypes.number,
   viewBox: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
+  size: PropTypes.number
 }

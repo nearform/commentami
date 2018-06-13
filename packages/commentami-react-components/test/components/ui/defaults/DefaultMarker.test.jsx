@@ -5,7 +5,7 @@ import { DefaultMarker } from '../../../../src/components/ui/defaults/DefaultMar
 describe('DefaultMarker', () => {
   test('renders correctly a marker and handles click events', async () => {
     const ref = React.createRef()
-    const controller = { handleClick: jest.fn() }
+    const controller = { isActive: () => true, updateActive: jest.fn(), handleClick: jest.fn() }
     const wrapper = mount(
       <DefaultMarker controller={controller} rootRef={ref} reference="REFERENCE" resource="RESOURCE" />
     )

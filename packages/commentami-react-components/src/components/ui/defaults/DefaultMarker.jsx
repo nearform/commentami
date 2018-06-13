@@ -1,6 +1,6 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
+import React from 'react'
+import { referencePropInterface, sidebarsControllerPropInterface } from '../../core/propInterfaces'
 import { Icon } from '../Icon'
 
 export class DefaultMarker extends React.Component {
@@ -38,20 +38,9 @@ DefaultMarker.defaultProps = {
 }
 
 DefaultMarker.propTypes = {
-  className: PropTypes.string,
-
-  rootRef: PropTypes.object,
-
+  controller: PropTypes.shape(sidebarsControllerPropInterface).isRequired,
   resource: PropTypes.string.isRequired,
-
-  reference: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      id: PropTypes.string.isRequired
-    })
-  ]).isRequired,
-
-  controller: PropTypes.shape({
-    handleClick: PropTypes.func
-  }).isRequired
+  reference: referencePropInterface.isRequired,
+  rootRef: PropTypes.object,
+  className: PropTypes.string
 }

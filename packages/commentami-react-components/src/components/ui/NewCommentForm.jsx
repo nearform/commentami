@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { withReference } from '../core/HOC'
+import { commentamiReferencePropInterface, referencePropInterface } from '../core/propInterfaces'
 
 export class NewCommentFormBase extends React.Component {
   constructor(props) {
@@ -72,22 +73,13 @@ NewCommentFormBase.defaultProps = {
 }
 
 NewCommentFormBase.propTypes = {
+  commentami: PropTypes.shape(commentamiReferencePropInterface).isRequired,
+  reference: referencePropInterface.isRequired,
   title: PropTypes.string,
   placeholder: PropTypes.string,
   cancelLabel: PropTypes.string,
   submitLabel: PropTypes.string,
-  className: PropTypes.string,
-
-  commentami: PropTypes.shape({
-    addComment: PropTypes.func.isRequired
-  }).isRequired,
-
-  reference: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.shape({
-      id: PropTypes.string.isRequired
-    })
-  ]).isRequired
+  className: PropTypes.string
 }
 
 export const NewCommentForm = withReference(NewCommentFormBase)

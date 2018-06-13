@@ -15,7 +15,7 @@ describe('Sidebar', () => {
 
   test('should use the default sidebar by default', async () => {
     const context = getDefaultResourceContext()
-    const controller = { isActive: () => true, reference: 'ref-1' }
+    const controller = { isActive: () => true, updateActive: () => null, reference: 'ref-1' }
 
     const wrapper = mount(
       withSidebarsControllerContext(withResourceContext(<Sidebar reference="REFERENCE" />, context), controller)
@@ -26,7 +26,7 @@ describe('Sidebar', () => {
 
   test('should use the provided component', async () => {
     const context = getDefaultResourceContext()
-    const controller = { isActive: () => true, reference: 'ref-1' }
+    const controller = { isActive: () => true, updateActive: () => null, reference: 'ref-1' }
 
     const wrapper = mount(
       withSidebarsControllerContext(
@@ -40,7 +40,7 @@ describe('Sidebar', () => {
 
   test('renders correctly but return false for isActive', async () => {
     const context = getDefaultResourceContext()
-    const controller = { isActive: () => false }
+    const controller = { isActive: () => false, updateActive: () => null }
 
     const wrapper = mount(
       withSidebarsControllerContext(withResourceContext(<Sidebar reference="REFERENCE" />, context), controller)

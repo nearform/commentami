@@ -1,8 +1,22 @@
-import React from 'react'
 import PropTypes from 'prop-types'
-
+import React from 'react'
 import { CommentsState } from '../../state/Comments'
 import { createComment } from '../../state/helpers/creators'
+import { childrenPropInterface } from './propInterfaces'
+
+export const servicePropInterface = {
+  addComment: PropTypes.func.isRequired,
+  removeComment: PropTypes.func.isRequired,
+  getComments: PropTypes.func.isRequired,
+  onResourceChange: PropTypes.func
+}
+
+export const loggerPropInterface = {
+  error: PropTypes.func.isRequired,
+  debug: PropTypes.func.isRequired,
+  info: PropTypes.func.isRequired,
+  warn: PropTypes.func.isRequired
+}
 
 // The context for the Provider
 export const ResourceContext = React.createContext('commentable')
@@ -139,21 +153,8 @@ Resource.defaultProps = {
 }
 
 Resource.propTypes = {
+  service: PropTypes.shape(servicePropInterface).isRequired,
+  logger: PropTypes.shape(loggerPropInterface),
   resource: PropTypes.string.isRequired,
-
-  service: PropTypes.shape({
-    addComment: PropTypes.func.isRequired,
-    removeComment: PropTypes.func.isRequired,
-    getComments: PropTypes.func.isRequired,
-    onResourceChange: PropTypes.func
-  }).isRequired,
-
-  logger: PropTypes.shape({
-    error: PropTypes.func.isRequired,
-    debug: PropTypes.func.isRequired,
-    info: PropTypes.func.isRequired,
-    warn: PropTypes.func.isRequired
-  }),
-
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired
+  children: childrenPropInterface
 }
