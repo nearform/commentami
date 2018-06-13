@@ -22,7 +22,6 @@ describe('Comments REST API', () => {
       pluginOptions: {
         nes: {
           auth: {
-            type: 'token',
             route: 'myauth'
           }
         },
@@ -60,11 +59,8 @@ describe('Comments REST API', () => {
     })
 
     test('it should return the list of references when providing an authorization header', async () => {
-      const res = await server.inject({ url: '/nes/auth', headers: { authorization: 'Custom john' } })
-      const { token } = JSON.parse(res.payload)
-
       const client = new Nes.Client('ws://127.0.0.1:8281')
-      await client.connect({ auth: token })
+      await client.connect({ auth: { headers: { authorization: 'Custom john' } } })
 
       const response = await client.request('/comments-references/abc')
       const { payload } = response
@@ -77,11 +73,8 @@ describe('Comments REST API', () => {
 
   describe('POST /comments', () => {
     test('it should create a comment', async () => {
-      const res = await server.inject({ url: '/nes/auth', headers: { authorization: 'Custom john' } })
-      const { token } = JSON.parse(res.payload)
-
       const client = new Nes.Client('ws://127.0.0.1:8281')
-      await client.connect({ auth: token })
+      await client.connect({ auth: { headers: { authorization: 'Custom john' } } })
 
       const response = await client.request({
         method: 'POST',

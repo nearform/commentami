@@ -57,6 +57,8 @@ export class CommentsState {
    * @returns {Promise<boolean>}
    */
   async subscribe() {
+    if (!this.service) return
+
     await this.updateState(initialize(this.state))
     try {
       await this.refresh(true)
@@ -87,6 +89,8 @@ export class CommentsState {
    * @returns {Promise<boolean>}
    */
   async refresh(isSubscribing) {
+    if (!this.service) return
+
     await this.updateState(fetching(this.state))
     try {
       const result = await this.service.getComments(this.resource)
@@ -113,6 +117,8 @@ export class CommentsState {
    * @returns {Promise<*|void|boolean>}
    */
   async addComment(comment) {
+    if (!this.service) return
+
     if (this.state.isUpdating)
       throw new CommentsStateError('Tried to add a comment while the state is still updating', UPDATE_IN_PROGRESS_ERROR)
 
@@ -136,6 +142,8 @@ export class CommentsState {
    * @returns {Promise<boolean>}
    */
   async removeComment(comment) {
+    if (!this.service) return
+
     if (this.state.isUpdating)
       throw new CommentsStateError(
         'Tried to remove a comment while the state is still updating',
@@ -162,7 +170,8 @@ export class CommentsState {
    * @returns {Promise<*|void>}
    */
   async subscribeToResourceChange() {
-    if (!this.service.onResourceChange) return
+    if (!this.service || !this.service.onResourceChange) return
+
     this.unsubscribeFromResourceChange = await this.service.onResourceChange(this.resource, async event => {
       switch (event.action) {
         case 'add':

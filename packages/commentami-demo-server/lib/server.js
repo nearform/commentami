@@ -1,8 +1,16 @@
 'use strict'
 
+const Basic = require('hapi-auth-basic')
+const { validate } = require('./auth')
+const commentsHooks = require('./comments-hooks')
+
 module.exports = async function buildServer(config = {}, logMessage) {
   try {
     const server = require('hapi').Server(config.server)
+
+    await server.register([Basic])
+    server.auth.strategy('simple', 'basic', { validate })
+
     await server.register([
       {
         plugin: require('hapi-pino'),
@@ -10,7 +18,24 @@ module.exports = async function buildServer(config = {}, logMessage) {
       },
       {
         plugin: require('@nearform/commentami-backend-hapi-plugin'),
-        options: config.pluginOptions
+        options: Object.assign({}, config.pluginOptions, {
+          auth: true,
+          nes: {
+            auth: {
+              route: 'simple'
+            }
+          },
+          routes: {
+            cors: true,
+            auth: 'simple',
+            getUser: async (request, payload) => {
+              let user = request.auth.credentials
+
+              return user
+            }
+          },
+          hooks: commentsHooks
+        })
       }
     ])
 
@@ -20,7 +45,7 @@ module.exports = async function buildServer(config = {}, logMessage) {
 
     return server
   } catch (err) {
-    logMessage(`Failed to build server: ${err.message}`)
+    logMessage(`Failed to build server: ${err.message}`, err)
     process.exit(1)
   }
 }

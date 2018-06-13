@@ -1,15 +1,7 @@
 import { Client as NesClient } from 'nes'
 
-const nesClients = {}
-
-async function getClient(baseUrl) {
-  if (!nesClients[baseUrl]) {
-    let client = new NesClient(baseUrl)
-    await client.connect()
-    nesClients[baseUrl] = client
-  }
-
-  return nesClients[baseUrl]
+export function buildWebsocketClient(baseUrl) {
+  return new NesClient(baseUrl)
 }
 
 /**
@@ -30,7 +22,7 @@ async function getClient(baseUrl) {
  *    }}
  * @constructor
  */
-export function WebsocketService(baseUrl) {
+export function WebsocketService(client) {
   /**
    * Add a comment
    * @param {String} resource
@@ -38,8 +30,6 @@ export function WebsocketService(baseUrl) {
    * @returns {Promise<Comment>}
    */
   const addComment = async (resource, comment) => {
-    const client = await getClient(baseUrl)
-
     const options = {
       method: 'POST',
       path: `/comments`,
@@ -60,8 +50,6 @@ export function WebsocketService(baseUrl) {
    * @returns {Promise<void>}
    */
   const removeComment = async comment => {
-    const client = await getClient(baseUrl)
-
     const options = {
       method: 'DELETE',
       path: `/comments/${comment.id}`
@@ -76,7 +64,6 @@ export function WebsocketService(baseUrl) {
    * @returns {Promise<Comments[]>}
    */
   const getComments = async resource => {
-    const client = await getClient(baseUrl)
     const response = await client.request(`/comments?resource=${resource}`)
     const { payload } = response
 
@@ -91,7 +78,6 @@ export function WebsocketService(baseUrl) {
    * @returns {Promise<*>}
    */
   const onResourceChange = async (resource, handler) => {
-    const client = await getClient(baseUrl)
     await client.subscribe(`/resources/${resource}`, handler)
 
     return async () => client.unsubscribe(`/resources/${resource}`, handler)

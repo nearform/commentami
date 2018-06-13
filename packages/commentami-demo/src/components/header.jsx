@@ -3,6 +3,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { style } from 'typestyle'
 import { debugClassName } from '../styling/environment'
+import { UserContext } from './user'
 
 const headerClassName = style(debugClassName('header'), {
   backgroundColor: '#DA3338'
@@ -51,6 +52,32 @@ const headerLinkClassName = style(debugClassName('header-link'), {
   }
 })
 
+const selectUserClass = style(debugClassName('header-select-user'), {
+  display: 'inline-flex',
+  marginBottom: '10px'
+})
+
+class SelectUser extends React.Component {
+  handleChange(event) {
+    this.setState({ value: event.target.value })
+  }
+
+  render() {
+    return (
+      <UserContext.Consumer>
+        {({ selected, selectUser }) => (
+          <select value={selected} onChange={event => selectUser(event.target.value)} className={selectUserClass}>
+            <option value="filippo">Filippo</option>
+            <option value="davide">Davide</option>
+            <option value="paolo">Paolo</option>
+            <option value="test">Test</option>
+          </select>
+        )}
+      </UserContext.Consumer>
+    )
+  }
+}
+
 export function Header() {
   return (
     <header className={headerClassName}>
@@ -71,6 +98,8 @@ export function Header() {
         <NavLink to="/multiple" className={headerLinkClassName}>
           Multiple
         </NavLink>
+
+        <SelectUser />
       </nav>
     </header>
   )

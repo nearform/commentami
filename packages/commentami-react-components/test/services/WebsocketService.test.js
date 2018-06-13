@@ -2,6 +2,7 @@ import commentsGETvalid from './__mocks__/commentsGETvalid'
 
 describe('WebsocketService', () => {
   let mockNesClient
+  let client
   let service
   let mockConnect
   let mockRequest
@@ -9,7 +10,7 @@ describe('WebsocketService', () => {
   let mockUnsubscribe
 
   let firstTest = false
-  beforeEach(() => {
+  beforeEach(async () => {
     if (!firstTest) {
       mockConnect = jest.fn()
       mockRequest = jest.fn()
@@ -27,8 +28,9 @@ describe('WebsocketService', () => {
         Client: mockNesClient
       }))
 
-      const WebsocketService = require('../../src/services/WebsocketService').WebsocketService
-      service = WebsocketService('ws://localhost/')
+      client = require('../../src/services/WebsocketService').buildWebsocketClient('ws://localhost/')
+      await client.connect()
+      service = require('../../src/services/WebsocketService').WebsocketService(client)
       firstTest = true
     } else {
       mockConnect.mockReset()
@@ -98,5 +100,9 @@ describe('WebsocketService', () => {
 
     await unsubscribe()
     expect(mockUnsubscribe).toHaveBeenCalledWith('/resources/res-1', handler)
+  })
+
+  afterAll(async () => {
+    await client.disconnect()
   })
 })
