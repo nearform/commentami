@@ -9,7 +9,7 @@ const passwords = {
 
 export const UserContext = React.createContext()
 
-class User extends React.Component {
+export class User extends React.Component {
   constructor(props) {
     super(props)
 
@@ -38,5 +38,3 @@ class User extends React.Component {
     )
   }
 }
-
-export default User

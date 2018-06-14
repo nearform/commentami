@@ -101,7 +101,7 @@ The `validate` function will check the username and password against our "databa
 
 Once the `auth.js` is up and the plugin is wired to the `simple` strategy, we need to test that a client can connect to the `commentami` http routes or websockets.
 
-Start the serve and then try to run the following scripts
+Start the server and then try to run the following scripts
 
 ```
 // Http client
@@ -110,7 +110,7 @@ const request = require('superagent')
 const authHeader = `Basic ${Buffer.from('test:test').toString('base64')}`
 
 request
-  .post('http://localhost:8080/comments')
+  .post('http://<your-server>/comments')
   .set('Authorization', authHeader)
   .send({
     resource: 'URL',
@@ -138,7 +138,7 @@ request
 
 const Nes = require('nes')
 const authHeader = `Basic ${Buffer.from('test:test').toString('base64')}`
-const client = new Nes.Client('ws://127.0.0.1:8080')
+const client = new Nes.Client('ws://<your-server>')
 
 const run = async () => {
   await client.connect({ auth: { headers: { authorization: authHeader } } })
@@ -175,7 +175,7 @@ run()
 // }
 ```
 
-If you want to be sure the authentication is working properly try to remove the `authHeader` from the calls and you should get a `401 Not authorized` with the http apis, and a `Socket error` with the websocket.
+If you want to be sure the authentication is working properly, try to remove the `authHeader` from the calls and you should get a `401 Not authorized` with the http apis, and a `Socket error` with the websocket.
 
 ## Add user data to comments
 
@@ -192,23 +192,14 @@ await server.register([{
   plugin: require('@nearform/commentami-backend-hapi-plugin'),
   options: {
     [...],
-    routes: {
-      cors: true,
-      auth: 'simple',
-      getUser: async (request, payload) => {
-        let user = request.auth.credentials
-
-        return user
-      }
-    },
     hooks: commentsHooks
   }
 }])
 ```
 
-the `comments-hooks.js` file will export and object with two properties `fetchedComment` and `fetchedComments`. These are the functions the plugin will use to decorate one single comment or a list of comments with data we will provide.
+The `comments-hooks.js` file will export an object with two properties: `fetchedComment` and `fetchedComments`. These are the functions the plugin will use to decorate one single comment or a list of comments with data you will provide.
 
-This is `comments-hooks.js` content in our example
+The following is our example `comments-hooks.js` content
 
 ```
 // THIS IS NOT FOR A PRODUCTION ENVIRONMENT
@@ -239,9 +230,9 @@ module.exports = {
 }
 ```
 
-We are basically looking for a user based on the `comment.author` field (`fetchUserById(parseInt(comment.author))`) and if found, we replace the comment `author` field with the user data.
+In a few words: we are looking for a user based on the `comment.author` field (`fetchUserById(parseInt(comment.author))`) and if found, we replace the comment `author` field with the user data.
 
-If we now run again the two client scripts, we should get something like this
+If we now run again the two client scripts, we should get something like this in the console
 
 ```
 {
@@ -261,4 +252,6 @@ If we now run again the two client scripts, we should get something like this
 }
 ```
 
-This is it. You will see that each endpoint returning comments will return also the related user data.
+This's it! You now have all `commentami` endpoints decorating comments with their users data.
+
+If you want to have a look at a working example, you can head to the [`commentami-demo-server` package](https://github.com/nearform/commentami/tree/master/packages/commentami-demo-server) and check out the configuration there.

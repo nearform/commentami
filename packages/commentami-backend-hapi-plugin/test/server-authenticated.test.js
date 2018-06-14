@@ -18,6 +18,7 @@ describe('Comments REST API', () => {
       auth: true,
       pluginOptions: {
         routes: {
+          cors: true,
           auth: 'myauth',
           getUser: async (request, payload) => {
             const user = request.auth.credentials
