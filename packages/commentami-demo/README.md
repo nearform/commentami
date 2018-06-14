@@ -20,6 +20,18 @@ npm run watch
 
 and opening the browser at [http://localhost:4200/](http://localhost:4200/)
 
+if you want to interact also with the server you should go to the root of this project and run
+
+```
+docker-compose up
+```
+
+once the server is up you can run
+
+```
+docker exec commentami_app_1 npm run pg:init
+```
+
 ## License
 
 Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].
