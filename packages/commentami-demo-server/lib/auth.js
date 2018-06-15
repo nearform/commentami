@@ -48,6 +48,10 @@ function fetchUserById(id) {
   return find(users, { id })
 }
 
+function fetchUserByUsername(username) {
+  return find(users, { username })
+}
+
 const validate = async (request, username, password) => {
   if (!users[username] || !passwords[username]) {
     return { isValid: false }
@@ -63,5 +67,6 @@ const validate = async (request, username, password) => {
 
 module.exports = {
   validate,
-  fetchUserById
+  fetchUserById,
+  fetchUserByUsername
 }
