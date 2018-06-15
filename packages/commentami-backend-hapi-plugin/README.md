@@ -29,10 +29,11 @@ Any parameter in this object will override whatever comes from `@nearform/commen
 
 ### `options.routes` \[optional\]
 
-Through the `routes` option you can configure `@nearform/commentami-backend-hapi-plugin` to have it's routes protected behind an authentication strategy.
+Through the `routes` option you can configure `@nearform/commentami-backend-hapi-plugin` to have it's routes protected behind an authentication strategy and add the `cors` handling by Hapi:
 
 ```
 options.routes = {
+  cors: true,
   auth: 'myauth'
 }
 ```

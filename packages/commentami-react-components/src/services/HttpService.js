@@ -1,10 +1,11 @@
-export function HttpService(baseUrl) {
+export function HttpService(baseUrl, authorization) {
   const addComment = async (resource, comment) => {
     const options = {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: authorization
       },
       body: JSON.stringify({
         resource: resource,
@@ -22,7 +23,8 @@ export function HttpService(baseUrl) {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: authorization
       }
     }
 
@@ -34,7 +36,8 @@ export function HttpService(baseUrl) {
       method: 'GET',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: authorization
       }
     }
 

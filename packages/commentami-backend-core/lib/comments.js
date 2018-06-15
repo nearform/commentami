@@ -29,11 +29,13 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       `
 
       const res = await db.query(sql)
-      const comment = this.mapCommentFromDb(res.rows[0])
+
+      let comment = this.mapCommentFromDb(res.rows[0])
+      comment = fetchedComment ? await fetchedComment(comment) : comment
 
       this.emit('add', comment)
 
-      return fetchedComment ? fetchedComment(comment) : comment
+      return comment
     }
 
     async get(id) {
@@ -41,9 +43,11 @@ module.exports = function buildCommentsService(db, hooks = {}) {
 
       const res = await db.query(sql)
       if (res.rowCount === 0) throw new Error(`Cannot find comment with id ${id}`)
-      const comment = this.mapCommentFromDb(res.rows[0])
 
-      return fetchedComment ? fetchedComment(comment) : comment
+      let comment = this.mapCommentFromDb(res.rows[0])
+      comment = fetchedComment ? await fetchedComment(comment) : comment
+
+      return comment
     }
 
     async update(id, { content }) {
@@ -64,10 +68,12 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       const res = await db.query(sql)
       if (res.rowCount === 0) throw new Error(`Cannot find comment with id ${id}`)
 
-      const comment = this.mapCommentFromDb(res.rows[0])
+      let comment = this.mapCommentFromDb(res.rows[0])
+      comment = fetchedComment ? await fetchedComment(comment) : comment
+
       this.emit('update', comment)
 
-      return fetchedComment ? fetchedComment(comment) : comment
+      return comment
     }
 
     async delete(id) {
@@ -79,11 +85,12 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       const selectSql = SQL`SELECT * FROM comment WHERE id = ${id}`
       const res = await db.query(selectSql)
       if (res.rowCount === 1) {
-        comment = res.rows[0]
+        comment = fetchedComment ? await fetchedComment(res.rows[0]) : res.rows[0]
+
+        const deleteSql = SQL`DELETE FROM comment WHERE id = ${id}`
+        await db.query(deleteSql)
       }
 
-      const deleteSql = SQL`DELETE FROM comment WHERE id = ${id}`
-      await db.query(deleteSql)
       this.emit('delete', comment)
 
       return comment

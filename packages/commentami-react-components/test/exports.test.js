@@ -9,6 +9,7 @@ describe('exports', () => {
         'HttpService',
         'Resource',
         'WebsocketService',
+        'buildWebsocketClient',
         'flexibleRender',
         'withReference',
         'withResource'

@@ -128,8 +128,8 @@ export class Resource extends React.Component {
     this.commentsState.unsubscribe()
   }
 
-  componentDidUpdate() {
-    if (this.currentResource !== this.state.lastRefreshedResource) {
+  componentDidUpdate(prevProps) {
+    if (this.currentResource !== this.state.lastRefreshedResource || this.props.service !== prevProps.service) {
       this.commentsState.unsubscribe()
       this.commentsState = new CommentsState({
         service: this.props.service,

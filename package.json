@@ -23,7 +23,7 @@
   },
   "main": "lib/index.js",
   "bin": {
-    "commentami-backend-hapi-server": "start.js"
+    "commentami-demo-server": "start.js"
   },
   "scripts": {
     "clean": "lerna clean --yes && lerna run clean",
@@ -39,7 +39,7 @@
     "postinstall": "lerna bootstrap",
     "sanity:environment": "npm run doc:lint && npm run lint && npm run depcheck",
     "sanity": "npm run sanity:environment && npm run test",
-    "start": "cd packages/commentami-backend-hapi-server && npm run start",
+    "start": "cd packages/commentami-demo-server && npm run start",
     "test": "npm run pg:test:init && lerna run test"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@ Commentami is a "google doc like" commenting system.
 
 The fronted is based on [Reactjs 16+](https://reactjs.org) and is separetated in `core` components and `ui` components so that you can build your own UI around the logic of handling comments.
 
-Commentami backend can be used as a standalone node.js module ([commentami-backend-core](https://github.com/nearform/comments/tree/master/packages/commentami-backend-core)), as a Hapi plugin that provides a REST API and websockets ([commentami-backend-hapi-plugin](https://github.com/nearform/comments/tree/master/packages/commentami-backend-hapi-plugin)), and as a stand alone server ([commentami-backend-hapi-server](https://github.com/nearform/comments/tree/master/packages/commentami-backend-hapi-server)).
+Commentami backend can be used as a standalone node.js module ([commentami-backend-core](https://github.com/nearform/comments/tree/master/packages/commentami-backend-core)) or as a Hapi server plugin that provides a REST API and websockets ([commentami-backend-hapi-plugin](https://github.com/nearform/comments/tree/master/packages/commentami-backend-hapi-plugin)).
 
 ## Background
 
@@ -59,3 +59,5 @@ The interface of each web application is different. To accomodate that, we struc
 ## NEXT STEPS
 
 To get up and running with Commentami, see the installation steps in the [README](https://github.com/nearform/commentami).
+
+Too see some example on how to configure the server to deal with authentication and users data you can go [here](/example-auth-and-user-data)

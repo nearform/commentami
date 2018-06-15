@@ -123,4 +123,28 @@ describe('Hooks', () => {
       expect(result.id).to.equal(1)
     })
   })
+
+  describe('delete', () => {
+    test('should correctly delete a comment', async () => {
+      const comment = {
+        resource: 'http://example.com/example',
+        reference: 'uuid-of-some-sort',
+        content: 'lorm ipsum ....',
+        author: 'Filippo',
+        additionalInfo: {
+          firstName: 'Test',
+          email: 'example@example.com'
+        }
+      }
+
+      const created = await this.commentsService.add(comment)
+      const result = await this.commentsService.delete(created.id)
+
+      expect(result.id).to.equal(created.id)
+      expect(result.additionalInfo).to.equal({
+        firstName: 'Test',
+        email: 'example@example.com'
+      })
+    })
+  })
 })
