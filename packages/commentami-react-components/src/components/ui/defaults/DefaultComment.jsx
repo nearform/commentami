@@ -22,24 +22,23 @@ export class DefaultCommentBase extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.commentamiDeeplink) {
-      if (
-        this.props.commentamiDeeplink.deepLink &&
-        String(this.props.commentamiDeeplink.comment) === String(this.props.comment.id)
-      ) {
-        this.props.commentamiDeeplink.scrollIntoView(this.rootRef.current)
-        this.setState({
-          isHighlighted: true
-        })
-        setTimeout(() => this.props.commentamiDeeplink.unsetDeepLink())
-        setTimeout(
-          () =>
-            this.setState({
-              isHighlighted: false
-            }),
-          1000
-        )
-      }
+    if (
+      this.props.commentamiDeeplink &&
+      this.props.commentamiDeeplink.deepLink &&
+      String(this.props.commentamiDeeplink.comment) === String(this.props.comment.id)
+    ) {
+      this.props.commentamiDeeplink.scrollIntoView(this.rootRef.current)
+      this.setState({
+        isHighlighted: true
+      })
+      setTimeout(() => this.props.commentamiDeeplink.unsetDeepLink())
+      setTimeout(
+        () =>
+          this.setState({
+            isHighlighted: false
+          }),
+        1000
+      )
     }
   }
 

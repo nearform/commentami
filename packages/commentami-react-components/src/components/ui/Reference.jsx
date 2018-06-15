@@ -21,16 +21,13 @@ export class ReferenceBase extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.commentamiDeeplink) {
-      if (
-        this.props.commentamiDeeplink.deepLink &&
-        this.props.commentamiDeeplink.resource === this.props.commentami.resource &&
-        this.props.commentamiDeeplink.reference === this.props.commentami.reference
-      ) {
-        if (this.rootRef.current) {
-          setTimeout(() => this.rootRef.current.scrollIntoView())
-        }
-      }
+    if (
+      this.props.commentamiDeeplink &&
+      this.props.commentamiDeeplink.deepLink &&
+      this.props.commentamiDeeplink.resource === this.props.commentami.resource &&
+      this.props.commentamiDeeplink.reference === this.props.commentami.reference
+    ) {
+      this.props.commentamiDeeplink.scrollIntoView(this.rootRef.current)
     }
   }
 

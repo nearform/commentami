@@ -24,7 +24,7 @@ export function withSidebarsControllerContext(children, context = 'sidebars') {
   )
 }
 
-export function withDeepLinkControllerContext(children, context = 'sidebars') {
+export function withDeepLinkControllerContext(children, context = 'commentami-deeplink') {
   return (
     <main id="controller">
       <DeepLinkControllerContext.Provider value={context} children={children} />

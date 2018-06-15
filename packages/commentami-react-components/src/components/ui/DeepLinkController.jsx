@@ -8,7 +8,7 @@ export class DeepLinkController extends React.Component {
   constructor(props) {
     super(props)
 
-    const parsed = queryString.parse(window.location.search)
+    const parsed = queryString.parse(global.window.location.search)
 
     this.state = {
       resource: parsed.resource || null,
@@ -16,7 +16,7 @@ export class DeepLinkController extends React.Component {
       comment: parsed.comment || null,
       deepLink: !!parsed.comment,
       unsetDeepLink: this.unsetDeepLink.bind(this),
-      scrollIntoView: this.scrollToLink.bind(this)
+      scrollIntoView: this.scrollIntoView.bind(this)
     }
   }
 
