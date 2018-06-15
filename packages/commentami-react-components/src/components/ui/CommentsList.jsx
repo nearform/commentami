@@ -15,7 +15,7 @@ export function CommentsListBase({ commentami, reference, title, className, comm
 
   return (
     <section className={className}>
-      {title && <h2 className="nf-comments-list__title">{title}</h2>}
+      {title && <h2 className={`${className}__title`}>{title}</h2>}
 
       {comments.map(comment => (
         <Component key={comment.id} comment={comment} removeComment={commentami.removeComment} />
@@ -27,7 +27,7 @@ export function CommentsListBase({ commentami, reference, title, className, comm
 CommentsListBase.displayName = 'CommentsListBase'
 
 CommentsListBase.defaultProps = {
-  className: 'nf-comments-list'
+  className: 'nf-commentami-list'
 }
 
 CommentsListBase.propTypes = {

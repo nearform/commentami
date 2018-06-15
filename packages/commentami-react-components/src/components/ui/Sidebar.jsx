@@ -29,7 +29,7 @@ export function SidebarBase(props) {
 SidebarBase.displayName = 'SidebarBase'
 
 SidebarBase.defaultProps = {
-  className: 'nf-comments-sidebar'
+  className: 'nf-commentami-sidebar'
 }
 
 SidebarBase.propTypes = {

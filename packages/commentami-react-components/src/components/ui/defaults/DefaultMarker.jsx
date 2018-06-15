@@ -34,7 +34,7 @@ export class DefaultMarker extends React.Component {
 DefaultMarker.displayName = 'DefaultMarker'
 
 DefaultMarker.defaultProps = {
-  className: 'nf-comments-marker'
+  className: 'nf-commentami-marker'
 }
 
 DefaultMarker.propTypes = {

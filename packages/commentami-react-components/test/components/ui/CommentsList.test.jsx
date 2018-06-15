@@ -19,7 +19,7 @@ describe('CommentsList', () => {
       )
 
       expect(wrapper.find('section').hasClass('CLS')).toBeTruthy()
-      expect(wrapper.contains(<h2 className="nf-comments-list__title">FOO</h2>)).toBeTruthy()
+      expect(wrapper.contains(<h2 className="CLS__title">FOO</h2>)).toBeTruthy()
     })
 
     test('should render comments with the standard component', () => {
@@ -36,8 +36,8 @@ describe('CommentsList', () => {
       })
 
       const wrapper = mount(withResourceContext(<CommentsList reference="REFERENCE" />, context))
-      expect(wrapper.find('section').hasClass('nf-comments-list')).toBeTruthy()
-      expect(wrapper.contains(<p className="nf-comments-comment__content">AAA</p>)).toBeTruthy()
+      expect(wrapper.find('section').hasClass('nf-commentami-list')).toBeTruthy()
+      expect(wrapper.contains(<p className="nf-commentami-comment__content">AAA</p>)).toBeTruthy()
     })
 
     test('should render comments with the custom component', () => {
@@ -65,10 +65,13 @@ describe('CommentsList', () => {
       })
 
       const wrapper = mount(
-        withResourceContext(<CommentsList reference="REFERENCE" commentComponent={CustomComment} />, context)
+        withResourceContext(
+          <CommentsList className="foo" reference="REFERENCE" commentComponent={CustomComment} />,
+          context
+        )
       )
 
-      expect(wrapper.find('section').hasClass('nf-comments-list')).toBeTruthy()
+      expect(wrapper.find('section').hasClass('foo')).toBeTruthy()
       expect(wrapper.contains(<p>AAA</p>)).toBeTruthy()
       expect(wrapper.contains(<p>BBB</p>)).toBeTruthy()
       expect(wrapper.contains(<p>CCC</p>)).toBeFalsy()

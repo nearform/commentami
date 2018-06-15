@@ -1,7 +1,7 @@
 import { em, px, viewHeight, viewWidth } from 'csx'
 import { cssRule } from 'typestyle'
 
-cssRule('.nf-comments-block', {
+cssRule('.nf-commentami-reference', {
   position: 'relative',
   $nest: {
     '&:hover': {
@@ -15,14 +15,14 @@ cssRule('.nf-comments-block', {
   }
 })
 
-cssRule('.nf-comments-marker', {
+cssRule('.nf-commentami-marker', {
   position: 'absolute',
   top: 0,
   left: px(-54), // 24px is the size of the icon, 3rem=30px is to put "outside" the page
   cursor: 'pointer'
 })
 
-cssRule('.nf-comments-sidebar', {
+cssRule('.nf-commentami-sidebar', {
   backgroundColor: '#F0F0F0',
   borderLeft: `${px(2)} solid #808080`,
   zIndex: 10,
@@ -42,7 +42,7 @@ cssRule('.nf-comments-sidebar', {
   }
 })
 
-cssRule('.nf-comments-sidebar__close', {
+cssRule('.nf-commentami-sidebar__close', {
   display: 'inline-block',
   height: px(24),
   $nest: {
@@ -52,7 +52,7 @@ cssRule('.nf-comments-sidebar__close', {
   }
 })
 
-cssRule('.nf-comments-comment', {
+cssRule('.nf-commentami-comment', {
   margin: `${px(10)} 0 0 0`,
   border: `${px(1)} solid #E0E0E0`,
   backgroundColor: 'white',
@@ -80,7 +80,7 @@ cssRule('.nf-comments-comment', {
   }
 })
 
-cssRule('.nf-comments-new-form', {
+cssRule('.nf-commentami-new-form', {
   display: 'grid',
   gridTemplate: `
   "title  title     title" min-content
@@ -95,16 +95,16 @@ cssRule('.nf-comments-new-form', {
   borderBottom: `${px(2)} solid #E0E0E0`
 })
 
-cssRule('.nf-comments-new-form__title', { gridArea: 'title' })
+cssRule('.nf-commentami-new-form__title', { gridArea: 'title' })
 
-cssRule('.nf-comments-new-form__textarea', {
+cssRule('.nf-commentami-new-form__textarea', {
   gridArea: 'text',
   border: `${px(1)} solid #E0E0E0`,
   height: px(100),
   padding: px(5)
 })
 
-cssRule('.nf-comments-new-form__button', {
+cssRule('.nf-commentami-new-form__button', {
   border: `${px(1)} solid #E0E0E0`,
   padding: `${px(10)} ${px(20)}`,
   whiteSpace: 'nowrap',
@@ -136,7 +136,7 @@ cssRule('.nf-comments-new-form__button', {
   }
 })
 
-cssRule('.nf-comments-new-form__error', {
+cssRule('.nf-commentami-new-form__error', {
   gridArea: 'error',
   color: '#CC0000'
 })
