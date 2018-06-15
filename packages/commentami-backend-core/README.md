@@ -21,6 +21,7 @@ Comment {
   reference, // string
   content, // text
   author, // optional, string
+  mentions, // array of identifiers found in the comment content (@<identifier>)
   createdAt // date
 }
 ```
@@ -28,6 +29,8 @@ Comment {
 The main idea is that a comment belongs to a `resource` (ie: a web page) and to a `reference` (ie: paragraph, subsection of the page).
 
 The `resource` and the `reference` are loosly defined to accomodate different interpretations, but a comment needs both to be specified.
+
+Last but not least, the `mentions` property is a list of mentions (`@<identifier>`) found in the comment content when it is added or updated.
 
 ## Usage
 
@@ -144,7 +147,7 @@ async function myFn () => {
   const comment = {
     resource: 'some-resource',
     reference: 'some-reference',
-    content: 'some content',
+    content: 'some content, notify @test!',
     author: 'author' // optional
   }
   const created = await commentsService.add(comment)
@@ -191,7 +194,7 @@ async function myFn () => {
 
 ## Hooks
 
-When fetching a single comment (`commentService.get`) or a list of comments (`commentService.list`) we may want to add some other information to each of them (ie: user details).
+When the application handle one or more comments, you can hook into the process to add domain specific data to each comment.
 
 To do so, you can specify 2 optional functions when initializing the `commentService`.
 
@@ -209,6 +212,8 @@ const commentService = buildCommentsService(dbConn, {
   }
 })
 ```
+
+With this two methods the main thing you can do is to add data for users (either author or mentions) and then use those data in other parts of the application (ie: listing comments in your frontend app).
 
 ## Development
 

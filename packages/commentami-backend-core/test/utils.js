@@ -7,7 +7,7 @@ const Postgrator = require('postgrator')
 const config = require('../config')
 const buildPool = require('../lib/dbPool')
 
-module.exports = { resetDb }
+module.exports = { resetDb, loadDataFromTable }
 
 async function resetDb() {
   if (!config.isTest) {
@@ -28,14 +28,24 @@ async function resetDb() {
   }
 }
 
+async function loadDataFromTable(table) {
+  const pool = buildPool(config.pg)
+
+  const result = await pool.query(`SELECT * FROM ${table}`)
+  await pool.end()
+
+  return result.rows
+}
+
 async function checkDatabaseExists(pool, database) {
   // if the databse do not exists the query will throw because we are connectiong on that db in config.pg
   return pool.query(SQL`SELECT * FROM pg_database WHERE datname=${database}`)
 }
 
 async function resetTables(pool) {
-  await pool.query(`DROP TABLE IF EXISTS schemaversion`)
-  await pool.query(`DROP TABLE IF EXISTS comment`)
+  await pool.query(`DROP TABLE IF EXISTS schemaversion CASCADE`)
+  await pool.query(`DROP TABLE IF EXISTS comment CASCADE`)
+  await pool.query(`DROP TABLE IF EXISTS mention CASCADE`)
 }
 
 async function runMigrations(conf) {

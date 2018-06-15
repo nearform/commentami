@@ -139,7 +139,7 @@ describe('Comments REST API', () => {
 
       delete result.createdAt
       delete created.createdAt
-      expect(result).to.equal(created)
+      expect(result).to.include(created)
     })
   })
 
@@ -171,7 +171,8 @@ describe('Comments REST API', () => {
         resource: 'URL',
         reference: 'OLD-UUID',
         content: 'MESSAGE',
-        author: 'OLD-AUTHOR'
+        author: 'OLD-AUTHOR',
+        mentions: []
       })
     })
   })

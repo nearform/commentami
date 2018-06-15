@@ -3,6 +3,21 @@
 const EventEmitter = require('events')
 const { isObject } = require('lodash')
 const SQL = require('@nearform/sql')
+const mentions = require('./mentions')
+
+async function transaction(db, task) {
+  const client = await db.connect()
+  try {
+    await client.query('BEGIN')
+    await task(client)
+    await client.query('COMMIT')
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
+}
 
 module.exports = function buildCommentsService(db, hooks = {}) {
   const { fetchedComment, fetchedComments } = hooks
@@ -11,9 +26,9 @@ module.exports = function buildCommentsService(db, hooks = {}) {
     mapCommentFromDb(raw) {
       if (!raw) return null
 
-      const { id, resource, reference, content, author, created_at: createdAt } = raw
+      const { id, resource, reference, content, author, created_at: createdAt, mentions = [] } = raw
 
-      return { id, resource, reference, content, author, createdAt }
+      return { id, resource, reference, content, author, createdAt, mentions: mentions.filter(v => !!v) }
     }
 
     async close() {
@@ -21,16 +36,35 @@ module.exports = function buildCommentsService(db, hooks = {}) {
     }
 
     async add({ reference, content, author, resource }) {
-      const sql = SQL`
-        INSERT INTO
-          comment (resource, reference, content, author)
-        VALUES (${resource}, ${reference}, ${content}, ${author})
-        RETURNING *
-      `
+      let comment
 
-      const res = await db.query(sql)
+      await transaction(db, async client => {
+        const sqlComment = SQL`
+          INSERT INTO
+            comment (resource, reference, content, author)
+          VALUES (${resource}, ${reference}, ${content}, ${author})
+          RETURNING *
+        `
+        const res = await client.query(sqlComment)
+        comment = this.mapCommentFromDb(res.rows[0])
 
-      let comment = this.mapCommentFromDb(res.rows[0])
+        const mentionedUsers = mentions.parse(content)
+        if (mentionedUsers.length > 0) {
+          const sqlMentions = SQL`
+            INSERT INTO
+              mention (comment_id, mentioned)
+            VALUES
+          `
+          mentionedUsers.forEach((mentionedUser, index) => {
+            sqlMentions.append(SQL`(${comment.id}, ${mentionedUser})`)
+            sqlMentions.append(index + 1 === mentionedUsers.length ? SQL`` : SQL`,`)
+          })
+
+          await client.query(sqlMentions)
+        }
+        comment.mentions = mentionedUsers
+      })
+
       comment = fetchedComment ? await fetchedComment(comment) : comment
 
       this.emit('add', comment)
@@ -39,8 +73,18 @@ module.exports = function buildCommentsService(db, hooks = {}) {
     }
 
     async get(id) {
-      const sql = SQL` SELECT * FROM comment WHERE id = ${id}`
-
+      const sql = SQL`
+        SELECT
+          c.*, array_agg(m.mentioned) as mentions
+        FROM
+          comment c
+        LEFT JOIN
+          mention m ON m.comment_id = c.id
+        WHERE
+          c.id = ${id}
+        GROUP BY
+          c.id
+      `
       const res = await db.query(sql)
       if (res.rowCount === 0) throw new Error(`Cannot find comment with id ${id}`)
 
@@ -55,20 +99,42 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         return this.get(id)
       }
 
-      const sql = SQL`
-        UPDATE
-          comment
-        SET
-          content = ${content}
-        WHERE
-          id = ${id}
-        RETURNING *
-      `
+      let comment
 
-      const res = await db.query(sql)
-      if (res.rowCount === 0) throw new Error(`Cannot find comment with id ${id}`)
+      await transaction(db, async client => {
+        const sqlComment = SQL`
+          UPDATE
+            comment
+          SET
+            content = ${content}
+          WHERE
+            id = ${id}
+          RETURNING *
+        `
+        const res = await db.query(sqlComment)
+        if (res.rowCount === 0) throw new Error(`Cannot find comment with id ${id}`)
+        comment = this.mapCommentFromDb(res.rows[0])
 
-      let comment = this.mapCommentFromDb(res.rows[0])
+        await client.query(`DELETE FROM mention WHERE comment_id = ${id}`)
+
+        const mentionedUsers = mentions.parse(content)
+        if (mentionedUsers.length > 0) {
+          const sqlMentions = SQL`
+            INSERT INTO
+              mention (comment_id, mentioned)
+            VALUES
+          `
+          mentionedUsers.forEach((mentionedUser, index) => {
+            sqlMentions.append(SQL`(${id}, ${mentionedUser})`)
+            sqlMentions.append(index + 1 === mentionedUsers.length ? SQL`` : SQL`,`)
+          })
+
+          await client.query(sqlMentions)
+
+          comment.mentions = mentionedUsers
+        }
+      })
+
       comment = fetchedComment ? await fetchedComment(comment) : comment
 
       this.emit('update', comment)
@@ -123,9 +189,11 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       `
       const sqlFilter = SQL`
         SELECT
-          *
+          c.*, array_agg(m.mentioned) as mentions
         FROM
-          comment
+          comment c
+        LEFT JOIN
+          mention m ON m.comment_id = c.id
         WHERE
           resource = ${resource}
       `
@@ -136,7 +204,10 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       }
 
       sqlFilter.append(SQL`
-        ORDER BY id DESC
+        GROUP BY
+          c.id
+        ORDER BY
+          id DESC
         LIMIT ${limit} OFFSET ${offset}
       `)
 
