@@ -1,15 +1,17 @@
 import React from 'react'
-import { childrenPropInterface } from '../core/propInterfaces'
+import { childrenPropInterface, commentamiDeeplinkPropType } from '../core/propInterfaces'
+import { withDeepLink } from './DeepLinkController'
+import PropTypes from 'prop-types'
 
 export const SidebarsControllerContext = React.createContext('controller')
 
-export class SidebarsController extends React.Component {
+export class SidebarsControllerBase extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      resource: null,
-      reference: null,
+      resource: (this.props.commentamiDeeplink && this.props.commentamiDeeplink.resource) || null,
+      reference: (this.props.commentamiDeeplink && this.props.commentamiDeeplink.reference) || null,
 
       // Methods / Callback
       isActive: this.isActive.bind(this),
@@ -57,11 +59,14 @@ export class SidebarsController extends React.Component {
   }
 }
 
-SidebarsController.displayName = 'SidebarsController'
+SidebarsControllerBase.displayName = 'SidebarsController'
 
-SidebarsController.propTypes = {
+SidebarsControllerBase.propTypes = {
+  commentamiDeeplink: PropTypes.shape(commentamiDeeplinkPropType),
   children: childrenPropInterface
 }
+
+export const SidebarsController = withDeepLink(SidebarsControllerBase)
 
 export function withSidebars(Component) {
   const WithSidebars = function(props) {

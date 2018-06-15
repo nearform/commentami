@@ -4,11 +4,13 @@ import { withReference } from '../core/HOC'
 import { DefaultMarker } from './defaults/DefaultMarker'
 import {
   childrenPropInterface,
+  commentamiDeeplinkPropType,
   commentamiReferencePropInterface,
   componentPropInterface,
   referencePropInterface
 } from '../core/propInterfaces'
 import { sidebarsControllerPropInterface, withSidebars } from './SidebarsController'
+import { withDeepLink } from './DeepLinkController'
 
 export class ReferenceBase extends React.Component {
   constructor(props) {
@@ -16,6 +18,20 @@ export class ReferenceBase extends React.Component {
 
     this.rootRef = React.createRef()
     this._updateEvents()
+  }
+
+  componentDidMount() {
+    if (this.props.commentamiDeeplink) {
+      if (
+        this.props.commentamiDeeplink.deepLink &&
+        this.props.commentamiDeeplink.resource === this.props.commentami.resource &&
+        this.props.commentamiDeeplink.reference === this.props.commentami.reference
+      ) {
+        if (this.rootRef.current) {
+          setTimeout(() => this.rootRef.current.scrollIntoView())
+        }
+      }
+    }
   }
 
   get isActive() {
@@ -92,6 +108,7 @@ ReferenceBase.defaultProps = {
 
 ReferenceBase.propTypes = {
   commentami: PropTypes.shape(commentamiReferencePropInterface).isRequired,
+  commentamiDeeplink: PropTypes.shape(commentamiDeeplinkPropType),
   controller: PropTypes.shape(sidebarsControllerPropInterface).isRequired,
   reference: referencePropInterface.isRequired,
   className: PropTypes.string,
@@ -100,6 +117,6 @@ ReferenceBase.propTypes = {
   markerComponent: componentPropInterface
 }
 
-export const Reference = withSidebars(withReference(ReferenceBase))
+export const Reference = withDeepLink(withSidebars(withReference(ReferenceBase)))
 
 Reference.displayName = 'Reference'

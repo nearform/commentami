@@ -1,7 +1,7 @@
 import React from 'react'
 import { style } from 'typestyle'
 import { Resource } from '@nearform/commentami-react-components'
-import { SidebarsController } from '@nearform/commentami-react-components/dist/ui'
+import { SidebarsController, DeepLinkController } from '@nearform/commentami-react-components/dist/ui'
 import { rem } from 'csx'
 import { ErrorIndicator, LoadingIndicator } from '../components/indicators'
 import { Table } from '../components/table'
@@ -12,6 +12,7 @@ import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
 import { Sidebar } from '../components/sidebar'
 import { UserContext } from '../components/user'
+
 import data from '../fixtures/data'
 
 const localStorageService = localStorageServiceBuilder()
@@ -27,26 +28,27 @@ export function MultiplePage() {
       <h4>Each table below uses a different storage engine</h4>
       <h4>The page was rendered on Unix Time {new Date().getTime()}</h4>
 
-      <SidebarsController>
-        <section className={sectionClassName}>
-          <h1>LocalStorage</h1>
-          <Resource resource="first" service={localStorageService}>
-            <LoadingIndicator />
-            <ErrorIndicator />
+      <DeepLinkController>
+        <SidebarsController>
+          <section className={sectionClassName}>
+            <h1>LocalStorage</h1>
+            <Resource resource="first" service={localStorageService}>
+              <LoadingIndicator />
+              <ErrorIndicator />
+              <Table data={data} />
+              <Sidebar title="First" />
+            </Resource>
+          </section>
 
-            <Table data={data} />
-            <Sidebar title="First" />
-          </Resource>
-        </section>
+          <UserContext.Consumer>
+            {({ authorization }) => <TestWebsocketComments authorization={authorization} />}
+          </UserContext.Consumer>
 
-        <UserContext.Consumer>
-          {({ authorization }) => <TestWebsocketComments authorization={authorization} />}
-        </UserContext.Consumer>
-
-        <UserContext.Consumer>
-          {({ authorization }) => <TestHTTPComments authorization={authorization} />}
-        </UserContext.Consumer>
-      </SidebarsController>
+          <UserContext.Consumer>
+            {({ authorization }) => <TestHTTPComments authorization={authorization} />}
+          </UserContext.Consumer>
+        </SidebarsController>
+      </DeepLinkController>
     </div>
   )
 }

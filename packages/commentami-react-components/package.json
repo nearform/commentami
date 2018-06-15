@@ -28,6 +28,7 @@
   "scripts": {
     "depcheck": "../../node_modules/depcheck/bin/depcheck --ignores=webpack,enzyme-context-patch",
     "build": "babel -d dist src",
+    "build:watch": "babel -d dist --watch src",
     "clean": "rm -rf dist",
     "postinstall": "npm run build",
     "storybook": "start-storybook -p 6006 -c .storybook",
@@ -37,6 +38,7 @@
   "dependencies": {
     "nes": "^8.1.0",
     "prop-types": "^15.6.1",
+    "query-string": "^6.1.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "warning": "^4.0.0"

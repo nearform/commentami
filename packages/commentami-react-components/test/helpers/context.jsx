@@ -1,6 +1,7 @@
 import React from 'react'
 import { ResourceContext } from '../../src/components/core/Resource'
 import { SidebarsControllerContext } from '../../src/components/ui/SidebarsController'
+import { DeepLinkControllerContext } from '../../src/components/ui/DeepLinkController'
 import { getDefaultState } from '../../src/state/helpers/getters'
 
 export async function delay(timeout = 10) {
@@ -19,6 +20,14 @@ export function withSidebarsControllerContext(children, context = 'sidebars') {
   return (
     <main id="controller">
       <SidebarsControllerContext.Provider value={context} children={children} />
+    </main>
+  )
+}
+
+export function withDeepLinkControllerContext(children, context = 'sidebars') {
+  return (
+    <main id="controller">
+      <DeepLinkControllerContext.Provider value={context} children={children} />
     </main>
   )
 }
