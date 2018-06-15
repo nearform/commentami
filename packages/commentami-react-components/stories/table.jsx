@@ -39,12 +39,12 @@ const CustomBlock = withSidebars(
         } = this.props
         const isActive = controller.isActive(resource, reference)
 
-        if (!activeClassName) activeClassName = 'nf-comments-block--active'
+        if (!activeClassName) activeClassName = 'nf-commentami-reference--active'
 
         return (
           <div
             ref={this.rootRef}
-            className={['nf-comments-block', isActive ? activeClassName : ''].filter(a => a).join(' ')}
+            className={['nf-commentami-reference', isActive ? activeClassName : ''].filter(a => a).join(' ')}
             onClick={this.boundHandleClick}
           >
             {hasComments && <CommentsMarker />}

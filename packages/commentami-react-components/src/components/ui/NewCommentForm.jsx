@@ -45,23 +45,23 @@ export class NewCommentFormBase extends React.Component {
 
     return (
       <form action="#" className={className}>
-        {title && <h2 className="nf-comments-new-form__title">{title}</h2>}
+        {title && <h2 className={`${className}__title`}>{title}</h2>}
         <textarea
           ref={this.textareaRef}
-          className="nf-comments-new-form__textarea"
+          className={`${className}__textarea`}
           placeholder={placeholder}
           onKeyPress={this.boundHandleKeyPress}
         />
         <button
           type="reset"
-          className="nf-comments-new-form__button nf-comments-new-form__button--secondary"
+          className={`${className}__button ${className}__button--secondary`}
           onClick={this.boundHandleReset}
         >
           {cancelLabel}
         </button>
         <button
           type="submit"
-          className="nf-comments-new-form__button nf-comments-new-form__button--primary"
+          className={`${className}__button ${className}__button--primary`}
           onClick={this.boundHandleSubmit}
           disabled={isUpdating}
         >
@@ -69,7 +69,7 @@ export class NewCommentFormBase extends React.Component {
         </button>
 
         {updateError && (
-          <span className="nf-comments-new-form__error">
+          <span className={`${className}__error`}>
             {errorPrefixLabel} {updateError.message}
           </span>
         )}
@@ -81,7 +81,7 @@ export class NewCommentFormBase extends React.Component {
 NewCommentFormBase.displayName = 'NewCommentFormBase'
 
 NewCommentFormBase.defaultProps = {
-  className: 'nf-comments-new-form',
+  className: 'nf-commentami-new-form',
   title: 'Add new comment',
   placeholder: 'Enter some text ...',
   cancelLabel: 'Cancel',

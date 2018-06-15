@@ -13,7 +13,7 @@ export function Icon({ path, width, height, viewBox, className, size }) {
     <svg
       version="1.1"
       viewBox={viewBox || `0 0 ${width} ${height}`}
-      className={className || 'nf-comments-icon'}
+      className={className || 'nf-commentami-icon'}
       width={!className ? width : null}
       height={!className ? height : null}
     >

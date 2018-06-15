@@ -9,10 +9,12 @@ describe('NewCommentForm', () => {
     test('should render the core elements', () => {
       const wrapper = mount(withResourceContext(<NewCommentForm reference="REFERENCE" />, getDefaultResourceContext()))
 
-      expect(wrapper.find('form').hasClass('nf-comments-new-form')).toBeTruthy()
-      expect(wrapper.find('textarea.nf-comments-new-form__textarea').prop('placeholder')).toEqual('Enter some text ...')
-      expect(wrapper.find('button.nf-comments-new-form__button--secondary').text()).toEqual('Cancel')
-      expect(wrapper.find('button.nf-comments-new-form__button--primary').text()).toEqual('Add')
+      expect(wrapper.find('form').hasClass('nf-commentami-new-form')).toBeTruthy()
+      expect(wrapper.find('textarea.nf-commentami-new-form__textarea').prop('placeholder')).toEqual(
+        'Enter some text ...'
+      )
+      expect(wrapper.find('button.nf-commentami-new-form__button--secondary').text()).toEqual('Cancel')
+      expect(wrapper.find('button.nf-commentami-new-form__button--primary').text()).toEqual('Add')
     })
 
     test('should allow class, title and labels overriding', () => {
@@ -31,10 +33,10 @@ describe('NewCommentForm', () => {
       )
 
       expect(wrapper.find('form').hasClass('CLS')).toBeTruthy()
-      expect(wrapper.find('h2.nf-comments-new-form__title').text()).toEqual('TITLE')
-      expect(wrapper.find('textarea.nf-comments-new-form__textarea').prop('placeholder')).toEqual('PLACEHOLDER')
-      expect(wrapper.find('button.nf-comments-new-form__button--secondary').text()).toEqual('CANCEL')
-      expect(wrapper.find('button.nf-comments-new-form__button--primary').text()).toEqual('SUBMIT')
+      expect(wrapper.find('h2.CLS__title').text()).toEqual('TITLE')
+      expect(wrapper.find('textarea.CLS__textarea').prop('placeholder')).toEqual('PLACEHOLDER')
+      expect(wrapper.find('button.CLS__button--secondary').text()).toEqual('CANCEL')
+      expect(wrapper.find('button.CLS__button--primary').text()).toEqual('SUBMIT')
     })
 
     test('should show saving state', () => {
@@ -45,8 +47,8 @@ describe('NewCommentForm', () => {
         )
       )
 
-      expect(wrapper.find('button.nf-comments-new-form__button--primary').text()).toEqual('SAVING')
-      expect(wrapper.find('button.nf-comments-new-form__button--primary[disabled]').length).toEqual(1)
+      expect(wrapper.find('button.nf-commentami-new-form__button--primary').text()).toEqual('SAVING')
+      expect(wrapper.find('button.nf-commentami-new-form__button--primary[disabled]').length).toEqual(1)
     })
 
     test('should show error state', () => {
@@ -83,7 +85,7 @@ describe('NewCommentForm', () => {
       const textarea = wrapper.find('textarea').instance()
       textarea.value = 'VALUE'
 
-      wrapper.find('button.nf-comments-new-form__button--primary').simulate('click')
+      wrapper.find('button.nf-commentami-new-form__button--primary').simulate('click')
       await delay()
 
       expect(addComment).toHaveBeenCalledWith('REFERENCE', 'VALUE')
@@ -105,7 +107,7 @@ describe('NewCommentForm', () => {
       textarea.value = 'VALUE'
       expect(textarea.value).toEqual('VALUE')
 
-      wrapper.find('button.nf-comments-new-form__button--primary').simulate('click')
+      wrapper.find('button.nf-commentami-new-form__button--primary').simulate('click')
       await delay()
 
       expect(textarea.value).toEqual('VALUE')
@@ -141,7 +143,7 @@ describe('NewCommentForm', () => {
         )
       )
 
-      wrapper.find('button.nf-comments-new-form__button--primary').simulate('click')
+      wrapper.find('button.nf-commentami-new-form__button--primary').simulate('click')
 
       expect(addComment).not.toHaveBeenCalled()
     })
@@ -175,7 +177,7 @@ describe('NewCommentForm', () => {
       textarea.value = 'VALUE'
 
       expect(textarea.value).toEqual('VALUE')
-      wrapper.find('button.nf-comments-new-form__button--secondary').simulate('click')
+      wrapper.find('button.nf-commentami-new-form__button--secondary').simulate('click')
       expect(textarea.value).toEqual('')
     })
   })

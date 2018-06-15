@@ -18,13 +18,17 @@ export class DefaultComment extends React.Component {
   render() {
     if (!this.props.comment) return false
 
+    const className = this.props.className
+
     return (
-      <article className={this.props.className}>
-        <h4 className="nf-comments-comment__header">{this.props.comment.author} said:</h4>
-        <p className="nf-comments-comment__content">{this.props.comment.content}</p>
-        <button type="button" className="nf-comments-comment__remove-button" onClick={this.boundHandleRemove}>
-          Remove
-        </button>
+      <article className={className}>
+        <h4 className={`${className}__header`}>{this.props.comment.author} said:</h4>
+        <p className={`${className}__content`}>{this.props.comment.content}</p>
+        {typeof this.props.removeComment === 'function' && (
+          <button type="button" className={`${className}__remove-button`} onClick={this.boundHandleRemove}>
+            Remove
+          </button>
+        )}
       </article>
     )
   }
@@ -33,7 +37,7 @@ export class DefaultComment extends React.Component {
 DefaultComment.displayName = 'DefaultComment'
 
 DefaultComment.defaultProps = {
-  className: 'nf-comments-comment'
+  className: 'nf-commentami-comment'
 }
 
 DefaultComment.propTypes = {

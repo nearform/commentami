@@ -241,7 +241,7 @@ A component which renders a small SVG icon.
 | width     | `number` | The value of `size`      | No       | The icon width                |
 | height    | `number` | The value of `width`     | No       | The icon height               |
 | viewBox   | `string` | `0 0 ${width} ${height}` | No       | The SVG viewBox               |
-| className | `string` | nf-comments-icon         | No       | The CSS class for the element |
+| className | `string` | nf-commentami-icon         | No       | The CSS class for the element |
 | size      | `number` |                          | No       | The icon size                 |
 
 #### Example
@@ -284,7 +284,7 @@ Since there is no layout markup, we recommend the usage of the CSS Grid to arran
 | ---------------- | -------- | -------------------------- | -------- | -------------------------------------------------------- |
 | reference        | `string` |                            | Yes      | The reference to show comments for                       |
 | title            | `string` | `Add new comment`          | No       | A title to render before the form                        |
-| className        | `string` | `nf-comments-new-form`     | No       | The CSS class for the element                            |
+| className        | `string` | `nf-commentami-new-form`     | No       | The CSS class for the element                            |
 | placeholder      | `string` | `Enter some text ...`      | No       | The placeholder for the textarea                         |
 | cancelLabel      | `string` | `Cancel`                   | No       | The label of the cancel button                           |
 | submitLabel      | `string` | `Add`                      | No       | The label of the submit button                           |
@@ -328,13 +328,13 @@ Since it's a `withReference` and `withSidebars` HOC, it uses the `commentami` an
 
 #### Props
 
-| property        | Type                         | Default                | Required | Description                                    |
-| --------------- | ---------------------------- | ---------------------- | -------- | ---------------------------------------------- |
-| reference       | `string`                     |                        | Yes      |                                                |
-| children        | `Node | Array<Node>`         |                        | Yes      | The reference contents                         |
-| className       | `string`                     | 'nf-comments-block'    | No       | The CSS class for the element                  |
-| activeClassName | `string`                     | `${className}--active` | No       | The CSS class for the element when is "active" |
-| markerComponent | `function | React.Component` | `<DefaultMarker/>`     | No       | The component to use to render the marker      |
+| property        | Type                         | Default                 | Required | Description                                    |
+| --------------- | ---------------------------- | ----------------------- | -------- | ---------------------------------------------- |
+| reference       | `string`                     |                         | Yes      |                                                |
+| children        | `Node | Array<Node>`         |                         | Yes      | The reference contents                         |
+| className       | `string`                     | 'nf-commentami-reference' | No       | The CSS class for the element                  |
+| activeClassName | `string`                     | `${className}--active`  | No       | The CSS class for the element when is "active" |
+| markerComponent | `function | React.Component` | `<DefaultMarker/>`      | No       | The component to use to render the marker      |
 
 #### Example
 
@@ -353,7 +353,7 @@ Depending on which props are provided, it will try to render using the first of 
 
 All the additional provided props will be forwarded. Since it's a `withSidebars` HOC, it will also expose the `controller` property.
 
-Its appearance can be customized by providing a CSS class name via `className` property (default is `nf-comments-sidebar`).
+Its appearance can be customized by providing a CSS class name via `className` property (default is `nf-commentami-sidebar`).
 
 ```javascript
 import { Resource, WebsocketService } from '@nearform/commentami-react-components'
@@ -425,14 +425,14 @@ To customize its appearance, it uses several BEM CSS classes (`${mainClassName}`
 | property      | Type       | Default               | Required | Description                            |
 | ------------- | ---------- | --------------------- | -------- | -------------------------------------- |
 | comment       | `Comment`  |                       | Yes      | The comment to render                  |
-| className     | `string`   | `nf-comments-comment` | No       | The CSS class for the element          |
+| className     | `string`   | `nf-commentami-comment` | No       | The CSS class for the element          |
 | removeComment | `function` |                       | No       | The handler to manage comment deletion |
 
 ### `<DefaultMarker/>`
 
 A component which renders a `<Icon/>` when the reference is put within is "active". If put within a `<SidebarsController>` component, it toggles the active status of the reference when clicked.
 
-Its appearance can be customized by providing a CSS class name via `className` property (default is `nf-comments-marker`).
+Its appearance can be customized by providing a CSS class name via `className` property (default is `nf-commentami-marker`).
 
 #### Props
 
@@ -442,7 +442,7 @@ Its appearance can be customized by providing a CSS class name via `className` p
 | resource   | `string`     |                      | No       | The resource it belongs to    |
 | reference  | `string`     |                      | No       | The reference it belongs to   |
 | rootRef    | `React.Ref`  |                      | No       | The root ref of the reference |
-| className  | `string`     | `nf-comments-marker` | No       | The CSS class for the element |
+| className  | `string`     | `nf-commentami-marker` | No       | The CSS class for the element |
 
 ### `<DefaultSidebar/>`
 
@@ -450,7 +450,7 @@ A component which renders a `<NewCommentForm/>` and a `<CommentsList/>` for a re
 
 If put within a `<SidebarsController>` component, it also renders a button to set the reference as "inactive" (and therefore hiding the sidebar).
 
-Its appearance can be customized by providing a CSS class name via `className` property (default is `nf-comments-sidebar`).
+Its appearance can be customized by providing a CSS class name via `className` property (default is `nf-commentami-sidebar`).
 
 To customize its appearance, it uses several BEM CSS classes (`${mainClassName}` in the table below it's the value of the `className` property, described later):
 
@@ -466,4 +466,4 @@ To customize its appearance, it uses several BEM CSS classes (`${mainClassName}`
 | ---------- | ------------ | -------------------- | -------- | ----------------------------- |
 | controller | `Controller` |                      | No       | The sidebars controller       |
 | title      | `string`     |                      | No       | The sidebar title             |
-| className  | `string`     | `nf-comments-marker` | No       | The CSS class for the element |
+| className  | `string`     | `nf-commentami-marker` | No       | The CSS class for the element |

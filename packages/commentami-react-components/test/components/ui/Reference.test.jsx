@@ -31,9 +31,9 @@ describe('Reference', () => {
       )
     )
 
-    expect(wrapper.find('.nf-comments-block').length).toEqual(1)
-    expect(wrapper.find('.nf-comments-block--active').length).toEqual(0)
-    expect(wrapper.find('.nf-comments-marker').length).toEqual(0)
+    expect(wrapper.find('div.nf-commentami-reference').length).toEqual(1)
+    expect(wrapper.find('div.nf-commentami-reference--active').length).toEqual(0)
+    expect(wrapper.find('span.nf-commentami-marker').length).toEqual(0)
   })
 
   test('should render with the active class and with a marker', () => {
@@ -54,7 +54,7 @@ describe('Reference', () => {
     const wrapper = mount(
       withSidebarsControllerContext(
         withResourceContext(
-          <Reference reference="REFERENCE">
+          <Reference className="foo" activeClassName="bar" reference="REFERENCE">
             <div />
           </Reference>,
           context
@@ -63,9 +63,9 @@ describe('Reference', () => {
       )
     )
 
-    expect(wrapper.find('.nf-comments-block').length).toEqual(1)
-    expect(wrapper.find('.nf-comments-block--active').length).toEqual(1)
-    expect(wrapper.find('span.nf-comments-marker').length).toEqual(1)
+    expect(wrapper.find('div.foo').length).toEqual(1)
+    expect(wrapper.find('div.bar').length).toEqual(1)
+    expect(wrapper.find('span.nf-commentami-marker').length).toEqual(1)
   })
 
   test('should use a custom marker', () => {
@@ -95,7 +95,7 @@ describe('Reference', () => {
       )
     )
 
-    expect(wrapper.find('.foo').length).toEqual(1)
+    expect(wrapper.find('div.foo').length).toEqual(1)
     expect(wrapper.contains(<span>1</span>)).toBeTruthy()
   })
 
