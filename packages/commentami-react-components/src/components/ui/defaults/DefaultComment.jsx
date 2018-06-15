@@ -24,7 +24,7 @@ export class DefaultCommentBase extends React.Component {
   componentDidMount() {
     if (
       this.props.commentamiDeeplink &&
-      this.props.commentamiDeeplink.deepLink &&
+      this.props.commentamiDeeplink.hasDeepLink &&
       String(this.props.commentamiDeeplink.comment) === String(this.props.comment.id)
     ) {
       this.props.commentamiDeeplink.scrollIntoView(this.rootRef.current)

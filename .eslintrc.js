@@ -22,6 +22,7 @@ module.exports = {
     fetch: true,
     // Jest / Lab
     jest: true,
+    jsdom: true,
     describe: true,
     test: true,
     expect: true,

@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import React from 'react'
 import { DefaultComment, DefaultCommentBase } from '../../../../src/components/ui/defaults/DefaultComment'
 import { withDeepLinkControllerContext } from '../../../helpers/context'
@@ -77,7 +77,7 @@ describe('DefaultComment', () => {
         removeComment={jest.fn()}
         comment={comment}
         commentamiDeeplink={{
-          deepLink: true,
+          hasDeepLink: true,
           comment: 'comm-1',
           unsetDeepLink: unsetDeepLinkMock,
           scrollIntoView: scrollToLinkLinkMock

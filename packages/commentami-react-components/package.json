@@ -26,7 +26,7 @@
     "dist"
   ],
   "scripts": {
-    "depcheck": "../../node_modules/depcheck/bin/depcheck --ignores=webpack,enzyme-context-patch",
+    "depcheck": "../../node_modules/depcheck/bin/depcheck --ignores=webpack,enzyme-context-patch,jest-environment-jsdom,jest-environment-jsdom-global",
     "build": "babel -d dist src",
     "build:watch": "babel -d dist --watch src",
     "clean": "rm -rf dist",

@@ -1,6 +1,6 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { Reference, ReferenceBase } from '../../../src/components/ui/Reference'
+import { Reference } from '../../../src/components/ui/Reference'
 import {
   getDefaultResourceContext,
   withDeepLinkControllerContext,
@@ -158,7 +158,7 @@ describe('Reference', () => {
 
     const unsetDeepLinkMock = jest.fn()
     const scrollToLinkLinkMock = jest.fn()
-    const wrapper = mount(
+    mount(
       withDeepLinkControllerContext(
         withSidebarsControllerContext(
           withResourceContext(
@@ -170,7 +170,7 @@ describe('Reference', () => {
           controller
         ),
         {
-          deepLink: true,
+          hasDeepLink: true,
           resource: 'RESOURCE',
           reference: 'ref-1',
           unsetDeepLink: unsetDeepLinkMock,

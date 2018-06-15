@@ -23,7 +23,7 @@ export class ReferenceBase extends React.Component {
   componentDidMount() {
     if (
       this.props.commentamiDeeplink &&
-      this.props.commentamiDeeplink.deepLink &&
+      this.props.commentamiDeeplink.hasDeepLink &&
       this.props.commentamiDeeplink.resource === this.props.commentami.resource &&
       this.props.commentamiDeeplink.reference === this.props.commentami.reference
     ) {

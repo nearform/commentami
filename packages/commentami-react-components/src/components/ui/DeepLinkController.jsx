@@ -14,7 +14,7 @@ export class DeepLinkController extends React.Component {
       resource: parsed.resource || null,
       reference: parsed.reference || null,
       comment: parsed.comment || null,
-      deepLink: !!parsed.comment,
+      hasDeepLink: !!parsed.comment,
       unsetDeepLink: this.unsetDeepLink.bind(this),
       scrollIntoView: this.scrollIntoView.bind(this)
     }
@@ -28,7 +28,7 @@ export class DeepLinkController extends React.Component {
 
   unsetDeepLink() {
     this.setState({
-      deepLink: false,
+      hasDeepLink: false,
       comment: null
     })
   }

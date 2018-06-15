@@ -1,21 +1,12 @@
-import { mount, shallow } from 'enzyme'
-
-const JSDOMEnvironment = require('jest-environment-jsdom')
 import React from 'react'
+import { mount } from 'enzyme'
 import { DeepLinkController, withDeepLink } from '../../../src/components/ui/DeepLinkController'
-import { withDeepLinkControllerContext } from '../../helpers/context'
 
-function Children({ commentamiDeeplink }) {
+function Children() {
   return <p />
 }
 
 describe('DeepLinkController', () => {
-  let commentamiDeeplinkContext
-
-  beforeEach(() => {
-    commentamiDeeplinkContext = {}
-  })
-
   test('should render with good defaults', () => {
     const ControlledChildren = withDeepLink(Children)
 
@@ -29,7 +20,7 @@ describe('DeepLinkController', () => {
       'resource',
       'reference',
       'comment',
-      'deepLink',
+      'hasDeepLink',
       'unsetDeepLink',
       'scrollIntoView'
     ])
@@ -46,7 +37,7 @@ describe('DeepLinkController', () => {
     expect(state.resource).toEqual(null)
     expect(state.reference).toEqual(null)
     expect(state.comment).toEqual(null)
-    expect(state.deepLink).toBeFalsy()
+    expect(state.hasDeepLink).toBeFalsy()
   })
 
   test('should render with null props if the search qeury is empty', () => {
@@ -64,7 +55,7 @@ describe('DeepLinkController', () => {
     expect(state.resource).toEqual('RESOURCE')
     expect(state.reference).toEqual('REFERENCE')
     expect(state.comment).toEqual('12345')
-    expect(state.deepLink).toBeTruthy()
+    expect(state.hasDeepLink).toBeTruthy()
   })
 
   test('the scrollIntoView should call the element function', () => {
@@ -98,9 +89,8 @@ describe('DeepLinkController', () => {
         <div />
       </DeepLinkController>
     )
-    const element = {}
     wrapper.instance().unsetDeepLink()
     expect(wrapper.state().comment).toBeNull()
-    expect(wrapper.state().deepLink).toBeFalsy()
+    expect(wrapper.state().hasDeepLink).toBeFalsy()
   })
 })

@@ -65,7 +65,7 @@ export class CommentBase extends React.Component {
   componentDidMount() {
     if (this.props.commentamiDeeplink) {
       if (
-        this.props.commentamiDeeplink.deepLink &&
+        this.props.commentamiDeeplink.hasDeepLink &&
         String(this.props.commentamiDeeplink.comment) === String(this.props.comment.id)
       ) {
         if (this.rootRef.current) {

@@ -31,7 +31,7 @@ export const commentamiDeeplinkPropType = {
   resource: PropTypes.string,
   reference: PropTypes.string,
   comment: PropTypes.string,
-  deepLink: PropTypes.bool,
+  hasDeepLink: PropTypes.bool,
   unsetDeepLink: PropTypes.func
 }
 

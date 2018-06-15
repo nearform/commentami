@@ -55,7 +55,7 @@ export const Block = withDeepLink(
         componentDidMount() {
           if (this.props.commentamiDeeplink) {
             if (
-              this.props.commentamiDeeplink.deepLink &&
+              this.props.commentamiDeeplink.hasDeepLink &&
               this.props.commentamiDeeplink.resource === this.props.commentami.resource &&
               this.props.commentamiDeeplink.reference === this.props.commentami.reference
             ) {
