@@ -189,6 +189,62 @@ class TogglerBase extends React.Component {
 const Toggler = withSidebars(TogglerBase)
 ```
 
+#### withDeepLink
+
+A HOC that provides the functionality to interact with the closest parent `<DeepLinkController>`.
+
+It forwards all the received properties and it also exposes the `commentamiDeepLink` property with the following structure:
+
+```typescript
+interface DeepLinkController {
+  resource: string|null // The resource specified in the URL
+  reference: string|null // The reference specified in the URL
+  comment: string|null // The comment specified in the URL
+  hasDeepLink: boolean // Define if a deepLink is present
+  unsetDeepLink: () => void // unset the deeplink from the structure
+  scrollIntoView: (element: DomElement) => void // Scroll the view to the element passed
+}
+```
+
+For all the event handlers above, the payload should ideally contain the resource and reference that events belong to.
+
+#### Example
+The following Component allow the scrolling to the correct comment if the deeplink is set
+
+```javascript
+import { withDeepLink } from '@nearform/commentami-react-components/ui'
+
+class CommentDetailsBase extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.rootRef = React.createRef()
+  }
+
+  componentDidMount() {
+    if (
+      this.props.commentamiDeeplink &&
+      this.props.commentamiDeeplink.hasDeepLink &&
+      String(this.props.commentamiDeeplink.comment) === String(this.props.comment.id)
+    ) {
+      this.props.commentamiDeeplink.scrollIntoView(this.rootRef.current)
+      this.props.commentamiDeeplink.unsetDeepLink()
+    }
+  }
+
+  render() {
+    return (
+      <div ref={this.rootRef}>
+        The details of the comment
+      </div>
+    )
+  }
+}
+
+const CommentDetails = withDeepLink(CommentDetailsBase)
+```
+
+
 ## UI components
 
 ### `<CommentsList/>`
@@ -403,6 +459,16 @@ Ideally, the component should be place at top-most level, so that all `<Resource
 The component acts a React context provider for the `withSidebars` HOC components, therefore it doesn't accept any property and it just renders its children.
 
 For an example, see the `<Sidebar/>` element above.
+
+
+### `<DeepLinkController/>`
+
+A component that allows to get the deeplink params from the URL and add it to a context that's available using the [withDeepLink](withDeepLink) HOC.
+
+The controller picks the values from the query string in the following format:
+
+`http://someurl/somepage/?resource=RESOURCE&reference=REFERENCE&comment=12345`
+
 
 ## Base UI Components
 
