@@ -7,14 +7,14 @@ function parse(text) {
     return []
   }
 
-  const re = /@(\w+)/g
+  const re = /^@\w+|\s@\w+/g
   const mentions = text.match(re)
 
   if (!mentions) {
     return []
   }
 
-  return uniq(mentions.map(m => m.replace('@', '')))
+  return uniq(mentions.map(m => m.replace('@', '').trim()))
 }
 
 module.exports = {

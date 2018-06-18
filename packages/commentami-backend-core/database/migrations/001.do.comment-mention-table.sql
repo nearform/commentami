@@ -15,3 +15,5 @@ CREATE TABLE mention (
   comment_id INTEGER NOT NULL REFERENCES comment (id) ON DELETE CASCADE,
   mentioned varchar(255) NOT NULL
 );
+
+CREATE INDEX IF NOT EXISTS mention_comment_id_index ON mention (comment_id);

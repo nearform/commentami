@@ -56,7 +56,7 @@ The `getUser` function will need to return a promise that will yield either `nul
 
 It should contain the hooks to decorate a single comment or a list of comments with more data.
 
-An example could be adding users data to each comments based on it's author, or add users data based on mentions.
+An example could be adding users data to each comment based on its author, or add users data based on mentions.
 
 ```
 options.hooks = {

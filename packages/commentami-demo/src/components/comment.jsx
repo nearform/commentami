@@ -75,16 +75,18 @@ export class Comment extends React.Component {
     let body = comment.content
     comment.mentions.forEach(mention => {
       if (typeof mention === 'string') {
-        body = body.replace(`@${mention}`, `<b>@${mention}</b>`)
+        let re = new RegExp('^@' + mention + '|\\s@' + mention, 'g')
+        body = body.replace(re, ` <b>@${mention}</b>`)
         return
       }
 
       if (typeof mention === 'object') {
-        body = body.replace(`@${mention.username}`, `<b>@${mention.username}</b>`)
+        let re = new RegExp('^@' + mention.username + '|\\s@' + mention.username, 'g')
+        body = body.replace(re, ` <b>@${mention.username}</b>`)
       }
     })
 
-    return <p dangerouslySetInnerHTML={{ __html: body }} />
+    return <p dangerouslySetInnerHTML={{ __html: body.trim() }} />
   }
 
   render() {

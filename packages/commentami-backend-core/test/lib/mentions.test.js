@@ -31,5 +31,11 @@ describe('Mentions', () => {
       it will return only one mention of @test
     `)
     ).to.equal(['test'])
+
+    expect(
+      mentions.parse(`
+      if I mention test@test.com I should not get the mention
+    `)
+    ).to.equal([])
   })
 })

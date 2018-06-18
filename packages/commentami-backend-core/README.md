@@ -194,7 +194,7 @@ async function myFn () => {
 
 ## Hooks
 
-When the application handle one or more comments, you can hook into the process to add domain specific data to each comment.
+When the application fetches one or more comments, you can hook into the process to add domain specific data to each comment.
 
 To do so, you can specify 2 optional functions when initializing the `commentService`.
 
