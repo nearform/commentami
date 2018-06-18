@@ -8,7 +8,7 @@ describe('Icon', () => {
 
     expect(
       wrapper.equals(
-        <svg version="1.1" viewBox="0 0 24 24" className="nf-comments-icon" width={24} height={24}>
+        <svg version="1.1" viewBox="0 0 24 24" className="nf-commentami-icon" width={24} height={24}>
           <g>
             <path d="PATH" />
           </g>
@@ -22,7 +22,7 @@ describe('Icon', () => {
 
     expect(
       wrapper.equals(
-        <svg version="1.1" viewBox="FOO" className="nf-comments-icon" width={100} height={200}>
+        <svg version="1.1" viewBox="FOO" className="nf-commentami-icon" width={100} height={200}>
           <g>
             <path d="PATH" />
           </g>

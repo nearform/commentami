@@ -13,12 +13,12 @@ export class NewCommentFormBase extends React.Component {
     this.boundHandleKeyPress = this.handleKeyPress.bind(this)
   }
 
-  handleSubmit(ev) {
+  async handleSubmit(ev) {
     ev.preventDefault()
-    const value = (this.textareaRef.current.value || '').trim()
 
-    if (value) this.props.commentami.addComment(this.props.reference, value)
-    this.textareaRef.current.value = ''
+    const value = (this.textareaRef.current.value || '').trim()
+    const comment = value ? await this.props.commentami.addComment(this.props.reference, value) : null
+    if (comment) this.textareaRef.current.value = ''
   }
 
   handleReset(ev) {
@@ -32,31 +32,47 @@ export class NewCommentFormBase extends React.Component {
   }
 
   render() {
-    const { title, placeholder, cancelLabel, submitLabel, className } = this.props
+    const {
+      commentami: { isUpdating, updateError },
+      className,
+      title,
+      placeholder,
+      cancelLabel,
+      submitLabel,
+      savingLabel,
+      errorPrefixLabel
+    } = this.props
 
     return (
       <form action="#" className={className}>
-        {title && <h2 className="nf-comments-new-form__title">{title}</h2>}
+        {title && <h2 className={`${className}__title`}>{title}</h2>}
         <textarea
           ref={this.textareaRef}
-          className="nf-comments-new-form__textarea"
+          className={`${className}__textarea`}
           placeholder={placeholder}
           onKeyPress={this.boundHandleKeyPress}
         />
         <button
           type="reset"
-          className="nf-comments-new-form__button nf-comments-new-form__button--secondary"
+          className={`${className}__button ${className}__button--secondary`}
           onClick={this.boundHandleReset}
         >
           {cancelLabel}
         </button>
         <button
           type="submit"
-          className="nf-comments-new-form__button nf-comments-new-form__button--primary"
+          className={`${className}__button ${className}__button--primary`}
           onClick={this.boundHandleSubmit}
+          disabled={isUpdating}
         >
-          {submitLabel}
+          {isUpdating ? savingLabel : submitLabel}
         </button>
+
+        {updateError && (
+          <span className={`${className}__error`}>
+            {errorPrefixLabel} {updateError.message}
+          </span>
+        )}
       </form>
     )
   }
@@ -65,11 +81,13 @@ export class NewCommentFormBase extends React.Component {
 NewCommentFormBase.displayName = 'NewCommentFormBase'
 
 NewCommentFormBase.defaultProps = {
-  className: 'nf-comments-new-form',
+  className: 'nf-commentami-new-form',
   title: 'Add new comment',
   placeholder: 'Enter some text ...',
   cancelLabel: 'Cancel',
-  submitLabel: 'Add'
+  submitLabel: 'Add',
+  savingLabel: 'Saving ...',
+  errorPrefixLabel: 'Cannot save the comment:'
 }
 
 NewCommentFormBase.propTypes = {
@@ -79,6 +97,8 @@ NewCommentFormBase.propTypes = {
   placeholder: PropTypes.string,
   cancelLabel: PropTypes.string,
   submitLabel: PropTypes.string,
+  savingLabel: PropTypes.string,
+  errorPrefixLabel: PropTypes.string,
   className: PropTypes.string
 }
 

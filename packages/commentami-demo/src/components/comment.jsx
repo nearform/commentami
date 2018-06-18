@@ -26,6 +26,17 @@ const removeIconClassName = style({
   height: rem(2)
 })
 
+const authorLinkClass = style({
+  display: 'flex'
+})
+
+const authorLinkImageClass = style({
+  display: 'block',
+  marginRight: '8px',
+  width: '25px',
+  height: '25px'
+})
+
 export class Comment extends React.Component {
   constructor(props) {
     super(props)
@@ -39,11 +50,28 @@ export class Comment extends React.Component {
     return this.props.removeComment(this.props.comment)
   }
 
+  renderAuthor(author) {
+    if (typeof author !== 'object') {
+      return <h5>{author} said</h5>
+    }
+
+    return (
+      <a href={author.profileUrl} target="_blank">
+        <div className={authorLinkClass}>
+          <img className={authorLinkImageClass} src={author.avatarUrl} />
+          <div>
+            {author.firstName} {author.lastName.charAt(0)}.
+          </div>
+        </div>
+      </a>
+    )
+  }
+
   render() {
     return (
       <article className={commentClassName}>
         <header className={commentHeaderClassName}>
-          <h5>{this.props.comment.author} said</h5>
+          {this.renderAuthor(this.props.comment.author)}
           <a href="#" onClick={this.boundHandleRemove}>
             <Icon name="trash" className={removeIconClassName} />
           </a>

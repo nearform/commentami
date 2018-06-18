@@ -1,5 +1,5 @@
 {
-  "name": "@nearform/commentami-backend-hapi-server",
+  "name": "@nearform/commentami-demo-server",
   "version": "0.1.0",
   "private": true,
   "description": "Commentami",
@@ -32,11 +32,14 @@
   "dependencies": {
     "@nearform/commentami-backend-hapi-plugin": "^0.1.0",
     "hapi": "^17.5.0",
-    "hapi-pino": "^4.0.4"
+    "hapi-auth-basic": "^5.0.0",
+    "hapi-pino": "^4.0.4",
+    "lodash": "^4.17.10"
   },
   "devDependencies": {
     "code": "^5.2.0",
     "lab": "^15.4.5",
+    "nes": "^9.0.0",
     "sinon": "^5.0.10"
   }
 }

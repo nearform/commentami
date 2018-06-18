@@ -7,8 +7,8 @@ import { SidebarsController, withSidebars } from '../src/components/ui/SidebarsC
 import { HttpService } from '../src/services/HttpService'
 import { WebsocketService } from '../src/services/WebsocketService'
 import { CommentsInMemoryService } from '../test/helpers/CommentsInMemoryService'
+import { ErrorIndicator, LoadingIndicator } from './components/indicators'
 import { CommentsMarker, Table } from './components/table'
-import { LoadingIndicator } from './components/loadingIndicator'
 import sampleData from './data/sample'
 
 const commentsInMemoryService = CommentsInMemoryService()
@@ -39,12 +39,12 @@ const CustomBlock = withSidebars(
         } = this.props
         const isActive = controller.isActive(resource, reference)
 
-        if (!activeClassName) activeClassName = 'nf-comments-block--active'
+        if (!activeClassName) activeClassName = 'nf-commentami-reference--active'
 
         return (
           <div
             ref={this.rootRef}
-            className={['nf-comments-block', isActive ? activeClassName : ''].filter(a => a).join(' ')}
+            className={['nf-commentami-reference', isActive ? activeClassName : ''].filter(a => a).join(' ')}
             onClick={this.boundHandleClick}
           >
             {hasComments && <CommentsMarker />}
@@ -73,6 +73,7 @@ storiesOf('Commentable/Table', module)
     <SidebarsController>
       <Resource resource="sample-table-section" service={commentsHttpService}>
         <LoadingIndicator />
+        <ErrorIndicator />
 
         <div style={{ margin: '30px' }}>
           <Table data={sampleData} columns={['name', 'gender', 'email', 'balance']} blockComponent={CustomBlock} />
@@ -85,6 +86,7 @@ storiesOf('Commentable/Table', module)
     <SidebarsController>
       <Resource resource="sample-table-socket" service={commentsWebsocketService}>
         <LoadingIndicator />
+        <ErrorIndicator />
 
         <div style={{ margin: '30px' }}>
           <Table data={sampleData} columns={['name', 'gender', 'email', 'balance']} blockComponent={CustomBlock} />

@@ -1,13 +1,13 @@
-# @nearform/commentami-backend-hapi-server
+# @nearform/commentami-demo-server
 
-`@nearform/commentami-backend-hapi-server` is a ready to use [Hapi][hapi] server with the `@nearform/commentami-backend-hapi-plugin` registered and websockets enabled.
+`@nearform/commentami-demo-server` is a ready to use [Hapi][hapi] server with the `@nearform/commentami-backend-hapi-plugin` registered and websockets enabled.
 
 ## Install
 
 To install via npm:
 
 ```
-npm install @nearform/commentami-backend-hapi-server
+npm install @nearform/commentami-demo-server
 ```
 
 ## Configuration
@@ -27,7 +27,7 @@ NF_COMMENTS_SERVER_MULTINES_PORT
 
 By default the configuration of the server is for running locally.
 
-You can also change the databse connection parameters through `@nearform/commentami-backend-core` env variables. See `@nearform/commentami-backend-core` documentation for more info
+You can also change the databse connection parameters through `@nearform/commentami-backend-core` env variables. See `@nearform/commentami-backend-core` [documentation](https://github.com/nearform/commentami/blob/master/packages/commentami-backend-core/README.md) for more info
 
 ## Dependency
 
@@ -36,7 +36,7 @@ To run the server you will need a postgres server (store comments) and a redis s
 ## Usage
 
 ```
-npx run commentami-backend-hapi-server
+npx run commentami-demo-server
 ```
 
 This will start a server on `localhost:8080`.

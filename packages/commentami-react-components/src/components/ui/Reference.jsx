@@ -28,12 +28,22 @@ export class ReferenceBase extends React.Component {
   }
 
   render() {
-    let { children, commentami, activeClassName, markerComponent: Marker, controller, reference } = this.props
+    let {
+      children,
+      commentami,
+      className,
+      activeClassName,
+      markerComponent: Marker,
+      controller,
+      reference
+    } = this.props
+
+    if (!activeClassName) activeClassName = `${className}--active`
 
     return (
       <div
         ref={this.rootRef}
-        className={['nf-comments-block', this.isActive ? activeClassName : ''].filter(a => a).join(' ')}
+        className={[className, this.isActive ? activeClassName : ''].filter(a => a).join(' ')}
         onClick={this.boundHandleClick}
         onContextMenu={this.boundHandleContextMenu}
         onDoubleClick={this.boundHandleDoubleClick}
@@ -76,7 +86,7 @@ export class ReferenceBase extends React.Component {
 
 ReferenceBase.displayName = 'ReferenceBase'
 ReferenceBase.defaultProps = {
-  activeClassName: 'nf-comments-block--active',
+  className: 'nf-commentami-reference',
   markerComponent: DefaultMarker
 }
 
@@ -84,6 +94,7 @@ ReferenceBase.propTypes = {
   commentami: PropTypes.shape(commentamiReferencePropInterface).isRequired,
   controller: PropTypes.shape(sidebarsControllerPropInterface).isRequired,
   reference: referencePropInterface.isRequired,
+  className: PropTypes.string,
   activeClassName: PropTypes.string,
   children: childrenPropInterface,
   markerComponent: componentPropInterface

@@ -21,7 +21,7 @@ describe('Sidebar', () => {
       withSidebarsControllerContext(withResourceContext(<Sidebar reference="REFERENCE" />, context), controller)
     )
 
-    expect(wrapper.find('h1.nf-comments-sidebar__title').text()).toEqual('Comments')
+    expect(wrapper.find('h1.nf-commentami-sidebar__title').text()).toEqual('Comments')
   })
 
   test('should use the provided component', async () => {

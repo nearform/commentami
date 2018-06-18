@@ -9,7 +9,7 @@ import { SidebarsController } from '../src/components/ui/SidebarsController'
 import { Sidebar } from '../src/components/ui/Sidebar'
 import { CommentsInMemoryService } from '../test/helpers/CommentsInMemoryService'
 
-cssRule('.nf-comments-block', {
+cssRule('.nf-commentami-reference', {
   position: 'relative',
   $nest: {
     '&:hover, &--active': {
@@ -18,14 +18,14 @@ cssRule('.nf-comments-block', {
   }
 })
 
-cssRule('.nf-comments-marker', {
+cssRule('.nf-commentami-marker', {
   position: 'absolute',
   top: 0,
   left: px(-30),
   cursor: 'pointer'
 })
 
-cssRule('.nf-comments-sidebar', {
+cssRule('.nf-commentami-sidebar', {
   backgroundColor: '#F0F0F0',
   borderLeft: `${px(2)} solid #808080`,
   zIndex: 10,
@@ -45,7 +45,7 @@ cssRule('.nf-comments-sidebar', {
   }
 })
 
-cssRule('.nf-comments-sidebar__close', {
+cssRule('.nf-commentami-sidebar__close', {
   display: 'inline-block',
   height: px(24),
   $nest: {
@@ -55,12 +55,13 @@ cssRule('.nf-comments-sidebar__close', {
   }
 })
 
-cssRule('.nf-comments-new-form', {
+cssRule('.nf-commentami-new-form', {
   display: 'grid',
   gridTemplate: `
   "title  title     title" min-content
   "text   text      text" min-content
   "null   secondary primary" min-content
+  "error  error     error" min-content
   / 2fr 1fr 1fr
   `,
   gridGap: px(10),
@@ -83,6 +84,10 @@ cssRule('.nf-comments-new-form', {
           gridArea: 'primary'
         }
       }
+    },
+    span: {
+      gridArea: 'error',
+      color: '#CC0000'
     }
   }
 })

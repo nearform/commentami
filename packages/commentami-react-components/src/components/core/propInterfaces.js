@@ -6,7 +6,7 @@ export const commentPropInterface = {
   content: PropTypes.string
 }
 
-export const componentPropInterface = PropTypes.oneOfType([PropTypes.element, PropTypes.func])
+export const componentPropInterface = PropTypes.oneOfType([PropTypes.element, PropTypes.func, PropTypes.node])
 export const childrenPropInterface = PropTypes.oneOfType([
   PropTypes.arrayOf(componentPropInterface),
   componentPropInterface

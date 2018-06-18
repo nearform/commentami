@@ -8,6 +8,7 @@ import { Sidebar } from '../src/components/ui/Sidebar'
 
 const controller = {
   isActive: () => true,
+  updateActive: () => null,
   reference: 'foo'
 }
 

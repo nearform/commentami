@@ -77,11 +77,11 @@ describe('state/Comments', () => {
       })
 
       test('the size should be 1', () => {
-        expect(commentsCount(state, { id: 'ref-1' })).toBe(1)
+        expect(commentsCount(state, { id: 'ref-1' })).toEqual(1)
       })
 
       test('the size of the list of comments related to reference ref-1 should be 1', () => {
-        expect(selectCommentsByReference(state, { id: 'ref-1' }).length).toBe(1)
+        expect(selectCommentsByReference(state, { id: 'ref-1' }).length).toEqual(1)
       })
 
       test('the comment should be added correctly', () => {
@@ -105,7 +105,7 @@ describe('state/Comments', () => {
         reference: { id: 'ref-1' },
         content: 'somecontent'
       })
-      expect(state.commentsState.updateError.message).toBe('Some error')
+      expect(state.commentsState.updateError.message).toEqual('Some error')
       expect(state.commentsState.isUpdating).toBeFalsy()
     })
 
@@ -125,9 +125,9 @@ describe('state/Comments', () => {
           content: 'somecontent'
         })
       } catch (e) {
-        expect(e.code).toBe(UPDATE_IN_PROGRESS_ERROR)
+        expect(e.code).toEqual(UPDATE_IN_PROGRESS_ERROR)
       }
-      expect(commentsCount(state, { id: 'ref-1' })).toBe(0)
+      expect(commentsCount(state, { id: 'ref-1' })).toEqual(0)
     })
   })
 
@@ -158,11 +158,11 @@ describe('state/Comments', () => {
       })
 
       test('the size of the list of comments related to reference ref-2 should be 0', () => {
-        expect(selectCommentsByReference(state, { id: 'ref-2' }).length).toBe(0)
+        expect(selectCommentsByReference(state, { id: 'ref-2' }).length).toEqual(0)
       })
 
       test('the size of the list of comments related to reference ref-3 should be 1', () => {
-        expect(selectCommentsByReference(state, { id: 'ref-3' }).length).toBe(1)
+        expect(selectCommentsByReference(state, { id: 'ref-3' }).length).toEqual(1)
       })
     })
 
@@ -181,7 +181,7 @@ describe('state/Comments', () => {
         reference: { id: 'ref-1' },
         content: 'somecontent'
       })
-      expect(state.commentsState.updateError.message).toBe('Some error')
+      expect(state.commentsState.updateError.message).toEqual('Some error')
       expect(state.commentsState.isUpdating).toBeFalsy()
     })
 
@@ -208,9 +208,9 @@ describe('state/Comments', () => {
           reference: { id: 'ref-2' }
         })
       } catch (e) {
-        expect(e.code).toBe(UPDATE_IN_PROGRESS_ERROR)
+        expect(e.code).toEqual(UPDATE_IN_PROGRESS_ERROR)
       }
-      expect(commentsCount(state, { id: 'ref-2' })).toBe(1)
+      expect(commentsCount(state, { id: 'ref-2' })).toEqual(1)
     })
   })
 
@@ -231,23 +231,23 @@ describe('state/Comments', () => {
     })
 
     test('the size should be 5', () => {
-      expect(commentsCount(state, { id: 'ref-1' })).toBe(3)
+      expect(commentsCount(state, { id: 'ref-1' })).toEqual(3)
     })
 
     test('the size of the list of comments related to reference res-1 should be 3', () => {
-      expect(selectCommentsByReference(state, { id: 'ref-1' }).length).toBe(3)
+      expect(selectCommentsByReference(state, { id: 'ref-1' }).length).toEqual(3)
     })
 
     test('the size of the list of comments related to reference res-2 should be 2', () => {
-      expect(selectCommentsByReference(state, { id: 'ref-2' }).length).toBe(2)
+      expect(selectCommentsByReference(state, { id: 'ref-2' }).length).toEqual(2)
     })
 
     test('the comments should be returned correctly', () => {
-      expect(selectCommentsByReference(state, { id: 'ref-1' })[0].content).toBe('somecontent 1')
-      expect(selectCommentsByReference(state, { id: 'ref-1' })[1].content).toBe('somecontent 2')
-      expect(selectCommentsByReference(state, { id: 'ref-1' })[2].content).toBe('somecontent 5')
-      expect(selectCommentsByReference(state, { id: 'ref-2' })[0].content).toBe('somecontent 3')
-      expect(selectCommentsByReference(state, { id: 'ref-2' })[1].content).toBe('somecontent 4')
+      expect(selectCommentsByReference(state, { id: 'ref-1' })[0].content).toEqual('somecontent 1')
+      expect(selectCommentsByReference(state, { id: 'ref-1' })[1].content).toEqual('somecontent 2')
+      expect(selectCommentsByReference(state, { id: 'ref-1' })[2].content).toEqual('somecontent 5')
+      expect(selectCommentsByReference(state, { id: 'ref-2' })[0].content).toEqual('somecontent 3')
+      expect(selectCommentsByReference(state, { id: 'ref-2' })[1].content).toEqual('somecontent 4')
     })
   })
 
@@ -305,7 +305,7 @@ describe('state/Comments', () => {
         throw new Error('Some error')
       })
       await comments.refresh()
-      expect(state.commentsState.fetchError.message).toBe('Some error')
+      expect(state.commentsState.fetchError.message).toEqual('Some error')
       expect(state.commentsState.isFetching).toBeFalsy()
     })
 
@@ -327,7 +327,7 @@ describe('state/Comments', () => {
       try {
         await comments.refresh(true)
       } catch (e) {
-        expect(e.message).toBe('Some error')
+        expect(e.message).toEqual('Some error')
       }
     })
 
@@ -386,8 +386,8 @@ describe('state/Comments', () => {
         throw new Error('Some error')
       })
       await comments.subscribe()
-      expect(state.commentsState.initError.message).toBe('Some error')
-      expect(state.commentsState.isInit).toBeFalsy()
+      expect(state.commentsState.initError.message).toEqual('Some error')
+      expect(state.commentsState.isInit).toBeTruthy()
     })
 
     test('Subscribe with stream should call also the onResourceChange', async () => {
@@ -403,7 +403,7 @@ describe('state/Comments', () => {
       await comments.subscribe()
       expect(service.getComments).toHaveBeenCalledWith('res-1')
       expect(service.onResourceChange).toHaveBeenCalled()
-      expect(service.onResourceChange.mock.calls[0][0]).toBe('res-1')
+      expect(service.onResourceChange.mock.calls[0][0]).toEqual('res-1')
     })
 
     test('add comment event', async () => {

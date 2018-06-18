@@ -74,23 +74,29 @@ export class Resource extends React.Component {
   /**
    * Update the state
    * @param {Object} newState
-   * @returns {*}
+   * @returns {Promise<*>}
    */
-  onCommentsStateUpdate(newState) {
-    return this.setState(newState)
+  async onCommentsStateUpdate(newState) {
+    return new Promise((resolve, reject) => {
+      try {
+        this.setState(() => newState, () => resolve(newState))
+      } catch (e) {
+        reject(e)
+      }
+    })
   }
 
   /**
    * Add a comment to a reference
    * @param {Reference} reference
    * @param {string} content
-   * @returns {Promise<void>}
+   * @returns {Promise<*|void|boolean>}
    */
   async addComment(reference, content) {
     try {
       const comment = createComment({ reference, content })
 
-      await this.commentsState.addComment({
+      return await this.commentsState.addComment({
         resource: this.currentResource,
         reference: comment.reference,
         content: comment.content
@@ -103,11 +109,11 @@ export class Resource extends React.Component {
   /**
    * Remove a comment from the state
    * @param {Comment} comment
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>}
    */
   async removeComment(comment) {
     try {
-      await this.commentsState.removeComment(comment)
+      return await this.commentsState.removeComment(comment)
     } catch (e) {
       this.logger.error(e)
     }
@@ -122,8 +128,8 @@ export class Resource extends React.Component {
     this.commentsState.unsubscribe()
   }
 
-  componentDidUpdate() {
-    if (this.currentResource !== this.state.lastRefreshedResource) {
+  componentDidUpdate(prevProps) {
+    if (this.currentResource !== this.state.lastRefreshedResource || this.props.service !== prevProps.service) {
       this.commentsState.unsubscribe()
       this.commentsState = new CommentsState({
         service: this.props.service,
