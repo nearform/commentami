@@ -440,7 +440,7 @@ describe('state/Comments', () => {
       })
       await comments.subscribe()
       expect(state.commentsState.initError.message).toEqual('Some error')
-      expect(state.commentsState.isInit).toBeTruthy()
+      expect(state.commentsState.isInit).toBeFalsy()
     })
 
     test('Subscribe with stream should call also the onResourceChange', async () => {

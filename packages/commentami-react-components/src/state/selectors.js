@@ -14,7 +14,7 @@ const _ = state => {
 
 /**
  *
- * @param {Resource} state
+ * @param {State} state
  * @param {Reference} reference
  * @param {string} [sortBy=createdAt]
  * @param {number} [order=1] A positive number sort ASC, a negative DESC
@@ -35,7 +35,7 @@ export const selectCommentsByReference = (state, reference, sortBy = 'createdAt'
 /**
  * Returns the number of reference for a specified resource
  *
- * @param {Resource} state The current state
+ * @param {State} state The current state
  * @returns {number} The number of references
  */
 export const referencesCount = state => Object.keys(_(state).references).length
@@ -44,7 +44,7 @@ export const referencesCount = state => Object.keys(_(state).references).length
  *
  * Counts the comments in a specific reference
  *
- * @param {Resource} state
+ * @param {State} state
  * @param {Reference} reference The reference object
  * @returns {number} The number of comments
  */

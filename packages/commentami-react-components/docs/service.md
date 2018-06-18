@@ -67,16 +67,16 @@ const comments = await service.getComments('res-1')
 
 /*
 comments =>[
-{
-  id: 'comm-1',
-  content: 'some content',
-  reference: 'ref-1',
-  author: 'Davide Fiorello',
-  createdAt: 1234566788
-},
-{
-  ....
-}
+  {
+    id: 'comm-1',
+    content: 'some content',
+    reference: 'ref-1',
+    author: 'Davide Fiorello',
+    createdAt: 1234566788
+  },
+  {
+    ....
+  }
 ]
 */
 

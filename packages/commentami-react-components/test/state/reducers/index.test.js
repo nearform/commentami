@@ -37,7 +37,7 @@ describe('state/reducers', () => {
     test('intializeFail should set isInit to false and the error value', () => {
       expect(initializeFail({ initError: null, isInit: false }, 'some error')).toEqual({
         initError: 'some error',
-        isInit: true
+        isInit: false
       })
     })
   })
