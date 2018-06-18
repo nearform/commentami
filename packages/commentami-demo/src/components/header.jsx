@@ -4,6 +4,12 @@ import { NavLink } from 'react-router-dom'
 import { style } from 'typestyle'
 import { debugClassName } from '../styling/environment'
 import { UserContext } from './user'
+import {
+  WebsocketService,
+  buildWebsocketClient,
+  Notifications,
+  NotificationsContext
+} from '@nearform/commentami-react-components'
 
 const headerClassName = style(debugClassName('header'), {
   backgroundColor: '#DA3338'
@@ -78,6 +84,67 @@ class SelectUser extends React.Component {
   }
 }
 
+class NotificationWillNeverEnd extends React.Component {
+  componentWillUpdate(nextProps) {
+    if (this.props.notifications.length < nextProps.notifications.length) {
+      console.log('this.props.notifications', this.props.notifications)
+      console.log('nextProps.notifications', nextProps.notifications)
+    }
+  }
+
+  render() {
+    const { notifications, removeNotificationFromList } = this.props
+
+    return <div>{notifications.length}</div>
+  }
+}
+
+class DajeNotifications extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {}
+  }
+
+  async componentDidMount() {
+    const client = buildWebsocketClient('ws://127.0.0.1:8080')
+    await client.connect({ auth: { headers: { authorization: this.props.authorization } } })
+
+    this.setState({
+      service: WebsocketService(client)
+    })
+  }
+
+  render() {
+    if (!this.state.service) {
+      return null
+    }
+
+    return (
+      <Notifications userIdentifier={this.props.user} service={this.state.service}>
+        <NotificationsContext.Consumer>
+          {({ notifications, removeNotificationFromList }) => (
+            <NotificationWillNeverEnd
+              notifications={notifications}
+              removeNotificationFromList={removeNotificationFromList}
+            />
+          )}
+        </NotificationsContext.Consumer>
+      </Notifications>
+    )
+  }
+}
+
+class NotificationsBox extends React.Component {
+  render() {
+    return (
+      <UserContext.Consumer>
+        {({ selected, authorization }) => <DajeNotifications user={selected} authorization={authorization} />}
+      </UserContext.Consumer>
+    )
+  }
+}
+
 export function Header() {
   return (
     <header className={headerClassName}>
@@ -85,6 +152,8 @@ export function Header() {
         <NavLink to="/" className={headerTitleClassName}>
           Commentami Demo
         </NavLink>
+
+        <NotificationsBox />
 
         <NavLink to="/plain" className={headerLinkClassName}>
           Plain Text

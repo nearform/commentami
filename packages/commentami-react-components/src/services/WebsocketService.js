@@ -83,10 +83,23 @@ export function WebsocketService(client) {
     return async () => client.unsubscribe(`/resources/${resource}`, handler)
   }
 
+  /**
+   *
+   * @param user identifier
+   * @param {socketEventCallback} handler
+   * @returns {Promise<*>}
+   */
+  const onUserNotify = async (user, handler) => {
+    await client.subscribe(`/users/${user}`, handler)
+
+    return async () => client.unsubscribe(`/users/${user}`, handler)
+  }
+
   return {
     addComment,
     removeComment,
     getComments,
-    onResourceChange
+    onResourceChange,
+    onUserNotify
   }
 }
