@@ -239,6 +239,29 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         references: result.rows.map(item => item.reference)
       }
     }
+
+    async getInvolvedUsers(comment) {
+      const sql = SQL`
+        SELECT
+          DISTINCT(author)
+        FROM
+          comment c
+        WHERE
+          (c.reference, c.resource)
+            IN (
+              SELECT
+                reference, resource
+              FROM
+                comment as c2
+              WHERE
+                c2.id = ${comment.id}
+            )
+      `
+
+      const result = await db.query(sql)
+
+      return result.rows
+    }
   }
 
   return new CommentsService()
