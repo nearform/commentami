@@ -12,6 +12,7 @@ export class DefaultCommentBase extends React.Component {
     }
     this.rootRef = React.createRef()
 
+    this.highlightTimeout = null
     this.boundHandleRemove = this.handleRemove.bind(this)
   }
 
@@ -31,15 +32,19 @@ export class DefaultCommentBase extends React.Component {
       this.setState({
         isHighlighted: true
       })
-      setTimeout(() => this.props.commentamiDeeplink.unsetDeepLink())
-      setTimeout(
-        () =>
-          this.setState({
-            isHighlighted: false
-          }),
-        1000
-      )
+      this.props.commentamiDeeplink.unsetDeepLink()
+      this.highlightTimeout = setTimeout(() => {
+        this.highlightTimeout = null
+
+        this.setState({
+          isHighlighted: false
+        })
+      }, 1000)
     }
+  }
+
+  componentWillUnmount() {
+    this.highlightTimeout && clearTimeout(this.highlightTimeout)
   }
 
   renderAuthor(author) {

@@ -88,10 +88,39 @@ describe('DefaultComment', () => {
     expect(scrollToLinkLinkMock).toHaveBeenCalled()
     expect(wrapper.state('isHighlighted')).toBeTruthy()
 
-    jest.advanceTimersByTime(10)
     expect(unsetDeepLinkMock).toHaveBeenCalled()
     jest.advanceTimersByTime(2000)
     expect(wrapper.state('isHighlighted')).toBeFalsy()
+  })
+
+  test('Clear the timer if the comment is unmounted before the timers', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation()
+    jest.useFakeTimers()
+    const comment = {
+      id: 'comm-1',
+      author: 'my author',
+      content: 'my content'
+    }
+    const unsetDeepLinkMock = jest.fn()
+    const scrollToLinkLinkMock = jest.fn()
+    const wrapper = mount(
+      <DefaultCommentBase
+        removeComment={jest.fn()}
+        comment={comment}
+        commentamiDeeplink={{
+          hasDeepLink: true,
+          comment: 'comm-1',
+          unsetDeepLink: unsetDeepLinkMock,
+          scrollIntoView: scrollToLinkLinkMock
+        }}
+      />
+    )
+
+    wrapper.unmount()
+    jest.advanceTimersByTime(2000)
+    expect(errorSpy).not.toHaveBeenCalledWith(
+      expect.stringContaining("Warning: Can't call setState (or forceUpdate) on an unmounted component")
+    )
   })
 
   test('renders null if there is no comment to render', async () => {

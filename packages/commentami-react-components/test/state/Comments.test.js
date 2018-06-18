@@ -58,6 +58,59 @@ describe('state/Comments', () => {
     })
   })
 
+  describe('Without a service', () => {
+    beforeEach(async () => {
+      comments = new CommentsState({
+        getProviderState: getState,
+        onCommentsStateUpdate: setState,
+        resource: 'res-1'
+      })
+    })
+
+    test('The subscribe should do nothing', async () => {
+      const updateStateSpy = jest.spyOn(comments, 'updateState').mockImplementation()
+      await comments.subscribe()
+      expect(updateStateSpy).not.toHaveBeenCalled()
+    })
+
+    test('The refresh should do nothing', async () => {
+      await comments.refresh()
+      expect(state).toEqual({
+        commentsState: {
+          fetchError: null,
+          id: undefined,
+          initError: null,
+          isFetching: false,
+          isInit: false,
+          isUpdating: false,
+          references: {},
+          updateError: null
+        }
+      })
+    })
+
+    test('The addComment should do nothing', async () => {
+      await comments.addComment({
+        reference: { id: 'ref-1' },
+        content: 'somecontent'
+      })
+      expect(commentsCount(state, { id: 'ref-1' })).toEqual(0)
+    })
+
+    test('The removeComment should do nothing', async () => {
+      comments.updateState(updating(state))
+      expect.assertions(0)
+      try {
+        await comments.removeComment({
+          id: 1,
+          reference: { id: 'ref-2' }
+        })
+      } catch (e) {
+        expect(e.code).toEqual(UPDATE_IN_PROGRESS_ERROR)
+      }
+    })
+  })
+
   describe('Adding a comment', () => {
     beforeEach(async () => {
       comments = new CommentsState({
@@ -185,7 +238,7 @@ describe('state/Comments', () => {
       expect(state.commentsState.isUpdating).toBeFalsy()
     })
 
-    test('if the isUpdating is true the comment is not added and an error is thrown', async () => {
+    test('if the isUpdating is true the comment is not removed and an error is thrown', async () => {
       comments = new CommentsState({
         service: new CommentsInMemoryService(),
         getProviderState: getState,
