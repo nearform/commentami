@@ -237,12 +237,12 @@ describe('Comments', () => {
         author: 'Filippo'
       })
 
-      let expected = [{ author: 'Paolo' }]
+      let expected = ['Paolo']
       let result = await this.commentsService.getInvolvedUsers(comment1)
       expect(result).to.once.include(expected)
       expect(result).to.only.include(expected)
 
-      expected = [{ author: 'Davide' }, { author: 'Filippo' }]
+      expected = ['Davide', 'Filippo']
       result = await this.commentsService.getInvolvedUsers(comment2)
       expect(result).to.once.include(expected)
       expect(result).to.only.include(expected)

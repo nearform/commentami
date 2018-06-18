@@ -260,7 +260,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
 
       const result = await db.query(sql)
 
-      return result.rows
+      return result.rows.map(comment => comment.author)
     }
   }
 
