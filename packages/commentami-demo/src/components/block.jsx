@@ -1,5 +1,5 @@
 import { withReference } from '@nearform/commentami-react-components'
-import { withSidebars } from '@nearform/commentami-react-components/dist/ui'
+import { withSidebars, withDeepLink } from '@nearform/commentami-react-components/dist/ui'
 import { rem } from 'csx'
 import React from 'react'
 import { classes, style } from 'typestyle'
@@ -34,60 +34,76 @@ function CommentsMarker({ onClick }) {
   )
 }
 
-export const Block = withSidebars(
-  withReference(
-    class extends React.Component {
-      constructor(props) {
-        super(props)
+export const Block = withDeepLink(
+  withSidebars(
+    withReference(
+      class extends React.Component {
+        constructor(props) {
+          super(props)
 
-        this.rootRef = React.createRef()
+          this.rootRef = React.createRef()
 
-        const payload = {
-          resource: this.props.commentami.resource,
-          reference: this.props.reference,
-          ref: this.rootRef,
-          scope: 'block'
+          const payload = {
+            resource: this.props.commentami.resource,
+            reference: this.props.reference,
+            ref: this.rootRef,
+            scope: 'block'
+          }
+          this.boundHandleShowComments = this.handleShowComments.bind(this, payload)
         }
-        this.boundHandleShowComments = this.handleShowComments.bind(this, payload)
+
+        componentDidMount() {
+          if (this.props.commentamiDeeplink) {
+            if (
+              this.props.commentamiDeeplink.hasDeepLink &&
+              this.props.commentamiDeeplink.resource === this.props.commentami.resource &&
+              this.props.commentamiDeeplink.reference === this.props.commentami.reference
+            ) {
+              if (this.rootRef.current) {
+                setTimeout(() => this.rootRef.current.scrollIntoView())
+              }
+            }
+          }
+        }
+
+        handleShowComments(payload, event) {
+          event.preventDefault()
+
+          const {
+            commentami: { resource, reference }
+          } = this.props
+
+          this.props.controller.isActive(resource, reference)
+            ? this.props.controller.updateActive()
+            : this.props.controller.updateActive(resource, reference)
+
+          const sel = window.getSelection()
+          sel.removeAllRanges()
+        }
+
+        render() {
+          let {
+            children,
+            commentami: { hasComments, resource, reference },
+            markerComponent: Marker
+          } = this.props
+
+          const isActive = this.props.controller.isActive(resource, reference)
+
+          if (!Marker) Marker = CommentsMarker
+
+          return (
+            <div
+              ref={this.rootRef}
+              onDoubleClick={this.boundHandleShowComments}
+              className={classes(blockClassName, isActive ? activeBlockClassName : '')}
+            >
+              {hasComments && <Marker onClick={this.boundHandleShowComments} />}
+              {children}
+            </div>
+          )
+        }
       }
-
-      handleShowComments(payload, event) {
-        event.preventDefault()
-
-        const {
-          commentami: { resource, reference }
-        } = this.props
-
-        this.props.controller.isActive(resource, reference)
-          ? this.props.controller.updateActive()
-          : this.props.controller.updateActive(resource, reference)
-
-        const sel = window.getSelection()
-        sel.removeAllRanges()
-      }
-
-      render() {
-        let {
-          children,
-          commentami: { hasComments, resource, reference },
-          markerComponent: Marker
-        } = this.props
-
-        const isActive = this.props.controller.isActive(resource, reference)
-
-        if (!Marker) Marker = CommentsMarker
-
-        return (
-          <div
-            ref={this.rootRef}
-            onDoubleClick={this.boundHandleShowComments}
-            className={classes(blockClassName, isActive ? activeBlockClassName : '')}
-          >
-            {hasComments && <Marker onClick={this.boundHandleShowComments} />}
-            {children}
-          </div>
-        )
-      }
-    }
+    )
   )
 )

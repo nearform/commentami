@@ -1,18 +1,25 @@
-import { rem } from 'csx'
 import React from 'react'
+import { rem } from 'csx'
 import { style } from 'typestyle'
 import { Icon } from './icon'
+import { withDeepLink } from '@nearform/commentami-react-components/dist/ui'
 
 const commentClassName = style({
   margin: `${rem(1)} 0 0 0`,
   border: `${rem(0.1)} solid #E0E0E0`,
   backgroundColor: 'white',
+  transition: 'background-color 5s ease',
   padding: rem(1),
   $nest: {
     p: {
       marginBottom: 0
     }
   }
+})
+
+const commentHighlightClassName = style({
+  backgroundColor: '#d4eede',
+  transition: 'background-color 0.5s ease'
 })
 
 const commentHeaderClassName = style({
@@ -37,9 +44,14 @@ const authorLinkImageClass = style({
   height: '25px'
 })
 
-export class Comment extends React.Component {
+export class CommentBase extends React.Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      isHighlighted: false
+    }
+    this.rootRef = React.createRef()
 
     this.boundHandleRemove = this.handleRemove.bind(this)
   }
@@ -48,6 +60,30 @@ export class Comment extends React.Component {
     ev.preventDefault()
 
     return this.props.removeComment(this.props.comment)
+  }
+
+  componentDidMount() {
+    if (this.props.commentamiDeeplink) {
+      if (
+        this.props.commentamiDeeplink.hasDeepLink &&
+        String(this.props.commentamiDeeplink.comment) === String(this.props.comment.id)
+      ) {
+        if (this.rootRef.current) {
+          this.rootRef.current.scrollIntoView()
+        }
+        this.setState({
+          isHighlighted: true
+        })
+        setTimeout(() => this.props.commentamiDeeplink.unsetDeepLink())
+        setTimeout(
+          () =>
+            this.setState({
+              isHighlighted: false
+            }),
+          1000
+        )
+      }
+    }
   }
 
   renderAuthor(author) {
@@ -91,7 +127,10 @@ export class Comment extends React.Component {
 
   render() {
     return (
-      <article className={commentClassName}>
+      <article
+        className={`${commentClassName} ${this.state.isHighlighted ? commentHighlightClassName : ''}`}
+        ref={this.rootRef}
+      >
         <header className={commentHeaderClassName}>
           {this.renderAuthor(this.props.comment.author)}
           <a href="#" onClick={this.boundHandleRemove}>
@@ -104,3 +143,5 @@ export class Comment extends React.Component {
     )
   }
 }
+
+export const Comment = withDeepLink(CommentBase)

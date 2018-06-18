@@ -11,6 +11,7 @@ import { Icon } from './icon'
 const sidebarClassName = style(debugClassName('sidebar'), {
   backgroundColor: '#F0F0F0',
   borderLeft: `${rem(0.2)} solid #808080`,
+  overflow: 'auto',
   zIndex: 10,
   padding: rem(1.5),
   width: rem(40),

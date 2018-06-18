@@ -22,6 +22,8 @@ describe('exports', () => {
       expect(Object.keys(ui).sort()).toEqual([
         'CommentsList',
         'CommentsListBase',
+        'DeepLinkController',
+        'DeepLinkControllerContext',
         'Icon',
         'NewCommentForm',
         'NewCommentFormBase',
@@ -31,6 +33,7 @@ describe('exports', () => {
         'SidebarBase',
         'SidebarsController',
         'SidebarsControllerContext',
+        'withDeepLink',
         'withSidebars'
       ])
     })

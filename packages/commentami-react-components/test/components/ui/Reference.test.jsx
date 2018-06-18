@@ -1,7 +1,12 @@
 import { mount } from 'enzyme'
 import React from 'react'
 import { Reference } from '../../../src/components/ui/Reference'
-import { getDefaultResourceContext, withResourceContext, withSidebarsControllerContext } from '../../helpers/context'
+import {
+  getDefaultResourceContext,
+  withDeepLinkControllerContext,
+  withResourceContext,
+  withSidebarsControllerContext
+} from '../../helpers/context'
 import { createComment } from '../../../src/state/helpers/creators'
 import { getDefaultState } from '../../../src/state/helpers/getters'
 import { setCommentToResource } from '../../../src/state/reducers/resource'
@@ -20,14 +25,17 @@ describe('Reference', () => {
     const controller = { isActive: () => false, updateActive: () => null }
 
     const wrapper = mount(
-      withSidebarsControllerContext(
-        withResourceContext(
-          <Reference reference="ref-1">
-            <div />
-          </Reference>,
-          getDefaultResourceContext()
+      withDeepLinkControllerContext(
+        withSidebarsControllerContext(
+          withResourceContext(
+            <Reference reference="ref-1">
+              <div />
+            </Reference>,
+            getDefaultResourceContext()
+          ),
+          controller
         ),
-        controller
+        {}
       )
     )
 
@@ -52,14 +60,17 @@ describe('Reference', () => {
     })
 
     const wrapper = mount(
-      withSidebarsControllerContext(
-        withResourceContext(
-          <Reference className="foo" activeClassName="bar" reference="REFERENCE">
-            <div />
-          </Reference>,
-          context
+      withDeepLinkControllerContext(
+        withSidebarsControllerContext(
+          withResourceContext(
+            <Reference className="foo" activeClassName="bar" reference="REFERENCE">
+              <div />
+            </Reference>,
+            context
+          ),
+          controller
         ),
-        controller
+        {}
       )
     )
 
@@ -84,14 +95,17 @@ describe('Reference', () => {
     })
 
     const wrapper = mount(
-      withSidebarsControllerContext(
-        withResourceContext(
-          <Reference reference="REFERENCE" activeClassName="foo" markerComponent={Children}>
-            <div />
-          </Reference>,
-          context
+      withDeepLinkControllerContext(
+        withSidebarsControllerContext(
+          withResourceContext(
+            <Reference reference="REFERENCE" activeClassName="foo" markerComponent={Children}>
+              <div />
+            </Reference>,
+            context
+          ),
+          controller
         ),
-        controller
+        {}
       )
     )
 
@@ -113,14 +127,17 @@ describe('Reference', () => {
     }
 
     const wrapper = mount(
-      withSidebarsControllerContext(
-        withResourceContext(
-          <Reference reference="ref-1" resource="res-1" hasComments activeClassName="foo" markerComponent={Children}>
-            <div />
-          </Reference>,
-          getDefaultResourceContext()
+      withDeepLinkControllerContext(
+        withSidebarsControllerContext(
+          withResourceContext(
+            <Reference reference="ref-1" resource="res-1" hasComments activeClassName="foo" markerComponent={Children}>
+              <div />
+            </Reference>,
+            getDefaultResourceContext()
+          ),
+          controller
         ),
-        controller
+        {}
       )
     )
 
@@ -134,5 +151,34 @@ describe('Reference', () => {
     instance.simulate('select')
 
     expect(handler).toHaveBeenCalledTimes(6)
+  })
+
+  test('should scroll to the reference deeplinked', () => {
+    const controller = { isActive: () => false, updateActive: () => null }
+
+    const unsetDeepLinkMock = jest.fn()
+    const scrollToLinkLinkMock = jest.fn()
+    mount(
+      withDeepLinkControllerContext(
+        withSidebarsControllerContext(
+          withResourceContext(
+            <Reference reference="ref-1">
+              <div />
+            </Reference>,
+            getDefaultResourceContext({ resource: 'RESOURCE' })
+          ),
+          controller
+        ),
+        {
+          hasDeepLink: true,
+          resource: 'RESOURCE',
+          reference: 'ref-1',
+          unsetDeepLink: unsetDeepLinkMock,
+          scrollIntoView: scrollToLinkLinkMock
+        }
+      )
+    )
+
+    expect(scrollToLinkLinkMock).toHaveBeenCalled()
   })
 })

@@ -1,6 +1,7 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { SidebarsController, withSidebars } from '../../../src/components/ui/SidebarsController'
+import { SidebarsController, SidebarsControllerBase, withSidebars } from '../../../src/components/ui/SidebarsController'
+import { withDeepLinkControllerContext } from '../../helpers/context'
 
 function Children({ controller }) {
   const keys = Object.keys(controller)
@@ -11,12 +12,21 @@ function Children({ controller }) {
 }
 
 describe('SidebarsController', () => {
+  let commentamiDeeplinkContext
+
+  beforeEach(() => {
+    commentamiDeeplinkContext = {}
+  })
+
   test('should render with good defaults', () => {
     const ControlledChildren = withSidebars(Children)
     const wrapper = mount(
-      <SidebarsController>
-        <ControlledChildren />
-      </SidebarsController>
+      withDeepLinkControllerContext(
+        <SidebarsController>
+          <ControlledChildren />
+        </SidebarsController>,
+        commentamiDeeplinkContext
+      )
     )
 
     expect(
@@ -26,9 +36,9 @@ describe('SidebarsController', () => {
 
   test('should maintain the right active resource and reference', () => {
     const wrapper = mount(
-      <SidebarsController>
+      <SidebarsControllerBase commentamiDeeplink={commentamiDeeplinkContext}>
         <div />
-      </SidebarsController>
+      </SidebarsControllerBase>
     )
     let state = wrapper.state()
 
@@ -55,9 +65,9 @@ describe('SidebarsController', () => {
 
   test('should correctly handle marker click events', () => {
     const wrapper = mount(
-      <SidebarsController>
+      <SidebarsControllerBase commentamiDeeplink={commentamiDeeplinkContext}>
         <div />
-      </SidebarsController>
+      </SidebarsControllerBase>
     )
     let state = wrapper.state()
 
@@ -78,9 +88,9 @@ describe('SidebarsController', () => {
 
   test('should correctly handle sidebar closing events', () => {
     const wrapper = mount(
-      <SidebarsController>
+      <SidebarsControllerBase commentamiDeeplink={commentamiDeeplinkContext}>
         <div />
-      </SidebarsController>
+      </SidebarsControllerBase>
     )
     let state = wrapper.state()
 
@@ -98,9 +108,9 @@ describe('SidebarsController', () => {
     window.getSelection = jest.fn().mockReturnValue({ removeAllRanges: jest.fn() })
 
     const wrapper = mount(
-      <SidebarsController>
+      <SidebarsControllerBase commentamiDeeplink={commentamiDeeplinkContext}>
         <div />
-      </SidebarsController>
+      </SidebarsControllerBase>
     )
     let state = wrapper.state()
 
@@ -109,5 +119,17 @@ describe('SidebarsController', () => {
     expect(state.isActive('RESOURCE', 'REFERENCE')).toBeTruthy()
     wrapper.instance().handleDoubleClick({ resource: 'RESOURCE', reference: 'REFERENCE' })
     expect(state.isActive('RESOURCE', 'REFERENCE')).toBeFalsy()
+  })
+
+  test('should initialize the state with resource and reference if present in the deepLinkContext', () => {
+    const wrapper = mount(
+      <SidebarsControllerBase commentamiDeeplink={{ resource: 'RESOURCE', reference: 'REFERENCE' }}>
+        <div />
+      </SidebarsControllerBase>
+    )
+    let state = wrapper.state()
+
+    expect(state.resource).toBe('RESOURCE')
+    expect(state.reference).toBe('REFERENCE')
   })
 })

@@ -2,7 +2,16 @@ import PropTypes from 'prop-types'
 
 export const commentPropInterface = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  author: PropTypes.string,
+  author: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      profileUrl: PropTypes.string,
+      avatarUrl: PropTypes.string,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string
+    })
+  ]).isRequired,
   content: PropTypes.string
 }
 
@@ -16,6 +25,14 @@ export const flexibleRenderPropInterface = {
   render: PropTypes.func,
   component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   children: childrenPropInterface
+}
+
+export const commentamiDeeplinkPropType = {
+  resource: PropTypes.string,
+  reference: PropTypes.string,
+  comment: PropTypes.string,
+  hasDeepLink: PropTypes.bool,
+  unsetDeepLink: PropTypes.func
 }
 
 export const commentamiResourcePropInterface = {

@@ -30,7 +30,8 @@ describe('CommentsList', () => {
           createComment({
             reference: { id: 'REFERENCE' },
             id: 'comm-1',
-            content: 'AAA'
+            content: 'AAA',
+            author: 'Davide'
           })
         )
       })
@@ -47,7 +48,8 @@ describe('CommentsList', () => {
         createComment({
           reference: { id: 'REFERENCE' },
           id: 'comm-1',
-          content: 'AAA'
+          content: 'AAA',
+          author: 'Davide'
         })
       )
       state = setCommentToResource(
@@ -56,7 +58,8 @@ describe('CommentsList', () => {
         createComment({
           reference: { id: 'REFERENCE' },
           id: 'comm-2',
-          content: 'BBB'
+          content: 'BBB',
+          author: 'Davide'
         })
       )
 

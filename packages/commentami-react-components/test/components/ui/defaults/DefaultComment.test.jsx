@@ -1,23 +1,132 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { DefaultComment } from '../../../../src/components/ui/defaults/DefaultComment'
+import { DefaultComment, DefaultCommentBase } from '../../../../src/components/ui/defaults/DefaultComment'
+import { withDeepLinkControllerContext } from '../../../helpers/context'
 
 describe('DefaultComment', () => {
+  let commentamiDeeplinkContext
+
+  beforeEach(() => {
+    commentamiDeeplinkContext = {}
+  })
+
+  test('renders correctly a comment without deeplink', async () => {
+    const comment = {
+      id: 'comm-1',
+      author: 'my author',
+      content: 'my content'
+    }
+    const wrapper = mount(<DefaultCommentBase removeComment={jest.fn()} comment={comment} />)
+
+    expect(wrapper.find('article').length).toEqual(1)
+    expect(wrapper.find('h5').length).toEqual(1)
+    expect(wrapper.find('h5').text()).toEqual('my author said')
+    expect(wrapper.find('button').length).toEqual(1)
+  })
+
+  test('renders correctly a comment with structured author', async () => {
+    const comment = {
+      id: 'comm-1',
+      author: {
+        profileUrl: 'someUrl',
+        avatarUrl: 'someAvatarUrl',
+        firstName: 'Davide',
+        lastName: 'Fiorello'
+      },
+      content: 'my content'
+    }
+    const wrapper = mount(<DefaultCommentBase removeComment={jest.fn()} comment={comment} />)
+
+    expect(wrapper.find('article').length).toEqual(1)
+    expect(wrapper.find('a[href="someUrl"]').length).toEqual(1)
+    expect(wrapper.find('a[href="someUrl"] img').props().src).toEqual('someAvatarUrl')
+    expect(wrapper.find('a[href="someUrl"] > div > div').text()).toEqual('Davide F.')
+    expect(wrapper.find('button').length).toEqual(1)
+  })
+
   test('renders correctly a comment', async () => {
     const comment = {
       id: 'comm-1',
       author: 'my author',
       content: 'my content'
     }
-    const wrapper = mount(<DefaultComment removeComment={jest.fn()} comment={comment} />)
+    const wrapper = mount(
+      withDeepLinkControllerContext(
+        <DefaultComment removeComment={jest.fn()} comment={comment} />,
+        commentamiDeeplinkContext
+      )
+    )
 
     expect(wrapper.find('article').length).toEqual(1)
-    expect(wrapper.find('h4').length).toEqual(1)
+    expect(wrapper.find('h5').length).toEqual(1)
+    expect(wrapper.find('h5').text()).toEqual('my author said')
     expect(wrapper.find('button').length).toEqual(1)
   })
 
+  test('highlight the comment if is the current from deeplink', async () => {
+    jest.useFakeTimers()
+    const comment = {
+      id: 'comm-1',
+      author: 'my author',
+      content: 'my content'
+    }
+    const unsetDeepLinkMock = jest.fn()
+    const scrollToLinkLinkMock = jest.fn()
+    const wrapper = mount(
+      <DefaultCommentBase
+        removeComment={jest.fn()}
+        comment={comment}
+        commentamiDeeplink={{
+          hasDeepLink: true,
+          comment: 'comm-1',
+          unsetDeepLink: unsetDeepLinkMock,
+          scrollIntoView: scrollToLinkLinkMock
+        }}
+      />
+    )
+
+    expect(scrollToLinkLinkMock).toHaveBeenCalled()
+    expect(wrapper.state('isHighlighted')).toBeTruthy()
+
+    expect(unsetDeepLinkMock).toHaveBeenCalled()
+    jest.advanceTimersByTime(2000)
+    expect(wrapper.state('isHighlighted')).toBeFalsy()
+  })
+
+  test('Clear the timer if the comment is unmounted before the timers', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation()
+    jest.useFakeTimers()
+    const comment = {
+      id: 'comm-1',
+      author: 'my author',
+      content: 'my content'
+    }
+    const unsetDeepLinkMock = jest.fn()
+    const scrollToLinkLinkMock = jest.fn()
+    const wrapper = mount(
+      <DefaultCommentBase
+        removeComment={jest.fn()}
+        comment={comment}
+        commentamiDeeplink={{
+          hasDeepLink: true,
+          comment: 'comm-1',
+          unsetDeepLink: unsetDeepLinkMock,
+          scrollIntoView: scrollToLinkLinkMock
+        }}
+      />
+    )
+
+    wrapper.unmount()
+    jest.advanceTimersByTime(2000)
+    expect(errorSpy).not.toHaveBeenCalledWith(
+      expect.stringContaining("Warning: Can't call setState (or forceUpdate) on an unmounted component")
+    )
+  })
+
   test('renders null if there is no comment to render', async () => {
-    const wrapper = mount(<DefaultComment removeComment={() => {}} />)
+    const wrapper = mount(
+      withDeepLinkControllerContext(<DefaultComment removeComment={() => {}} />, commentamiDeeplinkContext)
+    )
 
     expect(wrapper.find('article').length).toEqual(0)
   })
@@ -29,13 +138,21 @@ describe('DefaultComment', () => {
       content: 'my content'
     }
     const onButtonClick = jest.fn()
-    const wrapper = mount(<DefaultComment removeComment={onButtonClick} comment={comment} />)
+    const wrapper = mount(
+      withDeepLinkControllerContext(
+        <DefaultComment removeComment={onButtonClick} comment={comment} />,
+        commentamiDeeplinkContext
+      )
+    )
 
     expect(wrapper.find('article').length).toEqual(1)
-    expect(wrapper.find('h4').length).toEqual(1)
+    expect(wrapper.find('h5').length).toEqual(1)
+    expect(wrapper.find('h5').text()).toEqual('my author said')
     expect(wrapper.find('button').length).toEqual(1)
 
-    wrapper.find('button').simulate('click', { preventDefault() {} })
+    wrapper.find('button').simulate('click', {
+      preventDefault() {}
+    })
 
     expect(onButtonClick.mock.calls.length).toEqual(1)
   })

@@ -9,6 +9,7 @@ import { Sidebar } from '../components/sidebar'
 import data from '../fixtures/data'
 import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
+import { DeepLinkController } from '../../../commentami-react-components/src/components/ui/SidebarsController'
 
 const service = HttpService('http://localhost:8080/')
 
@@ -146,23 +147,25 @@ export function TablePage() {
         The tables below are generated out of some data structure. <br />Each cell is commentable.
       </h2>
 
-      <SidebarsController>
-        <Resource resource="foo" service={service}>
-          <LoadingIndicator />
-          <ErrorIndicator />
+      <DeepLinkController>
+        <SidebarsController>
+          <Resource resource="foo" service={service}>
+            <LoadingIndicator />
+            <ErrorIndicator />
 
-          <Table data={data} />
-          <Sidebar title="First" />
-        </Resource>
+            <Table data={data} />
+            <Sidebar title="First" />
+          </Resource>
 
-        <Resource resource="bar" service={service}>
-          <LoadingIndicator />
-          <ErrorIndicator />
+          <Resource resource="bar" service={service}>
+            <LoadingIndicator />
+            <ErrorIndicator />
 
-          <Table data={data} />
-          <Sidebar title="Second" />
-        </Resource>
-      </SidebarsController>
+            <Table data={data} />
+            <Sidebar title="Second" />
+          </Resource>
+        </SidebarsController>
+      </DeepLinkController>
     </div>
   )
 }
