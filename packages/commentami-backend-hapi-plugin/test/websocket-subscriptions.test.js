@@ -124,11 +124,14 @@ describe('Comments Websocket - routes', () => {
           author: 'AUTHOR'
         }
 
+        let count = 1
         function handler(event, flags) {
           expect(event.comment).to.include(newComment1)
           expect(event.action).to.equal('add')
 
-          client.disconnect().then(resolve)
+          if (count--) {
+            client.disconnect().then(resolve)
+          }
         }
 
         return Promise.all([
