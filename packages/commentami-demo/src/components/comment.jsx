@@ -67,6 +67,28 @@ export class Comment extends React.Component {
     )
   }
 
+  renderCommentContent(comment) {
+    if (!comment.mentions || comment.mentions.length === 0) {
+      return <p>{this.props.comment.content}</p>
+    }
+
+    let body = comment.content
+    comment.mentions.forEach(mention => {
+      if (typeof mention === 'string') {
+        let re = new RegExp('^@' + mention + '|\\s@' + mention, 'g')
+        body = body.replace(re, ` <b>@${mention}</b>`)
+        return
+      }
+
+      if (typeof mention === 'object') {
+        let re = new RegExp('^@' + mention.username + '|\\s@' + mention.username, 'g')
+        body = body.replace(re, ` <b>@${mention.username}</b>`)
+      }
+    })
+
+    return <p dangerouslySetInnerHTML={{ __html: body.trim() }} />
+  }
+
   render() {
     return (
       <article className={commentClassName}>
@@ -77,7 +99,7 @@ export class Comment extends React.Component {
           </a>
         </header>
 
-        <p>{this.props.comment.content}</p>
+        {this.renderCommentContent(this.props.comment)}
       </article>
     )
   }

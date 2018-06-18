@@ -152,7 +152,8 @@ describe('Comments Websocket - routes', () => {
         resource: 'URL',
         reference: 'OLD-UUID',
         content: 'MESSAGE',
-        author: 'OLD-AUTHOR'
+        author: 'OLD-AUTHOR',
+        mentions: []
       })
     })
   })
