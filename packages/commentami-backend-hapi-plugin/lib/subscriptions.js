@@ -20,6 +20,11 @@ function notifyComment(comment, { action } = {}) {
     server.publishFar(`/resources/${comment.resource}`, event).catch(log),
     server.publishFar(`/resources-reference/${comment.reference}/${comment.resource}`, event).catch(log)
   ]
+  if (action === 'add') {
+    for (let user of comment.mentions || []) {
+      notifications.push(server.publishFar(`/users/${user}`, event).catch(log))
+    }
+  }
 
   return Promise.all(notifications).catch(log)
 }

@@ -111,6 +111,44 @@ describe('Comments Websocket - routes', () => {
         })
       })
     })
+
+    test('it should be pushed to the users mentioned subscribers', async flags => {
+      client = new Nes.Client('ws://127.0.0.1:8281')
+      await client.connect()
+
+      await new Promise((resolve, reject) => {
+        const newComment1 = {
+          resource: this.resource,
+          reference: 'not my reference',
+          content: 'MESSAGE @davide @filippo',
+          author: 'AUTHOR'
+        }
+
+        function handler(event, flags) {
+          expect(event.comment).to.include(newComment1)
+          expect(event.action).to.equal('add')
+
+          client.disconnect().then(resolve)
+        }
+
+        return Promise.all([
+          client.subscribe(`/users/davide`, handler).then(() => {
+            return server.inject({
+              method: 'POST',
+              url: '/comments',
+              payload: newComment1
+            })
+          }),
+          client.subscribe(`/users/filippo`, handler).then(() => {
+            return server.inject({
+              method: 'POST',
+              url: '/comments',
+              payload: newComment1
+            })
+          })
+        ])
+      })
+    })
   })
 
   describe('Websocket - update a comment', () => {
