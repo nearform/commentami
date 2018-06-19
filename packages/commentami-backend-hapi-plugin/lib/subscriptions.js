@@ -1,6 +1,7 @@
 'use strict'
+const difference = require('lodash/difference')
 
-function notifyComment(comment, { action } = {}) {
+async function notifyComment(comment, { action } = {}) {
   const server = this
 
   const log = err => {
@@ -21,8 +22,16 @@ function notifyComment(comment, { action } = {}) {
     server.publishFar(`/resources-reference/${comment.reference}/${comment.resource}`, event).catch(log)
   ]
   if (action === 'add') {
-    for (let user of comment.mentions || []) {
-      notifications.push(server.publishFar(`/users/${user}`, event).catch(log))
+    const mentions = difference(comment.mentions || [], [comment.author])
+    for (let user of mentions) {
+      notifications.push(server.publishFar(`/users/${user}`, { action: 'mention', comment }).catch(log))
+    }
+
+    if (server.commentsService) {
+      const involvedUsers = await server.commentsService.getInvolvedUsers(comment)
+      for (let user of difference(involvedUsers, [...mentions, comment.author])) {
+        notifications.push(server.publishFar(`/users/${user}`, { action: 'response', comment }).catch(log))
+      }
     }
   }
 
