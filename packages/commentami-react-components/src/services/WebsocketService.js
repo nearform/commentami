@@ -89,7 +89,7 @@ export function WebsocketService(client) {
    * @param {socketEventCallback} handler
    * @returns {Promise<*>}
    */
-  const onUserNotify = async (user, handler) => {
+  const onUserNotification = async (user, handler) => {
     await client.subscribe(`/users/${user}`, handler)
 
     return async () => client.unsubscribe(`/users/${user}`, handler)
@@ -100,6 +100,6 @@ export function WebsocketService(client) {
     removeComment,
     getComments,
     onResourceChange,
-    onUserNotify
+    onUserNotification
   }
 }

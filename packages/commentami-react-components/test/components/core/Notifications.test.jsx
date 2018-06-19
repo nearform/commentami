@@ -5,7 +5,7 @@ import { delay } from '../../helpers/context'
 
 const mockWebSocketService = () => {
   return {
-    onUserNotify: jest.fn()
+    onUserNotification: jest.fn()
   }
 }
 
@@ -26,16 +26,16 @@ describe('Notifications', () => {
     test('when the component is mounted it should subscribe to the user notifications', async () => {
       await delay()
 
-      expect(service.onUserNotify).toHaveBeenCalled()
+      expect(service.onUserNotification).toHaveBeenCalled()
       wrapper.unmount()
     })
 
     test('when the component is updated it should refresh the comment list', async () => {
-      service.onUserNotify.mockClear()
+      service.onUserNotification.mockClear()
       wrapper.setProps({ userIdentifier: 'test2' })
       await delay()
 
-      expect(service.onUserNotify).toHaveBeenCalled()
+      expect(service.onUserNotification).toHaveBeenCalled()
     })
   })
 })

@@ -44,24 +44,24 @@ export class Notifications extends React.Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = this.props.service.onUserNotify(this.props.userIdentifier, notification =>
+    this.unsubscribe = this.props.service.onUserNotification(this.props.userIdentifier, notification =>
       this.triggerNotification(notification)
     )
 
-    // setTimeout(() => {
-    //   this.triggerNotification({
-    //     id: 12344,
-    //     comment: {},
-    //     action: 'add'
-    //   })
-    // }, 5000)
+    setTimeout(() => {
+      this.triggerNotification({
+        id: 12344,
+        comment: {},
+        action: 'add'
+      })
+    }, 5000)
   }
 
   componentWillUpdate(nextProps) {
     if (this.props.userIdentifier !== nextProps.userIdentifier) {
       this.unsubscribe && this.unsubscribe()
 
-      this.unsubscribe = this.props.service.onUserNotify(nextProps.userIdentifier, notification =>
+      this.unsubscribe = this.props.service.onUserNotification(nextProps.userIdentifier, notification =>
         this.triggerNotification(notification)
       )
     }

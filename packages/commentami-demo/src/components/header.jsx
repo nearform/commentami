@@ -63,6 +63,15 @@ const selectUserClass = style(debugClassName('header-select-user'), {
   marginBottom: '10px'
 })
 
+const notificationsNumberClass = style(debugClassName('notifications-number'), {
+  margin: '10px',
+  color: '#000000',
+  backgroundColor: '#cecece',
+  borderRadius: '50%',
+  padding: '4px 10px',
+  fontWeight: 'bold'
+})
+
 class SelectUser extends React.Component {
   handleChange(event) {
     this.setState({ value: event.target.value })
@@ -95,7 +104,7 @@ class NotificationWillNeverEnd extends React.Component {
   render() {
     const { notifications, removeNotificationFromList } = this.props
 
-    return <div>{notifications.length}</div>
+    return <div className={notificationsNumberClass}>{notifications.length}</div>
   }
 }
 
