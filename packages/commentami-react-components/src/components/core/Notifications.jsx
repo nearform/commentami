@@ -22,12 +22,8 @@ export class Notifications extends React.Component {
 
   removeNotificationFromList(notification) {
     let notifications = this.state.notifications
-    let index = -1
-
-    notifications.forEach((n, i) => {
-      if (index === -1 && n.comment.id === notification.comment.id) {
-        index = i
-      }
+    const index = notifications.findIndex(n => {
+      return n.comment.id === notification.comment.id
     })
 
     if (index === -1) {
@@ -42,46 +38,6 @@ export class Notifications extends React.Component {
   }
 
   componentDidMount() {
-    // setTimeout(() => {
-    //   this.triggerNotification({
-    //     comment: {
-    //       id: 1235,
-    //       resource: 'whatever',
-    //       reference: 'whatever',
-    //       content: 'lorm ipsum dolet ... @test ...',
-    //       author: {
-    //         id: 1234,
-    //         firstName: 'Test',
-    //         lastName: 'Test',
-    //         username: 'test'
-    //       },
-    //       mentions: [{ id: 22, firstName: 'Filippo', lastName: 'Filippo', username: 'filippo' }]
-    //     },
-    //     type: 'mention',
-    //     link: 'http://google.gom'
-    //   })
-    // }, 500)
-
-    // setTimeout(() => {
-    //   this.triggerNotification({
-    //     comment: {
-    //       id: 1234,
-    //       resource: 'whatever 2',
-    //       reference: 'whatever 2',
-    //       content: 'lorm ipsum dolet ... 2',
-    //       author: {
-    //         id: 1234,
-    //         firstName: 'Test',
-    //         lastName: 'Test',
-    //         username: 'test'
-    //       },
-    //       mentions: []
-    //     },
-    //     type: 'respoonse',
-    //     link: 'http://google.gom'
-    //   })
-    // }, 1500)
-
     if (!this.props.service) return
 
     this.unsubscribe = this.props.service.onUserNotification(this.props.userIdentifier, notification =>
@@ -90,12 +46,12 @@ export class Notifications extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    if (!this.props.service) return
+    if (!nextProps.service) return
 
     if (this.props.userIdentifier !== nextProps.userIdentifier) {
       this.unsubscribe && this.unsubscribe()
 
-      this.unsubscribe = this.props.service.onUserNotification(nextProps.userIdentifier, notification =>
+      this.unsubscribe = nextProps.service.onUserNotification(nextProps.userIdentifier, notification =>
         this.triggerNotification(notification)
       )
     }
