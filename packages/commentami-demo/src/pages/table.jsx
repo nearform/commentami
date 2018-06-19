@@ -149,7 +149,7 @@ export function TablePage() {
 
       <DeepLinkController>
         <SidebarsController>
-          <Resource resource="foo" service={service}>
+          <Resource resource="table-1" service={service}>
             <LoadingIndicator />
             <ErrorIndicator />
 
@@ -157,7 +157,7 @@ export function TablePage() {
             <Sidebar title="First" />
           </Resource>
 
-          <Resource resource="bar" service={service}>
+          <Resource resource="table-2" service={service}>
             <LoadingIndicator />
             <ErrorIndicator />
 

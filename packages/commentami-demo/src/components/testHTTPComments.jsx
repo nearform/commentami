@@ -41,7 +41,7 @@ export class TestHTTPComments extends React.Component {
     return (
       <section className={sectionClassName}>
         <h1>HTTP</h1>
-        <Resource resource="third" service={this.state.service}>
+        <Resource resource="multiple-3" service={this.state.service}>
           <Table data={data} />
           <Sidebar title="Second" />
           <LoadingIndicator />
