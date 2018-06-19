@@ -133,7 +133,7 @@ describe('Comments Websocket - routes', () => {
 
         function handler(event, flags) {
           expect(event.comment).to.include(newComment1)
-          expect(event.action).to.equal('mentioned')
+          expect(event.action).to.equal('mention')
           expect(event.url).to.equal(
             `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
               `&reference=${encodeURIComponent(event.comment.reference)}&comment=${event.comment.id}`
@@ -185,7 +185,7 @@ describe('Comments Websocket - routes', () => {
 
         function handlerMention(event, flags) {
           expect(event.comment).to.include(newComment1)
-          expect(event.action).to.equal('mentioned')
+          expect(event.action).to.equal('mention')
           expect(event.url).to.equal(
             `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
               `&reference=${encodeURIComponent(event.comment.reference)}&comment=${event.comment.id}`
@@ -197,7 +197,7 @@ describe('Comments Websocket - routes', () => {
 
         function handlerResponse(event, flags) {
           expect(event.comment).to.include(newComment1)
-          expect(event.action).to.equal('involved')
+          expect(event.action).to.equal('involve')
           expect(event.url).to.equal(
             `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
               `&reference=${encodeURIComponent(event.comment.reference)}&comment=${event.comment.id}`

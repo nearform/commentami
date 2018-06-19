@@ -350,10 +350,10 @@ The `event` object will have the following format
 The `action` property can have one of the following values: `add`, `delete` or `update`.
 
 #### users
-When a comment is added to a reference alle the users `involved` in the reference will be informed.
+When a comment is added to a reference alle the users `involve` in the reference will be informed.
 An involved user is a user that has previously added a comment to the reference.
 
-A notify is sent to the user also if it's `mentioned` in the comment.
+A notify is sent to the user also if it's `mention` in the comment.
 Within the event an URL containing a deeplink to the comment is sent.
 
 ```
@@ -377,12 +377,12 @@ The `event` object will have the following format
     author: 'AUTHOR',
     createdAt: 2018-05-31T08:01:25.296Z
   },
-  action: 'mentioned',
+  action: 'mention',
   url: 'http://someurl.com/the-path-to-the-resource?resource=RESOURCE-ID&reference=UUID&comment=1234'
 }
 ```
 
-The `action` property can have one of the following values: `mentioned`, `involved`.
+The `action` property can have one of the following values: `mention`, `involve`.
 
 
 

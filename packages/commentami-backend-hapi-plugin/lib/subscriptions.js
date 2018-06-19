@@ -42,12 +42,12 @@ async function notifyUser(comment, resolveUrl) {
 
   const mentions = _difference(_get(comment, 'mentions', []), [comment.author])
   for (let user of mentions) {
-    notifications.push(server.publishFar(`/users/${user}`, { action: 'mentioned', comment, url }).catch(log))
+    notifications.push(server.publishFar(`/users/${user}`, { action: 'mention', comment, url }).catch(log))
   }
 
   const involvedUsers = await server.commentsService.getInvolvedUsers(comment)
   for (let user of _difference(involvedUsers, [...mentions, comment.author])) {
-    notifications.push(server.publishFar(`/users/${user}`, { action: 'involved', comment, url }).catch(log))
+    notifications.push(server.publishFar(`/users/${user}`, { action: 'involve', comment, url }).catch(log))
   }
 
   return Promise.all(notifications).catch(log)
