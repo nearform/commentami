@@ -4,7 +4,8 @@
  * @property {string} id - The Comment identifier
  * @property {?Reference} reference - The reference that contains the comment
  * @property {?string} content - The text of the comment
- * @property {?string} author - The author of the comment, this will became a more complex structure in the future implementation
+ * @property {?string} author - The author of the comment, this will became a more
+ *                              complex structure in the future implementation
  * @property {?Timestamp} createdAt - The timestamp of the comment
  */
 

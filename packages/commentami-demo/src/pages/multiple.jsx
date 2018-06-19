@@ -12,6 +12,7 @@ import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
 import { Sidebar } from '../components/sidebar'
 import { UserContext } from '../components/user'
+import { NotificationsList } from '../components/notifications/notificationsList'
 
 import data from '../fixtures/data'
 
@@ -20,6 +21,16 @@ const localStorageService = localStorageServiceBuilder()
 const sectionClassName = style(debugClassName('table'), {
   marginTop: rem(3),
   position: 'relative'
+})
+
+const notificationsListClass = style(debugClassName('notification-list'), {
+  position: 'absolute',
+  top: '25px',
+  right: '25px',
+  background: '#ffffff',
+  border: '1px solid #cecece',
+  borderRadius: '4px',
+  padding: '16px'
 })
 
 export function MultiplePage() {
@@ -49,6 +60,8 @@ export function MultiplePage() {
           </UserContext.Consumer>
         </SidebarsController>
       </DeepLinkController>
+
+      <NotificationsList className={notificationsListClass} />
     </div>
   )
 }

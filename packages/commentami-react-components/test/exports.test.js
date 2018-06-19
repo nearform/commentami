@@ -7,6 +7,9 @@ describe('exports', () => {
     test('should export right modules', () => {
       expect(Object.keys(core).sort()).toEqual([
         'HttpService',
+        'Notifications',
+        'NotificationsContext',
+        'NotificationsWrapper',
         'Resource',
         'WebsocketService',
         'buildWebsocketClient',
