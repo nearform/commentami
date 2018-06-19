@@ -4,7 +4,7 @@ const Joi = require('joi')
 const Nes = require('nes')
 const Multines = require('multines')
 const { buildCommentsService, buildPool, config } = require('@nearform/commentami-backend-core')
-const { notifyComment } = require('./subscriptions')
+const { notifyComment, notifyUser } = require('./subscriptions')
 
 const schema = Joi.object({
   pg: Joi.object().optional(),
@@ -32,6 +32,7 @@ const commentsHapiPlugin = {
     const commentsService = buildCommentsService(db, options.hooks)
 
     server.decorate('server', 'commentsService', commentsService)
+    server.decorate('server', 'resolvers', options.resolvers)
     server.decorate('request', 'commentsService', commentsService)
 
     if (options.multines) {
@@ -53,6 +54,18 @@ const commentsHapiPlugin = {
       server.subscriptionFar('/resources-reference/{reference}/{resource*}')
       server.subscriptionFar('/users/{user*}')
       server.method('notifyComment', notifyComment.bind(server))
+      server.method('notifyUser', notifyUser.bind(server))
+
+      server.commentsService.on('add', comment => {
+        server.methods.notifyComment(comment, { action: 'add' })
+        server.methods.notifyUser(comment, options.resolvers.resolveUrl)
+      })
+      server.commentsService.on('update', comment => {
+        server.methods.notifyComment(comment, { action: 'update' })
+      })
+      server.commentsService.on('delete', comment => {
+        server.methods.notifyComment(comment, { action: 'delete' })
+      })
     }
 
     await server.register({ plugin: require('./routes'), options: options.routes })

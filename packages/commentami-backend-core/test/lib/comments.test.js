@@ -204,4 +204,48 @@ describe('Comments', () => {
       expect(this.commentsService.mapCommentFromDb(null)).to.be.null()
     })
   })
+
+  describe('getInvolvedUsers', () => {
+    test('should return the right list of users', async () => {
+      const resource = 'http://example.com/example'
+      const reference = 'reference-uuid'
+      const content = 'lorm ipsum ....'
+
+      await this.commentsService.add({
+        resource,
+        reference,
+        content,
+        author: 'Filippo'
+      })
+      await this.commentsService.add({
+        resource,
+        reference,
+        content,
+        author: 'Davide'
+      })
+      const comment1 = await this.commentsService.add({
+        resource,
+        reference: 'another-uuid-of-some-sort',
+        content,
+        author: 'Paolo'
+      })
+
+      const comment2 = await this.commentsService.add({
+        resource,
+        reference,
+        content,
+        author: 'Filippo'
+      })
+
+      let expected = ['Paolo']
+      let result = await this.commentsService.getInvolvedUsers(comment1)
+      expect(result).to.once.include(expected)
+      expect(result).to.only.include(expected)
+
+      expected = ['Davide', 'Filippo']
+      result = await this.commentsService.getInvolvedUsers(comment2)
+      expect(result).to.once.include(expected)
+      expect(result).to.only.include(expected)
+    })
+  })
 })

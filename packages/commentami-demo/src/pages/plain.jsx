@@ -10,7 +10,7 @@ export function PlainPage() {
   return (
     <div className={pageClassName}>
       <SidebarsController>
-        <Resource resource="foo" service={service}>
+        <Resource resource="plain-1" service={service}>
           <LoadingIndicator />
           <ErrorIndicator />
 

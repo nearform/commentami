@@ -63,10 +63,7 @@ module.exports = {
         const user = options.getUser ? await options.getUser(request, request.payload) : { id: null }
         const payload = Object.assign({}, request.payload, user.id ? { author: '' + user.id } : null)
 
-        const comment = await request.commentsService.add(payload)
-        server.methods.notifyComment && server.methods.notifyComment(comment, { action: 'add' })
-
-        return comment
+        return request.commentsService.add(payload)
       },
       options: {
         cors: options.cors,
@@ -107,10 +104,7 @@ module.exports = {
       handler: async function(request, h) {
         const { id } = request.params
 
-        const comment = await request.commentsService.update(id, request.payload)
-        server.methods.notifyComment && server.methods.notifyComment(comment, { action: 'update' })
-
-        return comment
+        return request.commentsService.update(id, request.payload)
       },
       options: {
         cors: options.cors,
@@ -132,9 +126,7 @@ module.exports = {
       handler: async function(request, h) {
         const { id } = request.params
 
-        const comment = await request.commentsService.delete(id)
-        server.methods.notifyComment && server.methods.notifyComment(comment, { action: 'delete' })
-
+        await request.commentsService.delete(id)
         return { success: true }
       },
       options: {

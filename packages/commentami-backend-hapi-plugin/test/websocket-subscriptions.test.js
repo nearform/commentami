@@ -1,7 +1,7 @@
 'use strict'
 
 const Nes = require('nes')
-const { expect } = require('code')
+const { expect, fail } = require('code')
 const { random, lorem, name, internet } = require('faker')
 
 const Lab = require('lab')
@@ -17,7 +17,11 @@ describe('Comments Websocket - routes', () => {
 
   before(async () => {
     await resetDb()
-    server = await buildServer({ host: '127.0.0.1', port: 8281, pluginOptions: { multines: {} } })
+    server = await buildServer({
+      host: '127.0.0.1',
+      port: 8281,
+      pluginOptions: { multines: {}, resolvers: { resolveUrl: () => 'http://localhost/' } }
+    })
     await server.start()
 
     this.resource = internet.url()
@@ -30,7 +34,8 @@ describe('Comments Websocket - routes', () => {
       author: name.firstName()
     }))
 
-    return Promise.all(comments.map(comment => server.commentsService.add(comment)))
+    await Promise.all(comments.map(comment => server.commentsService.add(comment)))
+    await new Promise(resolve => setTimeout(resolve, 100))
   })
 
   after(async () => {
@@ -125,9 +130,14 @@ describe('Comments Websocket - routes', () => {
         }
 
         let count = 1
+
         function handler(event, flags) {
           expect(event.comment).to.include(newComment1)
-          expect(event.action).to.equal('add')
+          expect(event.action).to.equal('mention')
+          expect(event.url).to.equal(
+            `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
+              `&reference=${encodeURIComponent(event.comment.reference)}&comment=${event.comment.id}`
+          )
 
           if (count-- === 0) {
             client.disconnect().then(resolve)
@@ -136,6 +146,75 @@ describe('Comments Websocket - routes', () => {
 
         await client.subscribe(`/users/davide`, handler)
         await client.subscribe(`/users/filippo`, handler)
+        return server.inject({
+          method: 'POST',
+          url: '/comments',
+          payload: newComment1
+        })
+      })
+    })
+
+    test('it should be pushed to the users response subscribers', async flags => {
+      client = new Nes.Client('ws://127.0.0.1:8281')
+      await client.connect()
+
+      await new Promise(async (resolve, reject) => {
+        await server.commentsService.add({
+          resource: this.resource,
+          reference: 'not my reference',
+          content: 'Message 1',
+          author: 'filippo'
+        })
+        await server.commentsService.add({
+          resource: this.resource,
+          reference: 'not my reference',
+          content: 'Message 2',
+          author: 'paolo'
+        })
+
+        await new Promise(resolve => setTimeout(resolve, 1000))
+
+        const newComment1 = {
+          resource: this.resource,
+          reference: 'not my reference',
+          content: 'MESSAGE @davide @filippo @AUTHOR',
+          author: 'AUTHOR'
+        }
+
+        let count = 2
+
+        function handlerMention(event, flags) {
+          expect(event.comment).to.include(newComment1)
+          expect(event.action).to.equal('mention')
+          expect(event.url).to.equal(
+            `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
+              `&reference=${encodeURIComponent(event.comment.reference)}&comment=${event.comment.id}`
+          )
+          if (count-- === 0) {
+            client.disconnect().then(resolve)
+          }
+        }
+
+        function handlerResponse(event, flags) {
+          expect(event.comment).to.include(newComment1)
+          expect(event.action).to.equal('involve')
+          expect(event.url).to.equal(
+            `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
+              `&reference=${encodeURIComponent(event.comment.reference)}&comment=${event.comment.id}`
+          )
+          if (count-- === 0) {
+            client.disconnect().then(resolve)
+          }
+        }
+
+        function handlerResponseError(event, flags) {
+          fail('The user that added the comment should not be notified')
+        }
+
+        await client.subscribe(`/users/davide`, handlerMention)
+        await client.subscribe(`/users/filippo`, handlerMention)
+        await client.subscribe(`/users/paolo`, handlerResponse)
+        await client.subscribe(`/users/AUTHOR`, handlerResponseError)
         return server.inject({
           method: 'POST',
           url: '/comments',

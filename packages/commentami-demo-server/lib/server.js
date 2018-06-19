@@ -3,6 +3,7 @@
 const Basic = require('hapi-auth-basic')
 const { validate } = require('./auth')
 const commentsHooks = require('./comments-hooks')
+const resolvers = require('./resolvers')
 
 module.exports = async function buildServer(config = {}, logMessage) {
   try {
@@ -34,7 +35,8 @@ module.exports = async function buildServer(config = {}, logMessage) {
               return user
             }
           },
-          hooks: commentsHooks
+          hooks: commentsHooks,
+          resolvers
         })
       }
     ])

@@ -47,7 +47,7 @@ export class TestWebsocketComments extends React.Component {
     return (
       <section className={this.props.sectionClassName}>
         <h1>Websockets</h1>
-        <Resource resource="second" service={this.state.service}>
+        <Resource resource="multiple-2" service={this.state.service}>
           <Table data={data} />
           <Sidebar title="Second" />
           <LoadingIndicator />

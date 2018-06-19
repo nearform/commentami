@@ -106,6 +106,19 @@ nes: {
 }
 ```
 
+### `options.resolvers.resolveUrl`
+The `commentami` library requires the exact url of a `comment` to build the deeplink. A resultUrl(comment) resolver should be provided.
+```
+options.resolvers = {
+  resolveUrl: async (comment) => {
+    // resource = comment.resource
+    // ... given the comment resolve the page that contains the specific resource
+
+    return baseUrl
+  }
+}
+```
+
 ## Events
 
 Under the hood `@nearform/commentami-backend-hapi-plugin` add a `commentsService` object to both `server` and `request`.
@@ -302,7 +315,9 @@ const response = await client.request({ // create a new comment
 })
 ```
 
-Moreover you will have the ability to subscribe to `resource`s and `reference`s
+### Subscriptions
+#### resource  and reference
+When a comment is `added`/`updated`/`deleted`, clients subscribed to receive updates on its `resource` and/or `reference` will be notified.
 
 ```
 client = new Nes.Client('ws://127.0.0.1:8281')
@@ -334,6 +349,45 @@ The `event` object will have the following format
 ```
 
 The `action` property can have one of the following values: `add`, `delete` or `update`.
+
+#### users
+When a comment is `added`, clients subscribed to receive updates on its `user` will be notified.
+
+An involved user is a user that has previously added a comment to the reference.
+
+Notification is sent to the user also if it's been mentioned in the comment.
+
+In the notification object there will also be a URL to deep link to the comment.
+
+```
+client = new Nes.Client('ws://127.0.0.1:8281')
+await client.connect()
+
+await client.subscribe(`/users/some-user-id`, (event) => {
+  // do something
+})
+```
+
+The `event` object will have the following format
+
+```
+{
+  comment: {
+    id: 1234,
+    resource: 'RESOURCE-ID',
+    reference: 'UUID',
+    content: 'MESSAGE',
+    author: 'AUTHOR',
+    createdAt: 2018-05-31T08:01:25.296Z
+  },
+  action: 'mention',
+  url: 'http://someurl.com/the-path-to-the-resource?resource=RESOURCE-ID&reference=UUID&comment=1234'
+}
+```
+
+The `action` property can have one of the following values: `mention`, `involve`.
+
+
 
 ## Development
 

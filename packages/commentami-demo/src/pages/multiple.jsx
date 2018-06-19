@@ -32,7 +32,7 @@ export function MultiplePage() {
         <SidebarsController>
           <section className={sectionClassName}>
             <h1>LocalStorage</h1>
-            <Resource resource="first" service={localStorageService}>
+            <Resource resource="multiple-1" service={localStorageService}>
               <LoadingIndicator />
               <ErrorIndicator />
               <Table data={data} />

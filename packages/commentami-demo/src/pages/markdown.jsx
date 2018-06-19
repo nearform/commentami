@@ -57,7 +57,7 @@ export function MarkdownPage() {
       </h2>
 
       <SidebarsController>
-        <Resource resource="foo" service={HttpService('http://localhost:8080/')}>
+        <Resource resource="markdown-1" service={HttpService('http://localhost:8080/')}>
           <LoadingIndicator />
           <ErrorIndicator />
 
