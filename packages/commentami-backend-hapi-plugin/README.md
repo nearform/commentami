@@ -106,6 +106,18 @@ nes: {
 }
 ```
 
+### `options.resolvers`
+It should contain resolvers that retrieve data not related to the `commentami` environment and are required to provide useful information
+```
+options.hooks = {
+  resolveUrl: async (comment) => {
+    // ... given the comment resolve the page that contains the specific resource
+
+    return baseUrl
+  }
+}
+```
+
 ## Events
 
 Under the hood `@nearform/commentami-backend-hapi-plugin` add a `commentsService` object to both `server` and `request`.
@@ -302,7 +314,9 @@ const response = await client.request({ // create a new comment
 })
 ```
 
-Moreover you will have the ability to subscribe to `resource`s and `reference`s
+### Subscriptions
+#### resource  and reference
+When a resource or a reference is `added`/`updated`/`deleted` an event is sent to the users that are connected.
 
 ```
 client = new Nes.Client('ws://127.0.0.1:8281')
@@ -334,6 +348,43 @@ The `event` object will have the following format
 ```
 
 The `action` property can have one of the following values: `add`, `delete` or `update`.
+
+#### users
+When a comment is added to a reference alle the users `involved` in the reference will be informed.
+An involved user is a user that has previously added a comment to the reference.
+
+A notify is sent to the user also if it's `mentioned` in the comment.
+Within the event an URL containing a deeplink to the comment is sent.
+
+```
+client = new Nes.Client('ws://127.0.0.1:8281')
+await client.connect()
+
+await client.subscribe(`/users/some-user-id`, (event) => {
+  // do something
+})
+```
+
+The `event` object will have the following format
+
+```
+{
+  comment: {
+    id: 1234,
+    resource: 'RESOURCE-ID',
+    reference: 'UUID',
+    content: 'MESSAGE',
+    author: 'AUTHOR',
+    createdAt: 2018-05-31T08:01:25.296Z
+  },
+  action: 'mentioned',
+  url: 'http://someurl.com/the-path-to-the-resource?resource=RESOURCE-ID&reference=UUID&comment=1234'
+}
+```
+
+The `action` property can have one of the following values: `mentioned`, `involved`.
+
+
 
 ## Development
 
