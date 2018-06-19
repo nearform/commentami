@@ -17,6 +17,14 @@ module.exports = async function buildServer(config = {}) {
       server.auth.strategy(fakeAuthPlugin.name, 'myauth', { validate: fakeAuthPlugin.validate })
     }
 
+    if (!config.pluginOptions) {
+      config.pluginOptions = {}
+    }
+
+    if (!config.pluginOptions.resolvers) {
+      config.pluginOptions.resolvers = { resolveUrl: () => 'http://localhost/' }
+    }
+
     await server.register({ plugin: require('../lib/index'), options: config.pluginOptions })
 
     return server

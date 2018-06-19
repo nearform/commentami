@@ -17,7 +17,11 @@ describe('Comments Websocket - routes', () => {
 
   before(async () => {
     await resetDb()
-    server = await buildServer({ host: '127.0.0.1', port: 8281, pluginOptions: { multines: {} } })
+    server = await buildServer({
+      host: '127.0.0.1',
+      port: 8281,
+      pluginOptions: { multines: {}, resolvers: { resolveUrl: () => 'http://localhost/' } }
+    })
     await server.start()
 
     this.resource = internet.url()
@@ -30,7 +34,8 @@ describe('Comments Websocket - routes', () => {
       author: name.firstName()
     }))
 
-    return Promise.all(comments.map(comment => server.commentsService.add(comment)))
+    await Promise.all(comments.map(comment => server.commentsService.add(comment)))
+    await new Promise(resolve => setTimeout(resolve, 100))
   })
 
   after(async () => {
@@ -125,9 +130,14 @@ describe('Comments Websocket - routes', () => {
         }
 
         let count = 1
+
         function handler(event, flags) {
           expect(event.comment).to.include(newComment1)
-          expect(event.action).to.equal('mention')
+          expect(event.action).to.equal('mentioned')
+          expect(event.url).to.equal(
+            `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
+              `&reference=${encodeURIComponent(event.comment.reference)}&comment=${event.comment.id}`
+          )
 
           if (count-- === 0) {
             client.disconnect().then(resolve)
@@ -162,6 +172,8 @@ describe('Comments Websocket - routes', () => {
           author: 'paolo'
         })
 
+        await new Promise(resolve => setTimeout(resolve, 1000))
+
         const newComment1 = {
           resource: this.resource,
           reference: 'not my reference',
@@ -170,10 +182,14 @@ describe('Comments Websocket - routes', () => {
         }
 
         let count = 2
+
         function handlerMention(event, flags) {
           expect(event.comment).to.include(newComment1)
-          expect(event.action).to.equal('mention')
-
+          expect(event.action).to.equal('mentioned')
+          expect(event.url).to.equal(
+            `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
+              `&reference=${encodeURIComponent(event.comment.reference)}&comment=${event.comment.id}`
+          )
           if (count-- === 0) {
             client.disconnect().then(resolve)
           }
@@ -181,8 +197,11 @@ describe('Comments Websocket - routes', () => {
 
         function handlerResponse(event, flags) {
           expect(event.comment).to.include(newComment1)
-          expect(event.action).to.equal('response')
-
+          expect(event.action).to.equal('involved')
+          expect(event.url).to.equal(
+            `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
+              `&reference=${encodeURIComponent(event.comment.reference)}&comment=${event.comment.id}`
+          )
           if (count-- === 0) {
             client.disconnect().then(resolve)
           }
