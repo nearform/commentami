@@ -106,11 +106,12 @@ nes: {
 }
 ```
 
-### `options.resolvers`
-It should contain resolvers that retrieve data not related to the `commentami` environment and are required to provide useful information
+### `options.resolvers.resolveUrl`
+The `commentami` library requires the exact url of a `comment` to build the deeplink. A resultUrl(comment) resolver should be provided.
 ```
-options.hooks = {
+options.resolvers = {
   resolveUrl: async (comment) => {
+    // resource = comment.resource
     // ... given the comment resolve the page that contains the specific resource
 
     return baseUrl
@@ -316,7 +317,7 @@ const response = await client.request({ // create a new comment
 
 ### Subscriptions
 #### resource  and reference
-When a resource or a reference is `added`/`updated`/`deleted` an event is sent to the users that are connected.
+When a comment is `added`/`updated`/`deleted`, clients subscribed to receive updates on its `resource` and/or `reference` will be notified.
 
 ```
 client = new Nes.Client('ws://127.0.0.1:8281')
@@ -350,11 +351,13 @@ The `event` object will have the following format
 The `action` property can have one of the following values: `add`, `delete` or `update`.
 
 #### users
-When a comment is added to a reference alle the users `involve` in the reference will be informed.
+When a comment is `added`, clients subscribed to receive updates on its `user` will be notified.
+
 An involved user is a user that has previously added a comment to the reference.
 
-A notify is sent to the user also if it's `mention` in the comment.
-Within the event an URL containing a deeplink to the comment is sent.
+Notification is sent to the user also if it's been mentioned in the comment.
+
+In the notification object there will also be a URL to deep link to the comment.
 
 ```
 client = new Nes.Client('ws://127.0.0.1:8281')
