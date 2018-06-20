@@ -63,7 +63,7 @@ const fakeAuthPlugin = {
   },
   validate: async (request, authorization, h) => {
     if (authorization) {
-      return { isValid: true, credentials: { id: 'test' } }
+      return { isValid: true, credentials: { username: 'test' } }
     }
 
     return { isValid: false }

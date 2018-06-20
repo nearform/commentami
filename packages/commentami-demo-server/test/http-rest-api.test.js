@@ -59,7 +59,7 @@ describe('Server', () => {
         expect(result.content).to.equal(created.content)
         expect(result.author).to.be.object()
         expect(result.author).to.equal({
-          id: 'test',
+          id: 4,
           username: 'test',
           firstName: 'test',
           lastName: 'test',
