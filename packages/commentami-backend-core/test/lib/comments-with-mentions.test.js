@@ -21,8 +21,8 @@ describe('Comments - with mentions', () => {
       fetchedComment: async comment => {
         if (comment.mentions && comment.mentions.length > 0) {
           comment.mentions = comment.mentions.map(m => ({
-            id: m,
-            username: m
+            id: m.username,
+            username: m.username
           }))
         }
 
@@ -32,8 +32,8 @@ describe('Comments - with mentions', () => {
         return list.map(comment => {
           if (comment.mentions && comment.mentions.length > 0) {
             comment.mentions = comment.mentions.map(m => ({
-              id: m,
-              username: m
+              id: m.username,
+              username: m.username
             }))
           }
 
@@ -173,13 +173,19 @@ describe('Comments - with mentions', () => {
         content: 'lorm ipsum .... @test1 @test2',
         author: 'Filippo'
       }
+      const expected = {
+        resource: 'http://example.com/example',
+        reference: 'uuid-of-some-sort',
+        content: 'lorm ipsum .... @test1 @test2',
+        author: { id: 'Filippo' }
+      }
       const created = await this.commentsService.add(comment)
       expect(created.id).to.be.number()
       expect(created.content).to.include(comment.content)
       expect(created.mentions).to.equals([{ id: 'test1', username: 'test1' }, { id: 'test2', username: 'test2' }])
 
       const result = await this.commentsService.delete(created.id)
-      expect(result).to.include(comment)
+      expect(result).to.include(expected)
 
       const mentions = await loadDataFromTable('mention')
       expect(find(mentions, { comment_id: created.id })).to.be.undefined()

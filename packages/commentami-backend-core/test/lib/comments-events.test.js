@@ -3,14 +3,14 @@
 const { expect } = require('code')
 const Lab = require('lab')
 module.exports.lab = Lab.script()
-const { describe, it: test, before, after } = module.exports.lab
+const { describe, it: test, before, after, afterEach } = module.exports.lab
 
 const { resetDb } = require('../utils')
 const config = require('../../config')
 
 const { buildPool, buildCommentsService } = require('../../lib')
 
-describe('Comments', () => {
+describe('Comments events', () => {
   before(async () => {
     await resetDb()
 
@@ -22,13 +22,27 @@ describe('Comments', () => {
     return this.commentsService.close()
   })
 
+  afterEach(() => {
+    this.commentsService.removeAllListeners('add')
+    this.commentsService.removeAllListeners('update')
+    this.commentsService.removeAllListeners('delete')
+  })
+
   describe('adding', () => {
     test('should correctly create a comment', async () => {
       let done
       const comment = {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
-        content: 'lorm ipsum ....'
+        content: 'lorm ipsum ....',
+        author: 'davide'
+      }
+
+      const expected = {
+        resource: 'http://example.com/example',
+        reference: 'uuid-of-some-sort',
+        content: 'lorm ipsum ....',
+        author: { id: 'davide' }
       }
 
       const p = new Promise(resolve => {
@@ -37,7 +51,7 @@ describe('Comments', () => {
 
       this.commentsService.on('add', c => {
         expect(c.id).to.be.number()
-        expect(c).to.include(comment)
+        expect(c).to.include(expected)
 
         done()
       })
@@ -63,7 +77,7 @@ describe('Comments', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'new comment',
-        author: 'Filippo'
+        author: { id: 'Filippo' }
       }
 
       const p = new Promise((resolve, reject) => {
@@ -92,12 +106,19 @@ describe('Comments', () => {
         author: 'Filippo'
       }
 
+      const expected = {
+        resource: 'http://example.com/example',
+        reference: 'uuid-of-some-sort',
+        content: 'lorm ipsum ....',
+        author: { id: 'Filippo' }
+      }
+
       const p = new Promise((resolve, reject) => {
         done = resolve
       })
 
       this.commentsService.on('delete', c => {
-        expect(c).to.include(comment)
+        expect(c).to.include(expected)
 
         done()
       })
