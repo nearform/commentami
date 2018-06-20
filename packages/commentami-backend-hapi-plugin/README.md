@@ -167,7 +167,7 @@ const main = async function() {
     },
     routes: {
       auth: 'myauth',
-      getUser: async (request, payload) => {
+      getUserFromRequest: async (request, payload) => {
         // ...
         return user
       }
@@ -246,7 +246,7 @@ GET /comments/1234
   resource: 'some-resource',
   reference: 'some-reference',
   content: 'some content',
-  author: 'author',
+  author: {username: 'author'},
   createdAt: 2018-05-31T08:01:25.296Z
 }
 ```
@@ -310,7 +310,7 @@ const response = await client.request({ // create a new comment
     resource: 'URL',
     reference: 'UUID',
     content: 'MESSAGE',
-    author: 'AUTHOR'
+    author: {username: 'AUTHOR'}
   }
 })
 ```
@@ -341,7 +341,7 @@ The `event` object will have the following format
     resource: 'URL',
     reference: 'UUID',
     content: 'MESSAGE',
-    author: 'AUTHOR',
+    author: {username: 'AUTHOR'},
     createdAt: 2018-05-31T08:01:25.296Z
   },
   action: 'add'
@@ -377,7 +377,7 @@ The `event` object will have the following format
     resource: 'RESOURCE-ID',
     reference: 'UUID',
     content: 'MESSAGE',
-    author: 'AUTHOR',
+    author: {username: 'AUTHOR'},
     createdAt: 2018-05-31T08:01:25.296Z
   },
   action: 'mention',

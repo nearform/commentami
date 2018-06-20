@@ -29,7 +29,7 @@ module.exports = async function buildServer(config = {}, logMessage) {
           routes: {
             cors: true,
             auth: 'simple',
-            getUser: async (request, payload) => {
+            getUserFromRequest: async (request, payload) => {
               let user = request.auth.credentials
 
               return user

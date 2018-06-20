@@ -100,7 +100,7 @@ describe('Comments Websocket - routes', () => {
         resource: 'URL',
         reference: 'UUID',
         content: 'MESSAGE',
-        author: 'AUTHOR',
+        author: { username: 'AUTHOR' },
         createdAt: payload.createdAt
       })
     })
@@ -152,7 +152,7 @@ describe('Comments Websocket - routes', () => {
         resource: 'URL',
         reference: 'OLD-UUID',
         content: 'MESSAGE',
-        author: 'OLD-AUTHOR',
+        author: { username: 'OLD-AUTHOR' },
         mentions: []
       })
     })

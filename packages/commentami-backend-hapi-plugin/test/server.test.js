@@ -112,7 +112,7 @@ describe('Comments REST API', () => {
         resource: 'URL',
         reference: 'UUID',
         content: 'MESSAGE',
-        author: 'AUTHOR',
+        author: { username: 'AUTHOR' },
         createdAt: result.createdAt
       })
     })
@@ -171,7 +171,7 @@ describe('Comments REST API', () => {
         resource: 'URL',
         reference: 'OLD-UUID',
         content: 'MESSAGE',
-        author: 'OLD-AUTHOR',
+        author: { username: 'OLD-AUTHOR' },
         mentions: []
       })
     })

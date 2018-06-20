@@ -72,7 +72,7 @@ describe('Subscriptions library', () => {
           })
         },
         commentsService: {
-          getInvolvedUsers: () => ['davide', 'filippo']
+          getInvolvedUsers: () => [{ username: 'davide' }, { username: 'filippo' }]
         }
       }
       const fn = notifyUser.bind(server)
@@ -82,7 +82,7 @@ describe('Subscriptions library', () => {
         error = reject
       })
 
-      await fn({ id: 1 }, resolveUrl)
+      await fn({ id: 1, author: { username: 'paolo' } }, resolveUrl)
       await p.catch(error)
     })
   })

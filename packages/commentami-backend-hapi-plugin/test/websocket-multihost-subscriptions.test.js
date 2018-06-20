@@ -53,8 +53,15 @@ describe('Comments Websocket - routes', () => {
           author: 'AUTHOR'
         }
 
+        const expected = {
+          resource: resource,
+          reference: 'UUID',
+          content: 'MESSAGE',
+          author: { username: 'AUTHOR' }
+        }
+
         function handler(event, flags) {
-          expect(event.comment).to.include(newComment)
+          expect(event.comment).to.include(expected)
           expect(event.action).to.equal('add')
 
           client1

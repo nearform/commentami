@@ -28,7 +28,12 @@ async function fetchedComments(comments) {
   return comments.map(comment => addUser(comment))
 }
 
+async function involvedUsers(users) {
+  return users.map(user => fetchUserById(parseInt(user)))
+}
+
 module.exports = {
   fetchedComment,
-  fetchedComments
+  fetchedComments,
+  involvedUsers
 }
