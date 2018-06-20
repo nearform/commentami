@@ -50,7 +50,7 @@ class NotificationItem extends React.Component {
       <div className={notificationsItemClass}>
         <span>{this.renderMessage(this.props.notification)}</span>
         <div className={contentClass}>{this.props.notification.comment.content}</div>
-        {this.props.notification.link && <a href={this.props.notification.link}>Go see it...</a>}
+        {this.props.notification.url && <a href={this.props.notification.url}>Go see it...</a>}
         <button onClick={this.props.onRemove}>X</button>
       </div>
     )
