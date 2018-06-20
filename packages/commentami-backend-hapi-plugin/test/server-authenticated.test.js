@@ -20,9 +20,8 @@ describe('Comments REST API', () => {
         routes: {
           cors: true,
           auth: 'myauth',
-          getUser: async (request, payload) => {
+          getUserFromRequest: async (request, payload) => {
             const user = request.auth.credentials
-
             return user
           }
         }
@@ -81,7 +80,7 @@ describe('Comments REST API', () => {
         resource: 'URL',
         reference: 'UUID',
         content: 'MESSAGE',
-        author: '1',
+        author: { username: 'test' },
         createdAt: result.createdAt
       })
     })

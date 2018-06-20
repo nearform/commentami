@@ -20,8 +20,8 @@ Comment {
   resource, // long string
   reference, // string
   content, // text
-  author, // optional, string
-  mentions, // array of identifiers found in the comment content (@<identifier>)
+  author, // optional, Object {username: string}
+  mentions, // array of identifiers found in the comment content (@<identifier>) returned by default with the format [{username: string}]
   createdAt // date
 }
 ```
@@ -209,6 +209,10 @@ const commentService = buildCommentsService(dbConn, {
     // add your data to the commentsList ...
 
     return commentsList // or a promise that will yield the enached commentsList
+  },
+  involvedUsers: [async] users => {
+    // add your data to the involved users ...
+    return users // or a promise that will yield the enached involved users
   }
 })
 ```

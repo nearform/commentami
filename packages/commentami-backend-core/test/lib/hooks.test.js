@@ -20,10 +20,10 @@ describe('Hooks', () => {
       fetchedComment: async comment => {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
-            comment.additionalInfo = {
+            comment.author = Object.assign({}, comment.author, {
               firstName: 'Test',
               email: 'example@example.com'
-            }
+            })
 
             resolve(comment)
           }, 10)
@@ -35,10 +35,22 @@ describe('Hooks', () => {
             resolve(
               list.map(item => ({
                 ...item,
-                additionalInfo: {
+                author: Object.assign({}, item.author, {
                   firstName: 'Test',
                   email: 'example@example.com'
-                }
+                })
+              }))
+            )
+          }, 10)
+        })
+      },
+      involvedUsers: async users => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(
+              users.map(item => ({
+                username: item.username,
+                firstName: item.username
               }))
             )
           }, 10)
@@ -76,7 +88,7 @@ describe('Hooks', () => {
       })
 
       expect(list.comments.length).to.equal(20)
-      expect(list.comments[0].additionalInfo).to.equal({
+      expect(list.comments[0].author).to.include({
         firstName: 'Test',
         email: 'example@example.com'
       })
@@ -89,17 +101,20 @@ describe('Hooks', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
-        author: 'Filippo',
-        additionalInfo: {
-          firstName: 'Test',
-          email: 'example@example.com'
-        }
+        author: 'Filippo'
+      }
+
+      const expected = {
+        resource: 'http://example.com/example',
+        reference: 'uuid-of-some-sort',
+        content: 'lorm ipsum ....',
+        author: { username: 'Filippo', firstName: 'Test', email: 'example@example.com' }
       }
 
       const result = await this.commentsService.add(comment)
 
       expect(result.id).to.be.number()
-      expect(result).to.include(comment)
+      expect(result).to.include(expected)
     })
   })
 
@@ -130,21 +145,62 @@ describe('Hooks', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
-        author: 'Filippo',
-        additionalInfo: {
-          firstName: 'Test',
-          email: 'example@example.com'
-        }
+        author: 'Filippo'
       }
 
       const created = await this.commentsService.add(comment)
       const result = await this.commentsService.delete(created.id)
 
       expect(result.id).to.equal(created.id)
-      expect(result.additionalInfo).to.equal({
+      expect(result.author).to.equal({
+        username: 'Filippo',
         firstName: 'Test',
         email: 'example@example.com'
       })
+    })
+  })
+
+  describe('getInvolvedUsers', () => {
+    test('should return the right list of users with additional data', async () => {
+      const resource = 'http://example.com/example'
+      const reference = 'reference-uuid'
+      const content = 'lorm ipsum ....'
+
+      await this.commentsService.add({
+        resource,
+        reference,
+        content,
+        author: 'Filippo'
+      })
+      await this.commentsService.add({
+        resource,
+        reference,
+        content,
+        author: 'Davide'
+      })
+      const comment1 = await this.commentsService.add({
+        resource,
+        reference: 'another-uuid-of-some-sort',
+        content,
+        author: 'Paolo'
+      })
+
+      const comment2 = await this.commentsService.add({
+        resource,
+        reference,
+        content,
+        author: 'Filippo'
+      })
+
+      let expected = [{ username: 'Paolo', firstName: 'Paolo' }]
+      let result = await this.commentsService.getInvolvedUsers(comment1)
+      expect(result).to.once.include(expected)
+      expect(result).to.only.include(expected)
+
+      expected = [{ username: 'Davide', firstName: 'Davide' }, { username: 'Filippo', firstName: 'Filippo' }]
+      result = await this.commentsService.getInvolvedUsers(comment2)
+      expect(result).to.once.include(expected)
+      expect(result).to.only.include(expected)
     })
   })
 })

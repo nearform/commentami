@@ -2,7 +2,7 @@
 
 const Nes = require('nes')
 const { expect, fail } = require('code')
-const { random, lorem, name, internet } = require('faker')
+const { random, lorem, internet } = require('faker')
 
 const Lab = require('lab')
 module.exports.lab = Lab.script()
@@ -20,7 +20,7 @@ describe('Comments Websocket - routes', () => {
     server = await buildServer({
       host: '127.0.0.1',
       port: 8281,
-      pluginOptions: { multines: {}, resolvers: { resolveUrl: () => 'http://localhost/' } }
+      pluginOptions: { multines: {} }
     })
     await server.start()
 
@@ -31,7 +31,7 @@ describe('Comments Websocket - routes', () => {
       resource: this.resource,
       reference: i === 0 ? this.reference : random.uuid(),
       content: lorem.words(),
-      author: name.firstName()
+      author: i
     }))
 
     await Promise.all(comments.map(comment => server.commentsService.add(comment)))
@@ -51,8 +51,7 @@ describe('Comments Websocket - routes', () => {
         const newComment = {
           resource: this.resource,
           reference: 'UUID',
-          content: 'MESSAGE',
-          author: 'AUTHOR'
+          content: 'MESSAGE'
         }
 
         function handler(event, flags) {
@@ -82,14 +81,12 @@ describe('Comments Websocket - routes', () => {
         const newComment1 = {
           resource: this.resource,
           reference: 'not my reference',
-          content: 'MESSAGE',
-          author: 'AUTHOR'
+          content: 'MESSAGE'
         }
         const newComment2 = {
           resource: this.resource,
           reference: this.reference,
-          content: 'MESSAGE',
-          author: 'AUTHOR'
+          content: 'MESSAGE'
         }
 
         function handler(event, flags) {
@@ -126,13 +123,21 @@ describe('Comments Websocket - routes', () => {
           resource: this.resource,
           reference: 'not my reference',
           content: 'MESSAGE @davide @filippo',
-          author: 'AUTHOR'
+          author: 'paolo'
+        }
+
+        const expected = {
+          resource: this.resource,
+          reference: 'not my reference',
+          content: 'MESSAGE @davide @filippo',
+          author: { username: 'paolo' },
+          mentions: [{ username: 'davide' }, { username: 'filippo' }]
         }
 
         let count = 1
 
         function handler(event, flags) {
-          expect(event.comment).to.include(newComment1)
+          expect(event.comment).to.include(expected)
           expect(event.action).to.equal('mention')
           expect(event.url).to.equal(
             `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
@@ -181,10 +186,16 @@ describe('Comments Websocket - routes', () => {
           author: 'AUTHOR'
         }
 
+        const expected = {
+          resource: this.resource,
+          reference: 'not my reference',
+          content: 'MESSAGE @davide @filippo @AUTHOR'
+        }
+
         let count = 2
 
         function handlerMention(event, flags) {
-          expect(event.comment).to.include(newComment1)
+          expect(event.comment).to.include(expected)
           expect(event.action).to.equal('mention')
           expect(event.url).to.equal(
             `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
@@ -196,7 +207,7 @@ describe('Comments Websocket - routes', () => {
         }
 
         function handlerResponse(event, flags) {
-          expect(event.comment).to.include(newComment1)
+          expect(event.comment).to.include(expected)
           expect(event.action).to.equal('involve')
           expect(event.url).to.equal(
             `http://localhost/?resource=${encodeURIComponent(event.comment.resource)}` +
@@ -234,7 +245,7 @@ describe('Comments Websocket - routes', () => {
           resource: this.resource,
           reference: this.reference,
           content: 'MESSAGE',
-          author: 'AUTHOR'
+          author: '1'
         }
         const updateComment = {
           content: 'MESSAGE-updated'
@@ -278,8 +289,7 @@ describe('Comments Websocket - routes', () => {
         const newComment = {
           resource: this.resource,
           reference: this.reference,
-          content: 'MESSAGE',
-          author: 'AUTHOR'
+          content: 'MESSAGE'
         }
 
         function handler(event, flags) {

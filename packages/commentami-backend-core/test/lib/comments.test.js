@@ -114,13 +114,21 @@ describe('Comments', () => {
       const comment = {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
-        content: 'lorm ipsum ....'
+        content: 'lorm ipsum .... @filippo',
+        author: 'davide'
       }
 
+      const expected = {
+        resource: 'http://example.com/example',
+        reference: 'uuid-of-some-sort',
+        content: 'lorm ipsum .... @filippo',
+        author: { username: 'davide' },
+        mentions: [{ username: 'filippo' }]
+      }
       const result = await this.commentsService.add(comment)
 
       expect(result.id).to.be.number()
-      expect(result).to.include(comment)
+      expect(result).to.include(expected)
     })
   })
 
@@ -139,7 +147,7 @@ describe('Comments', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'new comment',
-        author: 'Filippo'
+        author: { username: 'Filippo' }
       }
 
       const created = await this.commentsService.add(comment)
@@ -160,9 +168,16 @@ describe('Comments', () => {
         content: ''
       }
 
+      const expected = {
+        resource: 'http://example.com/example',
+        reference: 'uuid-of-some-sort',
+        content: 'lorm ipsum ....',
+        author: { username: 'Filippo' }
+      }
+
       const created = await this.commentsService.add(comment)
       const result = await this.commentsService.update(created.id, commentUpdate)
-      expect(result).to.include(comment)
+      expect(result).to.include(expected)
     })
 
     test('should throw an error when a trying to update a non existing comment', async () => {
@@ -182,10 +197,17 @@ describe('Comments', () => {
         content: 'lorm ipsum ....',
         author: 'Filippo'
       }
+
+      const expected = {
+        resource: 'http://example.com/example',
+        reference: 'uuid-of-some-sort',
+        content: 'lorm ipsum ....',
+        author: { username: 'Filippo' }
+      }
       const created = await this.commentsService.add(comment)
 
       const result = await this.commentsService.delete(created.id)
-      expect(result).to.include(comment)
+      expect(result).to.include(expected)
     })
 
     test('deleting a non existed object should return success', async () => {
@@ -237,12 +259,12 @@ describe('Comments', () => {
         author: 'Filippo'
       })
 
-      let expected = ['Paolo']
+      let expected = [{ username: 'Paolo' }]
       let result = await this.commentsService.getInvolvedUsers(comment1)
       expect(result).to.once.include(expected)
       expect(result).to.only.include(expected)
 
-      expected = ['Davide', 'Filippo']
+      expected = [{ username: 'Davide' }, { username: 'Filippo' }]
       result = await this.commentsService.getInvolvedUsers(comment2)
       expect(result).to.once.include(expected)
       expect(result).to.only.include(expected)

@@ -22,7 +22,9 @@ module.exports = async function buildServer(config = {}) {
     }
 
     if (!config.pluginOptions.resolvers) {
-      config.pluginOptions.resolvers = { resolveUrl: () => 'http://localhost/' }
+      config.pluginOptions.resolvers = {
+        resolveUrl: () => 'http://localhost/'
+      }
     }
 
     await server.register({ plugin: require('../lib/index'), options: config.pluginOptions })
@@ -61,7 +63,7 @@ const fakeAuthPlugin = {
   },
   validate: async (request, authorization, h) => {
     if (authorization) {
-      return { isValid: true, credentials: { id: 1, user: 'test' } }
+      return { isValid: true, credentials: { id: 'test' } }
     }
 
     return { isValid: false }

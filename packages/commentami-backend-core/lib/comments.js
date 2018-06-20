@@ -19,8 +19,21 @@ async function transaction(db, task) {
   }
 }
 
+function normalizeComment(comment) {
+  comment.author = { username: comment.author }
+  if (comment.mentions && comment.mentions.length > 0) {
+    comment.mentions = comment.mentions
+      .map(mention => {
+        return { username: mention }
+      })
+      .filter(v => !!v)
+  }
+
+  return comment
+}
+
 module.exports = function buildCommentsService(db, hooks = {}) {
-  const { fetchedComment, fetchedComments } = hooks
+  const { fetchedComment, fetchedComments, involvedUsers } = hooks
 
   class CommentsService extends EventEmitter {
     mapCommentFromDb(raw) {
@@ -65,6 +78,8 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         comment.mentions = mentionedUsers
       })
 
+      normalizeComment(comment)
+
       comment = fetchedComment ? await fetchedComment(comment) : comment
 
       this.emit('add', comment)
@@ -89,6 +104,9 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       if (res.rowCount === 0) throw new Error(`Cannot find comment with id ${id}`)
 
       let comment = this.mapCommentFromDb(res.rows[0])
+
+      normalizeComment(comment)
+
       comment = fetchedComment ? await fetchedComment(comment) : comment
 
       return comment
@@ -135,6 +153,8 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         }
       })
 
+      normalizeComment(comment)
+
       comment = fetchedComment ? await fetchedComment(comment) : comment
 
       this.emit('update', comment)
@@ -151,6 +171,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       const selectSql = SQL`SELECT * FROM comment WHERE id = ${id}`
       const res = await db.query(selectSql)
       if (res.rowCount === 1) {
+        comment = normalizeComment(res.rows[0])
         comment = fetchedComment ? await fetchedComment(res.rows[0]) : res.rows[0]
 
         const deleteSql = SQL`DELETE FROM comment WHERE id = ${id}`
@@ -212,7 +233,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       `)
 
       const [countRes, filterRes] = await Promise.all([db.query(sqlCount), db.query(sqlFilter)])
-      const comments = filterRes.rows.map(this.mapCommentFromDb)
+      const comments = filterRes.rows.map(this.mapCommentFromDb).map(normalizeComment)
 
       return {
         comments: fetchedComments ? await fetchedComments(comments) : comments,
@@ -260,7 +281,8 @@ module.exports = function buildCommentsService(db, hooks = {}) {
 
       const result = await db.query(sql)
 
-      return result.rows.map(comment => comment.author)
+      const authors = result.rows.map(comment => ({ username: comment.author }))
+      return involvedUsers ? involvedUsers(authors) : authors
     }
   }
 
