@@ -60,4 +60,6 @@ The interface of each web application is different. To accomodate that, we struc
 
 To get up and running with Commentami, see the installation steps in the [README](https://github.com/nearform/commentami).
 
-Too see some example on how to configure the server to deal with authentication and users data you can go [here](/example-auth-and-user-data)
+Too see an example on how to configure the server to deal with authentication and users data you can go [here](/example-auth-and-user-data)
+
+Too see an example on how to use realtime notifications you can check out our [notifications example](/example-notifications)

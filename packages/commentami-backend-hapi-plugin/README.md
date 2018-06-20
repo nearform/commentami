@@ -50,7 +50,7 @@ options.routes = {
 }
 ```
 
-The `getUser` function will need to return a promise that will yield either `null` or an object with the property `id` (ie : `{ id: 1, ... }`). Beware that **`author` will be stored as a string**.
+The `getUser` function will need to return a promise that will yield either `null` or an object with the property `id` (ie : `{ id: 1, ... }`). We will store that `id` value as the author identifier. Beware that **`author` will be stored as a string**.
 
 ### `options.hooks` \[optional\]
 

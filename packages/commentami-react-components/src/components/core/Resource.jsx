@@ -159,7 +159,7 @@ Resource.defaultProps = {
 }
 
 Resource.propTypes = {
-  service: PropTypes.shape(servicePropInterface).isRequired,
+  service: PropTypes.shape(servicePropInterface),
   logger: PropTypes.shape(loggerPropInterface),
   resource: PropTypes.string.isRequired,
   children: childrenPropInterface

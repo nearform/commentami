@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom'
 import { style } from 'typestyle'
 import { debugClassName } from '../styling/environment'
 import { UserContext } from './user'
+import { NotificationsBox } from './notifications/notificationsBox'
 
 const headerClassName = style(debugClassName('header'), {
   backgroundColor: '#DA3338'
@@ -57,6 +58,15 @@ const selectUserClass = style(debugClassName('header-select-user'), {
   marginBottom: '10px'
 })
 
+const notificationsNumberClass = style(debugClassName('notifications-number'), {
+  margin: '10px',
+  color: '#000000',
+  backgroundColor: '#cecece',
+  borderRadius: '50%',
+  padding: '4px 10px',
+  fontWeight: 'bold'
+})
+
 class SelectUser extends React.Component {
   handleChange(event) {
     this.setState({ value: event.target.value })
@@ -85,6 +95,8 @@ export function Header() {
         <NavLink to="/" className={headerTitleClassName}>
           Commentami Demo
         </NavLink>
+
+        <NotificationsBox className={notificationsNumberClass} />
 
         <NavLink to="/plain" className={headerLinkClassName}>
           Plain Text

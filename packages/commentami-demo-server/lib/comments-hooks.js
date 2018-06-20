@@ -12,7 +12,7 @@ function addUser(comment) {
   if (comment.mentions && comment.mentions.length > 0) {
     comment.mentions = comment.mentions
       .map(mention => {
-        return fetchUserByUsername(mention)
+        return fetchUserByUsername(mention.username)
       })
       .filter(v => !!v)
   }
