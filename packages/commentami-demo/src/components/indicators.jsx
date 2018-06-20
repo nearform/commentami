@@ -43,8 +43,10 @@ const loadingSpinnerClassName = style({
   }
 })
 
-export const LoadingIndicator = withResource(function LoadingIndicatorBase({ commentami: { isInit, isFetching } }) {
-  if (isInit && !isFetching) return false
+export const LoadingIndicator = withResource(function LoadingIndicatorBase({
+  commentami: { isInit, isFetching, fetchError }
+}) {
+  if ((isInit && !isFetching) || fetchError) return false
 
   return (
     <div className={classes(indicatorClassName, loadingIndicatorClassName)}>

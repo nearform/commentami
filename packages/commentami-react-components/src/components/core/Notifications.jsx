@@ -10,7 +10,8 @@ export class Notifications extends React.Component {
 
     this.state = {
       notifications: [],
-      removeNotificationFromList: this.removeNotificationFromList.bind(this)
+      removeNotificationFromList: this.removeNotificationFromList.bind(this),
+      active: !!props.service
     }
   }
 
@@ -43,6 +44,10 @@ export class Notifications extends React.Component {
     this.unsubscribe = await this.props.service.onUserNotification(this.props.userIdentifier, notification =>
       this.triggerNotification(notification)
     )
+
+    this.setState({
+      active: true
+    })
   }
 
   async componentWillUpdate(nextProps) {
@@ -54,6 +59,10 @@ export class Notifications extends React.Component {
       this.unsubscribe = await nextProps.service.onUserNotification(nextProps.userIdentifier, notification =>
         this.triggerNotification(notification)
       )
+
+      this.setState({
+        active: true
+      })
     }
   }
 

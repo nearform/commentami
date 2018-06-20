@@ -59,6 +59,10 @@ class NotificationItem extends React.Component {
 
 class List extends React.Component {
   render() {
+    if (!this.props.active && (!this.props.notifications || this.props.notifications.length === 0)) {
+      return <div className={this.props.className}>Notifications service is not active.</div>
+    }
+
     if (!this.props.notifications || this.props.notifications.length === 0) return null
 
     return (
