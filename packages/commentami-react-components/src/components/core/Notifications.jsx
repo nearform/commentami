@@ -37,28 +37,28 @@ export class Notifications extends React.Component {
     })
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (!this.props.service) return
 
-    this.unsubscribe = this.props.service.onUserNotification(this.props.userIdentifier, notification =>
+    this.unsubscribe = await this.props.service.onUserNotification(this.props.userIdentifier, notification =>
       this.triggerNotification(notification)
     )
   }
 
-  componentWillUpdate(nextProps) {
+  async componentWillUpdate(nextProps) {
     if (!nextProps.service) return
 
-    if (this.props.userIdentifier !== nextProps.userIdentifier) {
-      this.unsubscribe && this.unsubscribe()
+    if (!this.unsubscribe || this.props.userIdentifier !== nextProps.userIdentifier) {
+      this.unsubscribe && (await this.unsubscribe())
 
-      this.unsubscribe = nextProps.service.onUserNotification(nextProps.userIdentifier, notification =>
+      this.unsubscribe = await nextProps.service.onUserNotification(nextProps.userIdentifier, notification =>
         this.triggerNotification(notification)
       )
     }
   }
 
-  componentWillUnmount() {
-    this.unsubscribe && this.unsubscribe()
+  async componentWillUnmount() {
+    this.unsubscribe && (await this.unsubscribe())
   }
 
   render() {

@@ -80,7 +80,7 @@ export function WebsocketService(client) {
   const onResourceChange = async (resource, handler) => {
     await client.subscribe(`/resources/${resource}`, handler)
 
-    return async () => client.unsubscribe(`/resources/${resource}`, handler)
+    return () => client.unsubscribe(`/resources/${resource}`, handler)
   }
 
   /**
@@ -92,7 +92,7 @@ export function WebsocketService(client) {
   const onUserNotification = async (user, handler) => {
     await client.subscribe(`/users/${user}`, handler)
 
-    return async () => client.unsubscribe(`/users/${user}`, handler)
+    return () => client.unsubscribe(`/users/${user}`, handler)
   }
 
   return {
