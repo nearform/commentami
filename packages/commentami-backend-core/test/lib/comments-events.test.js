@@ -42,7 +42,7 @@ describe('Comments events', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
-        author: { id: 'davide' }
+        author: { username: 'davide' }
       }
 
       const p = new Promise(resolve => {
@@ -77,7 +77,7 @@ describe('Comments events', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'new comment',
-        author: { id: 'Filippo' }
+        author: { username: 'Filippo' }
       }
 
       const p = new Promise((resolve, reject) => {
@@ -110,7 +110,7 @@ describe('Comments events', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
-        author: { id: 'Filippo' }
+        author: { username: 'Filippo' }
       }
 
       const p = new Promise((resolve, reject) => {

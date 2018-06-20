@@ -122,7 +122,7 @@ describe('Comments', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum .... @filippo',
-        author: { id: 'davide' },
+        author: { username: 'davide' },
         mentions: [{ username: 'filippo' }]
       }
       const result = await this.commentsService.add(comment)
@@ -147,7 +147,7 @@ describe('Comments', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'new comment',
-        author: { id: 'Filippo' }
+        author: { username: 'Filippo' }
       }
 
       const created = await this.commentsService.add(comment)
@@ -172,7 +172,7 @@ describe('Comments', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
-        author: { id: 'Filippo' }
+        author: { username: 'Filippo' }
       }
 
       const created = await this.commentsService.add(comment)
@@ -202,7 +202,7 @@ describe('Comments', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
-        author: { id: 'Filippo' }
+        author: { username: 'Filippo' }
       }
       const created = await this.commentsService.add(comment)
 
@@ -259,12 +259,12 @@ describe('Comments', () => {
         author: 'Filippo'
       })
 
-      let expected = [{ id: 'Paolo' }]
+      let expected = [{ username: 'Paolo' }]
       let result = await this.commentsService.getInvolvedUsers(comment1)
       expect(result).to.once.include(expected)
       expect(result).to.only.include(expected)
 
-      expected = [{ id: 'Davide' }, { id: 'Filippo' }]
+      expected = [{ username: 'Davide' }, { username: 'Filippo' }]
       result = await this.commentsService.getInvolvedUsers(comment2)
       expect(result).to.once.include(expected)
       expect(result).to.only.include(expected)

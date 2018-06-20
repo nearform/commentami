@@ -49,8 +49,8 @@ describe('Hooks', () => {
           setTimeout(() => {
             resolve(
               users.map(item => ({
-                id: item.id,
-                username: `username-${item.id}`
+                username: item.username,
+                firstName: item.username
               }))
             )
           }, 10)
@@ -108,7 +108,7 @@ describe('Hooks', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum ....',
-        author: { id: 'Filippo', firstName: 'Test', email: 'example@example.com' }
+        author: { username: 'Filippo', firstName: 'Test', email: 'example@example.com' }
       }
 
       const result = await this.commentsService.add(comment)
@@ -153,7 +153,7 @@ describe('Hooks', () => {
 
       expect(result.id).to.equal(created.id)
       expect(result.author).to.equal({
-        id: 'Filippo',
+        username: 'Filippo',
         firstName: 'Test',
         email: 'example@example.com'
       })
@@ -192,12 +192,12 @@ describe('Hooks', () => {
         author: 'Filippo'
       })
 
-      let expected = [{ id: 'Paolo', username: 'username-Paolo' }]
+      let expected = [{ username: 'Paolo', firstName: 'Paolo' }]
       let result = await this.commentsService.getInvolvedUsers(comment1)
       expect(result).to.once.include(expected)
       expect(result).to.only.include(expected)
 
-      expected = [{ id: 'Davide', username: 'username-Davide' }, { id: 'Filippo', username: 'username-Filippo' }]
+      expected = [{ username: 'Davide', firstName: 'Davide' }, { username: 'Filippo', firstName: 'Filippo' }]
       result = await this.commentsService.getInvolvedUsers(comment2)
       expect(result).to.once.include(expected)
       expect(result).to.only.include(expected)

@@ -21,8 +21,8 @@ describe('Comments - with mentions', () => {
       fetchedComment: async comment => {
         if (comment.mentions && comment.mentions.length > 0) {
           comment.mentions = comment.mentions.map(m => ({
-            id: m.username,
-            username: m.username
+            username: m.username,
+            firstName: m.username
           }))
         }
 
@@ -32,8 +32,8 @@ describe('Comments - with mentions', () => {
         return list.map(comment => {
           if (comment.mentions && comment.mentions.length > 0) {
             comment.mentions = comment.mentions.map(m => ({
-              id: m.username,
-              username: m.username
+              username: m.username,
+              firstName: m.username
             }))
           }
 
@@ -108,8 +108,8 @@ describe('Comments - with mentions', () => {
       expect(result.id).to.be.number()
       expect(result).to.include(comment)
       expect(result.mentions).to.equals([
-        { id: 'test', username: 'test' },
-        { id: 'doubletest', username: 'doubletest' }
+        { firstName: 'test', username: 'test' },
+        { firstName: 'doubletest', username: 'doubletest' }
       ])
     })
   })
@@ -129,15 +129,18 @@ describe('Comments - with mentions', () => {
       const created = await this.commentsService.add(comment)
       expect(created.id).to.be.number()
       expect(created.content).to.include(comment.content)
-      expect(created.mentions).to.equals([{ id: 'test1', username: 'test1' }, { id: 'test2', username: 'test2' }])
+      expect(created.mentions).to.equals([
+        { firstName: 'test1', username: 'test1' },
+        { firstName: 'test2', username: 'test2' }
+      ])
 
       const result = await this.commentsService.update(created.id, commentUpdate)
 
       expect(result.id).to.be.number()
       expect(result.content).to.include(commentUpdate.content)
       expect(result.mentions).to.equals([
-        { id: 'mention1', username: 'mention1' },
-        { id: 'mention2', username: 'mention2' }
+        { firstName: 'mention1', username: 'mention1' },
+        { firstName: 'mention2', username: 'mention2' }
       ])
     })
 
@@ -155,7 +158,10 @@ describe('Comments - with mentions', () => {
       const created = await this.commentsService.add(comment)
       expect(created.id).to.be.number()
       expect(created.content).to.include(comment.content)
-      expect(created.mentions).to.equals([{ id: 'test1', username: 'test1' }, { id: 'test2', username: 'test2' }])
+      expect(created.mentions).to.equals([
+        { firstName: 'test1', username: 'test1' },
+        { firstName: 'test2', username: 'test2' }
+      ])
 
       const result = await this.commentsService.update(created.id, commentUpdate)
 
@@ -177,12 +183,15 @@ describe('Comments - with mentions', () => {
         resource: 'http://example.com/example',
         reference: 'uuid-of-some-sort',
         content: 'lorm ipsum .... @test1 @test2',
-        author: { id: 'Filippo' }
+        author: { username: 'Filippo' }
       }
       const created = await this.commentsService.add(comment)
       expect(created.id).to.be.number()
       expect(created.content).to.include(comment.content)
-      expect(created.mentions).to.equals([{ id: 'test1', username: 'test1' }, { id: 'test2', username: 'test2' }])
+      expect(created.mentions).to.equals([
+        { firstName: 'test1', username: 'test1' },
+        { firstName: 'test2', username: 'test2' }
+      ])
 
       const result = await this.commentsService.delete(created.id)
       expect(result).to.include(expected)

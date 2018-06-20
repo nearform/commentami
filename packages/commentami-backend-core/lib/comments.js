@@ -20,7 +20,7 @@ async function transaction(db, task) {
 }
 
 function normalizeComment(comment) {
-  comment.author = { id: comment.author }
+  comment.author = { username: comment.author }
   if (comment.mentions && comment.mentions.length > 0) {
     comment.mentions = comment.mentions
       .map(mention => {
@@ -281,7 +281,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
 
       const result = await db.query(sql)
 
-      const authors = result.rows.map(comment => ({ id: comment.author }))
+      const authors = result.rows.map(comment => ({ username: comment.author }))
       return involvedUsers ? involvedUsers(authors) : authors
     }
   }
