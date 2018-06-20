@@ -11,7 +11,7 @@ const passwords = {
 
 const users = {
   filippo: {
-    id: 1,
+    id: 'filippo',
     username: 'filippo',
     firstName: 'Filippo',
     lastName: 'Test',
@@ -19,7 +19,7 @@ const users = {
     profileUrl: 'https://www.google.com'
   },
   paolo: {
-    id: 2,
+    id: 'paolo',
     username: 'paolo',
     firstName: 'Paolo',
     lastName: 'Test',
@@ -27,7 +27,7 @@ const users = {
     profileUrl: 'https://www.google.com'
   },
   davide: {
-    id: 3,
+    id: 'davide',
     username: 'davide',
     firstName: 'Davide',
     lastName: 'Test',
@@ -35,7 +35,7 @@ const users = {
     profileUrl: 'https://www.google.com'
   },
   test: {
-    id: 4,
+    id: 'test',
     username: 'test',
     firstName: 'test',
     lastName: 'test',

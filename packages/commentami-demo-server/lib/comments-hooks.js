@@ -1,9 +1,9 @@
 'use strict'
 
-const { fetchUserById, fetchUserByUsername } = require('./auth')
+const { fetchUserByUsername } = require('./auth')
 
 function addUser(comment) {
-  const user = fetchUserById(parseInt(comment.author))
+  const user = fetchUserByUsername(comment.author.username)
 
   if (user) {
     comment.author = user
@@ -29,7 +29,7 @@ async function fetchedComments(comments) {
 }
 
 async function involvedUsers(users) {
-  return users.map(user => fetchUserById(parseInt(user)))
+  return users.map(user => fetchUserByUsername(user.username))
 }
 
 module.exports = {

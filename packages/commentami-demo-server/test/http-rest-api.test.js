@@ -5,7 +5,7 @@ const Lab = require('lab')
 const sinon = require('sinon')
 
 module.exports.lab = Lab.script()
-const { describe, it: test, before, after } = module.exports.lab
+const { describe, it: test, before, beforeEach, after } = module.exports.lab
 
 const { resetDb } = require('../../commentami-backend-core/test/utils')
 const config = require('../config')
@@ -18,8 +18,11 @@ describe('Server', () => {
   let logMessage = sinon.spy()
 
   before(async () => {
-    await resetDb()
     server = await buildServer(config, logMessage)
+  })
+
+  beforeEach(async () => {
+    await resetDb()
   })
 
   after(async () => {
@@ -33,7 +36,7 @@ describe('Server', () => {
           resource: 'URL',
           reference: 'OLD-UUID',
           content: 'OLD-MESSAGE',
-          author: '4'
+          author: 'test'
         })
 
         const response = await server.inject({
@@ -56,7 +59,7 @@ describe('Server', () => {
         expect(result.content).to.equal(created.content)
         expect(result.author).to.be.object()
         expect(result.author).to.equal({
-          id: 4,
+          id: 'test',
           username: 'test',
           firstName: 'test',
           lastName: 'test',
@@ -72,14 +75,14 @@ describe('Server', () => {
           resource: 'URL',
           reference: 'OLD-UUID',
           content: 'OLD-MESSAGE',
-          author: 'OLD-AUTHOR'
+          author: 'test'
         })
 
         await server.commentsService.update(created.id, {
           resource: 'URL',
           reference: 'OLD-UUID',
           content: 'OLD-MESSAGE',
-          author: 'OLD-AUTHOR'
+          author: 'test'
         })
 
         await server.commentsService.delete(created.id)
@@ -94,7 +97,14 @@ describe('Server', () => {
           resource: 'URL',
           reference: 'OLD-UUID',
           content: 'OLD-MESSAGE',
-          author: '4'
+          author: 'test'
+        })
+
+        await server.commentsService.add({
+          resource: 'URL',
+          reference: 'OLD-UUID2',
+          content: 'OLD-MESSAGE2',
+          author: 'test'
         })
 
         const response = await server.inject({
@@ -117,8 +127,7 @@ describe('Server', () => {
         expect(result.comments).to.exists()
         expect(result.comments.length).to.be.at.least(1)
         expect(result.comments[0].author).to.exists()
-        expect(result.comments[0].author).to.equal({
-          id: 4,
+        expect(result.comments[0].author).to.include({
           username: 'test',
           firstName: 'test',
           lastName: 'test',

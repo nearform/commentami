@@ -5,7 +5,7 @@ const { expect } = require('code')
 const Lab = require('lab')
 
 module.exports.lab = Lab.script()
-const { describe, it: test, before, after } = module.exports.lab
+const { describe, it: test, before, beforeEach, after } = module.exports.lab
 
 const { resetDb } = require('../../commentami-backend-core/test/utils')
 const config = require('../config')
@@ -18,10 +18,13 @@ describe('Server', () => {
   let logMessage = console.log // eslint-disable-line no-console
 
   before(async () => {
-    await resetDb()
     server = await buildServer(config, logMessage)
 
     await server.start()
+  })
+
+  beforeEach(async () => {
+    await resetDb()
   })
 
   after(async () => {
@@ -51,8 +54,7 @@ describe('Server', () => {
         expect(response.payload.reference).to.equal('UUID')
         expect(response.payload.content).to.equal('MESSAGE')
         expect(response.payload.author).to.be.object()
-        expect(response.payload.author).to.equal({
-          id: 4,
+        expect(response.payload.author).to.include({
           username: 'test',
           firstName: 'test',
           lastName: 'test',
