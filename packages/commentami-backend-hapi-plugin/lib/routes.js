@@ -62,8 +62,8 @@ module.exports = {
       handler: async function(request, h) {
         const user = options.getUserFromRequest
           ? await options.getUserFromRequest(request, request.payload)
-          : { id: null }
-        const payload = Object.assign({}, request.payload, user.id ? { author: '' + user.id } : null)
+          : { username: null }
+        const payload = Object.assign({}, request.payload, user.username ? { author: '' + user.username } : null)
 
         return request.commentsService.add(payload)
       },
