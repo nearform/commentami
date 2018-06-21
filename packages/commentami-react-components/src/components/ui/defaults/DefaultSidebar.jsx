@@ -45,8 +45,8 @@ export class DefaultSidebar extends React.Component {
             </a>
           )}
         </header>
-        <NewCommentForm reference={reference} />
-        <CommentsList reference={reference} />
+        {reference && <NewCommentForm reference={reference} />}
+        {reference && <CommentsList reference={reference} />}
       </div>
     )
   }

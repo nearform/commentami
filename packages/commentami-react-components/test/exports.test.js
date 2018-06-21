@@ -23,6 +23,7 @@ describe('exports', () => {
   describe('ui', () => {
     test('should export right modules', () => {
       expect(Object.keys(ui).sort()).toEqual([
+        'Commentami',
         'CommentsList',
         'CommentsListBase',
         'DeepLinkController',
