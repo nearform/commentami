@@ -52,7 +52,7 @@ const commentsHttpService = HttpService('http://localhost:8080/')
 class SamplePage extends React.Component {
   render() {
     return (
-      <Commentami resource="res-1" service={service}>
+      <Commentami resource="res-1" service={commentsHttpService}>
         <Reference reference="reference-1">
           <h1>Text Title 1</h1>
         </Reference>
