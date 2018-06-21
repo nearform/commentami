@@ -1,7 +1,7 @@
 import { Client as NesClient } from 'nes'
 
-export function buildWebsocketClient(baseUrl) {
-  return new NesClient(baseUrl)
+export function buildWebsocketClient(baseUrl, options) {
+  return new NesClient(baseUrl, options)
 }
 
 /**

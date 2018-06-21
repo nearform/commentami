@@ -11,7 +11,8 @@ export class Notifications extends React.Component {
     this.state = {
       notifications: [],
       removeNotificationFromList: this.removeNotificationFromList.bind(this),
-      active: !!props.service
+      active: !!props.service,
+      service: props.service
     }
   }
 
@@ -39,30 +40,57 @@ export class Notifications extends React.Component {
   }
 
   async componentDidMount() {
-    if (!this.props.service) return
+    if (!this.state.service) return
 
-    this.unsubscribe = await this.props.service.onUserNotification(this.props.userIdentifier, notification =>
-      this.triggerNotification(notification)
-    )
-
-    this.setState({
-      active: true
-    })
-  }
-
-  async componentWillUpdate(nextProps) {
-    if (!nextProps.service) return
-
-    if (!this.unsubscribe || this.props.userIdentifier !== nextProps.userIdentifier) {
-      this.unsubscribe && (await this.unsubscribe())
-
-      this.unsubscribe = await nextProps.service.onUserNotification(nextProps.userIdentifier, notification =>
+    try {
+      this.unsubscribe = await this.state.service.onUserNotification(this.props.userIdentifier, notification =>
         this.triggerNotification(notification)
       )
 
       this.setState({
         active: true
       })
+    } catch (e) {
+      this.setState({
+        service: null,
+        active: false
+      })
+    }
+  }
+
+  async componentWillUpdate(nextProps, nextState) {
+    if (this.state.service && !nextProps.service) {
+      this.unsubscribe && (await this.unsubscribe())
+
+      this.setState({
+        active: false,
+        service: null
+      })
+
+      return
+    }
+
+    if (nextProps.service && (!this.unsubscribe || this.props.userIdentifier !== nextProps.userIdentifier)) {
+      this.unsubscribe && (await this.unsubscribe())
+
+      try {
+        this.unsubscribe = await nextProps.service.onUserNotification(nextProps.userIdentifier, notification =>
+          this.triggerNotification(notification)
+        )
+
+        this.setState({
+          notifications: [],
+          active: true,
+          service: nextProps.service
+        })
+      } catch (e) {
+        if (!!nextState.active || !!nextState.service) {
+          this.setState({
+            active: false,
+            service: null
+          })
+        }
+      }
     }
   }
 
