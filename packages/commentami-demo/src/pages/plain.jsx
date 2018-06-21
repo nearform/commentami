@@ -1,16 +1,66 @@
-import { Resource, WebsocketService } from '@nearform/commentami-react-components'
-import { Reference, Sidebar, SidebarsController } from '@nearform/commentami-react-components/dist/ui'
 import React from 'react'
+import { style } from 'typestyle'
+import { Resource, WebsocketService, buildWebsocketClient } from '@nearform/commentami-react-components'
+import { Reference, SidebarsController, DeepLinkController } from '@nearform/commentami-react-components/dist/ui'
 import { ErrorIndicator, LoadingIndicator } from '../components/indicators'
+import { NotificationsList } from '../components/notifications/notificationsList'
+import { Sidebar } from '../components/sidebar'
+import { UserContext } from '../components/user'
 import { pageClassName } from './index'
 
-const service = WebsocketService('ws://localhost:8080/')
+const notificationsListClass = style({
+  position: 'absolute',
+  top: '25px',
+  right: '25px',
+  background: '#ffffff',
+  border: '1px solid #cecece',
+  borderRadius: '4px',
+  padding: '16px',
+  zIndex: 1000
+})
 
-export function PlainPage() {
-  return (
-    <div className={pageClassName}>
+class WebsocketsCommentsEnabled extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      client: null,
+      service: null
+    }
+  }
+
+  async componentDidMount() {
+    const client = buildWebsocketClient('ws://127.0.0.1:8080')
+    await client.connect({ auth: { headers: { authorization: this.props.authorization } } })
+
+    this.setState({
+      client,
+      service: WebsocketService(client)
+    })
+  }
+
+  async componentWillUpdate(nextProps) {
+    if (this.props.authorization !== nextProps.authorization) {
+      await this.state.client.disconnect()
+
+      const client = buildWebsocketClient('ws://127.0.0.1:8080')
+      await client.connect({ auth: { headers: { authorization: this.props.authorization } } })
+
+      this.setState({
+        client,
+        service: WebsocketService(client)
+      })
+    }
+  }
+
+  async componentWillUnmount() {
+    await this.state.client.disconnect()
+  }
+
+  render() {
+    return (
       <SidebarsController>
-        <Resource resource="plain-1" service={service}>
+        <Resource resource="plain-1" service={this.state.service}>
           <LoadingIndicator />
           <ErrorIndicator />
 
@@ -56,7 +106,7 @@ export function PlainPage() {
           <Sidebar />
         </Resource>
 
-        <Resource resource="another" service={service}>
+        <Resource resource="another" service={this.state.service}>
           <LoadingIndicator />
 
           <Reference reference="header">
@@ -90,6 +140,21 @@ export function PlainPage() {
           <Sidebar />
         </Resource>
       </SidebarsController>
-    </div>
-  )
+    )
+  }
+}
+
+export class PlainPage extends React.Component {
+  render() {
+    return (
+      <DeepLinkController>
+        <div className={pageClassName}>
+          <NotificationsList className={notificationsListClass} />
+          <UserContext.Consumer>
+            {({ authorization }) => <WebsocketsCommentsEnabled authorization={authorization} />}
+          </UserContext.Consumer>
+        </div>
+      </DeepLinkController>
+    )
+  }
 }

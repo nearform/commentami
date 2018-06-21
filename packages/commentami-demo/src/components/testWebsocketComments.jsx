@@ -49,7 +49,7 @@ export class TestWebsocketComments extends React.Component {
         <h1>Websockets</h1>
         <Resource resource="multiple-2" service={this.state.service}>
           <Table data={data} />
-          <Sidebar title="Second" />
+          <Sidebar />
           <LoadingIndicator />
           <ErrorIndicator />
         </Resource>

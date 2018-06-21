@@ -12,12 +12,16 @@ class NotificationsBuilder extends React.Component {
   }
 
   async componentDidMount() {
-    const client = buildWebsocketClient('ws://127.0.0.1:8080')
-    await client.connect({ auth: { headers: { authorization: this.props.authorization } } })
+    try {
+      const client = buildWebsocketClient('ws://127.0.0.1:8080')
+      await client.connect({ auth: { headers: { authorization: this.props.authorization } } })
 
-    this.setState({
-      service: WebsocketService(client)
-    })
+      this.setState({
+        service: WebsocketService(client)
+      })
+    } catch (e) {
+      this.props.logger && this.props.logger.error(e)
+    }
   }
 
   render() {

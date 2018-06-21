@@ -102,6 +102,19 @@ describe('WebsocketService', () => {
     expect(mockUnsubscribe).toHaveBeenCalledWith('/resources/res-1', handler)
   })
 
+  test('Subscribe on the user', async () => {
+    const user = 'test'
+
+    const handler = jest.fn()
+    const unsubscribe = await service.onUserNotification(user, handler)
+
+    expect(mockSubscribe.mock.calls.length).toEqual(1)
+    expect(mockSubscribe.mock.calls[0][0]).toEqual('/users/test')
+
+    await unsubscribe()
+    expect(mockUnsubscribe).toHaveBeenCalledWith('/users/test', handler)
+  })
+
   afterAll(async () => {
     await client.disconnect()
   })
