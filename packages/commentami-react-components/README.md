@@ -34,7 +34,47 @@ class SamplePage extends React.Component {
 
 ```
 
-The steps we need to make this page commentable are the following:
+To make this page quickly commentable is required:
+
+* to wrap everything inside the `Commentami` component
+* Define a service that manage the connection with the server
+* add a reference to the each child
+
+```
+import {
+  Commentami,
+  Reference,
+  HttpService
+} from '@nearform/commentami-react-components'
+
+const commentsHttpService = HttpService('http://localhost:8080/')
+
+class SamplePage extends React.Component {
+  render() {
+    return (
+      <Commentami resource="res-1" service={service}>
+        <Reference reference="reference-1">
+          <h1>Text Title 1</h1>
+        </Reference>
+        <Reference reference="reference-2">
+          <p>Paragraphs are separated by a blank line.</p>
+        </Reference>
+        <Reference reference="reference-3">
+          <p>
+            2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look like:
+          </p>
+        </Reference>
+      </Commentami>
+    )
+  }
+}
+```
+
+This solution allow to have quickly a single `resource` commentable per page.
+
+**If we would like to have a more complex structure with many resources per page we need to use the specific components.**
+
+The steps we need to make the page commentable using the specific components one by one are the following:
 
 * Define the commentable area and assign a `resource` identifier
 * Identify the single references in the text
