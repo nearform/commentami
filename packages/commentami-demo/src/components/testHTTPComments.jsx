@@ -43,7 +43,7 @@ export class TestHTTPComments extends React.Component {
         <h1>HTTP</h1>
         <Resource resource="multiple-3" service={this.state.service}>
           <Table data={data} />
-          <Sidebar title="Second" />
+          <Sidebar />
           <LoadingIndicator />
           <ErrorIndicator />
         </Resource>
