@@ -1,4 +1,5 @@
 export { Reference, ReferenceBase } from './components/ui/Reference'
+export { Commentami } from './components/ui/Commentami'
 export { CommentsList, CommentsListBase } from './components/ui/CommentsList'
 export { SidebarsController, SidebarsControllerContext, withSidebars } from './components/ui/SidebarsController'
 

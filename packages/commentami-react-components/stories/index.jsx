@@ -8,6 +8,7 @@ import { Reference } from '../src/components/ui/Reference'
 import { SidebarsController } from '../src/components/ui/SidebarsController'
 import { Sidebar } from '../src/components/ui/Sidebar'
 import { CommentsInMemoryService } from '../test/helpers/CommentsInMemoryService'
+import { Commentami } from '../src/components/ui/Commentami'
 
 cssRule('.nf-commentami-reference', {
   position: 'relative',
@@ -129,10 +130,62 @@ const chartOptions = {
 
 const commentService = CommentsInMemoryService()
 
-storiesOf('Commentable/Text', module).add('Sample Text', () => (
-  <div style={{ margin: '30px' }}>
-    <SidebarsController>
-      <Resource resource="first" service={commentService}>
+storiesOf('Commentable/Text', module)
+  .add('Sample Text', () => (
+    <div style={{ margin: '30px' }}>
+      <SidebarsController>
+        <Resource resource="first" service={commentService}>
+          <Reference reference="comm-1">
+            <h1>First provider</h1>
+          </Reference>
+          <Reference reference="comm-2">
+            <p>Paragraphs are separated by a blank line.</p>
+          </Reference>
+          <Reference reference="comm-3">
+            <p>
+              2nd paragraph. <em>Italic</em>, <strong>bold</strong>, and <code>monospace</code>. Itemized lists look
+              like:
+            </p>
+          </Reference>
+          <Reference reference="comm-4">
+            <ul>
+              <li>this one</li>
+              <li>that one</li>
+              <li>the other one</li>
+            </ul>
+          </Reference>
+
+          <Sidebar />
+        </Resource>
+
+        <Resource resource="another-2" service={commentService}>
+          <Reference reference="comm-1">
+            <h1>Another provider</h1>
+          </Reference>
+
+          <Reference reference="comm-5">
+            <blockquote>
+              <p>Block quotes are written like so.</p>
+              <p>They can span multiple paragraphs, if you like.</p>
+            </blockquote>
+          </Reference>
+          <Reference reference="comm-6">
+            <p>Note that --- not considering the asterisk --- the actual text content starts at 4-columns in.</p>
+          </Reference>
+          <Reference reference="comm-7">
+            <div>
+              <BarChart data={chartData} options={chartOptions} />
+            </div>
+          </Reference>
+
+          <Sidebar />
+        </Resource>
+      </SidebarsController>
+    </div>
+  ))
+  .add('Commentami component', () => (
+    <div style={{ margin: '30px' }}>
+      <Commentami resource="first" service={commentService}>
         <Reference reference="comm-1">
           <h1>First provider</h1>
         </Reference>
@@ -151,32 +204,6 @@ storiesOf('Commentable/Text', module).add('Sample Text', () => (
             <li>the other one</li>
           </ul>
         </Reference>
-
-        <Sidebar />
-      </Resource>
-
-      <Resource resource="another-2" service={commentService}>
-        <Reference reference="comm-1">
-          <h1>Another provider</h1>
-        </Reference>
-
-        <Reference reference="comm-5">
-          <blockquote>
-            <p>Block quotes are written like so.</p>
-            <p>They can span multiple paragraphs, if you like.</p>
-          </blockquote>
-        </Reference>
-        <Reference reference="comm-6">
-          <p>Note that --- not considering the asterisk --- the actual text content starts at 4-columns in.</p>
-        </Reference>
-        <Reference reference="comm-7">
-          <div>
-            <BarChart data={chartData} options={chartOptions} />
-          </div>
-        </Reference>
-
-        <Sidebar />
-      </Resource>
-    </SidebarsController>
-  </div>
-))
+      </Commentami>
+    </div>
+  ))
