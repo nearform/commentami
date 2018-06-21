@@ -34,7 +34,7 @@ class SamplePage extends React.Component {
 
 ```
 
-To make this page quickly commentable is required:
+To make this page quickly commentable you need to:
 
 * to wrap everything inside the `Commentami` component
 * Define a service that manage the connection with the server
@@ -72,7 +72,7 @@ class SamplePage extends React.Component {
 
 This solution allow to have quickly a single `resource` commentable per page.
 
-**If we would like to have a more complex structure with many resources per page we need to use the specific components.**
+**If you would like to have a more complex structure with many resources per page we need to use the specific components.**
 
 The steps we need to make the page commentable using the specific components one by one are the following:
 
