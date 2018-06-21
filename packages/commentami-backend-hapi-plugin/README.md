@@ -43,14 +43,14 @@ If you want `@nearform/commentami-backend-hapi-plugin` to populate the `author` 
 ```
 options.routes = {
   auth: 'myauth',
-  getUser: async (request, payload) => {
+  getUserFromRequest: async (request, payload) => {
     // ...
     return user
   }
 }
 ```
 
-The `getUser` function will need to return a promise that will yield either `null` or an object with the property `id` (ie : `{ id: 1, ... }`). We will store that `id` value as the author identifier. Beware that **`author` will be stored as a string**.
+The `getUserFromRequest` function will need to return a promise that will yield either `null` or an object with the property `id` (ie : `{ id: 1, ... }`). We will store that `id` value as the author identifier. Beware that **`author` will be stored as a string**.
 
 ### `options.hooks` \[optional\]
 
@@ -106,8 +106,10 @@ nes: {
 }
 ```
 
-### `options.resolvers.resolveUrl`
-The `commentami` library requires the exact url of a `comment` to build the deeplink. A resultUrl(comment) resolver should be provided.
+### `options.resolvers.resolveUrl` \[optional\]
+
+The `commentami` library requires the exact url of a `comment` to build the deeplink. A `resultUrl(comment)` should be provided if you eant to use this functionality.
+
 ```
 options.resolvers = {
   resolveUrl: async (comment) => {

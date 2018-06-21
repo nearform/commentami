@@ -32,7 +32,6 @@ const commentsHapiPlugin = {
     const commentsService = buildCommentsService(db, options.hooks)
 
     server.decorate('server', 'commentsService', commentsService)
-    server.decorate('server', 'resolvers', options.resolvers)
     server.decorate('request', 'commentsService', commentsService)
 
     if (options.multines) {
@@ -58,7 +57,7 @@ const commentsHapiPlugin = {
 
       server.commentsService.on('add', comment => {
         server.methods.notifyComment(comment, { action: 'add' })
-        server.methods.notifyUser(comment, options.resolvers.resolveUrl)
+        server.methods.notifyUser(comment, options.resolvers && options.resolvers.resolveUrl)
       })
       server.commentsService.on('update', comment => {
         server.methods.notifyComment(comment, { action: 'update' })
