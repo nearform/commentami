@@ -72,9 +72,9 @@ class SamplePage extends React.Component {
 
 This solution allow to have quickly a single `resource` commentable per page.
 
-**If you would like to have a more complex structure with many resources per page we need to use the specific components.**
+**If you would like to have a more complex structure with many resources per page you need to use the specific components.**
 
-The steps we need to make the page commentable using the specific components one by one are the following:
+The steps you need to make the page commentable using the specific components one by one are the following:
 
 * Define the commentable area and assign a `resource` identifier
 * Identify the single references in the text
@@ -106,7 +106,7 @@ class SamplePage extends React.Component {
 
 ##### Identify the single references in the text
 
-Every part we would like to comment should be wrapped around a `Reference`. This operation can be easily automated.
+Every part you would like to comment should be wrapped around a `Reference`. This operation can be easily automated.
 
 ```
 import { Resource, Reference } from '@nearform/commentami-react-components'
@@ -135,7 +135,7 @@ class SamplePage extends React.Component {
 
 ##### Assign a service for the backend integration
 
-Now that the component is correctly wrapped, we need to configure the service that allows the backend integration.
+Now that the component is correctly wrapped, you need to configure the service that allows the backend integration.
 
 ```
 import {
@@ -170,7 +170,7 @@ class SamplePage extends React.Component {
 
 ##### Assign a component to show/add the comments related to a reference
 
-To provide this feature we need to wrap everithing inside a SidebarsController and add the component that acts as a interface for the user to show the comments, add new ones or remove them.
+To provide this feature you need to wrap everithing inside a SidebarsController and add the component that acts as a interface for the user to show the comments, add new ones or remove them.
 
 ```
 import {
