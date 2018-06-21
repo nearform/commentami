@@ -33,7 +33,7 @@ await server.register([{
     routes: {
       cors: true,
       auth: 'simple',
-      getUser: async (request, payload) => {
+      getUserFromRequest: async (request, payload) => {
         let user = request.auth.credentials
 
         return user
@@ -45,7 +45,7 @@ await server.register([{
 ...
 ```
 
-This will initialize your server with an authentication strategy (`simple`) and scheme (`basic`), and tell `@nearform/commentami-backend-hapi-plugin` to use that strategy for its own routes. Moreover, we added the `getUser` function to let the plugin know how to retrieve a user when a request comes in. This way, when adding a comment, the `author` field of a comment will be populated with whatever is the value of `user.username`.
+This will initialize your server with an authentication strategy (`simple`) and scheme (`basic`), and tell `@nearform/commentami-backend-hapi-plugin` to use that strategy for its own routes. Moreover, we added the `getUserFromRequest` function to let the plugin know how to retrieve a user when a request comes in. This way, when adding a comment, the `author` field of a comment will be populated with whatever is the value of `user.username`.
 
 For the strategy to work we need to define the `validate` function. For the purpose of this example we will create a `auth.js` file that will contain all functions relative to users management.
 

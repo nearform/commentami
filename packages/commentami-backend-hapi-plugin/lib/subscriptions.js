@@ -32,11 +32,14 @@ async function notifyUser(comment, resolveUrl) {
   }
 
   const notifications = []
-  const baseUrl = await resolveUrl(comment)
-  const url =
-    `${baseUrl}?resource=${encodeURIComponent(comment.resource)}` +
-    `&reference=${encodeURIComponent(comment.reference)}&` +
-    `comment=${encodeURIComponent(comment.id)}`
+  let url = null
+  if (resolveUrl) {
+    const baseUrl = await resolveUrl(comment)
+    url =
+      `${baseUrl}?resource=${encodeURIComponent(comment.resource)}` +
+      `&reference=${encodeURIComponent(comment.reference)}&` +
+      `comment=${encodeURIComponent(comment.id)}`
+  }
 
   const mentions = comment.mentions || []
   const filteredMentions = mentions.filter(mention => mention.username !== comment.author.username)
