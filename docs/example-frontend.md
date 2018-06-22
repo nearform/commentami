@@ -4,7 +4,7 @@ This example will show you how to use the React components to build and customiz
 
 ## A commentable page
 
-We have a sample text a we would like to make it commentable.
+We have a simple text and we would like to make it commentable.
 
 ```
   <h1>Welcome!</h1>
@@ -36,28 +36,27 @@ We have a sample text a we would like to make it commentable.
 ```
 
 To make the page commentable we need to do various steps:
+
   * Define the commentable area
-  * Assign the reference to the text blocks
-  * Add a sidebar that allow to add a new comment to a reference...
-  * ...and shows the comments added.
+  * Assign references to the text blocks
+  * Add a sidebar that will allow to add a new comment and shows the comments list
   * Add a deeplink manager that takes the url properties and open the sidebar in the right position with the comment highlighted
 
-Let's start checking how the structure will be ate the end of the process. In the image below you can see how the Commentami Components are used.
+Let's start from the end result. In the image below you can see how the Commentami Components are used.
 
 ***In the image below an example of commentable page.***
 ![Components](./images/components.png "Components")
 
-A comment is located in the system using 2 positional identifiers:
-
-* resource
-* reference
+A comment is located in the system using 2 positional identifiers: a`resource` and a `reference`.
 
 The `resource` identifies the area (eg. a page, a table) and the `reference` indentifies the specific part of the resource (eg. a text block, a cell)
 
 ### Resource
-To define a commentable area the `<Resource>` component is used.
 
-Given the previous page definition we would like to define the `<p>` commentable, as a first step we need to wrap the block inside the `<Resource>` component and assign a `resource` identifier.
+To define a commentable area you can use the `<Resource>` component.
+
+Given the previous page definition we would like to define the `<p>` commentable, as a first step we need to wrap the block inside the `<Resource>` component, passing a `resource` prop.
+
 ```
   <h1>Welcome!</h1>
   <h2>Each text in this page is commentable. Just double click on it.</h2>
@@ -79,7 +78,8 @@ Given the previous page definition we would like to define the `<p>` commentable
 ```
 
 ### Reference
-Now that the area is defined the `<p>` blocks should be tagged as a `reference` using the `<Reference>` component.
+
+Now that the area is defined the `<p>` blocks should be tagged as references using the `<Reference>` component.
 
 ```
   <h1>Welcome!</h1>
@@ -107,10 +107,11 @@ Now that the area is defined the `<p>` blocks should be tagged as a `reference` 
   </Resource>
 ```
 
-The `<Reference>` component provided with the library implements the basic feature to interact with the others UI components. It requires to be in a SidebarsControllers to works.
+To make the `<Reference>` interact with the other components (sidebar and comments list), we need to wrap the page into a `<SidebarsControllers>`.
 
 ### SidebarsController
-The sidebar controller provides the feature to interact with the layout and manage the DoubleClick event that opens the sidebar to interact with a `reference`.
+
+The sidebar controller provides the feature to interact with the othe ui components and manage the DoubleClick event that opens the comments sidebar specific for each `reference`.
 
 ```
   <SidebarsController>
@@ -141,9 +142,10 @@ The sidebar controller provides the feature to interact with the layout and mana
 ```
 
 ### Sidebar
-Now that the SidebarController was added we need to add a Sidebar.
-The Sidebar interact with the controller and provides the Form to add new comment and the list of existing comments.
-***The SideBar should be added inside the Resource component***
+
+Now that the SidebarController is in place, we need to add a Sidebar. The `<Sidebar>` component will show the comment form and the comments list, and will interact with the controller to add new comment and the list of existing ones.
+
+The SidebarController has a default sidebar but it;s very basic. To override it, put a custom `<SideBar>` component inside the <Resource> component.
 
 ```
   <SidebarsController>
@@ -175,6 +177,7 @@ The Sidebar interact with the controller and provides the Form to add new commen
 ```
 
 ### Backend socket integration
+
 The connection with the backend is done passing a `service` directly in the `<Resource>` component.
 
 
@@ -189,13 +192,14 @@ await client.connect({ auth: { headers: { authorization: this.props.authorizatio
 const websocketService =  WebsocketService(client)
 
 // Assign the service
-...
-  <Resource resource="resource-1" service={websocketService}>
-...
+<Resource resource="resource-1" service={websocketService}>
+  ...
+</Resource>
 ```
 
-### Use the deeplinking
-Adding a `<DeepLinkController>` it's possible to access directly to a comment using a deeplink URL in the format `http://someurl/somepage/?resource=RESOURCE&reference=REFERENCE&comment=12345`
+### Use the deeplinking feature
+
+Adding a `<DeepLinkController>` it's possible to access directly to a comment.
 
 ```
 <DeepLinkController>
@@ -209,7 +213,7 @@ Adding a `<DeepLinkController>` it's possible to access directly to a comment us
 </DeepLinkController>
 ```
 
-The page will be loaded directly with teh Sidebar opened and scrolled to the comment linked.
+When the page is loaded with the following query paramenters `http://someurl/somepage/?resource=RESOURCE&reference=REFERENCE&comment=12345`, it will trigger the scroll into view of the `Reference` component, the opening of the correct sidebar and scroll into view of the comment.
 
 ### The full implementation
 
@@ -245,6 +249,7 @@ The page will be loaded directly with teh Sidebar opened and scrolled to the com
 ```
 
 ### `<Commentami>` component
+
 The example above can be rewritten quickly using the `<Commentami>` component.
 
 ```
@@ -273,5 +278,5 @@ The example above can be rewritten quickly using the `<Commentami>` component.
 </Commentami>
 ```
 
-The Commentami component has a limitation, it allow only one Resource per page, but if you don't need many resource in a page allows to quickly make a page commentable.
+The Commentami component has a limitation though. It allows only one `Resource` per page, but if you don't need many resource in a page, this is all you need to make it commentable!
 
