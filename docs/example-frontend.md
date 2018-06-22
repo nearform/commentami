@@ -280,3 +280,61 @@ The example above can be rewritten quickly using the `<Commentami>` component.
 
 The Commentami component has a limitation though. It allows only one `Resource` per page, but if you don't need many resource in a page, this is all you need to make it commentable!
 
+### Customize the Sidebar
+A new Sidebar component can be easily created using the `withSidebars` HOC and the `<NewCommentForm>` `<CommentsList>` components.
+
+The withSidebars HOC provides a `controller` property that allow the interaction with the sidebars controller.
+
+
+```javascript
+
+// The CommentList component allow to pass a `commentComponent` propety to customize the comments rendering
+class CustomComment extends React.Component {
+  render() {
+    const {content, author} = this.props.comment
+
+    return (
+      <article>
+        <div>{content}</div>
+        <div>by {author.username}</div>
+        <button onClick={() => this.props.removeComment(this.props.comment)}>Remove</button>
+      </article>
+    )
+  }
+}
+
+
+class CustomSidebarBase extends React.Component {
+  constructor(props) {
+    super(props)
+    this.boundHandleClose = this.handleClose.bind(this)
+  }
+
+  handleClose(ev) {
+    const payload = {
+      scope: 'sidebar-close'
+    }
+
+    this.props.controller.handleClick(payload, ev)
+  }
+
+  render() {
+    const reference = this.props.controller.reference
+    return (
+      <div>
+        <header>
+          <h1>Comments</h1>
+          <a href="#" onClick={this.boundHandleClose}>
+            Close
+          </a>
+        </header>
+        <NewCommentForm reference={reference} />
+        <CommentsList reference={reference} commentComponent={CustomComment}/>
+      </div>
+    )
+  }
+}
+
+const CustomSidebar = withSidebars(CustomSidebarBase)
+```
+
