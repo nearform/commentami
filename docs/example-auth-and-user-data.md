@@ -11,7 +11,7 @@ First of all we need to setup an authentication method. As an example we will us
 
 In the file where you initialize the server you should have something like:
 
-```
+```javascript
 const Basic = require('hapi-auth-basic')
 const { validate } = require('./auth')
 
@@ -47,9 +47,9 @@ await server.register([{
 
 This will initialize your server with an authentication strategy (`simple`) and scheme (`basic`), and tell `@nearform/commentami-backend-hapi-plugin` to use that strategy for its own routes. Moreover, we added the `getUserFromRequest` function to let the plugin know how to retrieve a user when a request comes in. This way, when adding a comment, the `author` field of a comment will be populated with whatever is the value of `user.username`.
 
-For the strategy to work we need to define the `validate` function. For the purpose of this example we will create a `auth.js` file that will contain all functions relative to users management.
+For the strategy to work, we need to define the `validate` function. For the purpose of this example we will create a `auth.js` file that will contain all functions relative to users management.
 
-```
+```javascript
 // auth.js
 
 // THIS IS NOT FOR A PRODUCTION ENVIRONMENT
@@ -103,7 +103,7 @@ Once the `auth.js` is up and the plugin is wired to the `simple` strategy, we ne
 
 Start the server and then try to run the following scripts
 
-```
+```javascript
 // Http client
 
 const request = require('superagent')
@@ -129,11 +129,11 @@ request
 //   reference: 'UUID',
 //   content: 'MESSAGE',
 //   createdAt: ...,
-//   author: 1
+//   author: { username: 'test' }
 // }
 ```
 
-```
+```javascript
 // Websocket
 
 const Nes = require('nes')
@@ -171,7 +171,7 @@ run()
 //   reference: 'UUID',
 //   content: 'MESSAGE',
 //   createdAt: ...,
-//   author: 1
+//   author: { username: 'test' }
 // }
 ```
 
@@ -183,10 +183,10 @@ Now that we have the authentication in place, we should be able to add users dat
 
 To do so we can add the `hooks` property to the plugin configuration:
 
-```
+```javascript
 const commentsHooks = require('./comments-hooks')
 
-[...]
+// [...]
 
 await server.register([{
   plugin: require('@nearform/commentami-backend-hapi-plugin'),
@@ -201,13 +201,13 @@ The `comments-hooks.js` file will export an object with two properties: `fetched
 
 The following is our example `comments-hooks.js` content
 
-```
+```javascript
 // THIS IS NOT FOR A PRODUCTION ENVIRONMENT
 
-const { fetchUserById } = require('./auth')
+const { fetchUserByUsername } = require('./auth')
 
 function addUser(comment) {
-  const user = fetchUserById(parseInt(comment.author))
+  const user = fetchUserByUsername(comment.author.username)
 
   if (user) {
     comment.author = user
@@ -230,11 +230,11 @@ module.exports = {
 }
 ```
 
-In a few words: we are looking for a user based on the `comment.author` field (`fetchUserById(parseInt(comment.author))`) and if found, we replace the comment `author` field with the user data.
+In a few words: we are looking for a user based on the `comment.author` field (`fetchUserByUsername(comment.author.username)`) and if found, we replace the comment `author` field with the user data.
 
 If we now run again the two client scripts, we should get something like this in the console
 
-```
+```javascript
 {
   id: ...,
   resource: 'URL',
@@ -252,6 +252,6 @@ If we now run again the two client scripts, we should get something like this in
 }
 ```
 
-This's it! You now have all `commentami` endpoints decorating comments with their users data.
+This's it! You now have all `commentami` endpoints decorating comments with their users data and protected by your authentication strategy.
 
 If you want to have a look at a working example, you can head to the [`commentami-demo-server` package](https://github.com/nearform/commentami/tree/master/packages/commentami-demo-server) and check out the configuration there.
