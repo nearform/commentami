@@ -1,6 +1,6 @@
 # Real time notifications and deep linking
 
-In our system a notification object has the following interface:
+In our system a notification object has the following model:
 
 ```
 {
@@ -21,13 +21,13 @@ Last but not least `url`. This property is optional and it should contain a link
 
 As of today, the server uses the users `username` to identify a user.
 
-It's value is saved as the `author` or a comment and in the `mentions` array if one or more mentions `@<username>` are found in the comment content.
+It's value is saved as the `author` of a comment and in the `mentions` array if one or more mentions `@<username>` are found in the comment content.
 
 The mentions notifications process is automatic and will happen even if there is no authentication in place. As long as a client subscribe to the right channel (ie: `/users/{username}`), it will get notified if a mention happen.
 
 The "answers to comment" notification process needs one of the following:
 
-- the client provides an `author` field when adding a comment
+- the client provides an `author` field when adding a comment, or
 - an [authentication strategy and the `getUserFromRequest` option](/example-auth-and-user-data#add-authentication)
 
 Lastly, to create a deep link to the comment you should implement a `resolveUrl` function and pass it as follow to the plugin
@@ -70,18 +70,18 @@ The `Notifications` component accepts the following props
 />
 ```
 
-The `userIdentifier` is a string or a number that identify the user and that will be used to subscribe to the server notifications about that user ([see above](#...)).
+The `userIdentifier` is a string or a number that identify the user and that will be used to subscribe to the server notifications about that user.
 
 The `service` should be an instance of the [`WebsocketService`](https://github.com/nearform/commentami/blob/master/packages/commentami-react-components/src/services/WebsocketService.js) or a similar object that exposes a [`onUserNotification`](https://github.com/nearform/commentami/blob/master/packages/commentami-react-components/src/services/WebsocketService.js#L92) function.
 
-The `onUserNotification` accepts two parameters: a `userIdentifier` and a handler function for when a notification is sent for that user.
+The `onUserNotification` accepts two parameters: a `userIdentifier` and a handler function for when a notification is sent for that user. It returns an `unsubscribe` function that should be called when the client wants to stop receiving notifications on that user.
 
 The notifications state passed down by the `NotificationsContext` has the following properties:
 
 - `notifications`: this is an array containing all the notifications that need to be displayed
 - `removeNotificationFromList`: this is a function that will remove a specific notification from the `notifications` array
 
-As of today there is no concept of "unread" notifications, nor a list of all received notifications.
+**As of today there is no concept of "unread" notifications, nor a list of all received notifications.**
 
 The notifications listed will be only the ones received after the loading of the `Notifications` component, and the only way to remove them from the list is the `removeNotificationFromList` function.
 
