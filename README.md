@@ -1,6 +1,6 @@
 # @nearform/commentami
 
-[![CircleCI](https://circleci.com/gh/nearform/comments/tree/master.svg?style=svg&circle-token=560be71ca1b0f5855e1e3462a69221bc34da3aac)](https://circleci.com/gh/nearform/comments/tree/master)
+[![CircleCI](https://circleci.com/gh/nearform/commentami/tree/master.svg?style=svg&circle-token=560be71ca1b0f5855e1e3462a69221bc34da3aac)](https://circleci.com/gh/nearform/commentami/tree/master)
 
 Commentami - React Comments system (Google doc like)
 
@@ -89,13 +89,15 @@ As the Postgresql docker container has its 5432 port forwarded on the local mach
 
 To access the database using the pgAdmin you have to fill in also the container IP beside the database names and access credentials. The container IP can be seen with `docker ps`. Use IP 127.0.0.1 and use postgres as username/password to connect to database server.
 
-## Testing
+## Testing and linting
 
-To run tests:
+To run tests
 
 ```
-lerna run test
+run test
 ```
+
+To run the linter
 
 ```
 npm run lint
@@ -144,19 +146,36 @@ docker-compose up
 
 ### Initializing the db
 
-You can run
+Run
 
 ```
-docker exec app_1 npm run pg:init
+docker ps
+```
+
+and take the name of your `app` container
+
+```
+CONTAINER ID        IMAGE               COMMAND                  CREATED                  STATUS              PORTS                    NAMES
+e7e59d3c637b        commentami_app      "npm run start"          Less than a second ago   Up 10 seconds       0.0.0.0:8080->8080/tcp   commentami_app_1
+a311174dcadd        postgres:10         "docker-entrypoint.s…"   Less than a second ago   Up 12 seconds       0.0.0.0:5432->5432/tcp   commentami_postgres_1
+172f656dc618        redis:alpine        "docker-entrypoint.s…"   Less than a second ago   Up 11 seconds       0.0.0.0:6379->6379/tcp   commentami_redis_1
+```
+
+and then tun
+
+```
+docker exec commentami_app_1 npm run pg:init
 ```
 
 ### Run tests
 
-To run the tests use
+To run the tests you can use
 
 ```
-docker exec app_1 npm test
+docker exec commentami_app_1 npm test
 ```
+
+**Note:** the server running on docker does not reaload the code if you change it.
 
 ### Pinging the app from curl
 

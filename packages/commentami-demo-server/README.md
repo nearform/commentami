@@ -29,9 +29,13 @@ By default the configuration of the server is for running locally.
 
 You can also change the databse connection parameters through `@nearform/commentami-backend-core` env variables. See `@nearform/commentami-backend-core` [documentation](https://github.com/nearform/commentami/blob/master/packages/commentami-backend-core/README.md) for more info
 
+## Authentication
+
+A basic auth has been enabled on the server routes. You can find [here](https://github.com/nearform/commentami/blob/documentation-review/packages/commentami-demo-server/lib/auth.js#L5-L10) all the username/password pair available.
+
 ## Dependency
 
-To run the server you will need a postgres server (store comments) and a redis server (pub.sub system for notifications via websocket).
+To run the server you will need a postgres server (store comments) and a redis server (pub/sub system for notifications via websocket).
 
 ## Usage
 

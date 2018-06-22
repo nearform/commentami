@@ -1,6 +1,6 @@
 # @nearform/commentami-backend-hapi-plugin
 
-`@nearform/commentami-backend-hapi-plugin` is a plugin to add the commentami REST API and (if specified) Websockets to a [Hapi][hapi] server.
+`@nearform/commentami-backend-hapi-plugin` is a plugin to add the commentami REST API and (if specified) Websockets to a [Hapi (17+)][hapi] server. It relies on the [`@nearform/commentami-backend-core` module](https://github.com/nearform/commentami/tree/master/packages/commentami-backend-core).
 
 ## Install
 
@@ -18,7 +18,7 @@ npm install @nearform/commentami-backend-hapi-plugin
 
 It should contain an object with the postgres connection parameters.
 
-```
+```javascript
 options.pg = {
   host: '127.0.0.1',
   port: 9876
@@ -31,7 +31,7 @@ Any parameter in this object will override whatever comes from `@nearform/commen
 
 Through the `routes` option you can configure `@nearform/commentami-backend-hapi-plugin` to have it's routes protected behind an authentication strategy and add the `cors` handling by Hapi:
 
-```
+```javascript
 options.routes = {
   cors: true,
   auth: 'myauth'
@@ -40,7 +40,7 @@ options.routes = {
 
 If you want `@nearform/commentami-backend-hapi-plugin` to populate the `author` field when adding a comment, you can provide the following function:
 
-```
+```javascript
 options.routes = {
   auth: 'myauth',
   getUserFromRequest: async (request, payload) => {
@@ -50,15 +50,15 @@ options.routes = {
 }
 ```
 
-The `getUserFromRequest` function will need to return a promise that will yield either `null` or an object with the property `id` (ie : `{ id: 1, ... }`). We will store that `id` value as the author identifier. Beware that **`author` will be stored as a string**.
+The `getUserFromRequest` function will need to return a promise that will yield either `null` or an object with the property `username` (ie : `{ username: 'test', ... }`). We will store that `username` value as the author identifier. Beware that **`author` will be stored as a string**.
 
 ### `options.hooks` \[optional\]
 
-It should contain the hooks to decorate a single comment or a list of comments with more data.
+It should contain the hooks to decorate a single comment, a list of comments or the involved users when fetched from the database.
 
-An example could be adding users data to each comment based on its author, or add users data based on mentions.
+An example could be adding users data to each comment based on its author or populating the users data when loading all the users involved in a discusssion.
 
-```
+```javascript
 options.hooks = {
   fetchedComment: async (comment) => {
     // ... fetch user data
@@ -69,9 +69,15 @@ options.hooks = {
     // ... fetch users data
 
     return augmentedComments
+  },
+  involvedUsers: [async] users => {
+    // add your data to the involved users ...
+    return users
   }
 }
 ```
+
+**Note:** A user will be always represented as an object `{ username: '...' }`.
 
 ### `options.multines` \[optional\]
 
@@ -79,7 +85,7 @@ By default the server will start with only the http endpoints available. If you 
 
 The option should be an object with the following format
 
-```
+```javascript
 multines: {
   type: 'redis', // only "redis" or "mongo"
 
@@ -89,7 +95,7 @@ multines: {
 }
 ```
 
-**Note**: if you pass `options.multines = {}` the websockets will be active but the pub/sub system will work only for the single server and not between multiple servers (ie: through redis pub/sub).
+**Note**: if you pass `options.multines = {}` the websockets will be active but the pub/sub system will work only for the single server and not between multiple servers.
 
 ### `options.nes` \[optional\]
 
@@ -97,7 +103,7 @@ If you want to customize the `nes` plugin you can pass [its options](https://git
 
 An example of what you may want to do is settig up nes to use an authentication strategy that you have already added to you server
 
-```
+```javascript
 nes: {
   auth: {
     type: 'token',
@@ -108,13 +114,13 @@ nes: {
 
 ### `options.resolvers.resolveUrl` \[optional\]
 
-The `commentami` library requires the exact url of a `comment` to build the deeplink. A `resultUrl(comment)` should be provided if you eant to use this functionality.
+The `commentami` library requires the url of a `resource` to build the deeplink. A `resultUrl(comment)` should be provided if you want to use the deep link functionality.
 
-```
+```javascript
 options.resolvers = {
   resolveUrl: async (comment) => {
     // resource = comment.resource
-    // ... given the comment resolve the page that contains the specific resource
+    // ... resolve the page that contains the specific resource
 
     return baseUrl
   }
@@ -127,7 +133,7 @@ Under the hood `@nearform/commentami-backend-hapi-plugin` add a `commentsService
 
 If you need to be notified when a comment is added, deleted or updated you can use this object to add your listeners.
 
-```
+```javascript
 server.commentsService.on('add', (comment) => { /*...*/ })
 server.commentsService.on('update', (comment) => { /*...*/ })
 server.commentsService.on('delete', (comment) => { /*...*/ })
@@ -150,6 +156,10 @@ const main = async function() {
       fetchedComments: async comments => {
         //...
         return augmentedComments
+      },
+      involvedUsers: async users => {
+        // add your data to the involved users ...
+        return users
       }
     },
     pg: {
@@ -172,6 +182,12 @@ const main = async function() {
       getUserFromRequest: async (request, payload) => {
         // ...
         return user
+      }
+    },
+    resolvers: {
+      resolveUrl: async (comment) => {
+        // ...
+        return baseUrl
       }
     }
   }
@@ -221,7 +237,7 @@ GET /comments-references/some-resource
 
 ### `GET /comments?resource={resource}[&reference={reference}][&limit={limit}][&offset={offset}]`
 
-This endpoint will return a paginated list of comments relative to a `resource` (this parameter is required) and a `reference` (when specified)
+This endpoint will return a paginated list of comments relative to a `resource` (**this parameter is required**) and a `reference` (when specified)
 
 ```
 GET /comments?resource=some-resource
@@ -248,7 +264,8 @@ GET /comments/1234
   resource: 'some-resource',
   reference: 'some-reference',
   content: 'some content',
-  author: {username: 'author'},
+  author: { username: 'author' },
+  mentions: []
   createdAt: 2018-05-31T08:01:25.296Z
 }
 ```
@@ -268,7 +285,7 @@ POST /comments
   resource: 'some-resource',
   reference: 'some-reference',
   content: 'some content',
-  author: 'author'
+  author: { username: 'author' }
 }
 ```
 
@@ -298,7 +315,7 @@ If you enabled `multines` on the server (see [options](#Usage)) you will be able
 
 A `nes` client will map all the server HTTP API enpoints
 
-```
+```javascript
 client = new Nes.Client('ws://<my-server>')
 await client.connect()
 const response = await client.request(`/comments-references/${this.resource}`) // list comments
@@ -311,17 +328,18 @@ const response = await client.request({ // create a new comment
   payload: {
     resource: 'URL',
     reference: 'UUID',
-    content: 'MESSAGE',
-    author: {username: 'AUTHOR'}
+    content: 'MESSAGE'
   }
 })
 ```
 
 ### Subscriptions
-#### resource  and reference
-When a comment is `added`/`updated`/`deleted`, clients subscribed to receive updates on its `resource` and/or `reference` will be notified.
 
-```
+#### Resource and reference
+
+When a comment is `added`/`updated`/`deleted`, clients subscribed to receive updates on its `resource` and optionally `reference` will be notified.
+
+```javascript
 client = new Nes.Client('ws://127.0.0.1:8281')
 await client.connect()
 
@@ -336,15 +354,16 @@ await client.subscribe(`/resources-reference/some-reference/some-resource`, (eve
 
 The `event` object will have the following format
 
-```
+```javascript
 {
   comment: {
     id: 1234,
     resource: 'URL',
     reference: 'UUID',
     content: 'MESSAGE',
-    author: {username: 'AUTHOR'},
-    createdAt: 2018-05-31T08:01:25.296Z
+    author: { username: 'AUTHOR' },
+    createdAt: 2018-05-31T08:01:25.296Z,
+    mentions: []
   },
   action: 'add'
 }
@@ -352,35 +371,33 @@ The `event` object will have the following format
 
 The `action` property can have one of the following values: `add`, `delete` or `update`.
 
-#### users
-When a comment is `added`, clients subscribed to receive updates on its `user` will be notified.
+#### Users
 
-An involved user is a user that has previously added a comment to the reference.
+If a user is involved in the discussion (posted a comment on the same resource/reference) it will be notified of new comments posted on the same resource/reference. If a user is mentioned (`@<username>`) in a comment content, it will be notified.
 
-Notification is sent to the user also if it's been mentioned in the comment.
+If the plugin has been configured with the [`resolveUrl` function](#optionsresolversresolveurl-optional), the notification objects will also have a `url` paramenter with the deep link to the comment.
 
-In the notification object there will also be a URL to deep link to the comment.
-
-```
+```javascript
 client = new Nes.Client('ws://127.0.0.1:8281')
 await client.connect()
 
-await client.subscribe(`/users/some-user-id`, (event) => {
+await client.subscribe(`/users/some-username`, (event) => {
   // do something
 })
 ```
 
 The `event` object will have the following format
 
-```
+```javascript
 {
   comment: {
     id: 1234,
     resource: 'RESOURCE-ID',
     reference: 'UUID',
     content: 'MESSAGE',
-    author: {username: 'AUTHOR'},
-    createdAt: 2018-05-31T08:01:25.296Z
+    author: { username: 'AUTHOR' },
+    createdAt: 2018-05-31T08:01:25.296Z,
+    mentions: []
   },
   action: 'mention',
   url: 'http://someurl.com/the-path-to-the-resource?resource=RESOURCE-ID&reference=UUID&comment=1234'
@@ -388,8 +405,6 @@ The `event` object will have the following format
 ```
 
 The `action` property can have one of the following values: `mention`, `involve`.
-
-
 
 ## Development
 

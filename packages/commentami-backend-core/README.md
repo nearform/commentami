@@ -34,9 +34,9 @@ Last but not least, the `mentions` property is a list of mentions (`@<identifier
 
 ## Usage
 
-To access the CRUD functions you need to initialize the module with an object that has the same interface of a `Pool`/`Client` from [`node-postgres`](https://github.com/brianc/node-postgres).
+To access the CRUD functions you need to initialize the module with an object that has the same interface of a `Pool` from [`node-postgres`](https://github.com/brianc/node-postgres).
 
-```
+```javascript
 const { config, buildPool, buildCommentsService } = require('@nearform/commentami-backend-core')
 
 const commentService = buildCommentsService(buildPool(config.pg))
@@ -54,7 +54,7 @@ NF_COMMENTS_PGPORT
 
 or if you already have a pool object or anything else that exposes the same interface, you can pass it directly
 
-```
+```javascript
 const { buildCommentsService } = require('@nearform/commentami-backend-core')
 const myDbClient = //...
 
@@ -63,20 +63,21 @@ const commentService = buildCommentsService(myDbClient)
 
 `commentService` exposes the following functions
 
-```
+```javascript
 commentService.add
 commentService.get
 commentService.update
 commentService.delete
 commentService.list
 commentService.listOnlyReferences
+commentService.getInvolvedUsers
 ```
 
 and provide events for when a comment is added, updated or deleted.
 
 To add a listener to any of this events follow this example:
 
-```
+```javascript
 // build your commentService object
 
 const { buildCommentsService } = require('@nearform/commentami-backend-core')
@@ -97,13 +98,13 @@ commentService.on('delete', (comment) => { // do something })
 
 The `list` function accepts the following parameters:
 
-- `resource`: if is mandatory and if not provided will result in a response with an empty list of comments.
-- `reference`: this parameter cna be `null` or omitted.
-- `options`: this parameter can be omitted, if not it can contain `limit` (defaults to 100) and `offset` (defaults to 0).
+- `resource`: it is mandatory and if not provided will result in a response with an empty list of comments.
+- `reference`: this parameter can be `null` or omitted.
+- `options`: this parameter can be omitted, if not, it can contain `limit` (defaults to 100) and `offset` (defaults to 0).
 
 The `list` will filter the comments based on `resource` and `reference` (if provided) and implements a pagination system based on the `limit` and `offset` parameters.
 
-```
+```javascript
 async function myFn () => {
   // ...
   const list = await commentsService.list(resource, reference, { limit: 50, offset: 15 })
@@ -125,7 +126,7 @@ The `listOnlyReferences` function accepts only one parameter: a `resource`.
 
 This function will return the list of `reference`s (strings) for the specified `resource`.
 
-```
+```javascript
 async function myFn () => {
   // ...
   const list = await commentsService.listOnlyReferences(resource)
@@ -141,7 +142,7 @@ async function myFn () => {
 
 ### `commentService.add`
 
-```
+```javascript
 async function myFn () => {
   // ...
   const comment = {
@@ -158,7 +159,7 @@ async function myFn () => {
 
 ### `commentService.get`
 
-```
+```javascript
 async function myFn () => {
   // ...
   const comment = await commentsService.get(id)
@@ -170,7 +171,7 @@ async function myFn () => {
 
 The only field that will be updated is the `content`, no other field can be modiefied.
 
-```
+```javascript
 async function myFn () => {
   // ...
   const comment = await commentsService.update(id, {
@@ -184,7 +185,7 @@ async function myFn () => {
 
 When deleting a comment, the result will be either `null` (id not valid, comment not found) or the deleted comment object
 
-```
+```javascript
 async function myFn () => {
   // ...
   const deletedComment = await commentsService.delete(id)
@@ -192,13 +193,21 @@ async function myFn () => {
 }
 ```
 
+### `commentService.getInvolvedUsers`
+
+To have a list of usernamens that have written a comment on the same resource/reference
+
+```javascript
+const involvedUsers = await commentsService.getInvolvedUsers(comment)
+```
+
 ## Hooks
 
-When the application fetches one or more comments, you can hook into the process to add domain specific data to each comment.
+When the application fetches one or more comments or involved users, you can hook into the process to add domain specific data to them.
 
-To do so, you can specify 2 optional functions when initializing the `commentService`.
+To do so, you can specify 3 optional functions when initializing the `commentService`.
 
-```
+```javascript
 const commentService = buildCommentsService(dbConn, {
   fetchedComment: [async] (comment) => {
     // add your data to the comment ...
@@ -217,8 +226,6 @@ const commentService = buildCommentsService(dbConn, {
 })
 ```
 
-With this two methods the main thing you can do is to add data for users (either author or mentions) and then use those data in other parts of the application (ie: listing comments in your frontend app).
-
 ## Development
 
 ### Initializing the db
@@ -233,7 +240,7 @@ This will drop the `comments_test` database if it exists. Re-create it and migra
 
 For local development there should be sensible defaults in [`config/index.js`](./config/index.js).
 
-#### Postgres and Redis on Docker?
+#### Postgres on Docker?
 
 If you want to run postgres on docker, install [docker](https://docs.docker.com/install/) and run the following command
 
