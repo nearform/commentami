@@ -63,3 +63,5 @@ To get up and running with Commentami, see the installation steps in the [README
 Too see an example on how to configure the server to deal with authentication and users data you can go [here](/example-auth-and-user-data)
 
 Too see an example on how to use realtime notifications you can check out our [notifications example](/example-notifications)
+
+Too see an example on how to customize the frontend you can check out our [frontend example](/example-frontend)
