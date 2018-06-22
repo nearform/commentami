@@ -17,13 +17,13 @@ The `action` property will be either `mention` or `involve`. With `mention` we m
 
 Last but not least `url`. This property is optional and it should contain a link to the comment.
 
-## Backed
+## Backend
 
 As of today, the server uses the users `username` to identify a user.
 
 It's value is saved as the `author` of a comment and in the `mentions` array if one or more mentions `@<username>` are found in the comment content.
 
-The mentions notifications process is automatic and will happen even if there is no authentication in place. As long as a client subscribe to the right channel (ie: `/users/{username}`), it will get notified if a mention happen.
+The mentions notifications process is automatic and will happen even if there is no authentication in place. As long as a client subscribe to the right channel (ie: `/users/{username}`), it will get notified if a mention happens.
 
 The "answers to comment" notification process needs one of the following:
 
@@ -33,11 +33,11 @@ The "answers to comment" notification process needs one of the following:
 Lastly, to create a deep link to the comment you should implement a `resolveUrl` function and pass it as follow to the plugin
 
 
-```
+```javascript
 await server.register([{
   plugin: require('@nearform/commentami-backend-hapi-plugin'),
   options: {
-    ...,
+    // ...,
     resolvers: {
       resolveUrl: async (comment) => {
         // ... given the comment, it returns the page that contains the specific resource/reference
@@ -63,10 +63,10 @@ You can start dealing with notifications by using the 2 components provided by `
 
 The `Notifications` component accepts the following props
 
-```
+```javascript
 <Notifications
-  userIdentifier={...}
-  service={...}
+  userIdentifier={}
+  service={}
 />
 ```
 
