@@ -143,9 +143,9 @@ The sidebar controller provides the feature to interact with the othe ui compone
 
 ### Sidebar
 
-Now that the SidebarController is in place, we need to add a Sidebar. The `<Sidebar>` component will show the comment form and the comments list, and will interact with the controller to add new comment and the list of existing ones.
+Now that the `SidebarController` is in place, we need to add a sidebar. A `<Sidebar>` component will show the comment form and the comments list, and will interact with the controller to add new comment and the list of existing ones.
 
-The SidebarController has a default sidebar but it;s very basic. To override it, put a custom `<SideBar>` component inside the <Resource> component.
+We have a default `Sidebar` component that you can use. To do so, import it and place it inside the <Resource> component.
 
 ```
   <SidebarsController>
@@ -284,7 +284,6 @@ The Commentami component has a limitation though. It allows only one `Resource` 
 A new Sidebar component can be easily created using the `withSidebars` HOC and the `<NewCommentForm>` `<CommentsList>` components.
 
 The withSidebars HOC provides a `controller` property that allow the interaction with the sidebars controller.
-
 
 ```javascript
 
