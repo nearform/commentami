@@ -171,7 +171,7 @@ The SidebarController has a default sidebar but it;s very basic. To override it,
           hendrerit.
         </p>
       </Reference>
-      </SideBar>
+      <Sidebar>
     </Resource>
   </SidebarsController>
 ```
@@ -242,7 +242,7 @@ When the page is loaded with the following query paramenters `http://someurl/som
           hendrerit.
         </p>
       </Reference>
-      </SideBar>
+      <Sidebar>
     </Resource>
   </SidebarsController>
 </DeepLinkController>
@@ -336,5 +336,24 @@ class CustomSidebarBase extends React.Component {
 }
 
 const CustomSidebar = withSidebars(CustomSidebarBase)
+
+...
+// The <CustomSidebar> can be used replacing the <Sidebar> component
+<DeepLinkController>
+  <SidebarsController>
+    <Resource resource="resource-1">
+      <Reference reference="p1">
+        ...
+      </Reference>
+      <CustomSidebar>
+    </Resource>
+  </SidebarsController>
+</DeepLinkController>
+
+// using the <Commentami> component
+<Commentami resource="resource-1" service={service} Sidebar={CustomSidebar}>
+  <h1>Welcome!</h1>
+  ...
+</Commentami>
 ```
 
