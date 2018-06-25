@@ -458,8 +458,36 @@ Ideally, the component should be place at top-most level, so that all `<Resource
 
 The component acts a React context provider for the `withSidebars` HOC components, therefore it doesn't accept any property and it just renders its children.
 
-For an example, see the `<Sidebar/>` element above.
+The current SidebarsController react at the following DOM events:
 
+* handleClick
+* handleDoubleClick
+
+#### handleClick(payload, event)
+Toggle or close the `sidebar`
+
+***payload***
+
+| property        | Type                         | Default                 | Required | Description                                    |
+| --------------- | ---------------------------- | ----------------------- | -------- | ---------------------------------------------- |
+| reference       | `string`                     |                         | Yes      |                                                |
+| resource        | `string`                     |                         | Yes      |                                                |
+| scope           | marker \| sidebar-close  |                | Yes      | `marker` toggle the sidebar in the current resource/reference,  `sidebar-close` closes the sidebar'
+
+#### handleDoubleClick(payload, event)
+
+Toggle the `sidebar`
+
+***payload***
+
+| property        | Type                         | Default                 | Required | Description                                    |
+| --------------- | ---------------------------- | ----------------------- | -------- | ---------------------------------------------- |
+| reference       | `string`                     |                         | Yes      |                                                |
+| resource        | `string`                     |                         | Yes      |                                                |
+
+
+
+For an example, see the `<Sidebar/>` element above.
 
 ### `<DeepLinkController/>`
 
