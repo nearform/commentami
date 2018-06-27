@@ -458,7 +458,7 @@ Ideally, the component should be place at top-most level, so that all `<Resource
 
 The component acts a React context provider for the `withSidebars` HOC components, therefore it doesn't accept any property and it just renders its children.
 
-The current SidebarsController react at the following DOM events:
+The current SidebarsController react to the following DOM events:
 
 * handleClick
 * handleDoubleClick
