@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@nearform/commentami-backend-core": "^1.0.4",
+    "axios": "^0.18.0",
     "joi": "^13.3.0",
     "multines": "^1.0.0",
     "nes": "^9.0.0"

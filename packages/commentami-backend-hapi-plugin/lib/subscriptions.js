@@ -1,5 +1,7 @@
 'use strict'
 
+const axios = require('axios')
+
 async function notifyComment(comment, { action } = {}) {
   const server = this
 
@@ -47,14 +49,28 @@ async function notifyUser(comment, resolveUrl) {
   const userMentioned = []
   for (let user of filteredMentions) {
     userMentioned.push(user.username)
-    notifications.push(server.publishFar(`/users/${user.username}`, { action: 'mention', comment, url }).catch(log))
+    notifications.push(
+      axios
+        .post('http://localhost:8482/notifications', {
+          notify: { action: 'mention', comment, url },
+          userIdentifier: user.username
+        })
+        .catch(log)
+    )
   }
 
   const involvedUsers = await server.commentsService.getInvolvedUsers(comment)
 
   for (let user of involvedUsers) {
     if (!userMentioned.includes(user.username) && comment.author.username !== user.username) {
-      notifications.push(server.publishFar(`/users/${user.username}`, { action: 'involve', comment, url }).catch(log))
+      notifications.push(
+        axios
+          .post('http://localhost:8482/notifications', {
+            notify: { action: 'involve', comment, url },
+            userIdentifier: user.username
+          })
+          .catch(log)
+      )
     }
   }
 

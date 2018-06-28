@@ -38,7 +38,7 @@ const notificationsTitleClass = style({
 
 class NotificationItem extends React.Component {
   renderMessage(notification) {
-    if (notification.type === 'mention') {
+    if (notification.notify.type === 'mention') {
       return 'You have been mentioned in a comment'
     }
 
@@ -49,8 +49,8 @@ class NotificationItem extends React.Component {
     return (
       <div className={notificationsItemClass}>
         <span>{this.renderMessage(this.props.notification)}</span>
-        <div className={contentClass}>{this.props.notification.comment.content}</div>
-        {this.props.notification.url && <a href={this.props.notification.url}>Go see it...</a>}
+        <div className={contentClass}>{this.props.notification.notify.comment.content}</div>
+        {this.props.notification.notify.url && <a href={this.props.notification.notify.url}>Go see it...</a>}
         <button onClick={this.props.onRemove}>X</button>
       </div>
     )
@@ -71,7 +71,7 @@ class List extends React.Component {
 
         {this.props.notifications.map(notification => (
           <NotificationItem
-            key={notification.comment.id}
+            key={notification.notify.comment.id}
             notification={notification}
             onRemove={() => this.props.removeNotificationFromList(notification)}
           />
