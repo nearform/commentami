@@ -1,6 +1,7 @@
 import React from 'react'
-import { WebsocketService, buildWebsocketClient, Notifications } from '@nearform/commentami-react-components'
+import { WebsocketService, buildWebsocketClient } from '@nearform/commentami-react-components'
 import { UserContext } from '../user'
+import { NotificationsProvider } from './NotificationsProvider'
 
 class NotificationsBuilder extends React.Component {
   constructor(props) {
@@ -26,9 +27,9 @@ class NotificationsBuilder extends React.Component {
 
   render() {
     return (
-      <Notifications userIdentifier={this.props.user} service={this.state.service}>
+      <NotificationsProvider userIdentifier={this.props.user} service={this.state.service}>
         {this.props.children}
-      </Notifications>
+      </NotificationsProvider>
     )
   }
 }

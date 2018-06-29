@@ -1,7 +1,7 @@
 import React from 'react'
 import { style } from 'typestyle'
 
-import { NotificationsWrapper } from '@nearform/commentami-react-components'
+import { NotificationsWrapper } from './NotificationsProvider'
 
 const notificationsItemClass = style({
   display: 'flex',
@@ -71,7 +71,7 @@ class List extends React.Component {
 
         {this.props.notifications.map(notification => (
           <NotificationItem
-            key={notification.notify.comment.id}
+            key={notification.id}
             notification={notification}
             onRemove={() => this.props.removeNotificationFromList(notification)}
           />

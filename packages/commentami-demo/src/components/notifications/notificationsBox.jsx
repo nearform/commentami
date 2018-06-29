@@ -1,5 +1,5 @@
 import React from 'react'
-import { NotificationsWrapper } from '@nearform/commentami-react-components'
+import { NotificationsWrapper } from './NotificationsProvider'
 
 class Box extends React.Component {
   render() {
