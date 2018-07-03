@@ -1,23 +1,10 @@
 import React from 'react'
-import { style } from 'typestyle'
 import { Resource, WebsocketService, buildWebsocketClient } from '@nearform/commentami-react-components'
 import { Reference, SidebarsController, DeepLinkController } from '@nearform/commentami-react-components/dist/ui'
 import { ErrorIndicator, LoadingIndicator } from '../components/indicators'
-import { NotificationsList } from '../components/notifications/notificationsList'
 import { Sidebar } from '../components/sidebar'
 import { UserContext } from '../components/user'
 import { pageClassName } from './index'
-
-const notificationsListClass = style({
-  position: 'absolute',
-  top: '25px',
-  right: '25px',
-  background: '#ffffff',
-  border: '1px solid #cecece',
-  borderRadius: '4px',
-  padding: '16px',
-  zIndex: 1000
-})
 
 class WebsocketsCommentsEnabled extends React.Component {
   constructor(props) {
@@ -149,7 +136,6 @@ export class PlainPage extends React.Component {
     return (
       <DeepLinkController>
         <div className={pageClassName}>
-          <NotificationsList className={notificationsListClass} />
           <UserContext.Consumer>
             {({ authorization }) => <WebsocketsCommentsEnabled authorization={authorization} />}
           </UserContext.Consumer>

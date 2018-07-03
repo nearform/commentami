@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Header } from './components/header'
 import { User } from './components/user'
-import { NotificationsSetup } from './components/notifications'
+import { UseNotifications } from './components/notifications'
 import { IndexPage } from './pages/index'
 import { MarkdownPage } from './pages/markdown'
 import { PlainPage } from './pages/plain'
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <Router>
       <div id="main" className={mainClassName}>
         <User>
-          <NotificationsSetup>
+          <UseNotifications>
             <Header />
 
             <Switch>
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
               <Route exact path="/multiple" component={MultiplePage} />
               <Route component={IndexPage} />
             </Switch>
-          </NotificationsSetup>
+          </UseNotifications>
         </User>
       </div>
     </Router>,

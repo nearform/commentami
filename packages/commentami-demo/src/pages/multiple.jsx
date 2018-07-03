@@ -12,7 +12,6 @@ import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
 import { Sidebar } from '../components/sidebar'
 import { UserContext } from '../components/user'
-import { NotificationsList } from '../components/notifications/notificationsList'
 
 import data from '../fixtures/data'
 
@@ -23,16 +22,6 @@ const sectionClassName = style(debugClassName('table'), {
   position: 'relative'
 })
 
-const notificationsListClass = style(debugClassName('notification-list'), {
-  position: 'absolute',
-  top: '25px',
-  right: '25px',
-  background: '#ffffff',
-  border: '1px solid #cecece',
-  borderRadius: '4px',
-  padding: '16px'
-})
-
 export function MultiplePage() {
   return (
     <div className={pageClassName}>
@@ -41,6 +30,14 @@ export function MultiplePage() {
 
       <DeepLinkController>
         <SidebarsController>
+          <UserContext.Consumer>
+            {({ authorization }) => <TestWebsocketComments authorization={authorization} />}
+          </UserContext.Consumer>
+
+          <UserContext.Consumer>
+            {({ authorization }) => <TestHTTPComments authorization={authorization} />}
+          </UserContext.Consumer>
+
           <section className={sectionClassName}>
             <h1>LocalStorage</h1>
             <Resource resource="multiple-1" service={localStorageService}>
@@ -50,18 +47,8 @@ export function MultiplePage() {
               <Sidebar title="First" />
             </Resource>
           </section>
-
-          <UserContext.Consumer>
-            {({ authorization }) => <TestWebsocketComments authorization={authorization} />}
-          </UserContext.Consumer>
-
-          <UserContext.Consumer>
-            {({ authorization }) => <TestHTTPComments authorization={authorization} />}
-          </UserContext.Consumer>
         </SidebarsController>
       </DeepLinkController>
-
-      <NotificationsList className={notificationsListClass} />
     </div>
   )
 }

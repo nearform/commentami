@@ -1,6 +1,5 @@
 export { withResource, withReference, flexibleRender } from './components/core/HOC'
 export * from './components/core/propInterfaces'
 export { Resource } from './components/core/Resource'
-export { Notifications, NotificationsContext, NotificationsWrapper } from './components/core/Notifications'
 export { HttpService } from './services/HttpService'
 export { WebsocketService, buildWebsocketClient } from './services/WebsocketService'

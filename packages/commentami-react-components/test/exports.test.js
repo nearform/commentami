@@ -7,13 +7,19 @@ describe('exports', () => {
     test('should export right modules', () => {
       expect(Object.keys(core).sort()).toEqual([
         'HttpService',
-        'Notifications',
-        'NotificationsContext',
-        'NotificationsWrapper',
         'Resource',
         'WebsocketService',
         'buildWebsocketClient',
+        'childrenPropInterface',
+        'commentPropInterface',
+        'commentamiDeeplinkPropType',
+        'commentamiReferencePropInterface',
+        'commentamiResourcePropInterface',
+        'componentPropInterface',
         'flexibleRender',
+        'flexibleRenderPropInterface',
+        'referencePropInterface',
+        'sidebarsControllerPropInterface',
         'withReference',
         'withResource'
       ])
