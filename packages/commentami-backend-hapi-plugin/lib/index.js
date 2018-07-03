@@ -34,6 +34,10 @@ const commentsHapiPlugin = {
     server.decorate('server', 'commentsService', commentsService)
     server.decorate('request', 'commentsService', commentsService)
 
+    if (options.notifications) {
+      server.decorate('server', 'notifications', options.notifications)
+    }
+
     if (options.multines) {
       await server.register([
         {

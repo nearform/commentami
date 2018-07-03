@@ -17,6 +17,10 @@ const config = {
     }
   },
   pluginOptions: {
+    notifications: {
+      enabled: true,
+      endPoint: 'http://localhost:8482/notifications'
+    },
     multines: {
       type: NF_COMMENTS_SERVER_MULTINES_TYPE || 'redis',
       host: NF_COMMENTS_SERVER_MULTINES_HOST || '127.0.0.1',

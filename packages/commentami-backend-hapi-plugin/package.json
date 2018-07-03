@@ -44,6 +44,7 @@
     "nes": "^9.0.0"
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.15.0",
     "boom": "^7.2.0",
     "code": "^5.2.0",
     "faker": "^4.1.0",
