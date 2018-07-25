@@ -1,6 +1,6 @@
 {
   "name": "@nearform/commentami-demo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Comments",
   "license": "Apache-2.0",
   "author": "nearForm Ltd",
@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
-    "@nearform/commentami-react-components": "^1.0.0",
+    "@nearform/commentami-react-components": "^1.0.1",
     "csx": "^9.0.0",
     "history": "^4.7.2",
     "react": "^16.3.2",
