@@ -4,7 +4,6 @@
   "description": "commentami-backend-core",
   "license": "Apache-2.0",
   "author": "nearForm Ltd",
-  "private": false,
   "contributors": [
     {
       "name": "Filippo De Santis",
@@ -50,5 +49,8 @@
     "faker": "^4.1.0",
     "lab": "^15.4.5",
     "sinon": "^5.0.10"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

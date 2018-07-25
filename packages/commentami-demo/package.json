@@ -4,7 +4,6 @@
   "description": "Comments",
   "license": "Apache-2.0",
   "author": "nearForm Ltd",
-  "private": false,
   "contributors": [
     {
       "name": "Filippo De Santis",
@@ -73,5 +72,8 @@
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.0.3",
     "webpack-dev-server": "^3.1.4"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
