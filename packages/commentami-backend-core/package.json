@@ -1,11 +1,11 @@
 {
   "name": "@nearform/commentami-backend-core",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "commentami-backend-core",
   "license": "Apache-2.0",
   "author": "nearForm Ltd",
-  "bin" : {
-    "commentami-core-db-migrate" : "./database/migrate.js"
+  "bin": {
+    "commentami-core-db-migrate": "./database/migrate.js"
   },
   "contributors": [
     {
