@@ -1,6 +1,6 @@
 {
   "name": "@nearform/commentami-demo-server",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Commentami",
   "license": "Apache-2.0",
   "author": "nearForm Ltd",
@@ -38,7 +38,7 @@
     "test": "NODE_ENV=test lab -c --coverage-exclude config test"
   },
   "dependencies": {
-    "@nearform/commentami-backend-hapi-plugin": "^0.1.0",
+    "@nearform/commentami-backend-hapi-plugin": "^1.0.0",
     "hapi": "^17.5.0",
     "hapi-auth-basic": "^5.0.0",
     "hapi-pino": "^4.0.4",
