@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 'use strict'
 
 const config = require('../config')
@@ -5,7 +7,7 @@ const Postgrator = require('postgrator')
 const path = require('path')
 
 async function run() {
-  const version = process.argv[2]
+  const version = process.argv[2] || 'max'
   const { host, port, database, user, password } = config.pg
   const migrationDirectory = path.join(__dirname, '/migrations')
   if (!version) throw new Error('Please provide the version to migrate to as first command line argument')
@@ -13,7 +15,7 @@ async function run() {
   const postgrator = new Postgrator({
     driver: 'pg',
     migrationDirectory,
-    schemaTable: 'schemaversion',
+    schemaTable: process.env.NF_COMMENTS_SCHEMAVERSION || 'commentami_schemaversion',
     host,
     port,
     database,
