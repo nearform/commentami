@@ -22,7 +22,9 @@ module.exports = {
           params: {
             resource: Joi.string().required()
           }
-        }
+        },
+        tags: ['api', 'commentami'],
+        description: 'Get lit of references given a resource'
       }
     })
 
@@ -52,7 +54,9 @@ module.exports = {
               .min(0)
               .optional()
           }
-        }
+        },
+        tags: ['api', 'commentami'],
+        description: 'Paginated list of comments'
       }
     })
 
@@ -77,7 +81,9 @@ module.exports = {
             content: Joi.string().required(),
             author: Joi.string().optional()
           }
-        }
+        },
+        tags: ['api', 'commentami'],
+        description: 'Create a comment'
       }
     })
 
@@ -96,7 +102,9 @@ module.exports = {
           params: {
             id: Joi.number().required()
           }
-        }
+        },
+        tags: ['api', 'commentami'],
+        description: 'Get a comment'
       }
     })
 
@@ -118,7 +126,9 @@ module.exports = {
           payload: {
             content: Joi.string().required()
           }
-        }
+        },
+        tags: ['api', 'commentami'],
+        description: 'Update a comment'
       }
     })
 
@@ -138,7 +148,9 @@ module.exports = {
           params: {
             id: Joi.number().required()
           }
-        }
+        },
+        tags: ['api', 'commentami'],
+        description: 'Delete a comment'
       }
     })
   }
