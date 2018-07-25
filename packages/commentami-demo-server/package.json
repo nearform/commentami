@@ -1,7 +1,6 @@
 {
   "name": "@nearform/commentami-demo-server",
   "version": "0.1.0",
-  "private": true,
   "description": "Commentami",
   "license": "Apache-2.0",
   "author": "nearForm Ltd",
