@@ -4,6 +4,9 @@
   "description": "commentami-backend-core",
   "license": "Apache-2.0",
   "author": "nearForm Ltd",
+  "bin" : {
+    "commentami-core-db-migrate" : "./database/migrate.js"
+  },
   "contributors": [
     {
       "name": "Filippo De Santis",
