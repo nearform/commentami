@@ -6,9 +6,18 @@
   "license": "Apache-2.0",
   "author": "nearForm Ltd",
   "contributors": [
-    "Filippo De Santis (https://github.com/p16)",
-    "Davide Fiorello (https://github.com/codeflyer)",
-    "Paolo Insogna (https://github.com/ShogunPanda)"
+    {
+      "name": "Filippo De Santis",
+      "url": "https://github.com/p16"
+    },
+    {
+      "name": "Davide Fiorello",
+      "url": "https://github.com/codeflyer"
+    },
+    {
+      "name": "Paolo Insogna",
+      "url": "https://github.com/ShogunPanda"
+    }
   ],
   "homepage": "https://github.com/nearform/commentami#readme",
   "repository": {
