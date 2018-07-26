@@ -12,6 +12,7 @@ To explore components, use storybook:
 
 ```
 npm install
+npm run build
 npm run storybook
 ```
 
