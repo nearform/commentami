@@ -1,4 +1,4 @@
-CREATE TABLE comment (
+CREATE TABLE commentami_comment (
   id SERIAL PRIMARY KEY,
   resource varchar(2048) NOT NULL,
   reference varchar(512) NOT NULL,
@@ -7,13 +7,13 @@ CREATE TABLE comment (
   created_at timestamp with time zone NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS comment_resource_index ON comment (resource);
-CREATE INDEX IF NOT EXISTS comment_resource_reference_index ON comment (resource, reference);
+CREATE INDEX IF NOT EXISTS comment_resource_index ON commentami_comment (resource);
+CREATE INDEX IF NOT EXISTS comment_resource_reference_index ON commentami_comment (resource, reference);
 
-CREATE TABLE mention (
+CREATE TABLE commentami_mention (
   id SERIAL PRIMARY KEY,
-  comment_id INTEGER NOT NULL REFERENCES comment (id) ON DELETE CASCADE,
+  comment_id INTEGER NOT NULL REFERENCES commentami_comment (id) ON DELETE CASCADE,
   mentioned varchar(255) NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS mention_comment_id_index ON mention (comment_id);
+CREATE INDEX IF NOT EXISTS mention_comment_id_index ON commentami_mention (comment_id);

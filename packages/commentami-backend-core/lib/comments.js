@@ -54,7 +54,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       await transaction(db, async client => {
         const sqlComment = SQL`
           INSERT INTO
-            comment (resource, reference, content, author)
+            commentami_comment (resource, reference, content, author)
           VALUES (${resource}, ${reference}, ${content}, ${author})
           RETURNING *
         `
@@ -65,7 +65,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         if (mentionedUsers.length > 0) {
           const sqlMentions = SQL`
             INSERT INTO
-              mention (comment_id, mentioned)
+              commentami_mention (comment_id, mentioned)
             VALUES
           `
           mentionedUsers.forEach((mentionedUser, index) => {
@@ -92,9 +92,9 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         SELECT
           c.*, array_agg(m.mentioned) as mentions
         FROM
-          comment c
+          commentami_comment c
         LEFT JOIN
-          mention m ON m.comment_id = c.id
+          commentami_mention m ON m.comment_id = c.id
         WHERE
           c.id = ${id}
         GROUP BY
@@ -122,7 +122,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
       await transaction(db, async client => {
         const sqlComment = SQL`
           UPDATE
-            comment
+            commentami_comment
           SET
             content = ${content}
           WHERE
@@ -133,13 +133,13 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         if (res.rowCount === 0) throw new Error(`Cannot find comment with id ${id}`)
         comment = this.mapCommentFromDb(res.rows[0])
 
-        await client.query(`DELETE FROM mention WHERE comment_id = ${id}`)
+        await client.query(`DELETE FROM commentami_mention WHERE comment_id = ${id}`)
 
         const mentionedUsers = mentions.parse(content)
         if (mentionedUsers.length > 0) {
           const sqlMentions = SQL`
             INSERT INTO
-              mention (comment_id, mentioned)
+              commentami_mention (comment_id, mentioned)
             VALUES
           `
           mentionedUsers.forEach((mentionedUser, index) => {
@@ -168,13 +168,13 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         return
       }
 
-      const selectSql = SQL`SELECT * FROM comment WHERE id = ${id}`
+      const selectSql = SQL`SELECT * FROM commentami_comment WHERE id = ${id}`
       const res = await db.query(selectSql)
       if (res.rowCount === 1) {
         comment = normalizeComment(res.rows[0])
         comment = fetchedComment ? await fetchedComment(res.rows[0]) : res.rows[0]
 
-        const deleteSql = SQL`DELETE FROM comment WHERE id = ${id}`
+        const deleteSql = SQL`DELETE FROM commentami_comment WHERE id = ${id}`
         await db.query(deleteSql)
       }
 
@@ -204,7 +204,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         SELECT
           COUNT(*)
         FROM
-          comment
+          commentami_comment
         WHERE
           resource = ${resource}
       `
@@ -212,9 +212,9 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         SELECT
           c.*, array_agg(m.mentioned) as mentions
         FROM
-          comment c
+          commentami_comment c
         LEFT JOIN
-          mention m ON m.comment_id = c.id
+          commentami_mention m ON m.comment_id = c.id
         WHERE
           resource = ${resource}
       `
@@ -248,7 +248,7 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         SELECT
           DISTINCT(reference)
         FROM
-          comment
+          commentami_comment
         WHERE
           resource = ${resource}
       `
@@ -266,14 +266,14 @@ module.exports = function buildCommentsService(db, hooks = {}) {
         SELECT
           DISTINCT(author)
         FROM
-          comment c
+          commentami_comment c
         WHERE
           (c.reference, c.resource)
             IN (
               SELECT
                 reference, resource
               FROM
-                comment as c2
+                commentami_comment as c2
               WHERE
                 c2.id = ${comment.id}
             )

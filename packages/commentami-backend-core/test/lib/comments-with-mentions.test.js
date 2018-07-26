@@ -196,7 +196,7 @@ describe('Comments - with mentions', () => {
       const result = await this.commentsService.delete(created.id)
       expect(result).to.include(expected)
 
-      const mentions = await loadDataFromTable('mention')
+      const mentions = await loadDataFromTable('commentami_mention')
       expect(find(mentions, { comment_id: created.id })).to.be.undefined()
     })
   })
