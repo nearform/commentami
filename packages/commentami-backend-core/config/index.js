@@ -5,7 +5,8 @@ const {
   NF_COMMENTS_PGUSER,
   NF_COMMENTS_PGDATABASE,
   NF_COMMENTS_PGPASSWORD,
-  NF_COMMENTS_PGPORT
+  NF_COMMENTS_PGPORT,
+  NF_COMMENTS_TABLE_PREFIX
 } = process.env
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -21,7 +22,8 @@ const config = {
     user: NF_COMMENTS_PGUSER || 'postgres',
     username: NF_COMMENTS_PGUSER || 'postgres',
     database: NF_COMMENTS_PGDATABASE || (isTest ? 'comments_test' : 'comments')
-  }
+  },
+  tablePrefix: NF_COMMENTS_TABLE_PREFIX === undefined ? 'commentami_' : NF_COMMENTS_TABLE_PREFIX
 }
 
 module.exports = config
