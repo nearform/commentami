@@ -6,5 +6,6 @@ module.exports = {
   coverageReporters: ['text', 'html'],
   testMatch: ['**/*.test.js', '**/*.test.jsx'],
   setupTestFrameworkScriptFile: './test/config.js',
-  testEnvironment: 'jest-environment-jsdom-global'
+  testEnvironment: 'jest-environment-jsdom-global',
+  testURL: 'http://localhost/'
 }
