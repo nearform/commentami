@@ -22,6 +22,9 @@ Commentami offers the following features:
 - Hooks to decorate comments with your domain specific data (ie: users data for author and mentions)
 - React components to handle comments logic and UI components to expand/take inspiration from
 
+
+
+
 ## CORE CONCEPTS
 
 In Commentami a comment is an obejct with the following properties
@@ -43,6 +46,9 @@ The main idea is that a comment belongs to a `resource` (ie: a web page) and to 
 The `resource` and the `reference` are loosly defined to accomodate different interpretations, but a comment needs both to exists.
 
 The provided react components are used to interact with the Commentami server (list, add and delete comments). They also provide a way to mark elements on the page as commentable and deal with the wiring of commentable elements and their comments.
+
+***Platform Logical Architecture***
+![Components](./images/logical-architecture.png "LogicalArchitecture")
 
 ## REST API
 

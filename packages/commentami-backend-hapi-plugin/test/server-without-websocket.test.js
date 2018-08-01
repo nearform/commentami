@@ -32,7 +32,7 @@ describe('Comments REST API', () => {
 
         throw new Error('Websocket is still reachable :/')
       } catch (e) {
-        expect(e.message).to.equal('Socket error')
+        expect(e.message).to.equal('Connection terminated while waiting to connect')
       }
     })
   })
