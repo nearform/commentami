@@ -5,6 +5,11 @@ const { validate } = require('./auth')
 const commentsHooks = require('./comments-hooks')
 const resolvers = require('./resolvers')
 
+const corsHeader = {
+  origin: ['*'],
+  additionalHeaders: ['Access-Control-Allow-Origin', 'Access-Control-Allow-Credentials', 'Authentication']
+}
+
 module.exports = async function buildServer(config = {}, logMessage) {
   try {
     const server = require('hapi').Server(config.server)
@@ -27,7 +32,7 @@ module.exports = async function buildServer(config = {}, logMessage) {
             }
           },
           routes: {
-            cors: true,
+            cors: corsHeader,
             auth: 'simple',
             getUserFromRequest: async (request, payload) => {
               let user = request.auth.credentials

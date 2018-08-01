@@ -11,6 +11,7 @@ import { Sidebar } from '../components/sidebar'
 import data from '../fixtures/markdown.md'
 import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
+import { UserContext } from '../components/user'
 
 const documentWrapperClassName = style(debugClassName('document-wrapper'), {
   marginTop: rem(5),
@@ -31,7 +32,7 @@ export function createCommentableElement(Tag) {
   }
 }
 
-export function MarkdownPage() {
+export function MarkdownPageBase(props) {
   const parsed = remark()
     .use(reactRenderer, {
       remarkReactComponents: {
@@ -57,7 +58,7 @@ export function MarkdownPage() {
       </h2>
 
       <SidebarsController>
-        <Resource resource="markdown-1" service={HttpService('http://localhost:8080/')}>
+        <Resource resource="markdown-1" service={HttpService('http://localhost:8080/', props.authorization)}>
           <LoadingIndicator />
           <ErrorIndicator />
 
@@ -68,4 +69,14 @@ export function MarkdownPage() {
       </SidebarsController>
     </div>
   )
+}
+
+export class MarkdownPage extends React.Component {
+  render() {
+    return (
+      <UserContext.Consumer>
+        {({ authorization }) => <MarkdownPageBase authorization={authorization} />}
+      </UserContext.Consumer>
+    )
+  }
 }

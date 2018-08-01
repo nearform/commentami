@@ -1,5 +1,5 @@
 import { HttpService, Resource } from '@nearform/commentami-react-components'
-import { SidebarsController } from '@nearform/commentami-react-components/dist/ui'
+import { SidebarsController, DeepLinkController } from '@nearform/commentami-react-components/dist/ui'
 import { em, percent, rem } from 'csx'
 import React from 'react'
 import { style } from 'typestyle'
@@ -9,9 +9,7 @@ import { Sidebar } from '../components/sidebar'
 import data from '../fixtures/data'
 import { debugClassName } from '../styling/environment'
 import { pageClassName } from './index'
-import { DeepLinkController } from '../../../commentami-react-components/src/components/ui/SidebarsController'
-
-const service = HttpService('http://localhost:8080/')
+import { UserContext } from '../components/user'
 
 const commentMarkerClassName = style(debugClassName('table'), {
   position: 'absolute',
@@ -138,7 +136,8 @@ function Table({ data }) {
   )
 }
 
-export function TablePage() {
+export function TablePageBase(props) {
+  const service = HttpService('http://localhost:8080/', props.authorization)
   return (
     <div className={pageClassName}>
       <h1>Welcome!</h1>
@@ -147,25 +146,35 @@ export function TablePage() {
         The tables below are generated out of some data structure. <br />Each cell is commentable.
       </h2>
 
-      <DeepLinkController>
-        <SidebarsController>
-          <Resource resource="table-1" service={service}>
-            <LoadingIndicator />
-            <ErrorIndicator />
+      <SidebarsController>
+        <Resource resource="table-1" service={service}>
+          <LoadingIndicator />
+          <ErrorIndicator />
 
-            <Table data={data} />
-            <Sidebar title="First" />
-          </Resource>
+          <Table data={data} />
+          <Sidebar title="First" />
+        </Resource>
 
-          <Resource resource="table-2" service={service}>
-            <LoadingIndicator />
-            <ErrorIndicator />
+        <Resource resource="table-2" service={service}>
+          <LoadingIndicator />
+          <ErrorIndicator />
 
-            <Table data={data} />
-            <Sidebar title="Second" />
-          </Resource>
-        </SidebarsController>
-      </DeepLinkController>
+          <Table data={data} />
+          <Sidebar title="Second" />
+        </Resource>
+      </SidebarsController>
     </div>
   )
+}
+
+export class TablePage extends React.Component {
+  render() {
+    return (
+      <DeepLinkController>
+        <UserContext.Consumer>
+          {({ authorization }) => <TablePageBase authorization={authorization} />}
+        </UserContext.Consumer>
+      </DeepLinkController>
+    )
+  }
 }
