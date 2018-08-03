@@ -55,7 +55,6 @@ const commentsHapiPlugin = {
 
       server.subscriptionFar('/resources/{resource*}')
       server.subscriptionFar('/resources-reference/{reference}/{resource*}')
-      server.subscriptionFar('/users/{user*}')
       server.method('notifyComment', notifyComment.bind(server))
       server.method('notifyUser', notifyUser.bind(server))
 
