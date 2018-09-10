@@ -31,10 +31,11 @@
   },
   "main": "lib/index.js",
   "bin": {
-    "commentami-demo-server": "start.js"
+    "commentami-demo-server": "packages/commentami-demo-server/start.js"
   },
   "scripts": {
     "clean": "lerna clean --yes && lerna run clean",
+    "build": "env BUILDING=true lerna run build --stream",
     "depcheck": "lerna run depcheck",
     "doc:lint": "remark .",
     "coverage": "lerna run coverage",
@@ -44,10 +45,11 @@
     "pg:init": "cd packages/commentami-backend-core && npm run pg:init",
     "pg:test:init": "cd packages/commentami-backend-core && npm run pg:test:init",
     "pg:migrate": "cd packages/commentami-backend-core && npm run pg:migrate",
-    "postinstall": "lerna bootstrap",
+    "postinstall": "lerna bootstrap ; npm run build",
     "sanity:environment": "npm run doc:lint && npm run lint && npm run depcheck",
     "sanity": "npm run sanity:environment && npm run test",
-    "start": "cd packages/commentami-demo-server && npm run start",
+    "start": "lerna run start --stream",
+    "start:local": "docker-compose start postgres redis ; npm run pg:init; npm run start; docker-compose stop postgres redis",
     "test": "npm run pg:test:init && lerna run test"
   },
   "devDependencies": {

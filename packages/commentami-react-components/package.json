@@ -41,6 +41,7 @@
     "storybook": "start-storybook -p 6006 -c .storybook",
     "test": "node test/start.js",
     "test:watch": "WATCH=true node test/start.js",
+    "test:debug": "node --inspect-brk test/start.js --runInBand",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
