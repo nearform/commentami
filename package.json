@@ -48,7 +48,7 @@
     "postinstall": "lerna bootstrap ; npm run build",
     "sanity:environment": "npm run doc:lint && npm run lint && npm run depcheck",
     "sanity": "npm run sanity:environment && npm run test",
-    "start": "cd packages/commentami-demo-server && npm run start",
+    "start": "lerna run start --stream",
     "test": "npm run pg:test:init && lerna run test"
   },
   "devDependencies": {
