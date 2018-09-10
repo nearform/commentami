@@ -31,7 +31,7 @@
   },
   "main": "lib/index.js",
   "bin": {
-    "commentami-demo-server": "start.js"
+    "commentami-demo-server": "packages/commentami-demo-server/start.js"
   },
   "scripts": {
     "clean": "lerna clean --yes && lerna run clean",
