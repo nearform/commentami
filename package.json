@@ -35,6 +35,7 @@
   },
   "scripts": {
     "clean": "lerna clean --yes && lerna run clean",
+    "build": "env BUILDING=true lerna run build --stream",
     "depcheck": "lerna run depcheck",
     "doc:lint": "remark .",
     "coverage": "lerna run coverage",
@@ -44,7 +45,7 @@
     "pg:init": "cd packages/commentami-backend-core && npm run pg:init",
     "pg:test:init": "cd packages/commentami-backend-core && npm run pg:test:init",
     "pg:migrate": "cd packages/commentami-backend-core && npm run pg:migrate",
-    "postinstall": "lerna bootstrap",
+    "postinstall": "lerna bootstrap ; npm run build",
     "sanity:environment": "npm run doc:lint && npm run lint && npm run depcheck",
     "sanity": "npm run sanity:environment && npm run test",
     "start": "cd packages/commentami-demo-server && npm run start",
