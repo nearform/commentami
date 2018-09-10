@@ -10,7 +10,9 @@ import { setCommentToResource } from '../../../src/state/reducers/resource'
 function PropsChildren({ commentami: { resource, reference } }) {
   return (
     <span>
-      {resource}--{reference}
+      {resource}
+      --
+      {reference}
     </span>
   )
 }
@@ -77,7 +79,7 @@ describe('withResource', () => {
     wrapper.setProps({ a: 1 })
 
     expect(errorSpy).toHaveBeenCalledWith('Warning: The commentable component should be inside a Resource')
-    expect(errorSpy).toHaveBeenCalledTimes(2)
+    expect(errorSpy).toHaveBeenCalledTimes(1)
   })
 
   describe('.render', () => {
