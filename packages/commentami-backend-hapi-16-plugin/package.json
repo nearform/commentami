@@ -1,0 +1,55 @@
+{
+  "name": "@nearform/commentami-backend-hapi-plugin",
+  "version": "1.0.6",
+  "description": "Commentami",
+  "license": "Apache-2.0",
+  "author": "nearForm Ltd",
+  "contributors": [
+    {
+      "name": "Filippo De Santis",
+      "url": "https://github.com/p16"
+    },
+    {
+      "name": "Davide Fiorello",
+      "url": "https://github.com/codeflyer"
+    },
+    {
+      "name": "Paolo Insogna",
+      "url": "https://github.com/ShogunPanda"
+    }
+  ],
+  "homepage": "https://github.com/nearform/commentami#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nearform/commentami.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nearform/commentami/issues"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "coverage": "NODE_ENV=test lab -c -r lcov test",
+    "pg:test:init": "NODE_ENV=test node ../commentami-backend-core/database/init.js && NODE_ENV=test node ../commentami-backend-core/database/migrate.js max",
+    "depcheck": "../../node_modules/depcheck/bin/depcheck",
+    "test": "NODE_ENV=test lab -c test"
+  },
+  "dependencies": {
+    "@nearform/commentami-backend-core": "^1.0.5",
+    "joi": "^13.3.0",
+    "multines": "^1.0.0",
+    "nes": "^9.0.0"
+  },
+  "devDependencies": {
+    "boom": "^7.2.0",
+    "code": "^5.2.0",
+    "faker": "^4.1.0",
+    "hapi": "^17.5.0",
+    "lab": "^15.4.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
