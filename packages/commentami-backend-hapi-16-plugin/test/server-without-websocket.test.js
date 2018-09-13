@@ -1,5 +1,6 @@
 'use strict'
 
+const { promisify } = require('util')
 const Nes = require('nes')
 const { expect } = require('code')
 const Lab = require('lab')
@@ -12,27 +13,29 @@ const buildServer = require('./test-server')
 
 describe('Comments REST API', () => {
   let server = null
+  let port = null
 
   before(async () => {
     await resetDb()
-    server = await buildServer({ host: '127.0.0.1', port: 8281 })
+    server = await buildServer({ host: '127.0.0.1', port: 0 })
     await server.start()
+    port = server.info.port
   })
 
-  after(async () => {
-    return server.stop()
+  after(() => {
+    server.stop()
   })
 
   /* eslint-disable max-len */
   describe('Websocket - if the plugin option disableWebsocket is true, we should not be able to connect through websockets', () => {
-    test('it should list all resource refereces', async () => {
+    test('it should list all resource references', async () => {
       try {
-        const client = new Nes.Client('ws://127.0.0.1:8281')
-        await client.connect()
+        const client = new Nes.Client(`ws://127.0.0.1:${port}`)
+        await promisify(client.connect.bind(client))({})
 
         throw new Error('Websocket is still reachable :/')
       } catch (e) {
-        expect(e.message).to.equal('Connection terminated while waiting to connect')
+        expect(e.message).to.equal('Socket error')
       }
     })
   })

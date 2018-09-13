@@ -43,7 +43,7 @@ describe('Comments Websocket - routes', () => {
   describe('Websocket - GET /comments-references/{resource}', () => {
     test('it should list all resource refereces', async () => {
       const response = await client.request(`/comments-references/${this.resource}`)
-      const { payload } = response
+      const payload = response.payload
 
       expect(payload.resource).to.equal(this.resource)
       expect(payload.references).to.be.array()
@@ -56,7 +56,7 @@ describe('Comments Websocket - routes', () => {
     test('it should search comments by url and return them with 200', async () => {
       const all = await server.commentsService.list(this.resource)
       const response = await client.request(`/comments?resource=${this.resource}&limit=3&offset=5`)
-      const { payload } = response
+      const payload = response.payload
 
       expect(payload).to.include({
         total: 20,
@@ -70,7 +70,7 @@ describe('Comments Websocket - routes', () => {
 
     test('it should search comments by url and reference and return them with 200', async () => {
       const response = await client.request(`/comments?resource=${this.resource}&reference=${this.reference}&limit=3`)
-      const { payload } = response
+      const payload = response.payload
 
       expect(payload).to.include({
         total: 1,
@@ -94,7 +94,7 @@ describe('Comments Websocket - routes', () => {
           author: 'AUTHOR'
         }
       })
-      const { payload } = response
+      const payload = response.payload
 
       expect(payload).to.include({
         resource: 'URL',
@@ -116,7 +116,7 @@ describe('Comments Websocket - routes', () => {
       })
 
       const response = await client.request(`/comments/${created.id}`)
-      const { payload } = response
+      const payload = response.payload
 
       expect(payload.createdAt).to.exists()
 
@@ -142,7 +142,7 @@ describe('Comments Websocket - routes', () => {
           content: 'MESSAGE'
         }
       })
-      const { payload } = response
+      const payload = response.payload
 
       expect(payload.createdAt).to.exists()
       delete payload.createdAt
@@ -171,7 +171,7 @@ describe('Comments Websocket - routes', () => {
         method: 'DELETE',
         path: `/comments/${created.id}`
       })
-      const { payload } = response
+      const payload = response.payload
 
       expect(payload).to.equal({ success: true })
     })

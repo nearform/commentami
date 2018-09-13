@@ -1,16 +1,32 @@
 'use strict'
 
 const Boom = require('boom')
+const hapi = require('hapi')
 
 module.exports = async function buildServer(config = {}) {
   // If forked as child, send output message via ipc to parent, otherwise output to console
   const logMessage = process.send ? process.send : console.log // eslint-disable-line no-console
 
   try {
-    const server = require('hapi').Server({
+    const server = new hapi.Server()
+    server.connection({
       host: config.host || '127.0.0.1',
-      port: config.port || 8080
+      port: 0
     })
+
+    server.on('response', function(request) {
+      global.console.log(
+        request.info.remoteAddress +
+          ': ' +
+          request.method.toUpperCase() +
+          ' ' +
+          request.url.path +
+          ' --> ' +
+          request.response.statusCode
+      )
+    })
+
+    server.on('log', ({ tags, data }) => global.console.log([].concat(tags).join('|'), '>', ...[].concat(data)))
 
     if (config.auth === true) {
       await server.register(fakeAuthPlugin)
@@ -27,39 +43,44 @@ module.exports = async function buildServer(config = {}) {
       }
     }
 
-    await server.register({ plugin: require('../lib/index'), options: config.pluginOptions })
+    await server.register({ register: require('../lib/index'), options: config.pluginOptions })
 
     return server
   } catch (err) {
-    logMessage(`Failed to build server: ${err.message}`)
-    process.exit(1)
+    logMessage(`Failed to build server: ${err.message}\n${err.stack}`)
+    // process.exit(1)
   }
 }
 
 const fakeAuthPlugin = {
   name: 'myauth',
-  register: (server, options) => {
-    server.auth.scheme('myauth', (server, options) => {
-      const scheme = {
-        authenticate: async function(request, h) {
-          const authorization = request.headers.authorization
+  register: (server, options, next) => {
+    try {
+      server.auth.scheme('myauth', (server, options) => {
+        const scheme = {
+          authenticate: async function(request, reply) {
+            const authorization = request.headers.authorization
 
-          if (!authorization) {
-            throw Boom.unauthorized(null, 'myauth')
+            if (!authorization) {
+              return reply(Boom.unauthorized(null, 'myauth'))
+            }
+
+            const { isValid, credentials } = await options.validate(request, authorization, reply)
+
+            if (!isValid) {
+              return reply(Boom.unauthorized('Bad user!'), credentials ? { credentials } : null)
+            }
+
+            return reply.continue({ credentials })
           }
-
-          const { isValid, credentials } = await options.validate(request, authorization, h)
-
-          if (!isValid) {
-            return h.unauthenticated(Boom.unauthorized('Bad user!'), credentials ? { credentials } : null)
-          }
-
-          return h.authenticated({ credentials })
         }
-      }
 
-      return scheme
-    })
+        return scheme
+      })
+      next()
+    } catch (err) {
+      next(err)
+    }
   },
   validate: async (request, authorization, h) => {
     if (authorization) {
@@ -69,3 +90,5 @@ const fakeAuthPlugin = {
     return { isValid: false }
   }
 }
+
+fakeAuthPlugin.register.attributes = { name: fakeAuthPlugin.name }

@@ -62,7 +62,7 @@ describe('Comments REST API', () => {
       await client.connect({ auth: { headers: { authorization: 'Custom john' } } })
 
       const response = await client.request('/comments-references/abc')
-      const { payload } = response
+      const payload = response.payload
 
       expect(payload).to.equal({ resource: 'abc', references: [] })
 

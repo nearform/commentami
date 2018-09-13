@@ -13,20 +13,14 @@ describe('Subscriptions library', () => {
     test('log when an error happens', async () => {
       let done
       let error
-      let errors = 0
 
       const server = {
         log: (tags, error) => {
           expect(error.message).to.equal('error occurred')
-          errors++
-          if (errors === 2) return done()
+          return done()
         },
         publishFar: (resource, event) => {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              reject(new Error('error occurred'))
-            }, 10)
-          })
+          throw new Error('error occurred')
         }
       }
       const fn = notifyComment.bind(server)
@@ -65,11 +59,7 @@ describe('Subscriptions library', () => {
           if (errors === 2) return done()
         },
         publishFar: (resource, event) => {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              reject(new Error('error occurred'))
-            }, 10)
-          })
+          throw new Error('error occurred')
         },
         commentsService: {
           getInvolvedUsers: () => [{ username: 'davide' }, { username: 'filippo' }]

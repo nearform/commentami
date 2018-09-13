@@ -29,8 +29,8 @@ describe('Comments REST API', () => {
     })
   })
 
-  after(async () => {
-    return server.stop()
+  after(() => {
+    server.stop()
   })
 
   describe('GET /comments-references/{resource}', () => {

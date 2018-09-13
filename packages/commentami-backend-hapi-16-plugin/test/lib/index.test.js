@@ -1,5 +1,6 @@
 'use strict'
 
+const { promisify } = require('util')
 const { expect } = require('code')
 const Lab = require('lab')
 
@@ -15,7 +16,7 @@ describe('commentsHapiPlugin', () => {
       pg: 'I should not be a string'
     }
 
-    await commentsHapiPlugin.register(server, options).catch(e => {
+    await promisify(commentsHapiPlugin.register)(server, options).catch(e => {
       expect(e.message).to.equal('child "pg" fails because ["pg" must be an object]')
     })
   })
@@ -42,7 +43,7 @@ describe('commentsHapiPlugin', () => {
       }
     }
 
-    return commentsHapiPlugin.register(server, options).then(() => {
+    return promisify(commentsHapiPlugin.register)(server, options).then(() => {
       expect(commentService).to.exists()
       expect(registerCalled).to.be.true()
       expect(extCalled).to.be.true()

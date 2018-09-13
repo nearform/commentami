@@ -1,5 +1,6 @@
 'use strict'
 
+const { promisify } = require('util')
 const Nes = require('nes')
 const { expect, fail } = require('code')
 const { random, lorem, internet } = require('faker')
@@ -13,16 +14,18 @@ const buildServer = require('./test-server')
 
 describe('Comments Websocket - routes', () => {
   let server = null
+  let port = null
   let client = null
 
   before(async () => {
     await resetDb()
     server = await buildServer({
       host: '127.0.0.1',
-      port: 8281,
+      port: 0,
       pluginOptions: { multines: {} }
     })
     await server.start()
+    port = server.info.port
 
     this.resource = internet.url()
     this.reference = random.uuid()
@@ -38,14 +41,14 @@ describe('Comments Websocket - routes', () => {
     await new Promise(resolve => setTimeout(resolve, 100))
   })
 
-  after(async () => {
-    return server.stop()
+  after(() => {
+    server.stop()
   })
 
   describe('Websocket - adding a new comment', () => {
     test('it should be pushed to resource subscribers', async flags => {
-      client = new Nes.Client('ws://127.0.0.1:8281')
-      await client.connect()
+      client = new Nes.Client(`ws://127.0.0.1:${port}`)
+      await promisify(client.connect.bind(client))({})
 
       await new Promise((resolve, reject) => {
         const newComment = {
@@ -58,10 +61,11 @@ describe('Comments Websocket - routes', () => {
           expect(event.comment).to.include(newComment)
           expect(event.action).to.equal('add')
 
-          client.disconnect().then(resolve)
+          client.disconnect()
+          resolve()
         }
 
-        return client.subscribe(`/resources/${this.resource}`, handler).then(() => {
+        return promisify(client.subscribe.bind(client))(`/resources/${this.resource}`, handler).then(() => {
           return server.inject({
             method: 'POST',
             url: '/comments',
@@ -74,8 +78,8 @@ describe('Comments Websocket - routes', () => {
 
   describe('Websocket - adding a new comment', () => {
     test('it should be pushed to resource and reference subscribers', async flags => {
-      client = new Nes.Client('ws://127.0.0.1:8281')
-      await client.connect()
+      client = new Nes.Client(`ws://127.0.0.1:${port}`)
+      await promisify(client.connect.bind(client))({})
 
       await new Promise((resolve, reject) => {
         const newComment1 = {
@@ -93,10 +97,14 @@ describe('Comments Websocket - routes', () => {
           expect(event.comment).to.include(newComment2)
           expect(event.action).to.equal('add')
 
-          client.disconnect().then(resolve)
+          client.disconnect()
+          resolve()
         }
 
-        return client.subscribe(`/resources-reference/${this.reference}/${this.resource}`, handler).then(() => {
+        return promisify(client.subscribe.bind(client))(
+          `/resources-reference/${this.reference}/${this.resource}`,
+          handler
+        ).then(() => {
           return server
             .inject({
               method: 'POST',
@@ -115,8 +123,8 @@ describe('Comments Websocket - routes', () => {
     })
 
     test('it should be pushed to the users mentioned subscribers', async flags => {
-      client = new Nes.Client('ws://127.0.0.1:8281')
-      await client.connect()
+      client = new Nes.Client(`ws://127.0.0.1:${port}`)
+      await promisify(client.connect.bind(client))({})
 
       await new Promise(async (resolve, reject) => {
         const newComment1 = {
@@ -145,12 +153,13 @@ describe('Comments Websocket - routes', () => {
           )
 
           if (count-- === 0) {
-            client.disconnect().then(resolve)
+            client.disconnect()
+            resolve()
           }
         }
 
-        await client.subscribe(`/users/davide`, handler)
-        await client.subscribe(`/users/filippo`, handler)
+        await promisify(client.subscribe.bind(client))(`/users/davide`, handler)
+        await promisify(client.subscribe.bind(client))(`/users/filippo`, handler)
         return server.inject({
           method: 'POST',
           url: '/comments',
@@ -160,8 +169,8 @@ describe('Comments Websocket - routes', () => {
     })
 
     test('it should be pushed to the users response subscribers', async flags => {
-      client = new Nes.Client('ws://127.0.0.1:8281')
-      await client.connect()
+      client = new Nes.Client(`ws://127.0.0.1:${port}`)
+      await promisify(client.connect.bind(client))({})
 
       await new Promise(async (resolve, reject) => {
         await server.commentsService.add({
@@ -202,7 +211,8 @@ describe('Comments Websocket - routes', () => {
               `&reference=${encodeURIComponent(event.comment.reference)}&comment=${event.comment.id}`
           )
           if (count-- === 0) {
-            client.disconnect().then(resolve)
+            client.disconnect()
+            resolve()
           }
         }
 
@@ -214,7 +224,8 @@ describe('Comments Websocket - routes', () => {
               `&reference=${encodeURIComponent(event.comment.reference)}&comment=${event.comment.id}`
           )
           if (count-- === 0) {
-            client.disconnect().then(resolve)
+            client.disconnect()
+            resolve()
           }
         }
 
@@ -222,10 +233,10 @@ describe('Comments Websocket - routes', () => {
           fail('The user that added the comment should not be notified')
         }
 
-        await client.subscribe(`/users/davide`, handlerMention)
-        await client.subscribe(`/users/filippo`, handlerMention)
-        await client.subscribe(`/users/paolo`, handlerResponse)
-        await client.subscribe(`/users/AUTHOR`, handlerResponseError)
+        await promisify(client.subscribe.bind(client))(`/users/davide`, handlerMention)
+        await promisify(client.subscribe.bind(client))(`/users/filippo`, handlerMention)
+        await promisify(client.subscribe.bind(client))(`/users/paolo`, handlerResponse)
+        await promisify(client.subscribe.bind(client))(`/users/AUTHOR`, handlerResponseError)
         return server.inject({
           method: 'POST',
           url: '/comments',
@@ -237,8 +248,8 @@ describe('Comments Websocket - routes', () => {
 
   describe('Websocket - update a comment', () => {
     test('it should be pushed to resource and reference subscribers', async flags => {
-      client = new Nes.Client('ws://127.0.0.1:8281')
-      await client.connect()
+      client = new Nes.Client(`ws://127.0.0.1:${port}`)
+      await promisify(client.connect.bind(client))({})
 
       await new Promise((resolve, reject) => {
         const newComment = {
@@ -257,10 +268,14 @@ describe('Comments Websocket - routes', () => {
           expect(event.comment).to.include(updateComment)
           expect(event.action).to.equal('update')
 
-          client.disconnect().then(resolve)
+          client.disconnect()
+          resolve()
         }
 
-        return client.subscribe(`/resources-reference/${this.reference}/${this.resource}`, handler).then(() => {
+        return promisify(client.subscribe.bind(client))(
+          `/resources-reference/${this.reference}/${this.resource}`,
+          handler
+        ).then(() => {
           return server
             .inject({
               method: 'POST',
@@ -282,8 +297,8 @@ describe('Comments Websocket - routes', () => {
 
   describe('Websocket - delete a comment', () => {
     test('the comment should be pushed to resource and reference subscribers', async flags => {
-      client = new Nes.Client('ws://127.0.0.1:8281')
-      await client.connect()
+      client = new Nes.Client(`ws://127.0.0.1:${port}`)
+      await promisify(client.connect.bind(client))({})
 
       await new Promise((resolve, reject) => {
         const newComment = {
@@ -298,10 +313,14 @@ describe('Comments Websocket - routes', () => {
           expect(event.comment).to.include(newComment)
           expect(event.action).to.equal('delete')
 
-          client.disconnect().then(resolve)
+          client.disconnect()
+          resolve()
         }
 
-        return client.subscribe(`/resources-reference/${this.reference}/${this.resource}`, handler).then(() => {
+        return promisify(client.subscribe.bind(client))(
+          `/resources-reference/${this.reference}/${this.resource}`,
+          handler
+        ).then(() => {
           return server
             .inject({
               method: 'POST',

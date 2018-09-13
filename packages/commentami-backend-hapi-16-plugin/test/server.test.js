@@ -30,8 +30,8 @@ describe('Comments REST API', () => {
     return Promise.all(comments.map(comment => server.commentsService.add(comment)))
   })
 
-  after(async () => {
-    return server.stop()
+  after(() => {
+    server.stop()
   })
 
   describe('GET /comments-references/{resource}', () => {

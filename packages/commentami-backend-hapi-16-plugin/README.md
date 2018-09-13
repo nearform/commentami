@@ -194,7 +194,7 @@ const main = async function() {
 
   await server.register([
     {
-      plugin: require('@nearform/commentami-backend-hapi-plugin', options)
+      register: require('@nearform/commentami-backend-hapi-plugin', options)
     }
   ])
 
@@ -316,13 +316,14 @@ If you enabled `multines` on the server (see [options](#Usage)) you will be able
 A `nes` client will map all the server HTTP API enpoints
 
 ```javascript
+const { promisify } = require('util')
 client = new Nes.Client('ws://<my-server>')
-await client.connect()
-const response = await client.request(`/comments-references/${this.resource}`) // list comments
+await promisify(client.connect.bind(client))({})
+const response = await promisify(client.request.bind(client))(`/comments-references/${this.resource}`) // list comments
 
 // or
 
-const response = await client.request({ // create a new comment
+const response = await promisify(client.request.bind(client))({ // create a new comment
   method: 'POST',
   path: `/comments`,
   payload: {
@@ -340,14 +341,15 @@ const response = await client.request({ // create a new comment
 When a comment is `added`/`updated`/`deleted`, clients subscribed to receive updates on its `resource` and optionally `reference` will be notified.
 
 ```javascript
-client = new Nes.Client('ws://127.0.0.1:8281')
-await client.connect()
+const { promisify } = require('util')
+client = new Nes.Client(`ws://127.0.0.1:${port}`)
+await promisify(client.connect.bind(client))({})
 
-await client.subscribe(`/resources/some-resource`, (event) => {
+await promisify(client.subscribe.bind(client))(`/resources/some-resource`, (event) => {
   // do something
 })
 
-await client.subscribe(`/resources-reference/some-reference/some-resource`, (event) => {
+await promisify(client.subscribe.bind(client))(`/resources-reference/some-reference/some-resource`, (event) => {
   // do something
 })
 ```
@@ -378,10 +380,11 @@ If a user is involved in the discussion (posted a comment on the same resource/r
 If the plugin has been configured with the [`resolveUrl` function](#optionsresolversresolveurl-optional), the notification objects will also have a `url` paramenter with the deep link to the comment.
 
 ```javascript
-client = new Nes.Client('ws://127.0.0.1:8281')
-await client.connect()
+const { promisify } = require('util')
+client = new Nes.Client(`ws://127.0.0.1:${port}`)
+await promisify(client.connect.bind(client))({})
 
-await client.subscribe(`/users/some-username`, (event) => {
+await promisify(client.subscribe.bind(client))(`/users/some-username`, (event) => {
   // do something
 })
 ```

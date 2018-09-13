@@ -65,7 +65,7 @@ export function WebsocketService(client) {
    */
   const getComments = async resource => {
     const response = await client.request(`/comments?resource=${resource}`)
-    const { payload } = response
+    const payload = response.payload
 
     // TODO The pagination is not supported yet, the service loads the first 100 comments related to this resource.
     return payload.comments

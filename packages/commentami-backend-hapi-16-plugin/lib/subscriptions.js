@@ -16,12 +16,13 @@ async function notifyComment(comment, { action } = {}) {
     action
   }
 
-  const notifications = [
-    server.publishFar(`/resources/${comment.resource}`, event).catch(log),
-    server.publishFar(`/resources-reference/${comment.reference}/${comment.resource}`, event).catch(log)
-  ]
-
-  return Promise.all(notifications).catch(log)
+  try {
+    server.publishFar(`/resources/${comment.resource}`, event)
+    server.publishFar(`/resources-reference/${comment.reference}/${comment.resource}`, event)
+  } catch (err) {
+    log(err)
+  }
+  return Promise.resolve()
 }
 
 async function notifyUser(comment, resolveUrl) {
@@ -47,14 +48,22 @@ async function notifyUser(comment, resolveUrl) {
   const userMentioned = []
   for (let user of filteredMentions) {
     userMentioned.push(user.username)
-    notifications.push(server.publishFar(`/users/${user.username}`, { action: 'mention', comment, url }).catch(log))
+    try {
+      server.publishFar(`/users/${user.username}`, { action: 'mention', comment, url })
+    } catch (err) {
+      log(err)
+    }
   }
 
   const involvedUsers = await server.commentsService.getInvolvedUsers(comment)
 
   for (let user of involvedUsers) {
     if (!userMentioned.includes(user.username) && comment.author.username !== user.username) {
-      notifications.push(server.publishFar(`/users/${user.username}`, { action: 'involve', comment, url }).catch(log))
+      try {
+        server.publishFar(`/users/${user.username}`, { action: 'involve', comment, url })
+      } catch (err) {
+        log(err)
+      }
     }
   }
 

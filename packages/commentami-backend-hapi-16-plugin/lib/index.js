@@ -1,5 +1,6 @@
 'use strict'
 
+const { name, version } = require('../package.json')
 const Joi = require('joi')
 const Nes = require('nes')
 const Multines = require('multines')
@@ -20,63 +21,70 @@ const schema = Joi.object({
 })
 
 const commentsHapiPlugin = {
-  name: 'comments-hapi-plugin',
-  version: '1.0.0',
-  register: async function(server, options = {}) {
-    const result = Joi.validate(options, schema, { allowUnknown: true })
-    if (result.error) {
-      throw result.error
-    }
+  name,
+  version,
+  register: async function(server, options = {}, next) {
+    try {
+      const result = Joi.validate(options, schema, { allowUnknown: true })
+      if (result.error) {
+        throw result.error
+      }
 
-    const db = buildPool(Object.assign({}, config.pg, options.pg))
-    const commentsService = buildCommentsService(db, options.hooks)
+      const db = buildPool(Object.assign({}, config.pg, options.pg))
+      const commentsService = buildCommentsService(db, options.hooks)
 
-    server.decorate('server', 'commentsService', commentsService)
-    server.decorate('request', 'commentsService', commentsService)
+      server.decorate('server', 'commentsService', commentsService)
+      server.decorate('request', 'commentsService', commentsService)
 
-    if (options.multines) {
-      await server.register([
-        {
-          plugin: Nes,
-          options: options.nes
-        },
-        {
-          plugin: {
-            name: 'multines',
-            register: Multines.register
+      if (options.multines) {
+        await server.register([
+          {
+            register: Nes,
+            options: options.nes
           },
-          options: options.multines
-        }
-      ])
+          {
+            register: {
+              name: 'multines',
+              register: Multines.register
+            },
+            options: options.multines
+          }
+        ])
 
-      server.subscriptionFar('/resources/{resource*}')
-      server.subscriptionFar('/resources-reference/{reference}/{resource*}')
-      server.subscriptionFar('/users/{user*}')
-      server.method('notifyComment', notifyComment.bind(server))
-      server.method('notifyUser', notifyUser.bind(server))
+        server.subscriptionFar('/resources/{resource*}')
+        server.subscriptionFar('/resources-reference/{reference}/{resource*}')
+        server.subscriptionFar('/users/{user*}')
+        server.method('notifyComment', notifyComment.bind(server))
+        server.method('notifyUser', notifyUser.bind(server))
 
-      server.commentsService.on('add', comment => {
-        server.methods.notifyComment(comment, { action: 'add' })
-        server.methods.notifyUser(comment, options.resolvers && options.resolvers.resolveUrl)
+        server.commentsService.on('add', comment => {
+          server.methods.notifyComment(comment, { action: 'add' })
+          server.methods.notifyUser(comment, options.resolvers && options.resolvers.resolveUrl)
+        })
+        server.commentsService.on('update', comment => {
+          server.methods.notifyComment(comment, { action: 'update' })
+        })
+        server.commentsService.on('delete', comment => {
+          server.methods.notifyComment(comment, { action: 'delete' })
+        })
+      }
+
+      await server.register({ register: require('./routes'), options: options.routes })
+
+      server.ext('onPostStop', async () => {
+        commentsService.removeAllListeners('add')
+        commentsService.removeAllListeners('update')
+        commentsService.removeAllListeners('delete')
+
+        await commentsService.close()
       })
-      server.commentsService.on('update', comment => {
-        server.methods.notifyComment(comment, { action: 'update' })
-      })
-      server.commentsService.on('delete', comment => {
-        server.methods.notifyComment(comment, { action: 'delete' })
-      })
+      next()
+    } catch (err) {
+      next(err)
     }
-
-    await server.register({ plugin: require('./routes'), options: options.routes })
-
-    server.ext('onPostStop', async () => {
-      commentsService.removeAllListeners('add')
-      commentsService.removeAllListeners('update')
-      commentsService.removeAllListeners('delete')
-
-      await commentsService.close()
-    })
   }
 }
+
+commentsHapiPlugin.register.attributes = { name, version }
 
 module.exports = commentsHapiPlugin
