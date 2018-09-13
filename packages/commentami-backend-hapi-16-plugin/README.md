@@ -1,18 +1,18 @@
-# @nearform/commentami-backend-hapi-plugin
+# @nearform/commentami-backend-hapi-16-plugin
 
-`@nearform/commentami-backend-hapi-plugin` is a plugin to add the commentami REST API and (if specified) Websockets to a [Hapi (17+)][hapi] server. It relies on the [`@nearform/commentami-backend-core` module](https://github.com/nearform/commentami/tree/master/packages/commentami-backend-core).
+`@nearform/commentami-backend-hapi-16-plugin` is a plugin to add the commentami REST API and (if specified) Websockets to a [Hapi (17+)][hapi] server. It relies on the [`@nearform/commentami-backend-core` module](https://github.com/nearform/commentami/tree/master/packages/commentami-backend-core).
 
 ## Install
 
 To install via npm:
 
 ```
-npm install @nearform/commentami-backend-hapi-plugin
+npm install @nearform/commentami-backend-hapi-16-plugin
 ```
 
 ## Usage
 
-`@nearform/commentami-backend-hapi-plugin` has some options you can specifiy to customize it
+`@nearform/commentami-backend-hapi-16-plugin` has some options you can specifiy to customize it
 
 ### `options.pg` \[optional\]
 
@@ -29,7 +29,7 @@ Any parameter in this object will override whatever comes from `@nearform/commen
 
 ### `options.routes` \[optional\]
 
-Through the `routes` option you can configure `@nearform/commentami-backend-hapi-plugin` to have it's routes protected behind an authentication strategy and add the `cors` handling by Hapi:
+Through the `routes` option you can configure `@nearform/commentami-backend-hapi-16-plugin` to have it's routes protected behind an authentication strategy and add the `cors` handling by Hapi:
 
 ```javascript
 options.routes = {
@@ -38,7 +38,7 @@ options.routes = {
 }
 ```
 
-If you want `@nearform/commentami-backend-hapi-plugin` to populate the `author` field when adding a comment, you can provide the following function:
+If you want `@nearform/commentami-backend-hapi-16-plugin` to populate the `author` field when adding a comment, you can provide the following function:
 
 ```javascript
 options.routes = {
@@ -129,7 +129,7 @@ options.resolvers = {
 
 ## Events
 
-Under the hood `@nearform/commentami-backend-hapi-plugin` add a `commentsService` object to both `server` and `request`.
+Under the hood `@nearform/commentami-backend-hapi-16-plugin` add a `commentsService` object to both `server` and `request`.
 
 If you need to be notified when a comment is added, deleted or updated you can use this object to add your listeners.
 
@@ -194,7 +194,7 @@ const main = async function() {
 
   await server.register([
     {
-      register: require('@nearform/commentami-backend-hapi-plugin', options)
+      register: require('@nearform/commentami-backend-hapi-16-plugin', options)
     }
   ])
 
