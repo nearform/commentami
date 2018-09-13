@@ -31,10 +31,10 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "coverage": "NODE_ENV=test lab -c -r lcov test",
+    "coverage": "NODE_ENV=test npx lab -c -r lcov test",
     "pg:test:init": "NODE_ENV=test node ../commentami-backend-core/database/init.js && NODE_ENV=test node ../commentami-backend-core/database/migrate.js max",
     "depcheck": "../../node_modules/depcheck/bin/depcheck",
-    "test": "NODE_ENV=test lab -c test"
+    "test": "NODE_ENV=test npx lab -c test"
   },
   "dependencies": {
     "@nearform/commentami-backend-core": "^1.0.5",
