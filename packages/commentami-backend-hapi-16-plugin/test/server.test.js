@@ -1,6 +1,5 @@
 'use strict'
 
-const Nes = require('nes')
 const { expect } = require('code')
 const Lab = require('lab')
 const { random, lorem, name, internet } = require('faker')
@@ -11,17 +10,12 @@ const { describe, it: test, before, after } = module.exports.lab
 const { resetDb } = require('../../commentami-backend-core/test/utils')
 const buildServer = require('./test-server')
 
-describe('Comments Websocket - routes', () => {
+describe('Comments REST API', () => {
   let server = null
-  let client = null
 
   before(async () => {
     await resetDb()
-    server = await buildServer({ host: '127.0.0.1', port: 8281, pluginOptions: { multines: {} } })
-    await server.start()
-
-    client = new Nes.Client('ws://127.0.0.1:8281')
-    await client.connect()
+    server = await buildServer()
 
     this.resource = internet.url()
     this.reference = random.uuid()
@@ -36,57 +30,73 @@ describe('Comments Websocket - routes', () => {
     return Promise.all(comments.map(comment => server.commentsService.add(comment)))
   })
 
-  after(async () => {
-    return server.stop()
+  after(() => {
+    server.stop()
   })
 
-  describe('Websocket - GET /comments-references/{resource}', () => {
+  describe('GET /comments-references/{resource}', () => {
     test('it should list all resource refereces', async () => {
-      const response = await client.request(`/comments-references/${this.resource}`)
-      const payload = response.payload
+      const response = await server.inject({
+        method: 'GET',
+        url: `/comments-references/${this.resource}`
+      })
 
-      expect(payload.resource).to.equal(this.resource)
-      expect(payload.references).to.be.array()
-      expect(payload.references.length).to.equal(20)
-      expect(payload.references).to.include(this.reference)
+      expect(response.statusCode).to.equal(200)
+      const result = JSON.parse(response.payload)
+
+      expect(result.resource).to.equal(this.resource)
+      expect(result.references).to.be.array()
+      expect(result.references.length).to.equal(20)
+      expect(result.references).to.include(this.reference)
     })
   })
 
-  describe('Websocket - Websocket - GET /comments', () => {
+  describe('GET /comments', () => {
     test('it should search comments by url and return them with 200', async () => {
       const all = await server.commentsService.list(this.resource)
-      const response = await client.request(`/comments?resource=${this.resource}&limit=3&offset=5`)
-      const payload = response.payload
 
-      expect(payload).to.include({
+      const response = await server.inject({
+        method: 'GET',
+        url: `/comments?resource=${this.resource}&limit=3&offset=5`
+      })
+
+      expect(response.statusCode).to.equal(200)
+      const result = JSON.parse(response.payload)
+
+      expect(result).to.include({
         total: 20,
         limit: 3,
         offset: 5
       })
 
-      expect(payload.comments.length).to.equal(3)
-      expect(payload.comments[0].id).to.equal(all.comments[5].id)
+      expect(result.comments.length).to.equal(3)
+      expect(result.comments[0].id).to.equal(all.comments[5].id)
     })
 
     test('it should search comments by url and reference and return them with 200', async () => {
-      const response = await client.request(`/comments?resource=${this.resource}&reference=${this.reference}&limit=3`)
-      const payload = response.payload
+      const response = await server.inject({
+        method: 'GET',
+        url: `/comments?resource=${this.resource}&reference=${this.reference}&limit=3`
+      })
 
-      expect(payload).to.include({
+      expect(response.statusCode).to.equal(200)
+      const result = JSON.parse(response.payload)
+
+      expect(result).to.include({
         total: 1,
         limit: 3,
         offset: 0
       })
 
-      expect(payload.comments.length).to.equal(1)
+      expect(result.comments.length).to.equal(1)
     })
   })
 
   describe('POST /comments', () => {
     test('it should create a comment', async () => {
-      const response = await client.request({
+      const response = await server.inject({
         method: 'POST',
-        path: `/comments`,
+        url: '/comments',
         payload: {
           resource: 'URL',
           reference: 'UUID',
@@ -94,14 +104,16 @@ describe('Comments Websocket - routes', () => {
           author: 'AUTHOR'
         }
       })
-      const payload = response.payload
 
-      expect(payload).to.include({
+      expect(response.statusCode).to.equal(200)
+      const result = JSON.parse(response.payload)
+
+      expect(result).to.include({
         resource: 'URL',
         reference: 'UUID',
         content: 'MESSAGE',
         author: { username: 'AUTHOR' },
-        createdAt: payload.createdAt
+        createdAt: result.createdAt
       })
     })
   })
@@ -115,14 +127,19 @@ describe('Comments Websocket - routes', () => {
         author: 'OLD-AUTHOR'
       })
 
-      const response = await client.request(`/comments/${created.id}`)
-      const payload = response.payload
+      const response = await server.inject({
+        method: 'GET',
+        url: `/comments/${created.id}`
+      })
 
-      expect(payload.createdAt).to.exists()
+      expect(response.statusCode).to.equal(200)
+      const result = JSON.parse(response.payload)
 
-      delete payload.createdAt
+      expect(result.createdAt).to.exists()
+
+      delete result.createdAt
       delete created.createdAt
-      expect(payload).to.equal(created)
+      expect(result).to.include(created)
     })
   })
 
@@ -135,19 +152,21 @@ describe('Comments Websocket - routes', () => {
         author: 'OLD-AUTHOR'
       })
 
-      const response = await client.request({
+      const response = await server.inject({
         method: 'PUT',
-        path: `/comments/${created.id}`,
+        url: `/comments/${created.id}`,
         payload: {
           content: 'MESSAGE'
         }
       })
-      const payload = response.payload
 
-      expect(payload.createdAt).to.exists()
-      delete payload.createdAt
+      expect(response.statusCode).to.equal(200)
+      const result = JSON.parse(response.payload)
 
-      expect(payload).to.equal({
+      expect(result.createdAt).to.exists()
+      delete result.createdAt
+
+      expect(result).to.equal({
         id: created.id,
         resource: 'URL',
         reference: 'OLD-UUID',
@@ -167,13 +186,15 @@ describe('Comments Websocket - routes', () => {
         author: 'OLD-AUTHOR'
       })
 
-      const response = await client.request({
+      const response = await server.inject({
         method: 'DELETE',
-        path: `/comments/${created.id}`
+        url: `/comments/${created.id}`
       })
-      const payload = response.payload
 
-      expect(payload).to.equal({ success: true })
+      expect(response.statusCode).to.equal(200)
+      const result = JSON.parse(response.payload)
+
+      expect(result).to.equal({ success: true })
     })
   })
 })

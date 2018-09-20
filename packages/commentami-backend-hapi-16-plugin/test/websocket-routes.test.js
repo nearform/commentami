@@ -1,5 +1,6 @@
 'use strict'
 
+const { promisify } = require('util')
 const Nes = require('nes')
 const { expect } = require('code')
 const Lab = require('lab')
@@ -13,15 +14,17 @@ const buildServer = require('./test-server')
 
 describe('Comments Websocket - routes', () => {
   let server = null
+  let port = null
   let client = null
 
   before(async () => {
     await resetDb()
-    server = await buildServer({ host: '127.0.0.1', port: 8281, pluginOptions: { multines: {} } })
+    server = await buildServer({ host: '127.0.0.1', port: 0, pluginOptions: { multines: {} } })
     await server.start()
+    port = server.info.port
 
-    client = new Nes.Client('ws://127.0.0.1:8281')
-    await client.connect()
+    client = new Nes.Client(`ws://127.0.0.1:${port}`)
+    await promisify(client.connect.bind(client))({})
 
     this.resource = internet.url()
     this.reference = random.uuid()
@@ -36,14 +39,14 @@ describe('Comments Websocket - routes', () => {
     return Promise.all(comments.map(comment => server.commentsService.add(comment)))
   })
 
-  after(async () => {
-    return server.stop()
+  after(() => {
+    server.stop()
   })
 
   describe('Websocket - GET /comments-references/{resource}', () => {
     test('it should list all resource refereces', async () => {
-      const response = await client.request(`/comments-references/${this.resource}`)
-      const payload = response.payload
+      const response = await promisify(client.request.bind(client))(`/comments-references/${this.resource}`)
+      const payload = response
 
       expect(payload.resource).to.equal(this.resource)
       expect(payload.references).to.be.array()
@@ -55,8 +58,10 @@ describe('Comments Websocket - routes', () => {
   describe('Websocket - Websocket - GET /comments', () => {
     test('it should search comments by url and return them with 200', async () => {
       const all = await server.commentsService.list(this.resource)
-      const response = await client.request(`/comments?resource=${this.resource}&limit=3&offset=5`)
-      const payload = response.payload
+      const response = await promisify(client.request.bind(client))(
+        `/comments?resource=${this.resource}&limit=3&offset=5`
+      )
+      const payload = response
 
       expect(payload).to.include({
         total: 20,
@@ -69,8 +74,10 @@ describe('Comments Websocket - routes', () => {
     })
 
     test('it should search comments by url and reference and return them with 200', async () => {
-      const response = await client.request(`/comments?resource=${this.resource}&reference=${this.reference}&limit=3`)
-      const payload = response.payload
+      const response = await promisify(client.request.bind(client))(
+        `/comments?resource=${this.resource}&reference=${this.reference}&limit=3`
+      )
+      const payload = response
 
       expect(payload).to.include({
         total: 1,
@@ -84,7 +91,7 @@ describe('Comments Websocket - routes', () => {
 
   describe('POST /comments', () => {
     test('it should create a comment', async () => {
-      const response = await client.request({
+      const response = await promisify(client.request.bind(client))({
         method: 'POST',
         path: `/comments`,
         payload: {
@@ -94,7 +101,7 @@ describe('Comments Websocket - routes', () => {
           author: 'AUTHOR'
         }
       })
-      const payload = response.payload
+      const payload = response
 
       expect(payload).to.include({
         resource: 'URL',
@@ -115,8 +122,8 @@ describe('Comments Websocket - routes', () => {
         author: 'OLD-AUTHOR'
       })
 
-      const response = await client.request(`/comments/${created.id}`)
-      const payload = response.payload
+      const response = await promisify(client.request.bind(client))(`/comments/${created.id}`)
+      const payload = response
 
       expect(payload.createdAt).to.exists()
 
@@ -135,14 +142,14 @@ describe('Comments Websocket - routes', () => {
         author: 'OLD-AUTHOR'
       })
 
-      const response = await client.request({
+      const response = await promisify(client.request.bind(client))({
         method: 'PUT',
         path: `/comments/${created.id}`,
         payload: {
           content: 'MESSAGE'
         }
       })
-      const payload = response.payload
+      const payload = response
 
       expect(payload.createdAt).to.exists()
       delete payload.createdAt
@@ -167,11 +174,11 @@ describe('Comments Websocket - routes', () => {
         author: 'OLD-AUTHOR'
       })
 
-      const response = await client.request({
+      const response = await promisify(client.request.bind(client))({
         method: 'DELETE',
         path: `/comments/${created.id}`
       })
-      const payload = response.payload
+      const payload = response
 
       expect(payload).to.equal({ success: true })
     })

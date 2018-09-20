@@ -4,43 +4,36 @@ describe('WebsocketService', () => {
   let mockNesClient
   let client
   let service
-  let mockConnect
-  let mockRequest
-  let mockSubscribe
-  let mockUnsubscribe
+  const mockConnect = jest.fn()
+  const mockRequest = jest.fn()
+  const mockSubscribe = jest.fn()
+  const mockUnsubscribe = jest.fn()
 
-  let firstTest = false
-  beforeEach(async () => {
-    if (!firstTest) {
-      mockConnect = jest.fn()
-      mockRequest = jest.fn()
-      mockSubscribe = jest.fn()
-      mockUnsubscribe = jest.fn()
-
-      mockNesClient = function() {
-        this.connect = mockConnect
-        this.request = mockRequest
-        this.subscribe = mockSubscribe
-        this.unsubscribe = mockUnsubscribe
-      }
-
-      jest.mock('nes', () => ({
-        Client: mockNesClient
-      }))
-
-      client = require('../../src/services/WebsocketService').buildWebsocketClient('ws://localhost/')
-      await client.connect()
-      service = require('../../src/services/WebsocketService').WebsocketService(client)
-      firstTest = true
-    } else {
-      mockConnect.mockReset()
-      mockRequest.mockReset()
-      mockSubscribe.mockReset()
-      mockUnsubscribe.mockReset()
+  beforeAll(async () => {
+    mockNesClient = function() {
+      this.connect = mockConnect
+      this.request = mockRequest
+      this.subscribe = mockSubscribe
+      this.unsubscribe = mockUnsubscribe
     }
+
+    jest.mock('nes', () => ({
+      Client: mockNesClient
+    }))
+
+    client = require('../../src/services/WebsocketService').buildWebsocketClient('ws://localhost/')
+    await client.connect()
+    service = require('../../src/services/WebsocketService').WebsocketService(client)
   })
 
-  test('Call the GET comments endpoint returns a valid structure', async () => {
+  beforeEach(async () => {
+    mockConnect.mockReset()
+    mockRequest.mockReset()
+    mockSubscribe.mockReset()
+    mockUnsubscribe.mockReset()
+  })
+
+  test.only('Call the GET comments endpoint returns a valid structure', async () => {
     mockRequest.mockReturnValue({ payload: commentsGETvalid })
 
     // assert on the response

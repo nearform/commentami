@@ -50,7 +50,7 @@
     "sanity": "npm run sanity:environment && npm run test",
     "start": "lerna run start --stream",
     "start:local": "docker-compose start postgres redis ; npm run pg:init; npm run start; docker-compose stop postgres redis",
-    "test": "npm run pg:test:init && lerna run test"
+    "test": "npm run pg:test:init && lerna run test --stream"
   },
   "devDependencies": {
     "depcheck": "^0.6.9",
