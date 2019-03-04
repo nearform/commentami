@@ -39,15 +39,15 @@
   },
   "dependencies": {
     "@nearform/commentami-backend-hapi-plugin": "^1.0.6",
-    "hapi": "^17.5.0",
+    "hapi": "^18.1.0",
     "hapi-auth-basic": "^5.0.0",
-    "hapi-pino": "^4.0.4",
+    "hapi-pino": "^5.4.1",
     "lodash": "^4.17.10"
   },
   "devDependencies": {
     "code": "^5.2.0",
-    "lab": "^15.4.5",
-    "nes": "^9.0.0",
+    "lab": "^18.0.2",
+    "nes": "^10.0.0",
     "sinon": "^5.0.10"
   },
   "publishConfig": {
