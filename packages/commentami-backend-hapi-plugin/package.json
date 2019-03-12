@@ -38,16 +38,16 @@
   },
   "dependencies": {
     "@nearform/commentami-backend-core": "^1.0.5",
-    "joi": "^13.3.0",
+    "joi": "^14.3.1",
     "multines": "^1.0.0",
-    "nes": "^9.0.0"
+    "nes": "^10.0.0"
   },
   "devDependencies": {
     "boom": "^7.2.0",
     "code": "^5.2.0",
     "faker": "^4.1.0",
-    "hapi": "^17.5.0",
-    "lab": "^15.4.5"
+    "hapi": "^18.1.0",
+    "lab": "^18.0.2"
   },
   "publishConfig": {
     "access": "public"

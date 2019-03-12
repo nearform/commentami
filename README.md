@@ -197,7 +197,7 @@ Copyright nearForm Ltd 2018. Licensed under [Apache 2.0 license][license].
 
 ## Contributing
 
-We have a [contributing guide](contributing) and a [code of conduct](coc).
+We have a [contributing guide][contributing] and a [code of conduct][coc].
 
 [commentami-backend-core]: https://www.npmjs.com/package/@nearform/commentami-backend-core
 [commentami-backend-hapi-plugin]: https://www.npmjs.com/package/@nearform/commentami-backend-hapi-plugin
